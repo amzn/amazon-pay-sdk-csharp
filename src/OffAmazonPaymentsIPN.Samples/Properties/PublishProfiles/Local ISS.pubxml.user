@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LastUsedBuildConfiguration>Debug</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="address.aspx">
+      <publishTime>10/30/2013 15:30:01</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>10/22/2013 16:22:13</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsNotifications.dll">
+      <publishTime>10/31/2013 09:32:05</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsNotifications.pdb">
+      <publishTime>10/31/2013 09:32:05</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsNotifications.Samples.dll">
+      <publishTime>10/31/2013 10:17:06</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsNotifications.Samples.pdb">
+      <publishTime>10/31/2013 10:17:06</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsService.dll">
+      <publishTime>10/31/2013 09:44:30</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsService.pdb">
+      <publishTime>10/31/2013 09:44:30</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsServiceSamplesLibrary.dll">
+      <publishTime>10/31/2013 10:09:26</publishTime>
+    </File>
+    <File Include="bin/OffAmazonPaymentsServiceSamplesLibrary.pdb">
+      <publishTime>10/31/2013 10:09:26</publishTime>
+    </File>
+    <File Include="index.aspx">
+      <publishTime>10/30/2013 15:29:48</publishTime>
+    </File>
+    <File Include="IpnHandler.aspx">
+      <publishTime>10/22/2013 16:22:11</publishTime>
+    </File>
+    <File Include="Samples/PaymentsNotificationCancellation.aspx">
+      <publishTime>10/22/2013 16:22:11</publishTime>
+    </File>
+    <File Include="Samples/PaymentsNotificationMultipleShipment.aspx">
+      <publishTime>10/22/2013 16:22:11</publishTime>
+    </File>
+    <File Include="Samples/PaymentsNotificationMultipleShipment_2.aspx">
+      <publishTime>10/22/2013 16:22:11</publishTime>
+    </File>
+    <File Include="Samples/PaymentsNotificationRefund.aspx">
+      <publishTime>10/22/2013 16:22:11</publishTime>
+    </File>
+    <File Include="Samples/PaymentsNotificationSimpleCheckout.aspx">
+      <publishTime>10/22/2013 16:22:11</publishTime>
+    </File>
+    <File Include="Samples/PayWithAmazonAddressConsentSample.aspx">
+      <publishTime>10/31/2013 10:17:03</publishTime>
+    </File>
+    <File Include="wallet.aspx">
+      <publishTime>10/30/2013 15:29:52</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>10/30/2013 15:29:20</publishTime>
+    </File>
+  </ItemGroup>
+</Project>
