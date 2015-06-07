@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="https://dsenetsdk.ant.amazon.com/AmazonPayments" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\shrakuma\\Documents\\Visual\ Studio\ 2013\\Projects\\PayWithAmazon\\IpnHandler\\obj\\Debug\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\shrakuma\\Documents\\Visual\ Studio\ 2013\\Projects\\PayWithAmazon\\IpnHandler\\obj\\Debug\\Package\\PackageTmp$" />
+  </parameter>
+</parameters>

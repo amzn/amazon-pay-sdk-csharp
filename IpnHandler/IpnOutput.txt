@@ -1,0 +1,47 @@
+﻿POST / HTTP/1.1
+x-amz-sns-message-type: Notification
+x-amz-sns-message-id: 0000000-0000-00000-0000-00000EXAMPLE
+x-amz-sns-topic-arn: arn:aws:sns:EXAMPLE:11111EXAMPLE:TestTopic
+x-amz-sns-subscription-arn: arn:aws:sns:EXAMPLE:11111EXAMPLE:TestTopic: EXAMPLE
+Content-Length: 999
+Content-Type: text/plain; charset=UTF-8
+Host: ec2-EXAMPLE.compute-1.amazonaws.com
+Connection: Keep-Alive
+User-Agent: Amazon Simple Notification Service Agent
+{
+    Type : Notification,
+    MessageId : xxxxxx-xxxx-xxxx-xxxx-xxxxxEXAMPLE,
+    TopicArn : arn:aws:sns:EXAMPLE:11111EXAMPLE:TestTopic,
+    Message :
+    {
+        NotificationReferenceId: 1111111-1111-11111-1111-11111EXAMPLE,
+        NotificationType: OrderReferenceNotification,
+        SellerId: A459S1WV6E6ZK,
+        ReleaseEnvironment: Sandbox,
+        Version: 2013-01-01,
+        NotificationData:<?xml version="1.0" encoding="UTF-8"?>
+            <OrderReferenceNotification xmlns="https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01">
+                <OrderReference>
+                    <AmazonOrderReferenceId>P01-0000000-0000000-000000</AmazonOrderReferenceId>
+                    <OrderTotal>
+                        <Amount>0.0</Amount>
+                        <CurrencyCode>USD</CurrencyCode>
+                    </OrderTotal>
+                    <SellerOrderAttributes />
+                    <OrderReferenceStatus>
+                        <State>Closed</State>           
+                        <LastUpdateTimestamp>2013-01-01T01:01:01.001Z</LastUpdateTimestamp>
+                        <ReasonCode>AmazonClosed</ReasonCode>
+                    </OrderReferenceStatus>
+                    <CreationTimestamp>2013-01-01T01:01:01.001Z</CreationTimestamp>       
+                    <ExpirationTimestamp>2013-01-01T01:01:01.001Z</ExpirationTimestamp>
+                </OrderReference>
+            </OrderReferenceNotification>,
+        Timestamp:2013-01-01T01:01:01Z
+    }
+    Timestamp : 2013-01-01T01:01:001Z,
+    SignatureVersion : 1,
+    Signature : rkne..9=kOUhF,
+    SigningCertURL : fasfa,
+    UnsubscribeURL : https://sns.EXAMPLE.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:EXAMPLE:11111EXAMPLE:TestTopic:GUID
+}

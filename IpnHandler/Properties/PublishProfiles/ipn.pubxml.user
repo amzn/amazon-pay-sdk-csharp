@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\AmazonPayments</_PublishTargetUrl>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/IpnHandler.dll">
+      <publishTime>06/07/2015 04:38:05</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>05/04/2015 07:10:36</publishTime>
+    </File>
+    <File Include="bin/PayWithAmazon.dll">
+      <publishTime>06/03/2015 07:45:18</publishTime>
+    </File>
+    <File Include="IpnHandler.aspx">
+      <publishTime>06/05/2015 06:21:18</publishTime>
+    </File>
+    <File Include="IpnHandler.aspx.cs">
+      <publishTime>06/03/2015 07:23:46</publishTime>
+    </File>
+    <File Include="IpnHandler.aspx.designer.cs">
+      <publishTime>05/22/2015 00:29:36</publishTime>
+    </File>
+    <File Include="IpnOutput.txt">
+      <publishTime>06/05/2015 22:51:30</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>05/22/2015 07:39:09</publishTime>
+    </File>
+    <File Include="Properties/AssemblyInfo.cs">
+      <publishTime>05/22/2015 00:29:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.intellisense.js">
+      <publishTime>05/22/2015 00:29:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.js">
+      <publishTime>05/22/2015 00:29:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.min.js">
+      <publishTime>05/22/2015 00:29:36</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>06/04/2015 07:15:15</publishTime>
+    </File>
+  </ItemGroup>
+</Project>
