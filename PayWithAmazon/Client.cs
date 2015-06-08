@@ -28,23 +28,14 @@ namespace PayWithAmazon
         private string mwsEndpointUrl = null;
         private string profileEndpoint = null;
         public Hashtable config = new Hashtable() {
-			{
-				"merchant_id", null
-			}, {
-				"secret_key", null
-			}, {
-				"access_key", null
-			}, {
-				"region", null
-			}, {
-				"currency_code", null
-			}, {
-				"sandbox", false
-			}, {
-				"platform_id", null
-			}, {
-				"cabundle_file", null
-			}, {
+			{"merchant_id", null}, 
+            {"secret_key", null}, 
+            {"access_key", null}, 
+            {"region", null}, 
+            {"currency_code", null}, 
+            {"sandbox", false}, 
+            {"platform_id", null}, 
+            {"cabundle_file", null}, {
 				"application_name", null
 			}, {
 				"application_version", null
