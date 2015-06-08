@@ -1,8 +1,0 @@
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\bin\IpnHandler.dll.config
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\bin\IpnHandler.dll
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\bin\IpnHandler.pdb
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\bin\Newtonsoft.Json.dll
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\obj\Release\IpnHandler.dll
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\obj\Release\IpnHandler.pdb
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\obj\Release\InstantPaymentNotification.csprojResolveAssemblyReference.cache
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\IpnHandler\bin\Newtonsoft.Json.xml
