@@ -33,7 +33,7 @@ namespace PayWithAmazon
             string json = ToJson();
 
             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
-           json, new JsonConverter[] { new RecursiveJsonParser() });
+           json, new JsonConverter[] { new JsonParser() });
            
             return dict;
         }

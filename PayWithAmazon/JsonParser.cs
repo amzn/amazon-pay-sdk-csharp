@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PayWithAmazon
 {
-    class RecursiveJsonParser : CustomCreationConverter<IDictionary<string, object>>
+    class JsonParser : CustomCreationConverter<IDictionary<string, object>>
     {
         public override IDictionary<string, object> Create(Type objectType)
         {
