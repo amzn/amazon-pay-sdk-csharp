@@ -591,7 +591,7 @@ namespace PayWithAmazon
                 {"currency_code","AuthorizationAmount.CurrencyCode"},
                 {"authorization_reference_id","AuthorizationReferenceId"},
                 {"capture_now","CaptureNow"},
-	            {"provider_credit_details",typeof(List<Hashtable>)},
+                {"provider_credit_details",typeof(List<Hashtable>)},
                 {"seller_authorization_note","SellerAuthorizationNote"},
                 {"transaction_timeout","TransactionTimeout"},
                 {"soft_descriptor","SoftDescriptor"},
@@ -653,7 +653,7 @@ namespace PayWithAmazon
                 {"capture_amount","CaptureAmount.Amount"},
                 {"currency_code","CaptureAmount.CurrencyCode"},
                 {"capture_reference_id","CaptureReferenceId"},
-	            {"provider_credit_details"	,typeof(List<Hashtable>)},
+                {"provider_credit_details"	,typeof(List<Hashtable>)},
                 {"seller_capture_note","SellerCaptureNote"},
                 {"soft_descriptor","SoftDescriptor"},
                 {"mws_auth_token","MWSAuthToken"}
@@ -715,7 +715,7 @@ namespace PayWithAmazon
                 {"refund_reference_id","RefundReferenceId"},
                 {"refund_amount","RefundAmount.Amount"},
                 {"currency_code","RefundAmount.CurrencyCode"},
-	            {"provider_credit_reversal_details",typeof(List<Hashtable>)},
+                {"provider_credit_reversal_details",typeof(List<Hashtable>)},
                 {"seller_refund_note","SellerRefundNote"},
                 {"soft_descriptor","SoftDescriptor"},
                 {"mws_auth_token","MWSAuthToken"}

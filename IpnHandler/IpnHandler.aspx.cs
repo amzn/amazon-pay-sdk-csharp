@@ -20,51 +20,13 @@ namespace IpnHandler
     {
         private JObject parsedMessage;
         private X509Certificate2 x509Cert;
-        private string jsonoutput = "";
         private const string CertCN = "sns.amazonaws.com";
 
         // Cache key format string to avoid conflicts with other items in the application cache
-        private const string CacheKey = "OffAmazonPaymentNotifciations:{0}";
-
-        // Error string for unknown notificaton type
-        private const string UnexpectedMessageErrStr = "Error with sns notification - unexpected message with Type of {0}";
-
-        // Error string for missing sns header
-        private const string MissingSnsHeaderErrStr = "Error with message - header does not contain x-amz-sns-message-type";
-
-        // Error string for invalid sns header
-        private const string InvalidSnsHeaderErrStr = "Error with sns message - header x-amz-sns-message-type is invalid";
-
-        // Error string for null header object
-        private const string MissingHeadersErrStr = "Expected headers to be passed, null value received";
+        private const string CacheKey = "PayWithAmazonNotification";
 
         // Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
         private const string Iso8601UTCDateWithMillisecondsFormatString = @"yyyy-MM-ddTHH:mm:ss.fffZ";
-
-        // Error string for unknown notification type
-        private const string UnknownNotificationError
-            = "Error with sns message verification - message is not of type Notification, no implementation of signing algorithm is present for other notification types";
-
-        // Error string for unknown notification type
-        private const string InvalidCertificateError
-            = "Error with sns message verification - certificate in Notification is not a valid certificate issued to Amazon";
-
-        // Error message for invalid json string
-        private const string InvalidJsonErrMsg = "Error with message - content is not in json format";
-
-        // Error message for a missing mandatory field
-        private const string MissingMandatoryFieldErrMsg = "Error with message - mandatory field {0} cannot be found";
-
-        // Error message for invalid cast to a date time object for a field value
-        private const string FieldNotDateTimeErrMsgFormatString = "Error with message - expected field {0} to be DateTime object";
-
-        // Error format string for unknown signature verification message
-        private const string UnknownSignatureVerificationVersionErrStr
-            = "Error with sns message verification - message is signed with unknown signature specification {0}";
-
-        // Error format string for failing signature verification
-        private const string SignatureVerificationFailedErrString
-            = "Error with sns message - signature verification failed for message id {1}, topicArn {2}";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -73,7 +35,6 @@ namespace IpnHandler
                 Stream s = Request.InputStream;
                 StreamReader sr = new StreamReader(s);
                 string json = sr.ReadToEnd();
-                jsonoutput = json;
                 NameValueCollection headers = Request.Headers;
                 if (json != null)
                 {
@@ -82,12 +43,7 @@ namespace IpnHandler
             }
             catch (Exception ex)
             {
-                string fileName = @"C:\file.txt";
-                using (StreamWriter sw = File.AppendText(fileName))
-                {
-                    sw.WriteLine(ex.Message);
-                }
-                Console.WriteLine(ex.Message);
+                throw new HttpParseException("Error Parsing the IPN notification", ex);
             }
         }
 
@@ -111,8 +67,7 @@ namespace IpnHandler
             ValidateMessageIsTrusted();
         }
 
-        /*
-         * Parse a json string in an sns format and convert it
+        /* Parse a json string in an sns format and convert it
          * into a message object that stores key/value pairs
          * <param name="headers">Sns headers</param>
          * <param name="snsJson">Sns json string</param>
@@ -121,7 +76,7 @@ namespace IpnHandler
 
         public void ParseNotification(NameValueCollection headers, string snsJson)
         {
-            //  ValidateHeader(headers);
+            ValidateHeader(headers);
             parseMessage(snsJson);
             ValidateMessageType();
         }
@@ -138,21 +93,17 @@ namespace IpnHandler
             }
             catch (NullReferenceException nre)
             {
-                File.AppendAllText(@"c:\file.txt", MissingHeadersErrStr + Environment.NewLine);
-                throw new Exception(MissingHeadersErrStr, nre);
-
+                throw new Exception("Expected headers to be passed, null value received", nre);
             }
 
             if (messageType == null)
             {
-                File.AppendAllText(@"c:\file.txt", MissingHeadersErrStr + Environment.NewLine);
-                throw new Exception(MissingSnsHeaderErrStr);
+                throw new Exception("Error with message - header does not contain x-amz-sns-message-type");
             }
 
             if (!messageType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
             {
-                File.AppendAllText(@"c:\file.txt", InvalidSnsHeaderErrStr + Environment.NewLine);
-                throw new Exception(String.Format(InvalidSnsHeaderErrStr, messageType));
+                throw new Exception(String.Format("Error with sns message - header x-amz-sns-message-type is invalid", messageType));
             }
         }
 
@@ -166,8 +117,7 @@ namespace IpnHandler
             string notificatonType = GetMandatoryField("Type");
             if (!notificatonType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
             {
-                File.AppendAllText(@"c:\file.txt", UnexpectedMessageErrStr + Environment.NewLine);
-                throw new Exception(String.Format(UnexpectedMessageErrStr, notificatonType));
+                throw new Exception(String.Format("Error with sns notification - unexpected message with Type of ", notificatonType));
             }
         }
 
@@ -188,8 +138,7 @@ namespace IpnHandler
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"c:\file.txt", InvalidJsonErrMsg + Environment.NewLine);
-                throw new Exception(InvalidJsonErrMsg, ex);
+                throw new Exception("Error with message - content is not in json format", ex);
             }
         }
 
@@ -218,8 +167,7 @@ namespace IpnHandler
             }
             catch (FormatException fe)
             {
-                File.AppendAllText(@"c:\file.txt", FieldNotDateTimeErrMsgFormatString + Environment.NewLine);
-                throw new Exception(String.Format(FieldNotDateTimeErrMsgFormatString, fieldName), fe);
+                throw new Exception(String.Format("Error with message - expected field should be of type DateTime object", fieldName), fe);
             }
         }
 
@@ -235,8 +183,7 @@ namespace IpnHandler
 
             if (value == null)
             {
-                File.AppendAllText(@"c:\file.txt", MissingMandatoryFieldErrMsg + Environment.NewLine);
-                throw new Exception(String.Format(MissingMandatoryFieldErrMsg, fieldName));
+                throw new Exception(String.Format("Error with message - mandatory field cannot be found", fieldName));
             }
             return value;
         }
@@ -270,8 +217,7 @@ namespace IpnHandler
                     VerifySnsMessageWithVersion1SignatureAlgorithm();
                     break;
                 default:
-                    File.AppendAllText(@"c:\file.txt", UnknownSignatureVerificationVersionErrStr + Environment.NewLine);
-                    throw new Exception(String.Format(UnknownSignatureVerificationVersionErrStr, signatureVersion));
+                    throw new Exception(String.Format("Error with sns message verification - message is signed with unknown signature specification", signatureVersion));
             }
         }
 
@@ -284,8 +230,7 @@ namespace IpnHandler
             bool isValid = VerifyMsgMatchesSignatureV1WithCert();
             if (!isValid)
             {
-                File.AppendAllText(@"c:\file.txt", SignatureVerificationFailedErrString + Environment.NewLine);
-                throw new Exception(String.Format(SignatureVerificationFailedErrString, "1"));
+                throw new Exception(String.Format("Error with sns message - signature verification failed", "1"));
             }
         }
 
@@ -302,16 +247,14 @@ namespace IpnHandler
         {
             if (!GetMandatoryField("Type").Equals("Notification"))
             {
-                File.AppendAllText(@"c:\file.txt", UnknownNotificationError + Environment.NewLine);
-                throw new Exception(UnknownNotificationError);
+                throw new Exception("Error with sns message verification - message is not of type Notification, no implementation of signing algorithm is present for other notification types");
             }
 
             string certPath = GetMandatoryField("SigningCertURL");
             x509Cert = GetCertificate(certPath);
             if (!VerifyCertIsIssuedByAmazon())
             {
-                File.AppendAllText(@"c:\file.txt", InvalidCertificateError + Environment.NewLine);
-                throw new Exception(InvalidCertificateError);
+                throw new Exception("Error with sns message verification - certificate in Notification is not a valid certificate issued to Amazon");
             }
 
             UTF8Encoding encoding = new UTF8Encoding();
@@ -461,7 +404,6 @@ namespace IpnHandler
             }
             catch (HttpException ex)
             {
-                File.AppendAllText(@"c:\file.txt", "Error requesting certificate" + Environment.NewLine);
                 throw new Exception("Error requesting certificate", ex);
             }
 
@@ -527,8 +469,6 @@ namespace IpnHandler
 
             int index = json.IndexOf("{");
             json = json.Insert(index + "{".Length, remFieldsAsJson + ",");
-
-            File.AppendAllText(@"c:\file.txt", json + Environment.NewLine);
             return json;
         }
 
@@ -546,9 +486,6 @@ namespace IpnHandler
             remFields = remFields.Replace("<root>", "").Replace("</root>", "");
             int index = xmlResponse.LastIndexOf("</");
             xmlResponse = xmlResponse.Insert(index - 2 + "</".Length, remFields);
-
-
-            File.AppendAllText(@"c:\file.txt", xmlResponse + Environment.NewLine);
         }
 
         public Dictionary<string, object> ToDict()
@@ -562,7 +499,7 @@ namespace IpnHandler
             {
                 dict.Add(item.Key, item.Value);
             }
-            
+
             return dict;
         }
 
