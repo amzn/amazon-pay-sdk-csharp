@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.XPath;
 
 namespace PayWithAmazon
 {
@@ -36,6 +39,39 @@ namespace PayWithAmazon
            json, new JsonConverter[] { new JsonParser() });
            
             return dict;
+        }
+
+        private string RemoveNamespace(string xml)
+        {
+            string filter = @"xmlns(:\w+)?=""([^""]+)""|xsi(:\w+)?=""([^""]+)""";
+            xml = Regex.Replace(xml, filter, "");
+            return xml;
+        }
+        public string GetBillingAgreementStatus(string xml)
+        {
+            string baStatus = "";
+
+            xml = RemoveNamespace(xml);
+
+            XmlDocument results = new XmlDocument();
+            results.LoadXml(xml);
+
+            baStatus = results.SelectSingleNode("//GetBillingAgreementDetailsResponse/GetBillingAgreementDetailsResult/BillingAgreementDetails/BillingAgreementStatus/State").InnerText;
+
+            return baStatus;
+        }
+        public string GetOrderReferenceStatus(string xml)
+        {
+            string OroStatus = "";
+
+            xml = RemoveNamespace(xml);
+
+            XmlDocument results = new XmlDocument();
+            results.LoadXml(xml);
+
+            OroStatus = results.SelectSingleNode("//GetOrderReferenceDetailsResponse/GetOrderReferenceDetailsResult/OrderReferenceDetails/OrderReferenceStatus/State").InnerText;
+
+            return OroStatus;
         }
     }
 }

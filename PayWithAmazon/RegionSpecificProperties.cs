@@ -15,10 +15,10 @@ namespace PayWithAmazon
 
         // Production profile end points to get the user information
         public Hashtable ProfileEndpoint = new Hashtable() {
-			{"uk", "https://amazon.co.uk"}, 
-            {"us", "https://amazon.com"}, 
-            {"de", "https://amazon.de"}, 
-            {"jp", "https://amazon.co.jp"}
+			{"uk", "amazon.co.uk"}, 
+            {"us", "amazon.com"}, 
+            {"de", "amazon.de"}, 
+            {"jp", "amazon.co.jp"}
 		};
 
         public Hashtable regionMappings = new Hashtable() {

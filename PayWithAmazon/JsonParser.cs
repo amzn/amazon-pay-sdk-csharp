@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PayWithAmazon
 {
-    class JsonParser : CustomCreationConverter<IDictionary<string, object>>
+    public class JsonParser : CustomCreationConverter<IDictionary<string, object>>
     {
         public override IDictionary<string, object> Create(Type objectType)
         {

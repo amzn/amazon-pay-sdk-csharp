@@ -10,6 +10,9 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using PayWithAmazon;
+using System.Xml;
 
 namespace IpnHandler
 {
@@ -17,6 +20,7 @@ namespace IpnHandler
     {
         private JObject parsedMessage;
         private X509Certificate2 x509Cert;
+        private string jsonoutput = "";
         private const string CertCN = "sns.amazonaws.com";
 
         // Cache key format string to avoid conflicts with other items in the application cache
@@ -69,17 +73,15 @@ namespace IpnHandler
                 Stream s = Request.InputStream;
                 StreamReader sr = new StreamReader(s);
                 string json = sr.ReadToEnd();
+                jsonoutput = json;
                 NameValueCollection headers = Request.Headers;
                 if (json != null)
                 {
-                    //   File.AppendAllText(@"C:\Users\shrakuma\Desktop\file.txt", json + Environment.NewLine);
                     ParseRawMessage(headers, json);
                 }
             }
             catch (Exception ex)
             {
-                //  this.Response.StatusCode = 503;
-                // Response.StatusDescription = "Service Unavailable";
                 string fileName = @"C:\file.txt";
                 using (StreamWriter sw = File.AppendText(fileName))
                 {
@@ -107,7 +109,6 @@ namespace IpnHandler
         {
             ParseNotification(headers, body);
             ValidateMessageIsTrusted();
-            //ParseSnsMessage(snsMessage);
         }
 
         /*
@@ -125,12 +126,7 @@ namespace IpnHandler
             ValidateMessageType();
         }
 
-        /*
-         * Check the sns headers to ensure that the notification
-         * is valid
-         * </summary>
-         * <param name="headers">Sns header collection</param>
-         */
+        /* Check the sns headers to ensure that the notification is valid */
 
         private static void ValidateHeader(NameValueCollection headers)
         {
@@ -210,8 +206,7 @@ namespace IpnHandler
             return value.ToString();
         }
 
-        /*
-         * Return the value of the field as a timestamp
+        /* Return the value of the field as a timestamp
          * <param name="fieldName">Field name containing timestamp data</param>
          * <returns>DateTime representation of the object</returns>
          */
@@ -228,8 +223,7 @@ namespace IpnHandler
             }
         }
 
-        /*
-         * Return the JToken associated with this field,
+        /* Return the JToken associated with this field,
          * otherwise throw an exception
          * </summary>
          * <param name="fieldName">Name of the field to retrieve</param>
@@ -247,8 +241,7 @@ namespace IpnHandler
             return value;
         }
 
-        /*
-         * Get the value associated with this field,
+        /* Get the value associated with this field,
          * or return null if not present
          * </summary>
          * <param name="fieldName">Name of the field to retrieve</param>
@@ -282,8 +275,7 @@ namespace IpnHandler
             }
         }
 
-        /*
-         * Invoke the version 1 signature algorithm and throw an exception if it fails
+        /* Invoke the version 1 signature algorithm and throw an exception if it fails
          * <param name="snsMessage">Sns message to verify</param>
          */
 
@@ -299,8 +291,7 @@ namespace IpnHandler
 
 
 
-        /* 
-         * Perform the comparison of the message data with the signature,
+        /* Perform the comparison of the message data with the signature,
          * as described on http://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.verify.signature.html,
          * for version 1 of the signature algorithm
          * <param name="snsMessage">Sns message with metadata</param>
@@ -333,8 +324,7 @@ namespace IpnHandler
             return VerifyMsgMatchesSignatureWithPublicCert(data, decodedSignature);
         }
 
-        /* 
-         * Extract the contents of the message and build a string to hash in order to verify the signature
+        /* Extract the contents of the message and build a string to hash in order to verify the signature
          * 
          * Expected string is a single string in format field name\n field value\n, with the field names in alphabetical byte order (e.g. A-Za-z)
          * notification use the Message, MessageId, Subject if provided, Timestamp, TopicArn & Type fields
@@ -373,9 +363,7 @@ namespace IpnHandler
             return builder.ToString();
         }
 
-        /* <summary>
-         * Verify that certificate is valid and issued by Amazon.
-         * </summary>
+        /* Verify that certificate is valid and issued by Amazon.
          * <param name="snsMessage">URI path to public key certificate to hash the constructed data</param>
          */
         public bool VerifyCertIsIssuedByAmazon()
@@ -443,8 +431,7 @@ namespace IpnHandler
             return actualValue == attributeValue;
         }
 
-        /*
-         * Perform the comparison of the message data with the signature,
+        /* Perform the comparison of the message data with the signature,
          * as described on http://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.verify.signature.html,
          * for version 1 of the signature algorithm
          * <param name="data">Byte data to compare using a SHA1 hash</param>
@@ -459,12 +446,12 @@ namespace IpnHandler
             return csp.VerifyData(data, CryptoConfig.MapNameToOID("SHA1"), signature);
         }
 
-        /*
-         * Check the application cache for the certificate, and use this if still valid
+        /* Check the application cache for the certificate, and use this if still valid
          * If not found, request the cert and add to the cache with a timeout of 24 hours
          * <param name="certPath">URI path to certificate</param>
          * <returns>Instance of the x508 certificate</returns>
          */
+
         private X509Certificate2 GetCertificate(string certPath)
         {
             X509Certificate2 cert = null;
@@ -487,8 +474,7 @@ namespace IpnHandler
             return cert;
         }
 
-        /*
-         * Request the certifcate from the given URI
+        /* Request the certifcate from the given URI
          * <param name="certPath">URI path to certificate</param>
          * <returns>Instance of the x508 certificate</returns>
          */
@@ -500,30 +486,105 @@ namespace IpnHandler
             return new X509Certificate2(raw);
         }
 
-        /*
-         * Performs certificate chain validation using basic validation policy
-         */
+        /*  Performs certificate chain validation using basic validation policy */
 
         public bool VerifyCertificateChain()
         {
             return x509Cert.Verify();
         }
 
-        /*
-         * Gets certificate's subject information
-         */
+        /* Gets certificate's subject information */
+
         public String GetSubject()
         {
             return x509Cert.Subject;
         }
 
-        /*
-         * Gets AsymmetricAlgorithm representing the certificate's public key
-         */
+        /* Gets AsymmetricAlgorithm representing the certificate's public key */
 
         public AsymmetricAlgorithm GetPublicKey()
         {
             return x509Cert.PublicKey.Key;
+        }
+
+        public string ToJson()
+        {
+            string xmlResponse;
+            string json;
+
+            Dictionary<string, string> remainingFields = GetRemainingIpnFields();
+            string remFieldsAsJson = JsonConvert.SerializeObject(remainingFields, Newtonsoft.Json.Formatting.Indented);
+
+            remFieldsAsJson = remFieldsAsJson.Replace("{", "").Replace(System.Environment.NewLine + "}", "");
+
+            JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());
+            xmlResponse = message.GetValue("NotificationData").ToString().Trim();
+
+            var xml = new XmlDocument();
+            xml.LoadXml(xmlResponse);
+
+            json = JsonConvert.SerializeObject(xml, Newtonsoft.Json.Formatting.Indented);
+
+            int index = json.IndexOf("{");
+            json = json.Insert(index + "{".Length, remFieldsAsJson + ",");
+
+            File.AppendAllText(@"c:\file.txt", json + Environment.NewLine);
+            return json;
+        }
+
+        public void ToXml()
+        {
+            Dictionary<string, string> remainingFields = GetRemainingIpnFields();
+            string remFieldsAsJson = JsonConvert.SerializeObject(remainingFields, Newtonsoft.Json.Formatting.Indented);
+
+            XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(remFieldsAsJson, "root");
+
+            JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());
+            string xmlResponse = message.GetValue("NotificationData").ToString().Trim();
+
+            string remFields = doc.OuterXml.ToString();
+            remFields = remFields.Replace("<root>", "").Replace("</root>", "");
+            int index = xmlResponse.LastIndexOf("</");
+            xmlResponse = xmlResponse.Insert(index - 2 + "</".Length, remFields);
+
+
+            File.AppendAllText(@"c:\file.txt", xmlResponse + Environment.NewLine);
+        }
+
+        public Dictionary<string, object> ToDict()
+        {
+            Dictionary<string, string> remainingFields = GetRemainingIpnFields();
+            string json = ToJson();
+            Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
+          json, new JsonConverter[] { new PayWithAmazon.JsonParser() });
+
+            foreach (KeyValuePair<string, string> item in remainingFields)
+            {
+                dict.Add(item.Key, item.Value);
+            }
+            
+            return dict;
+        }
+
+        /* getRemainingIpnFields()
+         * Gets the remaining fields of the IPN to be later appended to the return message
+         */
+
+        public Dictionary<string, string> GetRemainingIpnFields()
+        {
+            JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());
+
+            Dictionary<string, string> remainingFields = new Dictionary<string, string>()
+            {
+                {"NotificationReferenceId",message.GetValue("NotificationReferenceId").ToString()},
+                {"NotificationType" ,message.GetValue("NotificationType").ToString()},
+                {"IsSample" ,message.GetValue("IsSample").ToString()},
+                {"SellerId" ,message.GetValue("SellerId").ToString()},
+                {"ReleaseEnvironment" ,message.GetValue("ReleaseEnvironment").ToString()},
+                {"Version" ,message.GetValue("Version").ToString()}
+
+            };
+            return remainingFields;
         }
     }
 }
