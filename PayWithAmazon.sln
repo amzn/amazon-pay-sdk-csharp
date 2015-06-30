@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayWithAmazon", "PayWithAma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstantPaymentNotification", "IpnHandler\InstantPaymentNotification.csproj", "{8A84E9F1-A0AE-4366-A19B-36EC0DF7E76A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{D8DE71F8-9464-43C5-BB22-E9BDBC04D12F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8A84E9F1-A0AE-4366-A19B-36EC0DF7E76A}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{8A84E9F1-A0AE-4366-A19B-36EC0DF7E76A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A84E9F1-A0AE-4366-A19B-36EC0DF7E76A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8DE71F8-9464-43C5-BB22-E9BDBC04D12F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8DE71F8-9464-43C5-BB22-E9BDBC04D12F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8DE71F8-9464-43C5-BB22-E9BDBC04D12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8DE71F8-9464-43C5-BB22-E9BDBC04D12F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

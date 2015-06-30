@@ -618,7 +618,7 @@ namespace PayWithAmazon
             Hashtable fieldMappings = new Hashtable()  
             {
                 {"merchant_id","SellerId"},
-                {"amazon_authorization_reference_id","AmazonAuthorizeReferenceId"},
+                {"amazon_authorization_id","AmazonAuthorizationId"},
                 {"mws_auth_token","MWSAuthToken"},
             };
 
