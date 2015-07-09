@@ -126,9 +126,10 @@ requestParameters.Add("amazon_order_reference_id","AMAZON_ORDER_REFERENCE_ID");
 
 // Optional Parameter
 requestParameters.Add("address_consent_token","ACCESS_TOKEN");
-requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN);
+requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN");
 
-// response here is the object of the ResponseParser class, You can use this object to get the desired response type in the section Response Parsing 
+// response here is the object of the ResponseParser class, 
+// You can use this object to get the desired response type in the section Response Parsing 
 ResponseParser response = client.getOrderReferenceDetails(requestParameters);
 
 ```
@@ -140,7 +141,8 @@ See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csh
 2. You can set up your Notification endpoints in Seller Central by accessing the Integration Settings page in the Settings tab.
 3. IpnHandler.csharp class handles verification of the source and the data of the IPN
 
-In your web project you can create a file( for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
+In your web project you can create a file( for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  
+Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
 
 ```csharp
 using PayWithAmazon;
