@@ -130,7 +130,7 @@ requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN");
 
 // response here is the object of the ResponseParser class, 
 // You can use this object to get the desired response type in the section Response Parsing 
-ResponseParser response = client.getOrderReferenceDetails(requestParameters);
+ResponseParser response = client.GetOrderReferenceDetails(requestParameters);
 
 ```
 See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/README.md#api-response) section for information on parsing the API response.
