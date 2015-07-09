@@ -14,6 +14,7 @@ Login and Pay with Amazon API Integration
 ## Sample
 
 * View the sample integration demo [here](https://amzn.github.io/login-and-pay-with-amazon-sdk-samples/)
+
 > csharp samples will be added soon
 
 ## Quick Start
@@ -128,9 +129,8 @@ requestParameters.Add("amazon_order_reference_id","AMAZON_ORDER_REFERENCE_ID");
 requestParameters.Add("address_consent_token","ACCESS_TOKEN");
 requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN");
 
-// response here is the object of the ResponseParser class, 
-// You can use this object to get the desired response type in the section Response Parsing 
-ResponseParser response = client.GetOrderReferenceDetails(requestParameters);
+// You can use the "response" object to get the desired response type in the section Response Parsing 
+ResponseParser response = client.getOrderReferenceDetails(requestParameters);
 
 ```
 See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/README.md#api-response) section for information on parsing the API response.
