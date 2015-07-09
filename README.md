@@ -133,7 +133,7 @@ requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN");
 ResponseParser response = client.getOrderReferenceDetails(requestParameters);
 
 ```
-See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for information on parsing the API response.
+See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/README.md#api-response) section for information on parsing the API response.
 
 ### IPN Handling
 
@@ -157,7 +157,7 @@ NameValueCollection headers = Request.Headers;
 IpnHandler ipn = new IpnHandler(json, headers);
 
 ```
-See the [IPN Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#ipn-response) section for information on parsing the IPN response.
+See the [IPN Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/README.md#ipn-response) section for information on parsing the IPN response.
 
 ### Convenience Methods
 
@@ -209,8 +209,8 @@ requestParameters.Add("amazon_reference_id","AMAZON_REFERENCE_ID");
 // Or
 // If requestParameters["amazon_reference_id"] is not provided,
 // either one of the following ID input is needed
-requestParameters.Add("amazon_order_reference_id",AMAZON_ORDER_REFERENCE_ID)   = "";
-requestParameters.Add("amazon_billing_agreement_id",AMAZON_BILLING_AGREEMENT_ID) = "AMAZON_BILLING_AGREEMENT_ID";
+requestParameters.Add("amazon_order_reference_id","AMAZON_ORDER_REFERENCE_ID");
+requestParameters.Add("amazon_billing_agreement_id","AMAZON_BILLING_AGREEMENT_ID");
 
 requestParameters.Add("seller_id",null);
 requestParameters.Add("charge_amount",100.50);
@@ -221,7 +221,7 @@ requestParameters.Add("capture_now",false); //`true` for Digital goods
 requestParameters.Add("charge_note","Example item note");
 requestParameters.Add("charge_order_id","1234-Example-Order");
 requestParameters.Add("store_name","Example Store");
-requestParameters.Add("platform_Id",null);
+requestParameters.Add("platform_id",null);
 requestParameters.Add("custom_information","Any_Custom_String");
 requestParameters.Add("mws_auth_token",null);
 
@@ -258,7 +258,7 @@ string access_token = "ACCESS_TOKEN";
 // Calling the function getUserInfo with the access token parameter returns object
 string jsonResponse = client.GetUserInfo(access_token);
 
-//using Newtonsoft library
+// Using Newtonsoft (Json.net) library
 Jobject jsonObject = JObject.Parse(jsonResponse);
 
 // Buyer name
@@ -293,14 +293,14 @@ response.ToJson();
 
 #####IPN Response
 ```csharp
-IpnHandler ipnHandler = new IpnHandler(headers, body);
+IpnHandler ipnResponse = new IpnHandler(headers, body);
 
 // XML message response
-ipnHandler.ToXml();
+ipnResponse.ToXml();
 
 // Associative Hashtable response
-ipnHandler.ToDict);
+ipnResponse.ToDict);
 
 // JSON response
-ipnHandler.ToJson();
+ipnResponse.ToJson();
 ```
