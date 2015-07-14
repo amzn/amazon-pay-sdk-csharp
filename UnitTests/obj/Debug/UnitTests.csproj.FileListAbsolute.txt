@@ -1,9 +1,0 @@
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\UnitTests\bin\Debug\UnitTests.dll
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\UnitTests\bin\Debug\UnitTests.pdb
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\UnitTests.dll
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\UnitTests.pdb
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\UnitTests\obj\Debug\UnitTests.dll
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\UnitTests\obj\Debug\UnitTests.pdb
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\config.json
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\Json.txt
-C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\UnitTests\obj\Debug\UnitTests.csprojResolveAssemblyReference.cache

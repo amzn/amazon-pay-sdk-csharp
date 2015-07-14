@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\UnitTests.dll" total="26" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2015-07-14" time="19:16:30">
+  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8009" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DSENETSDK" user="shrakuma" user-domain="ANT" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\UnitTests.dll" executed="True" result="Success" success="True" time="10.115" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="UnitTests" executed="True" result="Success" success="True" time="10.069" asserts="0">
+        <results>
+          <test-suite type="TestFixture" name="PayWithAmazonTest" executed="True" result="Success" success="True" time="10.038" asserts="0">
+            <results>
+              <test-case name="UnitTests.PayWithAmazonTest.Test500or503" executed="True" result="Success" success="True" time="4.786" asserts="0" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestAuthorize" executed="True" result="Success" success="True" time="0.552" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestAuthorizeOnBillingAgreement" executed="True" result="Success" success="True" time="0.181" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestCapture" executed="True" result="Success" success="True" time="0.169" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.testCharge" executed="True" result="Success" success="True" time="0.487" asserts="3" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestCloseAuthorization" executed="True" result="Success" success="True" time="0.347" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestCloseBillingAgreement" executed="True" result="Success" success="True" time="0.171" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestConfig" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestConfirmBillingAgreement" executed="True" result="Success" success="True" time="0.163" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestConfirmOrderReference" executed="True" result="Success" success="True" time="0.169" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestCreateOrderReferenceForId" executed="True" result="Success" success="True" time="0.198" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.testDictResponse" executed="True" result="Success" success="True" time="0.917" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestGetAuthorizationDetails" executed="True" result="Success" success="True" time="0.174" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestGetBillingAgreementDetails" executed="True" result="Success" success="True" time="0.174" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestGetCaptureDetails" executed="True" result="Success" success="True" time="0.160" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestGetOrderReferenceDetails" executed="True" result="Success" success="True" time="0.158" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestGetRefundDetails" executed="True" result="Success" success="True" time="0.184" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestGetServiceStatus" executed="True" result="Success" success="True" time="0.176" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.testGetUserInfo" executed="True" result="Success" success="True" time="0.007" asserts="2" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestJsonFile" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.testJsonResponse" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestRefund" executed="True" result="Success" success="True" time="0.184" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestSandboxSetter" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestSetBillingAgreementDetails" executed="True" result="Success" success="True" time="0.175" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestSetOrderReferenceDetails" executed="True" result="Success" success="True" time="0.160" asserts="1" />
+              <test-case name="UnitTests.PayWithAmazonTest.TestValidateBillingAgreement" executed="True" result="Success" success="True" time="0.160" asserts="1" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
