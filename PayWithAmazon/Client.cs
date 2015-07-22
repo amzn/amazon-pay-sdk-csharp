@@ -33,7 +33,7 @@ namespace PayWithAmazon
         private string mwsEndpointUrl = null;
         private string profileEndpoint = null;
         public string timeStamp = null;
-        
+
         public Hashtable config = new Hashtable() {
             {"merchant_id",null},
             {"secret_key",null},
@@ -46,7 +46,7 @@ namespace PayWithAmazon
             {"application_name",null},
             {"application_version",null},
             {"proxy_host",null},
-            {"proxy_port","-1"},
+            {"proxy_port",-1},
             {"proxy_username",null},
             {"proxy_password",null},
             {"client_id",null},
@@ -81,6 +81,7 @@ namespace PayWithAmazon
         ///  
         ///  // Optional
         ///  config.Add("currency_code","USD");
+        ///  config.Add("sandbox",false); // true for sandbox , Defaults to false
         ///  config.Add("platform_id","PLATFORM_ID"); // Solution Provider ID
         ///  config.Add("cabundle_file","CA_BUNDLE_PATH");
         ///  config.Add("application_name","CUSTOM_APPLICATION_NAME");
@@ -279,7 +280,7 @@ namespace PayWithAmazon
         {
             this.timeStamp = timeStamp;
         }
-        
+
         /// <summary>
         /// Gets the value for the key if the key exists in config
         /// </summary>
@@ -585,6 +586,10 @@ namespace PayWithAmazon
             if (string.IsNullOrEmpty(accessToken))
             {
                 throw new NullReferenceException("Access Token is a required parameter and is not set");
+            }
+            if (string.IsNullOrEmpty(config["client_id"].ToString()))
+            {
+                throw new NullReferenceException("client ID is a required parameter and is not set");
             }
 
             accessToken = System.Web.HttpUtility.UrlDecode(accessToken);
@@ -1524,7 +1529,7 @@ namespace PayWithAmazon
 
             return (responseObject);
         }
-        
+
         /// <summary>
         /// Charge convenience method
         /// Performs the API calls
@@ -2028,10 +2033,15 @@ namespace PayWithAmazon
             }
 
             StringBuilder sb = new StringBuilder();
-
-            sb.Append(QuoteApplicationName(config["application_name"].ToString()));
+            if (config["application_name"] != null)
+            {
+                sb.Append(QuoteApplicationName(config["application_name"].ToString()));
+            }
             sb.Append("/");
-            sb.Append(QuoteApplicationVersion(config["application_version"].ToString()));
+            if (config["application_version"] != null)
+            {
+                sb.Append(QuoteApplicationVersion(config["application_version"].ToString()));
+            }
             sb.Append(" (");
             sb.Append("Language=");
             sb.Append(QuoteAttributeValue("C#"));
