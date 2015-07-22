@@ -14,13 +14,13 @@ using Newtonsoft.Json;
 using PayWithAmazon;
 using System.Xml;
 
-/* Class IPN_Handler
- * Takes headers and body of the IPN message as input in the constructor
- * verifies that the IPN is from the right resource and has the valid data
- */
-
 namespace PayWithAmazon
 {
+    /// <summary>
+    /// Class IPN_Handler
+    /// Takes headers and body of the IPN message as input in the constructor
+    /// verifies that the IPN is from the right resource and has the valid data
+    /// </summary>
     public class IpnHandler
     {
         private JObject parsedMessage;
@@ -50,33 +50,28 @@ namespace PayWithAmazon
 
         }
 
-         /*
-          * Convert a raw http POST request that contains an IPN and
-          * convert to an object
-          * 
-          * Will throw a Exception if the content is not a valid IPN
-          * 
-          * Callers are expected to return a 503 http code an exception is
-          * thrown by this method, otherwise reply with a HTTP OK status
-          * 
-          * <param name="headers">HTTP request headers</param>
-          * <param name="body">HTTP POST body content</param>
-          * <returns>Instance of an INotification that matches the notification type</returns>
-          */
-
+        /// <summary>
+        /// Convert a raw http POST request that contains an IPN and
+        /// convert to an object
+        /// 
+        /// Will throw a Exception if the content is not a valid IPN
+        /// 
+        /// Callers are expected to return a 503 http code an exception is
+        /// thrown by this method, otherwise reply with a HTTP OK status
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
         public void ParseRawMessage(NameValueCollection headers, string body)
         {
             ParseNotification(headers, body);
             ValidateMessageIsTrusted();
         }
 
-        /* Parse a json string in an sns format and convert it
-         * into a message object that stores key/value pairs
-         * <param name="headers">Sns headers</param>
-         * <param name="snsJson">Sns json string</param>
-         * <returns>Message</returns>
-         */
-
+        /// <summary>
+        /// Parse a json string in an sns format and convert it into a message object that stores key/value pairs
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="snsJson"></param>
         public void ParseNotification(NameValueCollection headers, string snsJson)
         {
             ValidateHeader(headers);
@@ -84,8 +79,10 @@ namespace PayWithAmazon
             ValidateMessageType();
         }
 
-        /* Check the sns headers to ensure that the notification is valid */
-
+        /// <summary>
+        /// Check the sns headers to ensure that the notification is valid
+        /// </summary>
+        /// <param name="headers"></param>
         private static void ValidateHeader(NameValueCollection headers)
         {
             string messageType = null;
@@ -110,11 +107,9 @@ namespace PayWithAmazon
             }
         }
 
-        /*
-         * Ensure that the sns message is the valid notificaton type
-         * <param name="msg">SNS message</param>
-         */
-
+        /// <summary>
+        /// Ensure that the sns message is the valid notificaton type
+        /// </summary>
         private void ValidateMessageType()
         {
             string notificatonType = GetMandatoryField("Type");
@@ -124,14 +119,10 @@ namespace PayWithAmazon
             }
         }
 
-        /*
-         * Create a new message the acts as a wrapper
-         * around the json string
-         * </summary>
-         * <throws>NotificationException if the string is not valid json</throws>
-         * <param name="json">A valid json string</param>
-         */
-
+        /// <summary>
+        /// Create a new message the acts as a wrapper around the json string
+        /// </summary>
+        /// <param name="json"></param>
         public void parseMessage(string json)
         {
             try
@@ -144,14 +135,11 @@ namespace PayWithAmazon
             }
         }
 
-
-        /*
-         * Return the value associated with the field name,
-         * throws an exception if it cannot be found
-         * <param name="fieldName">Name of the field to retrieve</param>
-         * <returns>value of the field</returns>
-         */
-
+        /// <summary>
+        /// Return the value associated with the field name, throws an exception if it cannot be found
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns>string value for the fieldname</returns>
         public string GetMandatoryField(string fieldName)
         {
             JToken value = GetValueAsToken(fieldName);
@@ -175,13 +163,11 @@ namespace PayWithAmazon
             }
         }
 
-        /* Return the JToken associated with this field,
-         * otherwise throw an exception
-         * </summary>
-         * <param name="fieldName">Name of the field to retrieve</param>
-         * <returns>Filed as JToken</returns>
-         */
-
+        /// <summary>
+        /// Return the JToken associated with this field, otherwise throw an exception
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns>JToken value</returns>
         private JToken GetValueAsToken(string fieldName)
         {
             JToken value = this.parsedMessage.GetValue(fieldName);
@@ -193,13 +179,11 @@ namespace PayWithAmazon
             return value;
         }
 
-        /* Get the value associated with this field,
-         * or return null if not present
-         * </summary>
-         * <param name="fieldName">Name of the field to retrieve</param>
-         * <returns>String or null if not defined</returns>
-         */
-
+        /// <summary>
+        /// Get the value associated with this field, or return null if not present
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns>String or null if not defined</returns>
         public String GetField(string fieldName)
         {
             JToken value = this.parsedMessage.GetValue(fieldName);
@@ -212,7 +196,10 @@ namespace PayWithAmazon
                 return null;
             }
         }
-
+        
+        /// <summary>
+        /// Validates if the Signature version is correct , else throws an exception 
+        /// </summary>
         public void ValidateMessageIsTrusted()
         {
             string signatureVersion = GetMandatoryField("SignatureVersion");
@@ -226,10 +213,9 @@ namespace PayWithAmazon
             }
         }
 
-        /* Invoke the version 1 signature algorithm and throw an exception if it fails
-         * <param name="snsMessage">Sns message to verify</param>
-         */
-
+        /// <summary>
+        /// Invoke the version 1 signature algorithm and throw an exception if it fails
+        /// </summary>
         private void VerifySnsMessageWithVersion1SignatureAlgorithm()
         {
             bool isValid = VerifyMsgMatchesSignatureV1WithCert();
@@ -238,14 +224,13 @@ namespace PayWithAmazon
                 throw new Exception(String.Format("Error with sns message - signature verification failed", "1"));
             }
         }
-        
-        /* Perform the comparison of the message data with the signature,
-         * as described on http://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.verify.signature.html,
-         * for version 1 of the signature algorithm
-         * <param name="snsMessage">Sns message with metadata</param>
-         * <returns>true if verified, otherwise false</returns>
-         */
 
+        /// <summary>
+        /// Perform the comparison of the message data with the signature,
+        /// as described on http://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.verify.signature.html,
+        /// for version 1 of the signature algorithm
+        /// </summary>
+        /// <returns>true if verified, otherwise false</returns>
         public bool VerifyMsgMatchesSignatureV1WithCert()
         {
             if (!GetMandatoryField("Type").Equals("Notification"))
@@ -270,14 +255,12 @@ namespace PayWithAmazon
             return VerifyMsgMatchesSignatureWithPublicCert(data, decodedSignature);
         }
 
-        /* Extract the contents of the message and build a string to hash in order to verify the signature
-         * 
-         * Expected string is a single string in format field name\n field value\n, with the field names in alphabetical byte order (e.g. A-Za-z)
-         * notification use the Message, MessageId, Subject if provided, Timestamp, TopicArn & Type fields
-         * <param name="snsMessage">Sns message with metadata</param>
-         * <returns>Signature comparison string, unhashed</returns>
-         */
-
+        /// <summary>
+        /// Extract the contents of the message and build a string to hash in order to verify the signature
+        /// Expected string is a single string in format field name\n field value\n, with the field names in alphabetical byte order (e.g. A-Za-z)
+        /// notification use the Message, MessageId, Subject if provided, Timestamp, TopicArn & Type fields
+        /// </summary>
+        /// <returns>StringBuilder builder</returns>
         private string GetMessageToSign()
         {
             StringBuilder builder = new StringBuilder();
@@ -309,14 +292,20 @@ namespace PayWithAmazon
             return builder.ToString();
         }
 
-        /* Verify that certificate is valid and issued by Amazon.
-         * <param name="snsMessage">URI path to public key certificate to hash the constructed data</param>
-         */
+        /// <summary>
+        /// Verify that certificate is valid and issued by Amazon.
+        /// </summary>
+        /// <returns></returns>
         public bool VerifyCertIsIssuedByAmazon()
         {
             return VerifyCertificateChain() && VerifyCertificateSubject(GetSubject());
         }
 
+        /// <summary>
+        /// Verify the certificate subject, checks the "CN" attribute
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns>value of the attribute or false</returns>
         private bool VerifyCertificateSubject(String subject)
         {
             string[] subjectAttributeDelimiters = new string[] { ", " };
@@ -377,25 +366,24 @@ namespace PayWithAmazon
             return actualValue == attributeValue;
         }
 
-        /* Perform the comparison of the message data with the signature,
-         * <param name="data">Byte data to compare using a SHA1 hash</param>
-         * <param name="signature">Decoded signature byte array</param>
-         * <param name="certPath">URI path to public key certificate to hash the constructed data</param>
-         * <returns>true if successful</returns>
-         */
-
+        /// <summary>
+        /// Perform the comparison of the message data with the signature
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="signature"></param>
+        /// <returns>true if successful</returns>
         public bool VerifyMsgMatchesSignatureWithPublicCert(byte[] data, byte[] signature)
         {
             RSACryptoServiceProvider csp = (RSACryptoServiceProvider)GetPublicKey();
             return csp.VerifyData(data, CryptoConfig.MapNameToOID("SHA1"), signature);
         }
 
-        /* Check the application cache for the certificate, and use this if still valid
-         * If not found, request the cert and add to the cache with a timeout of 24 hours
-         * <param name="certPath">URI path to certificate</param>
-         * <returns>Instance of the x508 certificate</returns>
-         */
-
+        /// <summary>
+        ///  Check the application cache for the certificate, and use this if still valid
+        ///  If not found, request the cert and add to the cache with a timeout of 24 hours
+        /// </summary>
+        /// <param name="certPath"></param>
+        /// <returns>Instance of the x508 certificate</returns>
         private X509Certificate2 GetCertificate(string certPath)
         {
             X509Certificate2 cert = null;
@@ -417,11 +405,11 @@ namespace PayWithAmazon
             return cert;
         }
 
-        /* Request the certifcate from the given URI
-         * <param name="certPath">URI path to certificate</param>
-         * <returns>Instance of the x508 certificate</returns>
-         */
-
+        /// <summary>
+        /// Request the certifcate from the given URI
+        /// </summary>
+        /// <param name="certPath"></param>
+        /// <returns>Instance of the x508 certificate</returns>
         private X509Certificate2 GetCertificateFromURI(string certPath)
         {
             WebClient wc = new WebClient();
@@ -429,29 +417,38 @@ namespace PayWithAmazon
             return new X509Certificate2(raw);
         }
 
-        /*  Performs certificate chain validation using basic validation policy */
-
+        /// <summary>
+        /// Performs certificate chain validation using basic validation policy
+        /// </summary>
+        /// <returns>x509Cert.Verify() result</returns>
         public bool VerifyCertificateChain()
         {
             return x509Cert.Verify();
         }
 
-        /* Gets certificate's subject information */
-
+        /*  */
+        /// <summary>
+        /// Gets certificate's subject information
+        /// </summary>
+        /// <returns>x509Cert.Subject</returns>
         public String GetSubject()
         {
             return x509Cert.Subject;
         }
 
-        /* Gets AsymmetricAlgorithm representing the certificate's public key */
-
+        /// <summary>
+        /// Gets AsymmetricAlgorithm representing the certificate's public key
+        /// </summary>
+        /// <returns>x509Cert.PublicKey.Key value</returns>
         public AsymmetricAlgorithm GetPublicKey()
         {
             return x509Cert.PublicKey.Key;
         }
 
-        /* Convert IPN message to JSON type */
-
+        /// <summary>
+        /// Convert IPN message to JSON type
+        /// </summary>
+        /// <returns>IPN in JSON string format </returns>
         public string ToJson()
         {
             string xmlResponse;
@@ -475,8 +472,10 @@ namespace PayWithAmazon
             return json;
         }
 
-        /* Convert IPN message to XML type */
-
+        /// <summary>
+        /// Convert IPN message to XML type
+        /// </summary>
+        /// <returns>IPN in XML string format</returns>
         public string ToXml()
         {
             Dictionary<string, string> remainingFields = GetRemainingIpnFields();
@@ -494,8 +493,10 @@ namespace PayWithAmazon
             return xmlResponse;
         }
 
-        /* Convert IPN message to Dictionary type */
-
+        /// <summary>
+        /// Convert IPN message to Dictionary type
+        /// </summary>
+        /// <returns>IPN in Dictionary(string,object) format</returns>
         public Dictionary<string, object> ToDict()
         {
             Dictionary<string, string> remainingFields = GetRemainingIpnFields();
@@ -511,10 +512,10 @@ namespace PayWithAmazon
             return dict;
         }
 
-        /* getRemainingIpnFields()
-         * Gets the remaining fields of the IPN to be later appended to the return message
-         */
-
+        /// <summary>
+        /// getRemainingIpnFields() - Gets the remaining fields of the IPN to be later appended to the return message
+        /// </summary>
+        /// <returns>Dictionary(string, string) remainingFields</returns>
         public Dictionary<string, string> GetRemainingIpnFields()
         {
             JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());

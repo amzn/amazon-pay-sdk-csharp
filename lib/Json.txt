@@ -1,0 +1,8 @@
+﻿{
+  "GetOrderReferenceDetailsResponse": {
+    "@xmlns": "http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01",
+    "AmazonOrderReferenceId": "S01-5806490-2147504",
+    "ExpirationTimestamp": "2015-09-27T02:18:33.408Z",
+    "SellerNote": "This is testing API call"
+  }
+}

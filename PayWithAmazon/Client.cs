@@ -13,14 +13,14 @@ using System.Collections;
 using System.Xml;
 using Newtonsoft.Json;
 
-/* Class Client
- * Takes configuration information
- * Makes API calls to MWS for Pay With Amazon
- * returns Response Object
- */
-
 namespace PayWithAmazon
 {
+    /// <summary>
+    /// Class Client
+    /// Takes configuration information
+    /// Makes API calls to MWS for Pay With Amazon
+    /// returns ResponseParser Object
+    /// </summary>
     public class Client : PayWithAmazon.IClient
     {
         private const string MWS_CLIENT_VERSION = "1.0.0";
@@ -33,6 +33,7 @@ namespace PayWithAmazon
         private string mwsEndpointUrl = null;
         private string profileEndpoint = null;
         public string timeStamp = null;
+        
         public Hashtable config = new Hashtable() {
             {"merchant_id",null},
             {"secret_key",null},
@@ -62,11 +63,36 @@ namespace PayWithAmazon
 
         Regions regionProperties = new Regions();
 
-
-        /* Takes user configuration Dictionary from the user as input
-         * Validates the user configuration Hashtable against existing config Hashtable
-         */
-
+        /// <summary>
+        /// Takes user configuration Dictionary from the user as input
+        /// Validates the user configuration Hashtable against existing config Hashtable
+        /// </summary>
+        /// <param name="config"></param>
+        /// <example>
+        ///  <code>
+        ///  Hashtable config = new Hashtable();
+        ///  
+        ///  // Required
+        ///  config.Add("merchant_id","MERCHANT_ID");
+        ///  // Following keys can be found in your seller central account.
+        ///  config.Add("secret_key","MWS_SECRET_KEY"); 
+        ///  config.Add("access_key","MWS_ACCESS_KEY");
+        ///  config.Add("region","us");
+        ///  
+        ///  // Optional
+        ///  config.Add("currency_code","USD");
+        ///  config.Add("platform_id","PLATFORM_ID"); // Solution Provider ID
+        ///  config.Add("cabundle_file","CA_BUNDLE_PATH");
+        ///  config.Add("application_name","CUSTOM_APPLICATION_NAME");
+        ///  config.Add("application_version","CUSTOM_APPLICATION_VERSION");
+        ///  config.Add("proxy_host","PROXY_HOST");
+        ///  config.Add("proxy_port","PROXY_PORT");
+        ///  config.Add("proxy_username","PROXY_USERNAME");
+        ///  config.Add("proxy_password","PROXY_PASSWORD");
+        ///  config.Add("client_id","amzn.client.xxxx"); 
+        ///  config.Add("handle_throttle",true); // Defaults to true
+        ///  </code>
+        /// </example>
         public Client(Hashtable config)
         {
             if (config == null)
@@ -77,6 +103,11 @@ namespace PayWithAmazon
             CheckConfigKeys(config);
         }
 
+        /// <summary>
+        /// Takes user configuration from the JSON file path provided and convert them to Hashtable config
+        /// Validates the user configuration Hashtable against existing config Hashtable
+        /// </summary>
+        /// <param name="jsonFilePath"></param>
         public Client(string jsonFilePath)
         {
             string json;
@@ -117,11 +148,12 @@ namespace PayWithAmazon
             CheckConfigKeys(config);
         }
 
-        /* Checks if the keys of the input configuration matches the keys in the config Hashtable
-         * if they match the values are taken else throws exception
-         * strict case match is not performed
-         */
-
+        /// <summary>
+        ///  Checks if the keys of the input configuration matches the keys in the config Hashtable
+        ///  if they match the values are taken else throws exception
+        ///  strict case match is not performed
+        /// </summary>
+        /// <param name="config"></param>
         private void CheckConfigKeys(Hashtable config)
         {
             config = LowerKeys(config);
@@ -140,6 +172,11 @@ namespace PayWithAmazon
             }
         }
 
+        /// <summary>
+        /// Lower the case of the Hashtable keys
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns>Hashtable</returns>
         private Hashtable LowerKeys(Hashtable table)
         {
             Hashtable lowerKeyTable = new Hashtable();
@@ -162,10 +199,11 @@ namespace PayWithAmazon
             return lowerKeyTable;
         }
 
-        /* Setter for sandbox
-         * Sets the Boolean value for config["sandbox"] variable
-         */
-
+        /// <summary>
+        /// Setter for sandbox
+        /// Sets the Boolean value for config["sandbox"] variable
+        /// </summary>
+        /// <param name="value"></param>
         public void SetSandbox(bool value)
         {
             try
@@ -178,10 +216,11 @@ namespace PayWithAmazon
             }
         }
 
-        /* Setter for config["client_id"]
-         * Sets the value for config["client_id"] variable
-         */
-
+        /// <summary>
+        /// Setter for config["client_id"]
+        /// Sets the value for config["client_id"] variable
+        /// </summary>
+        /// <param name="value"></param>
         public void SetClientId(string value)
         {
             try
@@ -194,14 +233,18 @@ namespace PayWithAmazon
             }
         }
 
-        /* Setter for Proxy
-         * input proxy [Hashtable]
-         * @param proxy["proxy_user_host"] - hostname for the proxy
-         * @param proxy["proxy_user_port"] - hostname for the proxy
-         * @param proxy["proxy_user_name"] - if your proxy required a username
-         * @param proxy["proxy_user_password"] - if your proxy required a password
-         */
-
+        /// <summary>
+        /// Setter for Proxy
+        /// </summary>
+        /// <param name="proxy"></param>
+        /// <example>
+        ///  <code>
+        ///   proxy["proxy_user_host"] = "PROXY_HOST_NAME";
+        ///   proxy["proxy_user_port"] = "PROXY_USER_PORT";
+        ///   proxy["proxy_user_name"] = "PROXY_USER_NAME";
+        ///   proxy["proxy_user_password"] = "PROXY_USER_PASSWORD";
+        ///  </code>
+        /// </example>
         public void SetProxy(Hashtable proxy)
         {
             if (!string.IsNullOrEmpty(proxy["proxy_user_host"].ToString()))
@@ -217,29 +260,31 @@ namespace PayWithAmazon
                 config["proxy_password"] = proxy["proxy_user_password"];
         }
 
-        /* Setter for mwsServiceUrl
-         * Set the URL to which the post request has to be made for unit testing
-         */
-
+        /// <summary>
+        /// Setter for mwsServiceUrl
+        /// Set the URL to which the post request has to be made for unit testing
+        /// </summary>
+        /// <param name="url"></param>
         public void SetMwsServiceUrl(string url)
         {
             this.mwsServiceUrl = url;
         }
 
-        /* Setter for Timestamp
-         * Set the Timestamp for unit testing
-         */
-
+        /// <summary>
+        /// Setter for Timestamp
+        /// Set the Timestamp for unit testing
+        /// </summary>
+        /// <param name="timeStamp"></param>
         public void SetTimeStamp(string timeStamp)
         {
             this.timeStamp = timeStamp;
         }
-
-
-        /* Getter
-         * Gets the value for the key if the key exists in config
-         */
-
+        
+        /// <summary>
+        /// Gets the value for the key if the key exists in config
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>string</returns>
         public string GetConfigValue(string name)
         {
             string value = "";
@@ -263,20 +308,24 @@ namespace PayWithAmazon
             return value;
         }
 
-        /* Getter for parameters string
-         * Gets the value for the parameters string for unit testing
-         */
-
+        /// <summary>
+        /// Gets the value for the parameters string for unit testing
+        /// </summary>
+        /// <returns>IDictionary parameters</returns>
         public IDictionary<string, string> GetParameters()
         {
             return this.parameters;
         }
 
-        /* SetParametersAndPost - sets the parameters Hashtable with non empty values from the requestParameters Hashtable sent to API calls.
-         * If Provider Credit Details is present,values are set by setProviderCreditDetails
-         * If Provider Credit Reversal Details is present,values are set by setProviderCreditDetails
-         */
-
+        /// <summary>
+        /// SetParametersAndPost - sets the parameters Hashtable with non empty values from the requestParameters Hashtable sent to API calls.
+        /// If Provider Credit Details is present,values are set by setProviderCreditDetails
+        /// If Provider Credit Reversal Details is present,values are set by setProviderCreditDetails
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="fieldMappings"></param>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser Object</returns>
         private ResponseParser SetParametersAndPost(Hashtable parameters, Hashtable fieldMappings, Hashtable requestParameters)
         {
             string value = "";
@@ -337,6 +386,7 @@ namespace PayWithAmazon
                 dict.Add(kvp.Key.ToString(), kvp.Value.ToString());
             return dict;
         }
+
         public static Hashtable DictionaryToHashtable(Dictionary<string, string> dict)
         {
             Hashtable hash = new Hashtable();
@@ -347,8 +397,11 @@ namespace PayWithAmazon
             return hash;
         }
 
-        /* CheckIfBool - checks if the input is a boolean */
-
+        /// <summary>
+        ///  CheckIfBool - checks if the input is a boolean
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>boolean variable</returns>
         private bool CheckIfBool(string value)
         {
             value = value.ToLower();
@@ -360,8 +413,11 @@ namespace PayWithAmazon
             return isBool;
         }
 
-        /* CalculateSignatureAndPost - convert the Parameters Hashtable to string and curl POST the parameters to MWS */
-
+        /// <summary>
+        /// CalculateSignatureAndPost - convert the Parameters Hashtable to string and curl POST the parameters to MWS
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns>ResponseParser Object</returns>
         private ResponseParser CalculateSignatureAndPost(Hashtable parameters)
         {
             // Call the signature and Post function to perform the actions.
@@ -375,14 +431,16 @@ namespace PayWithAmazon
             return responseObject;
         }
 
-        /* If merchant_id is not set via the requestParameters Hashtable then it"s taken from the config Hashtable
-         *
-         * Set the platform_id if set in the config["platform_id"] Hashtable
-         *
-         * If currency_code is set in the requestParameters and it exists in the fieldMappings Hashtable,strtoupper it
-         * else take the value from config Hashtable if set
-         */
-
+        /// <summary>
+        /// If merchant_id is not set via the requestParameters Hashtable then it"s taken from the config Hashtable
+        /// Set the platform_id if set in the config["platform_id"] Hashtable
+        /// If currency_code is set in the requestParameters and it exists in the fieldMappings Hashtable,strtoupper it
+        /// else take the value from config Hashtable if set
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="fieldMappings"></param>
+        /// <param name="requestParameters"></param>
+        /// <returns>Hashtable parameters</returns>
         private Hashtable SetDefaultValues(Hashtable parameters, Hashtable fieldMappings, Hashtable requestParameters)
         {
 
@@ -432,12 +490,12 @@ namespace PayWithAmazon
             return parameters;
         }
 
-        /* SetProviderCreditDetails - sets the provider credit details sent via the Capture or Authorize API calls
-         * @param provider_id - [String]
-         * @param credit_amount - [String]
-         * @optional currency_code - [String]
-         */
-
+        /// <summary>
+        /// SetProviderCreditDetails - sets the provider credit details sent via the Capture or Authorize API calls
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="providerCreditInfo"></param>
+        /// <returns>Hashtable parameters</returns>
         private Hashtable SetProviderCreditDetails(Hashtable parameters, List<Hashtable> providerCreditInfo)
         {
             int providerIndex = 0;
@@ -474,12 +532,12 @@ namespace PayWithAmazon
             return parameters;
         }
 
-        /* SetProviderCreditReversalDetails - sets the reverse provider credit details sent via the Refund API call.
-         * @param provider_id - [String]
-         * @param credit_amount - [String]
-         * @optional currency_code - [String]
-         */
-
+        /// <summary>
+        /// SetProviderCreditReversalDetails - sets the reverse provider credit details sent via the Refund API call.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="providerCreditInfo"></param>
+        /// <returns>Hashtable parameters</returns>
         private Hashtable SetProviderCreditReversalDetails(Hashtable parameters, List<Hashtable> providerCreditInfo)
         {
             int providerIndex = 0;
@@ -514,12 +572,11 @@ namespace PayWithAmazon
             return parameters;
         }
 
-        /* GetUserInfo convenience function - Returns user's profile information from Amazon using the access token returned by the Button widget.
-         *
-         * @see http://login.amazon.com/website Step 4
-         * @param $accessToken [String]
-         */
-
+        /// <summary>
+        /// GetUserInfo convenience function - Returns user's profile information from Amazon using the access token returned by the Button widget.
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <returns>string response - json output of profile information</returns>
         public string GetUserInfo(string accessToken)
         {
             string response;
@@ -551,15 +608,24 @@ namespace PayWithAmazon
             return response;
         }
 
-        /* GetOrderReferenceDetails API call - Returns details about the Order Reference object and its current state.
-         * @see https://payments.amazon.com/documentation/apireference/201751970
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_order_reference_id"] - [String]
-         * @optional requestParameters["address_consent_token"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// GetOrderReferenceDetails API call - Returns details about the Order Reference object and its current state.
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///  
+        ///   // Required params
+        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        ///  
+        ///   // Optional params
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["address_consent_token"] = "ACCESS_TOKEN";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser GetOrderReferenceDetails(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -577,21 +643,31 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* SetOrderReferenceDetails API call - Sets order reference details such as the order total and a description for the order.
-         * @see https://payments.amazon.com/documentation/apireference/201751960
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_order_reference_id"] - [String]
-         * @param requestParameters["amount"] - [String]
-         * @param requestParameters["currency_code"] - [String]
-         * @optional requestParameters["platform_id"] - [String]
-         * @optional requestParameters["seller_note"] - [String]
-         * @optional requestParameters["seller_order_id"] - [String]
-         * @optional requestParameters["store_name"] - [String]
-         * @optional requestParameters["custom_information"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// SetOrderReferenceDetails API call - Sets order reference details such as the order total and a description for the order.
+        /// https://payments.amazon.com/documentation/apireference/201751960
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///  
+        ///   // Required Parameters
+        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        ///   requestParameters["amount"] = "100";
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        /// 
+        ///   // Optional 
+        ///   requestParameters["platform_id"] = "SOLUTION_PROVIDER_ID";
+        ///   requestParameters["seller_note"] = "CUSTOM_NOTE";
+        ///   requestParameters["seller_order_id"] = "CUSTOM_ORDER_ID";
+        ///   requestParameters["store_name"] = "CUSTOM_STORE_NAME";
+        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser SetOrderReferenceDetails(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -615,13 +691,24 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* ConfirmOrderReference API call - Confirms that the order reference is free of constraints and all required information has been set on the order reference.
-         * @see https://payments.amazon.com/documentation/apireference/201751980
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_order_reference_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// ConfirmOrderReference API call - Confirms that the order reference is free of constraints and all required information has been set on the order reference.
+        /// https://payments.amazon.com/documentation/apireference/201751980
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        /// <code>
+        ///  Hashtable requestParameters = new Hashtable();
+        ///  
+        ///  // Required
+        ///  requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        /// 
+        ///  // Optional
+        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser ConfirmOrderReference(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -638,15 +725,25 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* CancelOrderReferenceDetails API call - Cancels a previously confirmed order reference.
-         * @see https://payments.amazon.com/documentation/apireference/201751990
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_order_reference_id"] - [String]
-         * @optional requestParameters["cancelation_reason"] [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// CancelOrderReferenceDetails API call - Cancels a previously confirmed order reference.
+        /// https://payments.amazon.com/documentation/apireference/201751990"
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        ///  
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["cancelation_reason"] = "CUSTOM_CANCEL_REASON";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser CancelOrderReference(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -664,16 +761,25 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* CloseOrderReference API call - Confirms that an order reference has been fulfilled (fully or partially)
-         * and that you do not expect to create any new authorizations on this order reference.
-         * @see https://payments.amazon.com/documentation/apireference/201752000
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_order_reference_id"] - [String]
-         * @optional requestParameters["closure_reason"] [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// CloseOrderReference API call - Confirms that an order reference has been fulfilled (fully or partially)
+        /// https://payments.amazon.com/documentation/apireference/201752000
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_order_reference_id"] "S01/P01-XXXXX-XXXXX";
+        /// 
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["closure_reason"] = "CLOSURE_REASON";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser CloseOrderReference(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -691,15 +797,25 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* CloseAuthorization API call - Closes an authorization.
-         * @see https://payments.amazon.com/documentation/apireference/201752070
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_authorization_id"] - [String]
-         * @optional requestParameters["closure_reason"] [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-        */
-
+        /// <summary>
+        /// CloseAuthorization API call - Closes an authorization.
+        /// https://payments.amazon.com/documentation/apireference/201752070
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_authorization_id"] = "S01/P01-XXXXX-XXXXX-AXXXXX";
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["closure_reason"] = "CLOSURE_REASON";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser CloseAuthorization(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -716,22 +832,32 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* Authorize API call - Reserves a specified amount against the payment method(s) stored in the order reference.
-         * @see https://payments.amazon.com/documentation/apireference/201752010
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_order_reference_id"] - [String]
-         * @param requestParameters["authorization_amount"] [String]
-         * @param requestParameters["currency_code"] - [String]
-         * @param requestParameters["authorization_reference_id"] [String]
-         * @optional requestParameters["capture_now"] [String]
-         * @optional requestParameters["provider_credit_details"] - [list(Hashtable)]
-         * @optional requestParameters["seller_authorization_note"] [String]
-         * @optional requestParameters["transaction_timeout"] [String] - Defaults to 1440 minutes
-         * @optional requestParameters["soft_descriptor"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// Authorize API call - Reserves a specified amount against the payment method(s) stored in the order reference.
+        /// https://payments.amazon.com/documentation/apireference/201752010
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///    
+        ///   // Required
+        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        ///   requestParameters["authorization_amount"] = "100";
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["authorization_reference_id"] = "UNIQUE_STRING";
+        ///   requestParameters["capture_now"] = false; // Defaults to false
+        ///   requestParameters["provider_credit_details"] = "list of Hashtable"; // [list(Hashtable)]
+        ///   requestParameters["seller_authorization_note"] = "CUSTOM_NOTE";
+        ///   requestParameters["transaction_timeout"] = "5"; // Defaults to 1440 minutes
+        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser Authorize(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -755,14 +881,24 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* GetAuthorizationDetails API call - Returns the status of a particular authorization and the total amount captured on the authorization.
-         * @see https://payments.amazon.com/documentation/apireference/201752030
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_authorization_id"] [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// GetAuthorizationDetails API call - Returns the status of a particular authorization and the total amount captured on the authorization.
+        /// https://payments.amazon.com/documentation/apireference/201752030
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_authorization_id"] = "S01/P01-XXXXX-XXXXX-AXXXXX";
+        ///  
+        ///   // Optional 
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID";
+        ///   requestParameters["mws_auth_token"] "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser GetAuthorizationDetails(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -780,20 +916,29 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* Capture API call - Captures funds from an authorized payment instrument.
-         * @see https://payments.amazon.com/documentation/apireference/201752040
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_authorization_id"] - [String]
-         * @param requestParameters["capture_amount"] - [String]
-         * @param requestParameters["currency_code"] - [String]
-         * @param requestParameters["capture_reference_id"] - [String]
-         * @optional requestParameters["provider_credit_details"] - [list(Hashtable())]
-         * @optional requestParameters["seller_capture_note"] - [String]
-         * @optional requestParameters["soft_descriptor"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// Capture API call - Captures funds from an authorized payment instrument
+        /// https://payments.amazon.com/documentation/apireference/201752040
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   // Required
+        ///   requestParameters["amazon_authorization_id"] "S01/P01-XXXXX-XXXXX-AXXXX";
+        ///   requestParameters["capture_amount"] = "100";
+        ///   requestParameters["capture_reference_id"] = "UNIQUE_STRING";
+        ///  
+        ///   // Optional 
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["provider_credit_details"] = [list(Hashtable)]; // list of Provider Credit Hashtable(s) details
+        ///   requestParameters["seller_capture_note"] = "CUSTOM_NOTE";
+        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser Capture(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -817,14 +962,24 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* GetCaptureDetails API call - Returns the status of a particular capture and the total amount refunded on the capture.
-         * @see https://payments.amazon.com/documentation/apireference/201752060
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_capture_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// GetCaptureDetails API call - Returns the status of a particular capture and the total amount refunded on the capture.
+        /// https://payments.amazon.com/documentation/apireference/201752060
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_capture_id"] = "S01/P01-XXXXX-XXXXX-CXXXXX" ;
+        ///  
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser GetCaptureDetails(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -842,20 +997,30 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* Refund API call - Refunds a previously captured amount.
-         * @see https://payments.amazon.com/documentation/apireference/201752080
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_capture_id"] - [String]
-         * @param requestParameters["refund_reference_id"] - [String]
-         * @param requestParameters["refund_amount"] - [String]
-         * @param requestParameters["currency_code"] - [String]
-         * @optional requestParameters["provider_credit_reversal_details"] - [list(Hashtable())]
-         * @optional requestParameters["seller_refund_note"] [String]
-         * @optional requestParameters["soft_descriptor"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// Refund API call - Refunds a previously captured amount.
+        /// https://payments.amazon.com/documentation/apireference/201752080
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_capture_id"] = "S01/P01-XXXXX-XXXXX";
+        ///   requestParameters["refund_reference_id"] = "UNIQUE_STRING";
+        ///   requestParameters["refund_amount"] = "100";
+        ///   
+        ///   //Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["provider_credit_reversal_details"] = [list(Hashtable)]; // list of Provider Credit Hashtable(s) details
+        ///   requestParameters["seller_refund_note"] = "CUSTOM_NOTE";
+        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser Refund(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -879,14 +1044,24 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* GetRefundDetails API call - Returns the status of a particular refund.
-         * @see https://payments.amazon.com/documentation/apireference/201752100
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_refund_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// GetRefundDetails API call - Returns the status of a particular refund.
+        /// https://payments.amazon.com/documentation/apireference/201752100
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_refund_id"] = "S01/P01-XXXXX-XXXXX-RXXXXX";
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["mws_auth_token"] "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser GetRefundDetails(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -904,17 +1079,20 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* GetServiceStatus API Call - Returns the operational status of the Off-Amazon Payments API section
-        * @see https://payments.amazon.com/documentation/apireference/201752110
-        *
-        * The GetServiceStatus operation returns the operational status of the Off-Amazon Payments API
-        * section of Amazon Marketplace Web Service (Amazon MWS).
-        * Status values are GREEN, GREEN_I, YELLOW, and RED.
-        *
-        * @param requestParameters["merchant_id"] - [String]
-        * @optional requestParameters["mws_auth_token"] - [String]
-        */
-
+        /// <summary>
+        /// GetServiceStatus API Call - Returns the operational status of the Off-Amazon Payments API section
+        /// section of Amazon Marketplace Web Service (Amazon MWS). Status values are GREEN, GREEN_I, YELLOW, and RED.
+        /// https://payments.amazon.com/documentation/apireference/201752110
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns></returns>
         public ResponseParser GetServiceStatus(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -931,22 +1109,31 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* CreateOrderReferenceForId API Call - Creates an order reference for the given object
-         * @see https://payments.amazon.com/documentation/apireference/201751670
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["Id"] - [String]
-         * @optional requestParameters["inherit_shipping_address"] [Boolean]
-         * @optional requestParameters["ConfirmNow"] - [Boolean]
-         * @optional Amount (required when confirm_now is set to true) [String]
-         * @optional requestParameters["currency_code"] - [String]
-         * @optional requestParameters["seller_note"] - [String]
-         * @optional requestParameters["seller_order_id"] - [String]
-         * @optional requestParameters["store_name"] - [String]
-         * @optional requestParameters["custom_information"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// CreateOrderReferenceForId API Call - Creates an order reference for the given object
+        /// https://payments.amazon.com/documentation/apireference/201751670
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///    Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["Id"] = "C01/B01-XXXXX-XXXXX" // Billing Agreement ID
+        ///   
+        ///   // Optional
+        ///   requestParameters["inherit_shipping_address"] = true; // Defaults to false
+        ///   requestParameters["ConfirmNow"]  = true; // Defaults to False
+        ///   requestParameters["amount"] = "100"; // Required when requestParameters["ConfirmNow"] is set to true
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["seller_note"] = "CUSTOM_NOTE";
+        ///   requestParameters["seller_order_id"] = "CUSTOM_ORDER_ID";
+        ///   requestParameters["store_name"] = "CUSTOM_NAME";
+        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser CreateOrderReferenceForId(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -974,14 +1161,24 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* GetBillingAgreementDetails API Call - Returns details about the Billing Agreement object and its current state.
-         * @see https://payments.amazon.com/documentation/apireference/201751690
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_billing_agreement_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// GetBillingAgreementDetails API Call - Returns details about the Billing Agreement object and its current state.
+        /// https://payments.amazon.com/documentation/apireference/201751690
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///    Hashtable requestParameters = new Hashtable();
+        ///    
+        ///   // Required
+        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser GetBillingAgreementDetails(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -1000,22 +1197,31 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-
-        /* SetBillingAgreementDetails API call - Sets Billing Agreement details such as a description of the agreement and other information about the seller.
-         * @see https://payments.amazon.com/documentation/apireference/201751700
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_billing_agreement_id"] - [String]
-         * @param requestParameters["amount"] - [String]
-         * @param requestParameters["currency_code"] - [String]
-         * @optional requestParameters["platform_id"] - [String]
-         * @optional requestParameters["seller_note"] - [String]
-         * @optional requestParameters["seller_billing_agreement_id"] - [String]
-         * @optional requestParameters["store_name"] - [String]
-         * @optional requestParameters["custom_information"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// SetBillingAgreementDetails API call - Sets Billing Agreement details such as a description of the agreement and other information about the seller.
+        /// https://payments.amazon.com/documentation/apireference/201751700
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   requestParameters["amount"] = "100";
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["platform_id"] = "PLATFORM_ID"; // Solution Provider ID
+        ///   requestParameters["seller_note"] = "CUSTOM_NOTE":
+        ///   requestParameters["seller_billing_agreement_id"] = "CUSTOM_ID"; 
+        ///   requestParameters["store_name"] = "CUSTOM_STORE_NAME";
+        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN" ;
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser SetBillingAgreementDetails(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -1038,14 +1244,24 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* ConfirmBillingAgreement API Call - Confirms that the Billing Agreement is free of constraints and all required information has been set on the Billing Agreement.
-         * @see https://payments.amazon.com/documentation/apireference/201751710
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_billing_agreement_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// ConfirmBillingAgreement API Call - Confirms that the Billing Agreement is free of constraints and all required information has been set on the Billing Agreement.
+        /// https://payments.amazon.com/documentation/apireference/201751710
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///    Hashtable requestParameters = new Hashtable();
+        ///    
+        ///   // Required
+        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"]  = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser ConfirmBillingAgreement(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -1063,14 +1279,24 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* ValidateBillignAgreement API Call - Validates the status of the Billing Agreement object and the payment method associated with it.
-         * @see https://payments.amazon.com/documentation/apireference/201751720
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_billing_agreement_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// ValidateBillignAgreement API Call - Validates the status of the Billing Agreement object and the payment method associated with it.
+        /// https://payments.amazon.com/documentation/apireference/201751720
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///    
+        ///   // Required
+        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"]  = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser ValidateBillingAgreement(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -1088,27 +1314,38 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* AuthorizeOnBillingAgreement API call - Reserves a specified amount against the payment method(s) stored in the Billing Agreement.
-         * @see https://payments.amazon.com/documentation/apireference/201751940
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_billing_agreement_id"] - [String]
-         * @param requestParameters["authorization_reference_id"] [String]
-         * @param requestParameters["authorization_amount"] [String]
-         * @param requestParameters["currency_code"] - [String]
-         * @optional requestParameters["seller_authorization_note"] [String]
-         * @optional requestParameters["transaction_timeout"] - Defaults to 1440 minutes
-         * @optional requestParameters["capture_now"] [String]
-         * @optional requestParameters["soft_descriptor"] - - [String]
-         * @optional requestParameters["seller_note"] - [String]
-         * @optional requestParameters["platform_id"] - [String]
-         * @optional requestParameters["custom_information"] - [String]
-         * @optional requestParameters["seller_order_id"] - [String]
-         * @optional requestParameters["store_name"] - [String]
-         * @optional requestParameters["inherit_shipping_address"] [Boolean] - Defaults to true
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// AuthorizeOnBillingAgreement API call - Reserves a specified amount against the payment method(s) stored in the Billing Agreement.
+        /// https://payments.amazon.com/documentation/apireference/201751940
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///    
+        ///   // Required
+        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   requestParameters["authorization_reference_id"] = "UNIQUE_STRING";
+        ///   requestParameters["authorization_amount"] = "100";
+        ///   
+        ///   
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["seller_authorization_note"] = "CUSTOM_NOTE";
+        ///   requestParameters["transaction_timeout"] = 5; // Defaults to 1440 minutes
+        ///   requestParameters["capture_now"] = false; // Defaults to false
+        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
+        ///   requestParameters["seller_note"] = "CUSTOM_NOTE";
+        ///   requestParameters["platform_id"] = "PLATFORM_ID" // Solution Provider ID
+        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
+        ///   requestParameters["seller_order_id"] = "CUSTOM_ID";
+        ///   requestParameters["store_name"] = "CUSTOM_NAME";
+        ///   requestParameters["inherit_shipping_address"] = true; // Defaults to true
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser AuthorizeOnBillingAgreement(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -1139,15 +1376,25 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* CloseBillingAgreement API Call - Returns details about the Billing Agreement object and its current state.
-         * @see https://payments.amazon.com/documentation/apireference/201751950
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_billing_agreement_id"] - [String]
-         * @optional requestParameters["closure_reason"] [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
+        /// <summary>
+        /// CloseBillingAgreement API Call - Returns details about the Billing Agreement object and its current state.
+        /// https://payments.amazon.com/documentation/apireference/201751950
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        /// <code>
+        ///  Hashtable requestParameters = new Hashtable();
+        ///   
+        ///  // Required
+        ///  requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   
+        ///  // Optional
+        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///  requestParameters["closure_reason"] = "CLOSURE_REASON";
+        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
         public ResponseParser CloseBillingAgreement(Hashtable requestParameters)
         {
             Hashtable parameters = new Hashtable();
@@ -1166,30 +1413,150 @@ namespace PayWithAmazon
             return (responseObject);
         }
 
-        /* Charge convenience method
-         * Performs the API calls
-         * 1. SetOrderReferenceDetails / SetBillingAgreementDetails
-         * 2. ConfirmOrderReference / ConfirmBillingAgreement
-         * 3. Authorize (with Capture) / AuthorizeOnBillingAgreeemnt (with Capture)
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         *
-         * @param requestParameters["amazon_reference_id"] - [String] : Order Reference ID /Billing Agreement ID
-         * If requestParameters["amazon_reference_id"] is empty then the following is required,
-         * @param requestParameters["amazon_order_reference_id"] - [String] : Order Reference ID
-         * or,
-         * @param requestParameters["amazon_billing_agreement_id"] - [String] : Billing Agreement ID
-         * 
-         * @param requestParameters["charge_amount"] - [String] : Amount value to be captured
-         * @param requestParameters["currency_code"] - [String] : Currency Code for the Amount
-         * @param requestParameters["authorization_reference_id"] - [String]- Any unique string that needs to be passed
-         * @optional requestParameters["charge_note"] - [String] : Seller Note sent to the buyer
-         * @optional requestParameters["transaction_timeout"] - [String] : Defaults to 1440 minutes
-         * @param requestParameters["capture_now"] - [String]- captures payment automatically when set to true, defaults to false
-         * @optional requestParameters["charge_order_id"] - [String] : Custom Order ID provided
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
+        /// <summary>
+        /// GetProviderCreditDetails API Call - Get the details of the Provider Credit.
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        /// <code>
+        ///  Hashtable requestParameters = new Hashtable();
+        ///  
+        ///  // Required
+        ///  requestParameters["amazon_provider_credit_id"]  = "PROVIDER_CREDIT_ID";
+        ///  
+        ///  // Optional
+        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
+        public ResponseParser GetProviderCreditDetails(Hashtable requestParameters)
+        {
+            Hashtable parameters = new Hashtable();
+            parameters["Action"] = "GetProviderCreditDetails";
 
+            requestParameters = LowerKeys(requestParameters);
+
+            Hashtable fieldMappings = new Hashtable
+        {
+            {"merchant_id","SellerId"},
+            {"amazon_provider_credit_id","AmazonProviderCreditId"},
+            {"mws_auth_token", "MWSAuthToken"}
+        };
+
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            return (responseObject);
+        }
+
+        /// <summary>
+        /// GetProviderCreditReversalDetails API Call - Get details of the Provider Credit Reversal.
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        /// <code>
+        ///  Hashtable requestParameters = new Hashtable();
+        ///  
+        ///  // Required
+        ///  requestParameters["amazon_provider_credit_reversal_id"]  = "PROVIDER_CREDIT_REVERSAL_ID";
+        ///  
+        ///  // Optional
+        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
+        public ResponseParser GetProviderCreditReversalDetails(Hashtable requestParameters)
+        {
+            Hashtable parameters = new Hashtable();
+            parameters["Action"] = "GetProviderCreditReversalDetails";
+            requestParameters = LowerKeys(requestParameters);
+
+            Hashtable fieldMappings = new Hashtable{
+            {"merchant_id","SellerId"},
+            {"amazon_provider_credit_reversal_id","AmazonProviderCreditReversalId"},
+            {"mws_auth_token", "MWSAuthToken"}
+        };
+
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+
+            return (responseObject);
+        }
+
+        /// <summary>
+        /// ReverseProviderCredit API Call - Reverse the Provider Credit.
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        /// <code>
+        ///  Hashtable requestParameters = new Hashtable();
+        ///  
+        ///  // Required
+        ///  requestParameters["amazon_provider_credit_id"]  = "PROVIDER_CREDIT_ID";
+        ///  requestParameters["credit_reversal_reference_id"] = "UNIQUE_STRING";
+        ///  requestParameters["credit_reversal_amount"] = "10";
+        ///  
+        ///  
+        ///  // Optional
+        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///  requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///  requestParameters["credit_reversal_note"] = "CUSTOM_NOTE";
+        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
+        public ResponseParser ReverseProviderCredit(Hashtable requestParameters)
+        {
+            Hashtable parameters = new Hashtable();
+            parameters["Action"] = "ReverseProviderCredit";
+            requestParameters = LowerKeys(requestParameters);
+
+            Hashtable fieldMappings = new Hashtable{
+            {"merchant_id","SellerId"},
+            {"amazon_provider_credit_id","AmazonProviderCreditId"},
+            {"credit_reversal_reference_id","CreditReversalReferenceId"},
+            {"credit_reversal_amount","CreditReversalAmount.Amount"},
+            {"currency_code","CreditReversalAmount.CurrencyCode"},
+            {"credit_reversal_note","CreditReversalNote"},
+            {"mws_auth_token","MWSAuthToken"}
+        };
+
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+
+            return (responseObject);
+        }
+        
+        /// <summary>
+        /// Charge convenience method
+        /// Performs the API calls
+        /// 1. SetOrderReferenceDetails / SetBillingAgreementDetails
+        /// 2. ConfirmOrderReference / ConfirmBillingAgreement
+        /// 3. Authorize / AuthorizeOnBillingAgreeemnt
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   Hashtable requestParameters = new Hashtable();
+        ///   
+        ///   // Required
+        ///   requestParameters["amazon_reference_id"] = "(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)";// Order Reference ID /Billing Agreement ID
+        ///   // If requestParameters["amazon_reference_id"] is empty then the following is required,
+        ///    requestParameters["amazon_order_reference_id"]="S01/P01-XXXXX-XXXXX";
+        ///   // or,
+        ///    requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///    requestParameters["authorization_reference_id"] ="UNIQUE_STRING" // Any unique string that needs to be passed
+        ///    requestParameters["charge_amount"] = "100";
+        ///    
+        ///   // Optional
+        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters["charge_note"] =  "CUSTOM_NOTE" // Seller Note sent to the buyer
+        ///   requestParameters["transaction_timeout"] = 5; // Defaults to 1440 minutes
+        ///   requestParameters["capture_now"] = false; // captures payment automatically when set to true, defaults to false
+        ///   requestParameters["charge_order_id"] = "CUSTOM_ID"; // Custom Order ID provided
+        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser response</returns>
         public ResponseParser Charge(Hashtable requestParameters)
         {
             string chargeType = "";
@@ -1249,8 +1616,14 @@ namespace PayWithAmazon
             return response;
         }
 
-        /* MakeChargeCalls - makes API calls based off the charge type (OrderReference or BillingAgreement) */
-
+        /// <summary>
+        /// MakeChargeCalls - makes API calls based off the charge type (OrderReference or BillingAgreement)
+        /// </summary>
+        /// <param name="chargeType"></param>
+        /// <param name="setParameters"></param>
+        /// <param name="confirmParameters"></param>
+        /// <param name="authorizeParameters"></param>
+        /// <returns>ResponseParser response</returns>
         private ResponseParser MakeChargeCalls(string chargeType, Hashtable setParameters, Hashtable confirmParameters, Hashtable authorizeParameters)
         {
             ResponseParser response = null;
@@ -1317,97 +1690,12 @@ namespace PayWithAmazon
             return response;
         }
 
-        /* GetProviderCreditDetails API Call - Get the details of the Provider Credit.
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_provider_credit_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
-        public ResponseParser GetProviderCreditDetails(Hashtable requestParameters)
-        {
-            Hashtable parameters = new Hashtable();
-            parameters["Action"] = "GetProviderCreditDetails";
-
-            requestParameters = LowerKeys(requestParameters);
-
-            Hashtable fieldMappings = new Hashtable
-        {
-            {"merchant_id","SellerId"},
-            {"amazon_provider_credit_id","AmazonProviderCreditId"},
-            {"mws_auth_token", "MWSAuthToken"}
-        };
-
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
-            return (responseObject);
-        }
-
-        /* GetProviderCreditReversalDetails API Call - Get details of the Provider Credit Reversal.
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_provider_credit_reversal_id"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
-        public ResponseParser GetProviderCreditReversalDetails(Hashtable requestParameters)
-        {
-            Hashtable parameters = new Hashtable();
-            parameters["Action"] = "GetProviderCreditReversalDetails";
-            requestParameters = LowerKeys(requestParameters);
-
-            Hashtable fieldMappings = new Hashtable{
-            {"merchant_id","SellerId"},
-            {"amazon_provider_credit_reversal_id","AmazonProviderCreditReversalId"},
-            {"mws_auth_token", "MWSAuthToken"}
-        };
-
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
-
-            return (responseObject);
-        }
-
-        /* ReverseProviderCredit API Call - Reverse the Provider Credit.
-         *
-         * @param requestParameters["merchant_id"] - [String]
-         * @param requestParameters["amazon_provider_credit_id"] - [String]
-         * @optional requestParameters["credit_reversal_reference_id"] - [String]
-         * @param requestParameters["credit_reversal_amount"] - [String]
-         * @optional requestParameters["currency_code"] - [String]
-         * @optional requestParameters["credit_reversal_note"] - [String]
-         * @optional requestParameters["mws_auth_token"] - [String]
-         */
-
-        public ResponseParser ReverseProviderCredit(Hashtable requestParameters)
-        {
-            Hashtable parameters = new Hashtable();
-            parameters["Action"] = "ReverseProviderCredit";
-            requestParameters = LowerKeys(requestParameters);
-
-            Hashtable fieldMappings = new Hashtable{
-            {"merchant_id","SellerId"},
-            {"amazon_provider_credit_id","AmazonProviderCreditId"},
-            {"credit_reversal_reference_id","CreditReversalReferenceId"},
-            {"credit_reversal_amount","CreditReversalAmount.Amount"},
-            {"currency_code","CreditReversalAmount.CurrencyCode"},
-            {"credit_reversal_note","CreditReversalNote"},
-            {"mws_auth_token","MWSAuthToken"}
-        };
-
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
-
-            return (responseObject);
-        }
-
-        /* Create an Dictionary of required parameters, sort them
-         * Calculate signature and invoke the POST to the MWS Service URL
-         *
-         * @param AWSAccessKeyId [String]
-         * @param Version [String]
-         * @param SignatureMethod [String]
-         * @param Timestamp [String]
-         * @param Signature [String]
-         */
-
+        /// <summary>
+        /// Create an Dictionary of required parameters, sort them
+        /// Calculate signature and invoke the POST to the MWS Service URL
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns>parametersToString</returns>
         private string CalculateSignatureAndParametersToString(IDictionary<String, String> parameters)
         {
             parameters.Add("AWSAccessKeyId", config["access_key"].ToString());
@@ -1432,8 +1720,11 @@ namespace PayWithAmazon
             return parametersToString;
         }
 
-        /* Invoke request and return response */
-
+        /// <summary>
+        /// Invoke request and return response
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns>responseBody</returns>
         private string Invoke(string parameters)
         {
             String responseBody = null;
@@ -1486,9 +1777,11 @@ namespace PayWithAmazon
             return responseBody;
         }
 
-
-        /* Exponential sleep on failed request */
-
+        /// <summary>
+        /// Exponential sleep on failed request
+        /// </summary>
+        /// <param name="retries"></param>
+        /// <param name="status"></param>
         private void PauseOnRetry(int retries, int status)
         {
             if (retries <= MAX_ERROR_RETRY)
@@ -1502,8 +1795,11 @@ namespace PayWithAmazon
             }
         }
 
-        /* Convert Dictionary of parameters to Url encoded query string */
-
+        /// <summary>
+        /// Convert Dictionary of parameters to Url encoded query string
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns>string</returns>
         private string GetParametersAsString(IDictionary<String, String> parameters)
         {
             StringBuilder data = new StringBuilder();
@@ -1522,36 +1818,38 @@ namespace PayWithAmazon
             return result.Remove(result.Length - 1);
         }
 
-        /* Computes RFC 2104-compliant HMAC signature for request parameters
-         * Implements AWS Signature,as per following spec:
-         *
-         * If Signature Version is 0,it signs concatenated Action and Timestamp
-         *
-         * If Signature Version is 1,it performs the following:
-         *
-         * Sorts all  parameters (including SignatureVersion and excluding Signature,
-         * the value of which is being created),ignoring case.
-         *
-         * Iterate over the sorted list and append the parameter name (in original case)
-         * and then its value. It will not URL-encode the parameter values before
-         * constructing this string. There are no separators.
-         *
-         * If Signature Version is 2,string to sign is based on following:
-         *
-         *    1. The HTTP Request Method followed by an ASCII newline (%0A)
-         *    2. The HTTP Host header in the form of lowercase host,followed by an ASCII newline.
-         *    3. The URL encoded HTTP absolute path component of the URI
-         *       (up to but not including the query string parameters);
-         *       if this is empty use a forward "/". This parameter is followed by an ASCII newline.
-         *    4. The concatenation of all query string components (names and values)
-         *       as UTF-8 characters which are URL encoded as per RFC 3986
-         *       (hex characters MUST be uppercase),sorted using lexicographic byte ordering.
-         *       Parameter names are separated from their values by the "=" character
-         *       (ASCII character 61),even if the value is empty.
-         *       Pairs of parameter and values are separated by the "&" character (ASCII code 38).
-         *
-         */
-
+        /// <summary>
+        /// Computes RFC 2104-compliant HMAC signature for request parameters
+        /// Implements AWS Signature,as per following spec:
+        ///
+        /// If Signature Version is 0,it signs concatenated Action and Timestamp
+        ///
+        /// If Signature Version is 1,it performs the following:
+        ///
+        /// Sorts all  parameters (including SignatureVersion and excluding Signature,
+        /// the value of which is being created),ignoring case.
+        ///
+        /// Iterate over the sorted list and append the parameter name (in original case)
+        /// and then its value. It will not URL-encode the parameter values before
+        /// constructing this string. There are no separators.
+        ///
+        /// If Signature Version is 2,string to sign is based on following:
+        ///
+        ///    1. The HTTP Request Method followed by an ASCII newline (%0A)
+        ///    2. The HTTP Host header in the form of lowercase host,followed by an ASCII newline.
+        ///    3. The URL encoded HTTP absolute path component of the URI
+        ///       (up to but not including the query string parameters);
+        ///       if this is empty use a forward "/". This parameter is followed by an ASCII newline.
+        ///    4. The concatenation of all query string components (names and values)
+        ///       as UTF-8 characters which are URL encoded as per RFC 3986
+        ///       (hex characters MUST be uppercase),sorted using lexicographic byte ordering.
+        ///       Parameter names are separated from their values by the "=" character
+        ///       (ASCII character 61),even if the value is empty.
+        ///       Pairs of parameter and values are separated by the "&" character (ASCII code 38).
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="key"></param>
+        /// <returns>signature string</returns>
         private String SignParameters(IDictionary<String, String> parameters, String key)
         {
             String signatureVersion = parameters["SignatureVersion"];
@@ -1575,7 +1873,11 @@ namespace PayWithAmazon
             return Sign(stringToSign, key, algorithm);
         }
 
-
+        /// <summary>
+        /// compute the string signature as per the V2 specifications
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         private String CalculateStringToSignV2(IDictionary<String, String> parameters)
         {
             StringBuilder data = new StringBuilder();
@@ -1624,8 +1926,13 @@ namespace PayWithAmazon
 
         }
 
-        /* Computes RFC 2104-compliant HMAC signature. */
-
+        /// <summary>
+        /// Computes RFC 2104-compliant HMAC signature.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="key"></param>
+        /// <param name="algorithm"></param>
+        /// <returns>string signature</returns>
         private String Sign(String data, String key, KeyedHashAlgorithm algorithm)
         {
             Encoding encoding = new UTF8Encoding();
@@ -1634,9 +1941,10 @@ namespace PayWithAmazon
                 encoding.GetBytes(data.ToCharArray())));
         }
 
-
-        /* Formats date as ISO 8601 timestamp */
-
+        /// <summary>
+        /// Formats date as ISO 8601 timestamp
+        /// </summary>
+        /// <returns>DateTime object</returns>
         private String GetFormattedTimestamp()
         {
             DateTime dateTime = DateTime.Now;
@@ -1648,8 +1956,10 @@ namespace PayWithAmazon
                                 CultureInfo.InvariantCulture);
         }
 
-        /* Create MWS service URL and the Endpoint path */
-
+        /// <summary>
+        /// Create MWS service URL and the Endpoint path
+        /// </summary>
+        /// <param name="regionProperties"></param>
         private void CreateServiceUrl(Regions regionProperties)
         {
             string region = "";
@@ -1675,6 +1985,10 @@ namespace PayWithAmazon
             }
         }
 
+        /// <summary>
+        /// Create Profile Endpoint URL
+        /// </summary>
+        /// <param name="regionProperties"></param>
         private void ProfileEndpointUrl(Regions regionProperties)
         {
             string region = "";
@@ -1740,8 +2054,11 @@ namespace PayWithAmazon
             userAgent = sb.ToString();
         }
 
-        /* Replace all whitespace characters by a single space. */
-
+        /// <summary>
+        /// Replace all whitespace characters by a single space
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>string s</returns>
         private static string Clean(string s)
         {
             // matched character sequences are passed to a MatchEvaluator
@@ -1753,22 +2070,31 @@ namespace PayWithAmazon
             });
         }
 
-        /* Collapse whitespace,and escape the following characters are escaped */
-
+        /// <summary>
+        /// Collapse whitespace,and escape the following characters are escaped
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>string s</returns>
         private static string QuoteApplicationName(string s)
         {
             return Clean(s).Replace(@"\", @"\\").Replace("@/", @"\/");
         }
 
-        /* Collapse whitespace,and escape the following characters are escaped */
-
+        /// <summary>
+        /// Collapse whitespace,and escape the following characters are escaped
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>string s</returns>
         private static string QuoteApplicationVersion(string s)
         {
             return Clean(s).Replace(@"\", @"\\").Replace(@"(", @"\(");
         }
 
-        /* Collapse whitespace,and escape the following characters are escaped */
-
+        /// <summary>
+        /// Collapse whitespace,and escape the following characters are escaped
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>string s</returns>
         private static string QuoteAttributeName(string s)
         {
             return Clean(s).Replace(@"\", @"\\").Replace(@"=", @"\=");

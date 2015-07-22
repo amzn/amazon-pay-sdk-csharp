@@ -14,7 +14,6 @@ Login and Pay with Amazon API Integration
 ## Sample
 
 * View the sample integration demo [here](https://amzn.github.io/login-and-pay-with-amazon-sdk-samples/)
-
 > csharp samples will be added soon
 
 ## Quick Start
@@ -127,13 +126,13 @@ requestParameters.Add("amazon_order_reference_id","AMAZON_ORDER_REFERENCE_ID");
 
 // Optional Parameter
 requestParameters.Add("address_consent_token","ACCESS_TOKEN");
-requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN");
+requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN);
 
-// You can use the "response" object to get the desired response type in the section Response Parsing 
-ResponseParser response = client.GetOrderReferenceDetails(requestParameters);
+// response here is the object of the ResponseParser class, You can use this object to get the desired response type in the section Response Parsing 
+ResponseParser response = client.getOrderReferenceDetails(requestParameters);
 
 ```
-See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/README.md#api-response) section for information on parsing the API response.
+See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for information on parsing the API response.
 
 ### IPN Handling
 
@@ -141,8 +140,7 @@ See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csh
 2. You can set up your Notification endpoints in Seller Central by accessing the Integration Settings page in the Settings tab.
 3. IpnHandler.csharp class handles verification of the source and the data of the IPN
 
-In your web project you can create a file( for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  
-Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
+In your web project you can create a file( for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
 
 ```csharp
 using PayWithAmazon;
@@ -157,7 +155,7 @@ NameValueCollection headers = Request.Headers;
 IpnHandler ipn = new IpnHandler(json, headers);
 
 ```
-See the [IPN Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/README.md#ipn-response) section for information on parsing the IPN response.
+See the [IPN Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#ipn-response) section for information on parsing the IPN response.
 
 ### Convenience Methods
 
@@ -209,8 +207,8 @@ requestParameters.Add("amazon_reference_id","AMAZON_REFERENCE_ID");
 // Or
 // If requestParameters["amazon_reference_id"] is not provided,
 // either one of the following ID input is needed
-requestParameters.Add("amazon_order_reference_id","AMAZON_ORDER_REFERENCE_ID");
-requestParameters.Add("amazon_billing_agreement_id","AMAZON_BILLING_AGREEMENT_ID");
+requestParameters.Add("amazon_order_reference_id",AMAZON_ORDER_REFERENCE_ID)   = "";
+requestParameters.Add("amazon_billing_agreement_id",AMAZON_BILLING_AGREEMENT_ID) = "AMAZON_BILLING_AGREEMENT_ID";
 
 requestParameters.Add("seller_id",null);
 requestParameters.Add("charge_amount",100.50);
@@ -221,7 +219,7 @@ requestParameters.Add("capture_now",false); //`true` for Digital goods
 requestParameters.Add("charge_note","Example item note");
 requestParameters.Add("charge_order_id","1234-Example-Order");
 requestParameters.Add("store_name","Example Store");
-requestParameters.Add("platform_id",null);
+requestParameters.Add("platform_Id",null);
 requestParameters.Add("custom_information","Any_Custom_String");
 requestParameters.Add("mws_auth_token",null);
 
@@ -258,7 +256,7 @@ string access_token = "ACCESS_TOKEN";
 // Calling the function getUserInfo with the access token parameter returns object
 string jsonResponse = client.GetUserInfo(access_token);
 
-// Using Newtonsoft (Json.net) library
+//using Newtonsoft library
 Jobject jsonObject = JObject.Parse(jsonResponse);
 
 // Buyer name
@@ -293,14 +291,14 @@ response.ToJson();
 
 #####IPN Response
 ```csharp
-IpnHandler ipnResponse = new IpnHandler(headers, body);
+IpnHandler ipnHandler = new IpnHandler(headers, body);
 
 // XML message response
-ipnResponse.ToXml();
+ipnHandler.ToXml();
 
 // Associative Hashtable response
-ipnResponse.ToDict);
+ipnHandler.ToDict();
 
 // JSON response
-ipnResponse.ToJson();
+ipnHandler.ToJson();
 ```

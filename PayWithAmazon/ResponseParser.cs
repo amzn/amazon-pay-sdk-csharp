@@ -7,12 +7,11 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
-/* ResponseParser
- * Methods provided to convert the Response from the POST to XML, Array or JSON
- */
-
 namespace PayWithAmazon
 {
+    /// <summary>
+    /// ResponseParser - Methods provided to convert the Response from the POST to XML, Dictionary or JSON
+    /// </summary>
     public class ResponseParser
     {
         public string xmlResponse = null;
@@ -22,11 +21,19 @@ namespace PayWithAmazon
             xmlResponse = xml.Trim();
         }
 
+        /// <summary>
+        /// Convert API response to XML
+        /// </summary>
+        /// <returns>string xml</returns>
         public string ToXml()
         {
             return xmlResponse;
         }
 
+        /// <summary>
+        /// Convert API response to JSON
+        /// </summary>
+        /// <returns>string json</returns>
         public string ToJson()
         {
             string json = "";
@@ -36,7 +43,11 @@ namespace PayWithAmazon
 
             return json;
         }
-
+        
+        /// <summary>
+        /// Convert API response to Dictionary
+        /// </summary>
+        /// <returns>Dictionary(string,object)</returns>
         public Dictionary<string, object> ToDict()
         {
             string json = ToJson();
@@ -54,8 +65,11 @@ namespace PayWithAmazon
             return xml;
         }
 
-        /* Get the Billing Agreement State for the Charge function */
-
+        /// <summary>
+        /// Get the Billing Agreement State for the Charge function
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns>string baStatus</returns>
         public string GetBillingAgreementStatus(string xml)
         {
             string baStatus = "";
@@ -75,8 +89,11 @@ namespace PayWithAmazon
             return baStatus;
         }
 
-        /* Get the Order Reference State for the Charge function */
-
+        /// <summary>
+        /// Get the Order Reference State for the Charge function
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns>string OroStatus</returns>
         public string GetOrderReferenceStatus(string xml)
         {
             string OroStatus = "";
@@ -88,7 +105,6 @@ namespace PayWithAmazon
                 results.LoadXml(xml);
 
                 OroStatus = results.SelectSingleNode("//GetOrderReferenceDetailsResponse/GetOrderReferenceDetailsResult/OrderReferenceDetails/OrderReferenceStatus/State").InnerText;
-
             }
             catch (NullReferenceException e)
             {

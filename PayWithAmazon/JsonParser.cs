@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-/* JsonParser class for recursive parsing of a Dictionary */
- 
 namespace PayWithAmazon
 {
+    /// <summary>
+    /// JsonParser class for recursive parsing of a Dictionary
+    /// </summary>
     public class JsonParser : CustomCreationConverter<IDictionary<string, object>>
     {
         public override IDictionary<string, object> Create(Type objectType)

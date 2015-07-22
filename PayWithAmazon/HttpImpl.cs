@@ -5,12 +5,11 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-/* Class HttpImpl
- * Handles  POST and GET functionality for all requests
- */
-
 namespace PayWithAmazon
 {
+    /// <summary>
+    /// Class HttpImpl - Handles  POST and GET functionality for all requests
+    /// </summary>
     class HttpImpl
     {
         public string response;
@@ -27,29 +26,31 @@ namespace PayWithAmazon
             responseHash = new Hashtable();
         }
 
-        /* Setter for boolean header to get the user info */
-
+        /// <summary>
+        /// Setter for boolean header to get the user info
+        /// </summary>
         public void setHttpHeader()
         {
             header = true;
         }
 
-        /* Setter for Access token to get the user info */
-
+        /// <summary>
+        /// Setter for Access token to get the user info
+        /// </summary>
+        /// <param name="accesstoken"></param>
         public void setAccessToken(string accesstoken)
         {
             this.accessToken = accesstoken;
         }
 
-        /* Add the common POST Parameters
-         * Also checks for optional parameters if provided in the config
-         * config['cabundle_file']
-         * config['proxy_port']
-         * config['proxy_host']
-         * config['proxy_username']
-         * config['proxy_password']
-         */
-
+        /// <summary>
+        /// Add the common POST Parameters
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="url"></param>
+        /// <param name="userAgent"></param>
+        /// <param name="contentLength"></param>
+        /// <returns>HttpWebRequest request</returns>
         private HttpWebRequest ConfigureWebRequest(string method, string url, string userAgent = null, int contentLength = 0)
         {
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
@@ -82,8 +83,11 @@ namespace PayWithAmazon
             return request;
         }
 
-        /* GET using curl for the Get User Info */
-
+        /// <summary>
+        /// GET Method
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>string response</returns>
         public string Get(string url)
         {
             HttpWebRequest request = ConfigureWebRequest("GET", url);
@@ -91,8 +95,13 @@ namespace PayWithAmazon
             return response;
         }
 
-        /* POST for the following API calls */
-
+        /// <summary>
+        /// POST Method
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="userAgent"></param>
+        /// <param name="requestData"></param>
+        /// <returns>Hashtable responseHash</returns>
         public Hashtable Post(string url, string userAgent, byte[] requestData)
         {
             HttpWebRequest request = ConfigureWebRequest("POST", url, userAgent, requestData.Length);
@@ -106,7 +115,11 @@ namespace PayWithAmazon
 
             return responseHash;
         }
-
+        
+        /// <summary>
+        /// Executes the request
+        /// </summary>
+        /// <param name="request"></param>
         private void execute(HttpWebRequest request)
         {
             statusCode = default(HttpStatusCode);

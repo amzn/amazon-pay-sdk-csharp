@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-/* Define the regions supported */
-
 namespace PayWithAmazon
 {
+    /// <summary>
+    /// Define the regions supported
+    /// </summary>
     class Regions
     {
         // MWS endpoint URLS
