@@ -150,11 +150,11 @@ using PayWithAmazon;
 // Get the IPN headers and Message body
 Stream s = Request.InputStream;
 StreamReader sr = new StreamReader(s);
-string json = sr.ReadToEnd();
+string ipnMessage = sr.ReadToEnd();
 NameValueCollection headers = Request.Headers;
 
 // Create an object(ipn) of the IpnHandler class
-IpnHandler ipn = new IpnHandler(json, headers);
+IpnHandler ipnResponse = new IpnHandler(headers, ipnMessage);
 
 ```
 See the [IPN Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#ipn-response) section for information on parsing the IPN response.
@@ -293,14 +293,14 @@ response.ToJson();
 
 #####IPN Response
 ```csharp
-IpnHandler ipnHandler = new IpnHandler(headers, body);
+IpnHandler ipnResponse = new IpnHandler(headers,ipnMessage);
 
 // XML message response
-ipnHandler.ToXml();
+ipnResponse.ToXml();
 
 // Associative Hashtable response
-ipnHandler.ToDict();
+ipnResponse.ToDict();
 
 // JSON response
-ipnHandler.ToJson();
+ipnResponse.ToJson();
 ```
