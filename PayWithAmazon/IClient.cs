@@ -267,7 +267,7 @@ namespace PayWithAmazon
         ///   
         ///   // Optional
         ///   requestParameters["inherit_shipping_address"] = true; // Defaults to false
-        ///   requestParameters["ConfirmNow"]  = true; // Defaults to False
+        ///   requestParameters["ConfirmNow"]  = true; // Defaults to false
         ///   requestParameters["amount"] = "100"; // Required when requestParameters["ConfirmNow"] is set to true
         ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
         ///   requestParameters["seller_note"] = "CUSTOM_NOTE";

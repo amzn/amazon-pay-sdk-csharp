@@ -1100,8 +1100,11 @@ namespace UnitTests
             return returnTable;
         }
 
-        /* Get the private method of the Client class for testing using the Reflection method */
-
+        /// <summary>
+        /// Get the private method of the Client class for testing using the Reflection method
+        /// </summary>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
         private MethodInfo GetMethod(string methodName)
         {
             Client client = new Client(configParams);
