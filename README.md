@@ -128,7 +128,7 @@ requestParameters.Add("amazon_order_reference_id","AMAZON_ORDER_REFERENCE_ID");
 
 // Optional Parameter
 requestParameters.Add("address_consent_token","ACCESS_TOKEN");
-requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN);
+requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN");
 
 // response here is the object of the ResponseParser class, You can use this object to get the desired response type in the section Response Parsing 
 ResponseParser response = client.GetOrderReferenceDetails(requestParameters);
