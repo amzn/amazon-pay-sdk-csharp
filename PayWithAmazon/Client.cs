@@ -454,52 +454,17 @@ namespace PayWithAmazon
         /// <returns>Hashtable parameters</returns>
         private Hashtable SetDefaultValues(Hashtable parameters, Hashtable fieldMappings, Hashtable requestParameters)
         {
-            string input = "";
-            if (fieldMappings.ContainsKey("merchant_id"))
+            foreach (string key in fieldMappings.Keys)
             {
-                if (requestParameters.ContainsKey("merchant_id"))
+                if (requestParameters.ContainsKey(key) &&
+                    !string.IsNullOrEmpty(requestParameters[key].ToString().Trim()))
                 {
-                    input = requestParameters["merchant_id"].ToString().Trim();
+                    parameters[fieldMappings[key]] = requestParameters[key].ToString().Trim();
                 }
-                if (input != null && input != "")
+                else if (config.ContainsKey(key) &&
+                    !string.IsNullOrEmpty(config[key].ToString().Trim()))
                 {
-                    parameters[fieldMappings["merchant_id"]] = requestParameters["merchant_id"];
-                }
-                else if (config["merchant_id"] != null && config["merchant_id"].ToString().Trim() != "")
-                {
-                    parameters[fieldMappings["merchant_id"]] = config["merchant_id"];
-                }
-            }
-
-            if (fieldMappings.ContainsKey("platform_id"))
-            {
-                if (requestParameters.ContainsKey("platform_id"))
-                {
-                    input = requestParameters["platform_id"].ToString().Trim();
-                }
-                if (input != null && input != "")
-                {
-                    parameters[fieldMappings["platform_id"]] = requestParameters["platform_id"];
-                }
-                else if (config["platform_id"] != null && config["platform_id"].ToString().Trim() != "")
-                {
-                    parameters[fieldMappings["platform_id"]] = config["platform_id"];
-                }
-            }
-
-            if (fieldMappings.ContainsKey("currency_code"))
-            {
-                if (requestParameters.ContainsKey("currency_code"))
-                {
-                    input = requestParameters["currency_code"].ToString().Trim();
-                }
-                if (input != null && input != "")
-                {
-                    parameters[fieldMappings["currency_code"]] = requestParameters["currency_code"];
-                }
-                else if (config["currency_code"] != null && config["currency_code"].ToString().Trim() != "")
-                {
-                    parameters[fieldMappings["currency_code"]] = config["currency_code"].ToString();
+                    parameters[fieldMappings[key]] = config[key].ToString().Trim();
                 }
             }
 
