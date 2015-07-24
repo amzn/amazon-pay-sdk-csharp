@@ -4,7 +4,7 @@ using System.Collections;
 namespace PayWithAmazon
 {
     /// <summary>
-    /// Interface class to showcase the public API methods for Pay With Amazon
+    /// Pay With Amazon interface class for the public API methods 
     /// </summary>
     interface IClient
     {
@@ -37,7 +37,7 @@ namespace PayWithAmazon
         ResponseParser Authorize(Hashtable requestParameters);
 
         /// <summary>
-        /// AuthorizeOnBillingAgreement API call - Reserves a specified amount against the payment method(s) stored in the Billing Agreement.
+        /// AuthorizeOnBillingAgreement API call - Reserves a specified amount against the payment method(s) stored in the billing agreement.
         /// https://payments.amazon.com/documentation/apireference/201751940
         /// </summary>
         /// <example>
@@ -129,7 +129,7 @@ namespace PayWithAmazon
         ///   Hashtable requestParameters = new Hashtable();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_reference_id"] = "(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)";// Order Reference ID /Billing Agreement ID
+        ///   requestParameters["amazon_reference_id"] = "(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)";// order reference ID / billing agreement ID
         ///   // If requestParameters["amazon_reference_id"] is empty then the following is required,
         ///    requestParameters["amazon_order_reference_id"]="S01/P01-XXXXX-XXXXX";
         ///   // or,
@@ -172,7 +172,7 @@ namespace PayWithAmazon
         ResponseParser CloseAuthorization(Hashtable requestParameters);
 
         /// <summary>
-        /// CloseBillingAgreement API Call - Returns details about the Billing Agreement object and its current state.
+        /// CloseBillingAgreement API Call - Returns details about the billing agreement object and its current state.
         /// https://payments.amazon.com/documentation/apireference/201751950
         /// </summary>
         /// <param name="requestParameters"></param>
@@ -214,7 +214,7 @@ namespace PayWithAmazon
         ResponseParser CloseOrderReference(Hashtable requestParameters);
 
         /// <summary>
-        /// CloseBillingAgreement API Call - Returns details about the Billing Agreement object and its current state.
+        /// CloseBillingAgreement API Call - Returns details about the billing agreement object and its current state.
         /// https://payments.amazon.com/documentation/apireference/201751950
         /// </summary>
         /// <param name="requestParameters"></param>
@@ -263,7 +263,7 @@ namespace PayWithAmazon
         ///    Hashtable requestParameters = new Hashtable();
         ///   
         ///   // Required
-        ///   requestParameters["Id"] = "C01/B01-XXXXX-XXXXX" // Billing Agreement ID
+        ///   requestParameters["Id"] = "C01/B01-XXXXX-XXXXX" // billing agreement ID
         ///   
         ///   // Optional
         ///   requestParameters["inherit_shipping_address"] = true; // Defaults to false
@@ -302,7 +302,7 @@ namespace PayWithAmazon
         ResponseParser GetAuthorizationDetails(Hashtable requestParameters);
 
         /// <summary>
-        /// GetBillingAgreementDetails API Call - Returns details about the Billing Agreement object and its current state.
+        /// GetBillingAgreementDetails API Call - Returns details about the billing agreement object and its current state.
         /// https://payments.amazon.com/documentation/apireference/201751690
         /// </summary>
         /// <example>
@@ -349,7 +349,7 @@ namespace PayWithAmazon
         string GetConfigValue(string name);
 
         /// <summary>
-        /// GetOrderReferenceDetails API call - Returns details about the Order Reference object and its current state.
+        /// GetOrderReferenceDetails API call - Returns details about the order reference object and its current state.
         /// </summary>
         /// <example>
         ///  <code>
@@ -500,7 +500,7 @@ namespace PayWithAmazon
         ResponseParser ReverseProviderCredit(Hashtable requestParameters);
 
         /// <summary>
-        /// SetBillingAgreementDetails API call - Sets Billing Agreement details such as a description of the agreement and other information about the seller.
+        /// SetBillingAgreementDetails API call - Sets billing agreement details such as a description of the agreement and other information about the seller.
         /// https://payments.amazon.com/documentation/apireference/201751700
         /// </summary>
         /// <example>
@@ -589,7 +589,7 @@ namespace PayWithAmazon
         void SetSandbox(bool value);
 
         /// <summary>
-        /// ValidateBillignAgreement API Call - Validates the status of the Billing Agreement object and the payment method associated with it.
+        /// ValidateBillignAgreement API Call - Validates the status of the billing agreement object and the payment method associated with it.
         /// https://payments.amazon.com/documentation/apireference/201751720
         /// </summary>
         /// <param name="requestParameters"></param>

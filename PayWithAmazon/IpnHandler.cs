@@ -43,7 +43,7 @@ namespace PayWithAmazon
                     ParseRawMessage(headers, json);
                 }
             }
-            catch (Exception ex)
+            catch (HttpParseException ex)
             {
                 throw new HttpParseException("Error Parsing the IPN notification", ex);
             }
@@ -93,17 +93,17 @@ namespace PayWithAmazon
             }
             catch (NullReferenceException nre)
             {
-                throw new Exception("Expected headers to be passed, null value received", nre);
+                throw new NullReferenceException("Expected headers to be passed, null value received", nre);
             }
 
             if (messageType == null)
             {
-                throw new Exception("Error with message - header does not contain x-amz-sns-message-type");
+                throw new NullReferenceException("Error with message - header does not contain x-amz-sns-message-type");
             }
 
             if (!messageType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new Exception(String.Format("Error with sns message - header x-amz-sns-message-type is invalid", messageType));
+                throw new NullReferenceException(String.Format("Error with sns message - header x-amz-sns-message-type is invalid", messageType));
             }
         }
 
@@ -146,11 +146,11 @@ namespace PayWithAmazon
             return value.ToString();
         }
 
-        /* Return the value of the field as a timestamp
-         * <param name="fieldName">Field name containing timestamp data</param>
-         * <returns>DateTime representation of the object</returns>
-         */
-
+        /// <summary>
+        /// Return the value of the field as a timestamp
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns>DateTime representation of the object</returns>
         public DateTime GetMandatoryFieldAsDateTime(string fieldName)
         {
             try
@@ -159,7 +159,7 @@ namespace PayWithAmazon
             }
             catch (FormatException fe)
             {
-                throw new Exception(String.Format("Error with message - expected field should be of type DateTime object", fieldName), fe);
+                throw new FormatException(String.Format("Error with message - expected field should be of type DateTime object", fieldName), fe);
             }
         }
 
@@ -174,7 +174,7 @@ namespace PayWithAmazon
 
             if (value == null)
             {
-                throw new Exception(String.Format("Error with message - mandatory field cannot be found", fieldName));
+                throw new NullReferenceException(String.Format("Error with message - mandatory field cannot be found", fieldName));
             }
             return value;
         }
@@ -209,7 +209,7 @@ namespace PayWithAmazon
                     VerifySnsMessageWithVersion1SignatureAlgorithm();
                     break;
                 default:
-                    throw new Exception(String.Format("Error with sns message verification - message is signed with unknown signature specification", signatureVersion));
+                    throw new InvalidDataException(String.Format("Error with sns message verification - message is signed with unknown signature specification", signatureVersion));
             }
         }
 
@@ -221,7 +221,7 @@ namespace PayWithAmazon
             bool isValid = VerifyMsgMatchesSignatureV1WithCert();
             if (!isValid)
             {
-                throw new Exception(String.Format("Error with sns message - signature verification failed", "1"));
+                throw new InvalidDataException(String.Format("Error with sns message - signature verification failed", "1"));
             }
         }
 
@@ -235,14 +235,14 @@ namespace PayWithAmazon
         {
             if (!GetMandatoryField("Type").Equals("Notification"))
             {
-                throw new Exception("Error with sns message verification - message is not of type Notification, no implementation of signing algorithm is present for other notification types");
+                throw new InvalidDataException("Error with sns message verification - message is not of type Notification, no implementation of signing algorithm is present for other notification types");
             }
 
             string certPath = GetMandatoryField("SigningCertURL");
             x509Cert = GetCertificate(certPath);
             if (!VerifyCertIsIssuedByAmazon())
             {
-                throw new Exception("Error with sns message verification - certificate in Notification is not a valid certificate issued to Amazon");
+                throw new InvalidDataException("Error with sns message verification - certificate in Notification is not a valid certificate issued to Amazon");
             }
 
             UTF8Encoding encoding = new UTF8Encoding();
@@ -393,7 +393,7 @@ namespace PayWithAmazon
             }
             catch (HttpException ex)
             {
-                throw new Exception("Error requesting certificate", ex);
+                throw new HttpException("Error requesting certificate", ex);
             }
 
             if (cert == null)
@@ -426,7 +426,6 @@ namespace PayWithAmazon
             return x509Cert.Verify();
         }
 
-        /*  */
         /// <summary>
         /// Gets certificate's subject information
         /// </summary>

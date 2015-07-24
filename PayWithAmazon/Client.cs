@@ -57,6 +57,9 @@ namespace PayWithAmazon
 
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
+        
+        // Devo URL 
+        private string mwsDevoEndpointUrl = null;
 
         // Boolean variable to check if the API call was a success
         public bool success = false;
@@ -90,7 +93,7 @@ namespace PayWithAmazon
         ///  config.Add("proxy_port","PROXY_PORT");
         ///  config.Add("proxy_username","PROXY_USERNAME");
         ///  config.Add("proxy_password","PROXY_PASSWORD");
-        ///  config.Add("client_id","amzn.client.xxxx"); 
+        ///  config.Add("client_id","amzn.oa2.client.xxxx"); 
         ///  config.Add("handle_throttle",true); // Defaults to true
         ///  </code>
         /// </example>
@@ -98,14 +101,14 @@ namespace PayWithAmazon
         {
             if (config == null)
             {
-                throw new ArgumentNullException("config is empty");
+                throw new NullReferenceException("config is null");
             }
 
             CheckConfigKeys(config);
         }
 
         /// <summary>
-        /// Takes user configuration from the JSON file path provided and convert them to Hashtable config
+        /// Takes user configuration from the JSON file path provided and convert it to Hashtable config
         /// Validates the user configuration Hashtable against existing config Hashtable
         /// </summary>
         /// <param name="jsonFilePath"></param>
@@ -114,36 +117,34 @@ namespace PayWithAmazon
             string json;
             Hashtable config = new Hashtable();
             Dictionary<string, string> dict = new Dictionary<string, string>();
-            try
-            {
-                if (!string.IsNullOrEmpty(jsonFilePath))
-                {
-                    if (!File.Exists(@jsonFilePath))
-                    {
-                        throw new FileNotFoundException("File not found");
-                    }
-                    else
-                    {
-                        using (StreamReader r = new StreamReader(@jsonFilePath))
-                        {
-                            json = r.ReadToEnd();
-                        }
-                        try
-                        {
-                            dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Incorrect JSON Format. Check your JSON config file for syntax errors\n" + e);
-                        }
 
-                        config = DictionaryToHashtable(dict);
+            if (!string.IsNullOrEmpty(jsonFilePath))
+            {
+                if (!File.Exists(@jsonFilePath))
+                {
+                    throw new FileNotFoundException("File not found");
+                }
+                else
+                {
+                    using (StreamReader r = new StreamReader(@jsonFilePath))
+                    {
+                        json = r.ReadToEnd();
                     }
+                    try
+                    {
+                        dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new JsonReaderException("Incorrect JSON Format. Check your JSON config file for syntax errors\n" + e);
+                    }
+
+                    config = DictionaryToHashtable(dict);
                 }
             }
-            catch (Exception e)
+            else
             {
-                throw new Exception(e.Message);
+                throw new NullReferenceException("Json file path is not provided");
             }
 
             CheckConfigKeys(config);
@@ -151,7 +152,7 @@ namespace PayWithAmazon
 
         /// <summary>
         ///  Checks if the keys of the input configuration matches the keys in the config Hashtable
-        ///  if they match the values are taken else throws exception
+        ///  if they match the values are taken else throws KeyNotFoundException
         ///  strict case match is not performed
         /// </summary>
         /// <param name="config"></param>
@@ -167,8 +168,8 @@ namespace PayWithAmazon
                 }
                 else
                 {
-                    throw new Exception("Key " + pair.Key + " is either not part of the configuration or has incorrect Key name." +
-                        "check the config Hashtable key names to match your key names of your config Hashtable");
+                    throw new KeyNotFoundException("Key " + pair.Key + " is either not part of the configuration or has incorrect Key name." +
+                        "check the Client class config Hashtable key names to match your key names of your input Hashtable configuation");
                 }
             }
         }
@@ -181,21 +182,21 @@ namespace PayWithAmazon
         private Hashtable LowerKeys(Hashtable table)
         {
             Hashtable lowerKeyTable = new Hashtable();
-            object value = null;
+            object input = null;
             foreach (DictionaryEntry newpair in table)
             {
-                value = "";
+                input = "";
                 string key = newpair.Key.ToString().ToLower();
                 if (newpair.Value != null)
                 {
-                    value = newpair.Value;
+                    input = newpair.Value;
                 }
                 else
                 {
-                    value = "";
+                    input = "";
                 }
 
-                lowerKeyTable.Add(key, value);
+                lowerKeyTable.Add(key, input);
             }
             return lowerKeyTable;
         }
@@ -204,33 +205,29 @@ namespace PayWithAmazon
         /// Setter for sandbox
         /// Sets the Boolean value for config["sandbox"] variable
         /// </summary>
-        /// <param name="value"></param>
-        public void SetSandbox(bool value)
+        /// <param name="input"></param>
+        public void SetSandbox(bool input)
         {
-            try
-            {
-                config["sandbox"] = value;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Boolean input missing or is of incorrect type" + e);
-            }
+            config["sandbox"] = input;
         }
 
         /// <summary>
         /// Setter for config["client_id"]
         /// Sets the value for config["client_id"] variable
         /// </summary>
-        /// <param name="value"></param>
-        public void SetClientId(string value)
+        /// <param name="input"></param>
+        public void SetClientId(string input)
         {
             try
             {
-                config["client_id"] = value;
+                if (!string.IsNullOrEmpty(input))
+                {
+                    config["client_id"] = input;
+                }
             }
-            catch (Exception e)
+            catch (NullReferenceException e)
             {
-                throw new Exception("setter value for client ID provided is incorrect" + e);
+                throw new NullReferenceException("Client ID value cannot be empty" + e);
             }
         }
 
@@ -248,17 +245,25 @@ namespace PayWithAmazon
         /// </example>
         public void SetProxy(Hashtable proxy)
         {
-            if (!string.IsNullOrEmpty(proxy["proxy_user_host"].ToString()))
+            if (proxy["proxy_user_host"] != null)
+            {
                 config["proxy_host"] = proxy["proxy_user_host"];
+            }
 
-            if (!string.IsNullOrEmpty(proxy["proxy_user_port"].ToString()))
+            if (proxy["proxy_user_port"] != null)
+            {
                 config["proxy_port"] = proxy["proxy_user_port"];
+            }
 
-            if (!string.IsNullOrEmpty(proxy["proxy_user_name"].ToString()))
+            if (proxy["proxy_user_name"] != null)
+            {
                 config["proxy_username"] = proxy["proxy_user_name"];
+            }
 
-            if (!string.IsNullOrEmpty(proxy["proxy_user_password"].ToString()))
+            if (proxy["proxy_user_password"] != null)
+            {
                 config["proxy_password"] = proxy["proxy_user_password"];
+            }
         }
 
         /// <summary>
@@ -269,6 +274,16 @@ namespace PayWithAmazon
         public void SetMwsServiceUrl(string url)
         {
             this.mwsServiceUrl = url;
+        }
+        
+        /// <summary>
+        /// Setter for mwsDevoUrl
+        /// Set the URL for Devopment testing
+        /// </summary>
+        /// <param name="url"></param>
+        public void SetMwsDevoUrl(string url)
+        {
+            this.mwsDevoEndpointUrl = url;
         }
 
         /// <summary>
@@ -288,25 +303,18 @@ namespace PayWithAmazon
         /// <returns>string</returns>
         public string GetConfigValue(string name)
         {
-            string value = "";
-            try
-            {
-                if (config.ContainsKey(name))
-                {
-                    value = config[name].ToString().ToLower();
-                }
-                else
-                {
-                    value = "The value for the Key was not found";
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Key " + name + " is either not a part of the configuration Hashtable config or the" + name +
-                    "does not match the key name in the config Hashtable", e);
-            }
+            string input = "";
 
-            return value;
+            if (config.ContainsKey(name))
+            {
+                input = config[name].ToString().ToLower();
+                return input;
+            }
+            else
+            {
+                throw new NullReferenceException("Key " + name + " is either not a part of the configuration Hashtable config or the" + name +
+                    "does not match the key name in the config Hashtable");
+            }
         }
 
         /// <summary>
@@ -320,8 +328,8 @@ namespace PayWithAmazon
 
         /// <summary>
         /// SetParametersAndPost - sets the parameters Hashtable with non empty values from the requestParameters Hashtable sent to API calls.
-        /// If Provider Credit Details is present,values are set by setProviderCreditDetails
-        /// If Provider Credit Reversal Details is present,values are set by setProviderCreditDetails
+        /// If Provider Credit Details is present, values are set by setProviderCreditDetails
+        /// If Provider Credit Reversal Details is present, values are set by setProviderCreditDetails
         /// </summary>
         /// <param name="parameters"></param>
         /// <param name="fieldMappings"></param>
@@ -329,17 +337,17 @@ namespace PayWithAmazon
         /// <returns>ResponseParser Object</returns>
         private ResponseParser SetParametersAndPost(Hashtable parameters, Hashtable fieldMappings, Hashtable requestParameters)
         {
-            string value = "";
+            string input = "";
             List<Hashtable> providerCredit = new List<Hashtable>();
             bool isDict = false;
-            /* For loop to take all the non empty parameters in the requestParameters and add it into the parameters Hashtable,
-             * if the keys are matched from requestParameters Hashtable with the fieldMappings Hashtable
-             */
+            // For loop to take all the non empty parameters in the requestParameters and add it into the parameters Hashtable,
+            // if the keys are matched from requestParameters Hashtable with the fieldMappings Hashtable
+
             foreach (DictionaryEntry pair in requestParameters)
             {
                 if (!(pair.Value.GetType() == typeof(List<Hashtable>)))
                 {
-                    value = pair.Value.ToString().Trim();
+                    input = pair.Value.ToString().Trim();
                     isDict = false;
                 }
                 else
@@ -348,11 +356,11 @@ namespace PayWithAmazon
                     providerCredit = pair.Value as List<Hashtable>;
                 }
 
-                if (fieldMappings.ContainsKey(pair.Key) == true && value != "")
+                if (fieldMappings.ContainsKey(pair.Key) == true && input != "" && input != null)
                 {
                     if (isDict)
                     {
-                        // If the parameter is a provider_credit_details or provider_credit_reversal_details,call the respective functions to set the values
+                        // If the parameter is a provider_credit_details or provider_credit_reversal_details, call the respective functions to set the values
                         if (pair.Key.Equals("provider_credit_details"))
                         {
                             parameters = SetProviderCreditDetails(parameters, providerCredit);
@@ -366,16 +374,14 @@ namespace PayWithAmazon
                     else
                     {
                         // For variables that are boolean values,strtolower them
-                        if (CheckIfBool(value))
-                            value = value.ToLower();
-
-                        parameters[fieldMappings[pair.Key]] = value;
+                        input = CheckIfBoolAndLowerValue(input);
+                        parameters[fieldMappings[pair.Key]] = input;
                     }
                 }
 
             }
-
             parameters = SetDefaultValues(parameters, fieldMappings, requestParameters);
+
             ResponseParser responseObject = CalculateSignatureAndPost(parameters);
             return responseObject;
         }
@@ -399,23 +405,27 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        ///  CheckIfBool - checks if the input is a boolean
+        ///  CheckIfBoolAndLowerValue - checks if the input string contains is a boolean value
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns>boolean variable</returns>
-        private bool CheckIfBool(string value)
+        /// <param name="input"></param>
+        /// <returns>string input</returns>
+        private string CheckIfBoolAndLowerValue(string input)
         {
-            value = value.ToLower();
-            bool isBool = false;
-            if (value.Equals("true") || value.Equals("false"))// return boolean right from here
+            string loweredInput = input.ToLower();
+            bool result;
+            if (bool.TryParse(loweredInput, out result))
             {
-                isBool = true;
+                // return boolean value as string
+                return loweredInput;
             }
-            return isBool;
+            else
+            {
+                return input;
+            }
         }
 
         /// <summary>
-        /// CalculateSignatureAndPost - convert the Parameters Hashtable to string and curl POST the parameters to MWS
+        /// CalculateSignatureAndPost - convert the Parameters Hashtable to string and POST the parameters to MWS
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns>ResponseParser Object</returns>
@@ -424,7 +434,7 @@ namespace PayWithAmazon
             // Call the signature and Post function to perform the actions.
             string parametersString = CalculateSignatureAndParametersToString(HashtableToDictionary<string, string>(parameters));
 
-            // POST using curl the String converted Parameters
+            // Invokes Http POST method with string converted Parameters as data
             string response = Invoke(parametersString);
 
             // Send this response as args to ResponseParser class which will return the object of the class.
@@ -444,33 +454,34 @@ namespace PayWithAmazon
         /// <returns>Hashtable parameters</returns>
         private Hashtable SetDefaultValues(Hashtable parameters, Hashtable fieldMappings, Hashtable requestParameters)
         {
-
+            string input = "";
             if (fieldMappings.ContainsKey("merchant_id"))
             {
-                try
+                if (requestParameters.ContainsKey("merchant_id"))
                 {
-                    if (string.IsNullOrEmpty(requestParameters["merchant_id"].ToString()))
-                    {
-                        parameters["SellerId"] = config["merchant_id"];
-                    }
+                    input = requestParameters["merchant_id"].ToString().Trim();
                 }
-                catch (NullReferenceException)
+                if (input != null && input != "")
                 {
-                    parameters["SellerId"] = config["merchant_id"];
+                    parameters[fieldMappings["merchant_id"]] = requestParameters["merchant_id"];
+                }
+                else if (config["merchant_id"] != null && config["merchant_id"].ToString().Trim() != "")
+                {
+                    parameters[fieldMappings["merchant_id"]] = config["merchant_id"];
                 }
             }
 
-
             if (fieldMappings.ContainsKey("platform_id"))
             {
-                try
+                if (requestParameters.ContainsKey("platform_id"))
                 {
-                    if (string.IsNullOrEmpty(requestParameters["platform_id"].ToString()))
-                    {
-                        parameters[fieldMappings["platform_id"]] = config["platform_id"];
-                    }
+                    input = requestParameters["platform_id"].ToString().Trim();
                 }
-                catch (NullReferenceException)
+                if (input != null && input != "")
+                {
+                    parameters[fieldMappings["platform_id"]] = requestParameters["platform_id"];
+                }
+                else if (config["platform_id"] != null && config["platform_id"].ToString().Trim() != "")
                 {
                     parameters[fieldMappings["platform_id"]] = config["platform_id"];
                 }
@@ -478,13 +489,17 @@ namespace PayWithAmazon
 
             if (fieldMappings.ContainsKey("currency_code"))
             {
-                if (!string.IsNullOrEmpty(requestParameters["currency_code"].ToString()))
+                if (requestParameters.ContainsKey("currency_code"))
                 {
-                    parameters[fieldMappings["currency_code"]] = requestParameters["currency_code"].ToString().ToUpper();
+                    input = requestParameters["currency_code"].ToString().Trim();
                 }
-                else
+                if (input != null && input != "")
                 {
-                    parameters[fieldMappings["currency_code"]] = config["currency_code"].ToString().ToUpper();
+                    parameters[fieldMappings["currency_code"]] = requestParameters["currency_code"];
+                }
+                else if (config["currency_code"] != null && config["currency_code"].ToString().Trim() != "")
+                {
+                    parameters[fieldMappings["currency_code"]] = config["currency_code"].ToString();
                 }
             }
 
@@ -614,7 +629,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// GetOrderReferenceDetails API call - Returns details about the Order Reference object and its current state.
+        /// GetOrderReferenceDetails API call - Returns details about the order reference object and its current state.
         /// </summary>
         /// <example>
         ///  <code>
@@ -1123,7 +1138,7 @@ namespace PayWithAmazon
         ///    Hashtable requestParameters = new Hashtable();
         ///   
         ///   // Required
-        ///   requestParameters["Id"] = "C01/B01-XXXXX-XXXXX" // Billing Agreement ID
+        ///   requestParameters["Id"] = "C01/B01-XXXXX-XXXXX" // billing agreement ID
         ///   
         ///   // Optional
         ///   requestParameters["inherit_shipping_address"] = true; // Defaults to false
@@ -1167,7 +1182,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// GetBillingAgreementDetails API Call - Returns details about the Billing Agreement object and its current state.
+        /// GetBillingAgreementDetails API Call - Returns details about the billing agreement object and its current state.
         /// https://payments.amazon.com/documentation/apireference/201751690
         /// </summary>
         /// <example>
@@ -1203,7 +1218,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// SetBillingAgreementDetails API call - Sets Billing Agreement details such as a description of the agreement and other information about the seller.
+        /// SetBillingAgreementDetails API call - Sets billing agreement details such as a description of the agreement and other information about the seller.
         /// https://payments.amazon.com/documentation/apireference/201751700
         /// </summary>
         /// <example>
@@ -1250,7 +1265,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// ConfirmBillingAgreement API Call - Confirms that the Billing Agreement is free of constraints and all required information has been set on the Billing Agreement.
+        /// ConfirmBillingAgreement API Call - Confirms that the billing agreement is free of constraints and all required information has been set on the billing agreement.
         /// https://payments.amazon.com/documentation/apireference/201751710
         /// </summary>
         /// <param name="requestParameters"></param>
@@ -1285,7 +1300,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// ValidateBillignAgreement API Call - Validates the status of the Billing Agreement object and the payment method associated with it.
+        /// ValidateBillignAgreement API Call - Validates the status of the billing agreement object and the payment method associated with it.
         /// https://payments.amazon.com/documentation/apireference/201751720
         /// </summary>
         /// <param name="requestParameters"></param>
@@ -1320,7 +1335,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// AuthorizeOnBillingAgreement API call - Reserves a specified amount against the payment method(s) stored in the Billing Agreement.
+        /// AuthorizeOnBillingAgreement API call - Reserves a specified amount against the payment method(s) stored in the billing agreement.
         /// https://payments.amazon.com/documentation/apireference/201751940
         /// </summary>
         /// <example>
@@ -1382,7 +1397,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// CloseBillingAgreement API Call - Returns details about the Billing Agreement object and its current state.
+        /// CloseBillingAgreement API Call - Returns details about the billing agreement object and its current state.
         /// https://payments.amazon.com/documentation/apireference/201751950
         /// </summary>
         /// <param name="requestParameters"></param>
@@ -1543,7 +1558,7 @@ namespace PayWithAmazon
         ///   Hashtable requestParameters = new Hashtable();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_reference_id"] = "(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)";// Order Reference ID /Billing Agreement ID
+        ///   requestParameters["amazon_reference_id"] = "(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)";// order reference ID / billing agreement ID
         ///   // If requestParameters["amazon_reference_id"] is empty then the following is required,
         ///    requestParameters["amazon_order_reference_id"]="S01/P01-XXXXX-XXXXX";
         ///   // or,
@@ -1601,7 +1616,7 @@ namespace PayWithAmazon
             }
             else
             {
-                throw new MissingMemberException("key amazon_order_reference_id or amazon_billing_agreement_id is null and is a required parameter");
+                throw new MissingFieldException("key amazon_order_reference_id or amazon_billing_agreement_id is null and is a required parameter");
             }
             // Set the other parameters if the values are present
             setParameters["amount"] = requestParameters.ContainsKey("charge_amount") ? requestParameters["charge_amount"] : "";
@@ -1639,7 +1654,7 @@ namespace PayWithAmazon
                 case "OrderReference":
                     statusResponse = GetOrderReferenceDetails(setParameters);
                     // Call the function GetOrderReferenceStatus in ResponseParser.php providing it the XML response
-                    // oroStatus - State of the Order Reference Id
+                    // oroStatus - State of the order reference Id
                     oroStatus = statusResponse.GetOrderReferenceStatus(statusResponse.ToXml());
                     if (oroStatus.Equals("Draft"))
                     {
@@ -1660,14 +1675,14 @@ namespace PayWithAmazon
                     }
                     if (!(oroStatus.Equals("Open") || oroStatus.Equals("Draft")))
                     {
-                        throw new ArgumentException("The Order Reference is in the " + oroStatus + " State. It should be in the Draft or Open State" + response.ToXml());
+                        throw new ArgumentException("The order reference is in the " + oroStatus + " State. It should be in the Draft or Open State" + response.ToXml());
                     }
                     break;
                 case "BillingAgreement":
-                    // Get the Billing Agreement details and feed the response object to the ResponseParser
+                    // Get the billing agreement details and feed the response object to the ResponseParser
                     statusResponse = GetBillingAgreementDetails(setParameters);
                     // Call the function GetBillingAgreementDetailsStatus in ResponseParser.php providing it the XML response
-                    // baStatus - State of the Billing Agreement
+                    // baStatus - State of the billing agreement
                     baStatus = statusResponse.GetBillingAgreementStatus(statusResponse.ToXml());
                     if (!baStatus.Equals("Open"))
                     {
@@ -1677,7 +1692,7 @@ namespace PayWithAmazon
                             response = ConfirmBillingAgreement(confirmParameters);
                         }
                     }
-                    // Check the Billing Agreement status again before making the Authorization.
+                    // Check the billing agreement status again before making the Authorization.
                     statusResponse = GetBillingAgreementDetails(setParameters);
                     baStatus = statusResponse.GetBillingAgreementStatus(statusResponse.ToXml());
 
@@ -1687,7 +1702,7 @@ namespace PayWithAmazon
                     }
                     if (!(baStatus.Equals("Open")) || !(baStatus.Equals("Draft")))
                     {
-                        throw new ArgumentException("The Billing Agreement is in the " + baStatus + " State. It should be in the Draft or Open State");
+                        throw new ArgumentException("The billing agreement is in the " + baStatus + " State. It should be in the Draft or Open State");
                     }
                     break;
             }
@@ -1742,7 +1757,7 @@ namespace PayWithAmazon
             ConfigureUserAgentHeader();
             HttpImpl httpRequest = new HttpImpl(config);
 
-            /* Submit the request and read response body */
+            // Submit the request and read response body 
             bool shouldRetry;
             int retries = 0;
             do
@@ -1796,7 +1811,7 @@ namespace PayWithAmazon
             }
             else
             {
-                throw new Exception("Maximum number of retry attempts reached : " + (retries - 1) + status);
+                throw new WebException("Maximum number of retry attempts reached : " + (retries - 1) + status);
             }
         }
 
@@ -1810,12 +1825,12 @@ namespace PayWithAmazon
             StringBuilder data = new StringBuilder();
             foreach (String key in (IEnumerable<String>)parameters.Keys)
             {
-                String value = parameters[key];
-                if (value != null)
+                String input = parameters[key];
+                if (input != null)
                 {
                     data.Append(key);
                     data.Append("=");
-                    data.Append(UrlEncode(value, false));
+                    data.Append(UrlEncode(input, false));
                     data.Append("&");
                 }
             }
@@ -1872,7 +1887,7 @@ namespace PayWithAmazon
             }
             else
             {
-                throw new Exception("Invalid Signature Version specified");
+                throw new InvalidDataException("Invalid Signature Version specified");
             }
 
             return Sign(stringToSign, key, algorithm);
@@ -1975,18 +1990,26 @@ namespace PayWithAmazon
                 region = config["region"].ToString().ToLower();
                 if (regionProperties.regionMappings.ContainsKey(region))
                 {
-                    mwsEndpointUrl = regionProperties.mwsServiceUrls[regionProperties.regionMappings[region]].ToString();
+                    // Set the Endpoint for the internal development else get the value from the 
+                    if (mwsDevoEndpointUrl != null && mwsDevoEndpointUrl.Trim() != "")
+                    {
+                        mwsEndpointUrl = mwsDevoEndpointUrl;
+                    }
+                    else
+                    {
+                        mwsEndpointUrl = regionProperties.mwsServiceUrls[regionProperties.regionMappings[region]].ToString();
+                    }
                     mwsServiceUrl = "https://" + mwsEndpointUrl + "/" + modePath + "/" + SERVICE_VERSION;
                     mwsEndpointPath = "/" + modePath + "/" + SERVICE_VERSION;
                 }
                 else
                 {
-                    throw new Exception(region + " is not a valid region");
+                    throw new InvalidDataException(region + " is not a valid region");
                 }
             }
             else
             {
-                throw new Exception("config['region'] is a required parameter and is not set");
+                throw new NullReferenceException("config['region'] is a required parameter and is not set");
             }
         }
 
@@ -2008,12 +2031,12 @@ namespace PayWithAmazon
                 }
                 else
                 {
-                    throw new Exception(region + " is not a valid region");
+                    throw new InvalidDataException(region + " is not a valid region");
                 }
             }
             else
             {
-                throw new Exception("config['region'] is a required parameter and is not set");
+                throw new NullReferenceException("config['region'] is a required parameter and is not set");
             }
         }
         private void ConfigureUserAgentHeader()
@@ -2050,11 +2073,11 @@ namespace PayWithAmazon
             while (i < additionalNameValuePairs.Length)
             {
                 string name = additionalNameValuePairs[i];
-                string value = additionalNameValuePairs[++i];
+                string input = additionalNameValuePairs[++i];
                 sb.Append("; ");
                 sb.Append(QuoteAttributeName(name));
                 sb.Append("=");
-                sb.Append(QuoteAttributeValue(value));
+                sb.Append(QuoteAttributeValue(input));
 
                 i++;
             }
@@ -2110,7 +2133,7 @@ namespace PayWithAmazon
             return Clean(s).Replace(@"\", @"\\").Replace(@"=", @"\=");
         }
 
-        /* Collapse whitespace,and escape the following characters are escaped */
+        // Collapse whitespace,and escape the following characters are escaped 
 
         private static string QuoteAttributeValue(string s)
         {

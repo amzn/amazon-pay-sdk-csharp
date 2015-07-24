@@ -1,4 +1,4 @@
-# Login and Pay with Amazon CHARP SDK
+# Login and Pay with Amazon CSHARP SDK
 Login and Pay with Amazon API Integration
 
 ## Requirements
@@ -14,19 +14,21 @@ Login and Pay with Amazon API Integration
 ## Sample
 
 * View the sample integration demo [here](https://amzn.github.io/login-and-pay-with-amazon-sdk-samples/)
-> csharp samples will be added soon
+```
+> csharp samples will be added by 2nd week of August 2015
+```
 
 ## Quick Start
 
 Instantiating the client:
-Client Takes in parameters in the following format
+Client takes in parameters in the following format
 
 1. Hashtable
 2. Path to the JSON file containing configuration information.
 
 ## Installing using nuget
 ```
-> will be made available soon
+> will be made available by 1st week of August 2015
 ```
 ##Parameters List
 
@@ -71,7 +73,7 @@ Hashtable config = new Hashtable() {
 	{"region","REGION"}
 };
 
-// Or You can also provide a JSON file path which has the above configuration information in JSON format
+// Or you can also provide a JSON file path which has the above configuration information in JSON format
 string config = "PATH_TO_JSON_FILE";
 
 // Instantiate the client class with the config type
@@ -79,7 +81,7 @@ Client client = new Client(config);
 ```
 ### Testing in Sandbox Mode
 
-The sandbox parameter is defaulted to false if not specified:
+The sandbox parameter is defaults to false if not specified:
 ```csharp
 using PayWithAmazon;
 
@@ -95,7 +97,7 @@ Client client = new Client(config);
 
 // Also you can set the sandbox variable in the config HashTable of the Client class by
 
-client.setSandbox(true);
+client.SetSandbox(true);
 ```
 ### Setting Proxy values
 Proxy parameters can be set after Instantiating the Client Object with the following setter
@@ -106,7 +108,7 @@ proxy.Add("proxy_user_port","YOUR_PROXY_PORT"); // Hostname for the proxy
 proxy.Add("proxy_user_name","YOUR_PROXY_USER_NAME"); // If your proxy requires a username
 proxy.Add("proxy_user_password","YOUR_PROXY_PASSWORD"); // If your proxy requires a password
 
-client.setProxy(proxy);
+client.SetProxy(proxy);
 ```
 
 ### Making an API Call
@@ -129,18 +131,18 @@ requestParameters.Add("address_consent_token","ACCESS_TOKEN");
 requestParameters.Add("mws_auth_token","MWS_AUTH_TOKEN);
 
 // response here is the object of the ResponseParser class, You can use this object to get the desired response type in the section Response Parsing 
-ResponseParser response = client.getOrderReferenceDetails(requestParameters);
+ResponseParser response = client.GetOrderReferenceDetails(requestParameters);
 
 ```
 See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for information on parsing the API response.
 
 ### IPN Handling
 
-1. To receive IPN"s successfully you will need an valid SSL on your domain.
+1. To receive IPN's successfully you will need an valid SSL on your domain.
 2. You can set up your Notification endpoints in Seller Central by accessing the Integration Settings page in the Settings tab.
-3. IpnHandler.csharp class handles verification of the source and the data of the IPN
+3. IpnHandler.cs class handles verification of the source and the data of the IPN
 
-In your web project you can create a file( for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
+In your web project you can create a file (for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
 
 ```csharp
 using PayWithAmazon;
@@ -175,7 +177,7 @@ Subsequent call to `charge` method for the same Order Reference ID will make the
 For **Recurring payments** the first `charge` call will make the SetBillingAgreementDetails, ConfirmBillingAgreement, AuthorizeOnBillingAgreement API calls.
 Subsequent call to `charge` method for the same Billing Agreement ID will make the call only to AuthorizeOnBillingAgreement.
 
-> **Capture Now** can be set to `true` for digital goods . For Physical goods it"s highly recommended to set the Capture Now to `false`
+> **Capture Now** can be set to `true` for digital goods . For Physical goods it's highly recommended to set the Capture Now to `false`
 and the amount captured by making the `capture` API call after the shipment is complete.
 
 
@@ -184,16 +186,16 @@ and the amount captured by making the `capture` API call after the shipment is c
 | Amazon Reference ID 	     | `amazon_reference_id` 	    | yes       | OrderReference ID (`starts with P01 or S01`) or <br>Billing Agreement ID (`starts with B01 or C01`)       |
 | Amazon OrderReference ID   | `amazon_order_reference_id`  | no        | OrderReference ID (`starts with P01 or S01`) if no Amazon Reference ID is provided                        |
 | Amazon Billing Agreement ID| `amazon_billing_agreement_id`| no        | Billing Agreement ID (`starts with B01 or C01`) if no Amazon Reference ID is provided                     |
-| Merchant ID         	     | `merchant_id`         	    | no        | Value taken from config Hashtable in Client.csharp                                                        |
+| Merchant ID         	     | `merchant_id`         	    | no        | Value taken from config Hashtable in Client.cs                                                        |
 | Charge Amount       	     | `charge_amount`       	    | yes       | Amount that needs to be captured.<br>Maps to API call variables `amount` , `authorization_amount`         |
-| Currency code       	     | `currency_code`       	    | no        | If no value is provided, value is taken from the config Hashtable in Client.csharp      		            |
+| Currency code       	     | `currency_code`       	    | no        | If no value is provided, value is taken from the config Hashtable in Client.cs      		            |
 | Authorization Reference ID | `authorization_reference_id` | yes       | Unique string to be passed									                                            |
 | Transaction Timeout 	     | `transaction_timeout`        | no        | Timeout for Authorization - Defaults to 1440 minutes						                                |
 | Capture Now	             | `capture_now`                | no        | Will capture the payment automatically when set to `true`. Defaults to `false`						    |
 | Charge Note         	     | `charge_note`         	    | no        | Note that is sent to the buyer. <br>Maps to API call variables `seller_note` , `seller_authorization_note`|
 | Charge Order ID     	     | `charge_order_id`     	    | no        | Custom order ID provided <br>Maps to API call variables `seller_order_id` , `seller_billing_agreement_id` |
 | Store Name          	     | `store_name`          	    | no        | Name of the store                                                                                         |
-| Platform ID         	     | `platform_id`         	    | no        | Platform ID of the Solution provider                                                                      |
+| Platform ID         	     | `platform_id`         	    | no        | Platform ID of the Solution Provider                                                                      |
 | Custom Information  	     | `custom_information`  	    | no        | Any custom string                                                                                         |
 | MWS Auth Token      	     | `mws_auth_token`      	    | no        | MWS Auth Token required if API call is made on behalf of the seller                                       |
 
@@ -207,8 +209,8 @@ requestParameters.Add("amazon_reference_id","AMAZON_REFERENCE_ID");
 // Or
 // If requestParameters["amazon_reference_id"] is not provided,
 // either one of the following ID input is needed
-requestParameters.Add("amazon_order_reference_id",AMAZON_ORDER_REFERENCE_ID)   = "";
-requestParameters.Add("amazon_billing_agreement_id",AMAZON_BILLING_AGREEMENT_ID) = "AMAZON_BILLING_AGREEMENT_ID";
+requestParameters.Add("amazon_order_reference_id",AMAZON_ORDER_REFERENCE_ID);
+requestParameters.Add("amazon_billing_agreement_id",AMAZON_BILLING_AGREEMENT_ID);
 
 requestParameters.Add("seller_id",null);
 requestParameters.Add("charge_amount",100.50);
@@ -219,7 +221,7 @@ requestParameters.Add("capture_now",false); //`true` for Digital goods
 requestParameters.Add("charge_note","Example item note");
 requestParameters.Add("charge_order_id","1234-Example-Order");
 requestParameters.Add("store_name","Example Store");
-requestParameters.Add("platform_Id",null);
+requestParameters.Add("platform_id",null);
 requestParameters.Add("custom_information","Any_Custom_String");
 requestParameters.Add("mws_auth_token",null);
 
@@ -238,7 +240,7 @@ ResponseParser response = client.Charge(requestParameters);
 | LWA Client ID       | `client_id`           | yes       | Default: null<br>Value should be set in config Hashtable                        	     |
 
 ```csharp
- using PayWithAmazon;
+using PayWithAmazon;
 
 // config Hashtable parameters that need to be instantiated
 Hashtable config = new Hashtable(){

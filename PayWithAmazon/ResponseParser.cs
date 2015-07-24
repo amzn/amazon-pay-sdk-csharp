@@ -66,7 +66,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// Get the Billing Agreement State for the Charge function
+        /// Get the billing agreement State for the Charge function
         /// </summary>
         /// <param name="xml"></param>
         /// <returns>string baStatus</returns>
@@ -84,13 +84,13 @@ namespace PayWithAmazon
             }
             catch (NullReferenceException e)
             {
-                throw new ArgumentNullException("state not found" + e);
+                throw new NullReferenceException("state not found" + e);
             }
             return baStatus;
         }
 
         /// <summary>
-        /// Get the Order Reference State for the Charge function
+        /// Get the order reference State for the Charge function
         /// </summary>
         /// <param name="xml"></param>
         /// <returns>string OroStatus</returns>
@@ -108,7 +108,7 @@ namespace PayWithAmazon
             }
             catch (NullReferenceException e)
             {
-                throw new ArgumentNullException("state not found" + e);
+                throw new NullReferenceException("state not found" + e);
             }
             return OroStatus;
         }

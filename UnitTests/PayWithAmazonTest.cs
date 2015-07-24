@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
@@ -8,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Net;
 
 namespace UnitTests
 {
@@ -23,7 +25,7 @@ namespace UnitTests
             {"client_id","test"},
             {"region","us"},
             {"sandbox", true},
-            {"platform_id","test"},
+            {"platform_id",null},
             {"cabundle_file", null},
             {"application_name","sdk testing"},
             {"application_version","1.0"},
@@ -45,7 +47,7 @@ namespace UnitTests
                 };
                 Client client = new Client(configParams);
             }
-            catch (Exception expected)
+            catch (KeyNotFoundException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "is either not part of the configuration or has incorrect Key name", RegexOptions.IgnoreCase));
             }
@@ -56,9 +58,9 @@ namespace UnitTests
                 configParams = null;
                 Client client = new Client(configParams);
             }
-            catch (Exception expected)
+            catch (NullReferenceException expected)
             {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "config is empty", RegexOptions.IgnoreCase));
+                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "config is null", RegexOptions.IgnoreCase));
             }
         }
 
@@ -67,22 +69,29 @@ namespace UnitTests
         {
             try
             {
+                string jsonfilepath = "";
+                Client client = new Client(jsonfilepath);
+            }
+            catch (NullReferenceException expected)
+            {
+                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Json file path is not provided", RegexOptions.IgnoreCase));
+            }
+            try
+            {
                 string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"confi.json");
                 Client client = new Client(jsonfilepath);
             }
-            catch (Exception expected)
+            catch (FileNotFoundException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "File not found", RegexOptions.IgnoreCase));
             }
-
             try
             {
                 string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"config.json");
                 Client client = new Client(jsonfilepath);
             }
-            catch (Exception expected)
+            catch (JsonReaderException expected)
             {
-                Console.WriteLine(expected);
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "incorrect json", RegexOptions.IgnoreCase));
             }
         }
@@ -93,6 +102,37 @@ namespace UnitTests
             Client client = new Client(configParams);
             client.SetSandbox(true);
             Assert.AreEqual(client.config["sandbox"], true);
+        }
+
+        [Test]
+        public void TestClientIDSetter()
+        {
+            Client client = new Client(configParams);
+            try
+            {
+                client.SetClientId("");
+            }
+            catch (NullReferenceException expected)
+            {
+                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Client ID value cannot be empty", RegexOptions.IgnoreCase));
+            }
+            try
+            {
+                client.SetClientId(null);
+            }
+            catch (NullReferenceException expected)
+            {
+                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Client ID value cannot be empty", RegexOptions.IgnoreCase));
+            }
+        }
+
+        [Test]
+        public void TestProxySetter()
+        {
+            Client client = new Client(configParams);
+            Hashtable proxy = new Hashtable();
+            proxy.Add("proxy_user_host", null);
+            client.SetProxy(proxy);
         }
 
         [Test]
@@ -861,7 +901,7 @@ namespace UnitTests
                 apiCallParams.Add("amazon_reference_id", "S01-TEST");
                 client.Charge(apiCallParams);
             }
-            catch (Exception expected)
+            catch (NullReferenceException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "state not found", RegexOptions.IgnoreCase));
             }
@@ -872,7 +912,7 @@ namespace UnitTests
                 apiCallParams.Add("amazon_reference_id", "");
                 client.Charge(apiCallParams);
             }
-            catch (Exception expected)
+            catch (MissingFieldException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "key amazon_order_reference_id or amazon_billing_agreement_id is null and is a required parameter", RegexOptions.IgnoreCase));
             }
@@ -884,7 +924,7 @@ namespace UnitTests
                 apiCallParams.Add("amazon_reference_id", "T01");
                 client.Charge(apiCallParams);
             }
-            catch (Exception expected)
+            catch (InvalidDataException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Invalid Amazon Reference ID", RegexOptions.IgnoreCase));
             }
@@ -899,7 +939,7 @@ namespace UnitTests
                 Client client = new Client(configParams);
                 client.GetUserInfo("Atza");
             }
-            catch (Exception expected)
+            catch (NullReferenceException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "is a required parameter", RegexOptions.IgnoreCase));
             }
@@ -910,7 +950,7 @@ namespace UnitTests
                 Client client = new Client(configParams);
                 client.GetUserInfo(null);
             }
-            catch (Exception expected)
+            catch (NullReferenceException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Access Token is a required parameter and is not set", RegexOptions.IgnoreCase));
             }
@@ -931,7 +971,7 @@ namespace UnitTests
                 method.Invoke(client, new object[] { parameters }).ToString();
 
             }
-            catch (Exception expected)
+            catch (WebException expected)
             {
                 Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Maximum number of retry attempts", RegexOptions.IgnoreCase));
             }
@@ -997,7 +1037,7 @@ namespace UnitTests
 
                 }
             }
-            
+
             CollectionAssert.AreEqual(dictResponse, compareDict);
         }
 
@@ -1044,8 +1084,8 @@ namespace UnitTests
 
             if (fieldMappings.ContainsKey("platform_id"))
             {
-                expectedParameters[fieldMappings["platform_id"]] = configParams["platform_id"];
-                apiCallParams["platform_id"] = configParams["platform_id"];
+                expectedParameters[fieldMappings["platform_id"]] = null;
+                apiCallParams["platform_id"] = null;
             }
 
             if (fieldMappings.ContainsKey("currency_code"))
