@@ -454,14 +454,14 @@ namespace PayWithAmazon
         /// <returns>Hashtable parameters</returns>
         private Hashtable SetDefaultValues(Hashtable parameters, Hashtable fieldMappings, Hashtable requestParameters)
         {
-            foreach (string key in fieldMappings)
+            foreach (string key in fieldMappings.Keys)
             {
                 if (requestParameters.ContainsKey(key) &&
                     !string.IsNullOrEmpty(requestParameters[key].ToString().Trim()))
                 {
                     parameters[fieldMappings[key]] = requestParameters[key].ToString().Trim();
                 }
-                else if (requestParameters.ContainsKey(key) &&
+                else if (config.ContainsKey(key) &&
                     !string.IsNullOrEmpty(config[key].ToString().Trim()))
                 {
                     parameters[fieldMappings[key]] = config[key].ToString().Trim();
