@@ -33,14 +33,18 @@ namespace PayWithAmazon
         // Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
         private const string Iso8601UTCDateWithMillisecondsFormatString = @"yyyy-MM-ddTHH:mm:ss.fffZ";
 
-        public IpnHandler(string json, NameValueCollection headers)
+        /// <summary>
+        /// IpnHandler takes Ipn Headers and JSON data 
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="jsonMessage"></param>
+        public IpnHandler(NameValueCollection headers, string jsonMessage)
         {
             try
             {
-
-                if (!string.IsNullOrEmpty(json))
+                if (!string.IsNullOrEmpty(jsonMessage))
                 {
-                    ParseRawMessage(headers, json);
+                    ParseRawMessage(headers, jsonMessage);
                 }
             }
             catch (HttpParseException ex)
@@ -196,7 +200,7 @@ namespace PayWithAmazon
                 return null;
             }
         }
-        
+
         /// <summary>
         /// Validates if the Signature version is correct , else throws an exception 
         /// </summary>

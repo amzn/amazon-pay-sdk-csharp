@@ -443,7 +443,7 @@ namespace PayWithAmazon
         }
 
         /// <summary>
-        /// If merchant_id is not set via the requestParameters Hashtable then it"s taken from the config Hashtable
+        /// If merchant_id is not set via the requestParameters Hashtable then it's taken from the config Hashtable
         /// Set the platform_id if set in the config["platform_id"] Hashtable
         /// If currency_code is set in the requestParameters and it exists in the fieldMappings Hashtable,strtoupper it
         /// else take the value from config Hashtable if set
