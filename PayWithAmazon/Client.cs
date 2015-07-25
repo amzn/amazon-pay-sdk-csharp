@@ -57,7 +57,7 @@ namespace PayWithAmazon
 
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
-        
+
         // Devo URL 
         private string mwsDevoEndpointUrl = null;
 
@@ -275,7 +275,7 @@ namespace PayWithAmazon
         {
             this.mwsServiceUrl = url;
         }
-        
+
         /// <summary>
         /// Setter for mwsDevoUrl
         /// Set the URL for Devopment testing
@@ -454,55 +454,33 @@ namespace PayWithAmazon
         /// <returns>Hashtable parameters</returns>
         private Hashtable SetDefaultValues(Hashtable parameters, Hashtable fieldMappings, Hashtable requestParameters)
         {
+            List<string> defaultParams = new List<string>()
+            {
+                "merchant_id",
+                "platform_id",
+                "currency_code"
+            };
+
             string input = "";
-            if (fieldMappings.ContainsKey("merchant_id"))
+            foreach (string param in defaultParams)
             {
-                if (requestParameters.ContainsKey("merchant_id"))
+                input = "";
+                if (fieldMappings.ContainsKey(param))
                 {
-                    input = requestParameters["merchant_id"].ToString().Trim();
-                }
-                if (input != null && input != "")
-                {
-                    parameters[fieldMappings["merchant_id"]] = requestParameters["merchant_id"];
-                }
-                else if (config["merchant_id"] != null && config["merchant_id"].ToString().Trim() != "")
-                {
-                    parameters[fieldMappings["merchant_id"]] = config["merchant_id"];
+                    if (requestParameters.ContainsKey(param))
+                    {
+                        input = requestParameters[param].ToString().Trim();
+                    }
+                    if (input != null && input != "")
+                    {
+                        parameters[fieldMappings[param]] = requestParameters[param];
+                    }
+                    else if (config[param] != null && config[param].ToString().Trim() != "")
+                    {
+                        parameters[fieldMappings[param]] = config[param];
+                    }
                 }
             }
-
-            if (fieldMappings.ContainsKey("platform_id"))
-            {
-                if (requestParameters.ContainsKey("platform_id"))
-                {
-                    input = requestParameters["platform_id"].ToString().Trim();
-                }
-                if (input != null && input != "")
-                {
-                    parameters[fieldMappings["platform_id"]] = requestParameters["platform_id"];
-                }
-                else if (config["platform_id"] != null && config["platform_id"].ToString().Trim() != "")
-                {
-                    parameters[fieldMappings["platform_id"]] = config["platform_id"];
-                }
-            }
-
-            if (fieldMappings.ContainsKey("currency_code"))
-            {
-                if (requestParameters.ContainsKey("currency_code"))
-                {
-                    input = requestParameters["currency_code"].ToString().Trim();
-                }
-                if (input != null && input != "")
-                {
-                    parameters[fieldMappings["currency_code"]] = requestParameters["currency_code"];
-                }
-                else if (config["currency_code"] != null && config["currency_code"].ToString().Trim() != "")
-                {
-                    parameters[fieldMappings["currency_code"]] = config["currency_code"].ToString();
-                }
-            }
-
             return parameters;
         }
 
