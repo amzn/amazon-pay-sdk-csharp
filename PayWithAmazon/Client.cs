@@ -12,6 +12,10 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Xml;
 using Newtonsoft.Json;
+using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.ProviderCreditRequests;
+using PayWithAmazon.RecurringPaymentRequests;
+using PayWithAmazon.CommonRequests;
 
 namespace PayWithAmazon
 {
@@ -34,6 +38,12 @@ namespace PayWithAmazon
         private string profileEndpoint = null;
         public string timeStamp = null;
 
+        /// <summary>
+        /// Configuration key and value pairs for the Client
+        /// 1. These are set via the Configuration class object
+        /// or
+        /// 2. These can be set in the JSON File and the path to the JSON file input provided to the Client class constructor
+        /// </summary>
         public Hashtable config = new Hashtable() {
             {"merchant_id",null},
             {"secret_key",null},
@@ -61,50 +71,52 @@ namespace PayWithAmazon
         // Devo URL 
         private string mwsDevoEndpointUrl = null;
 
-        // Boolean variable to check if the API call was a success
+        /// <summary>
+        /// Boolean variable to check if the API call was a success
+        /// </summary>
         public bool success = false;
 
         Regions regionProperties = new Regions();
 
         /// <summary>
-        /// Takes user configuration Dictionary from the user as input
+        /// Takes the Configuration Object of the Configuration class
         /// Validates the user configuration Hashtable against existing config Hashtable
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="clientConfig"></param>
         /// <example>
         ///  <code>
-        ///  Hashtable config = new Hashtable();
+        ///  Configuration clientConfig = new Configuration();
         ///  
         ///  // Required
-        ///  config.Add("merchant_id","MERCHANT_ID");
+        ///  clientConfig.Add("merchant_id","MERCHANT_ID");
         ///  // Following keys can be found in your seller central account.
-        ///  config.Add("secret_key","MWS_SECRET_KEY"); 
-        ///  config.Add("access_key","MWS_ACCESS_KEY");
-        ///  config.Add("region","us");
+        ///  clientConfig.WithSecretKey("MWS_SECRET_KEY"); 
+        ///  clientConfig.WithAccessKey("MWS_ACCESS_KEY");
+        ///  clientConfig.WithRegion("us");
         ///  
         ///  // Optional
-        ///  config.Add("currency_code","USD");
-        ///  config.Add("sandbox",false); // true for sandbox , Defaults to false
-        ///  config.Add("platform_id","PLATFORM_ID"); // Solution Provider ID
-        ///  config.Add("cabundle_file","CA_BUNDLE_PATH");
-        ///  config.Add("application_name","CUSTOM_APPLICATION_NAME");
-        ///  config.Add("application_version","CUSTOM_APPLICATION_VERSION");
-        ///  config.Add("proxy_host","PROXY_HOST");
-        ///  config.Add("proxy_port","PROXY_PORT");
-        ///  config.Add("proxy_username","PROXY_USERNAME");
-        ///  config.Add("proxy_password","PROXY_PASSWORD");
-        ///  config.Add("client_id","amzn.oa2.client.xxxx"); 
-        ///  config.Add("handle_throttle",true); // Defaults to true
+        ///  clientConfig.WithCurrencyCode("USD");
+        ///  clientConfig.WithSandbox(false); // true for sandbox , Defaults to false
+        ///  clientConfig.WithPlatformId("PLATFORM_ID"); // Solution Provider ID
+        ///  clientConfig.WithCABundleFile("CA_BUNDLE_PATH");
+        ///  clientConfig.WithApplicationName("CUSTOM_APPLICATION_NAME");
+        ///  clientConfig.WithApplicationVersion("CUSTOM_APPLICATION_VERSION");
+        ///  clientConfig.WithProxyHost("PROXY_HOST");
+        ///  clientConfig.WithProxyPort("PROXY_PORT");
+        ///  clientConfig.WithProxyUserName("PROXY_USERNAME");
+        ///  clientConfig.WithProxyPassword("PROXY_PASSWORD");
+        ///  clientConfig.WithClientId("amzn.oa2.client.xxxx"); 
+        ///  clientConfig.WithHandleThrottle(true); // Defaults to true
         ///  </code>
         /// </example>
-        public Client(Hashtable config)
+        public Client(Configuration clientConfig)
         {
-            if (config == null)
+            if (clientConfig == null)
             {
                 throw new NullReferenceException("config is null");
             }
 
-            CheckConfigKeys(config);
+            CheckConfigKeys(clientConfig.config);
         }
 
         /// <summary>
@@ -164,7 +176,7 @@ namespace PayWithAmazon
             {
                 if (this.config.ContainsKey(pair.Key))
                 {
-                    this.config[pair.Key] = pair.Value.ToString().Trim();
+                    this.config[pair.Key] = pair.Value.ToString();
                 }
                 else
                 {
@@ -186,7 +198,7 @@ namespace PayWithAmazon
             foreach (DictionaryEntry newpair in table)
             {
                 input = "";
-                string key = newpair.Key.ToString().ToLower();
+                string key = newpair.Key.ToString().ToLower().Trim();
                 if (newpair.Value != null)
                 {
                     input = newpair.Value;
@@ -237,32 +249,32 @@ namespace PayWithAmazon
         /// <param name="proxy"></param>
         /// <example>
         ///  <code>
-        ///   proxy["proxy_user_host"] = "PROXY_HOST_NAME";
-        ///   proxy["proxy_user_port"] = "PROXY_USER_PORT";
-        ///   proxy["proxy_user_name"] = "PROXY_USER_NAME";
-        ///   proxy["proxy_user_password"] = "PROXY_USER_PASSWORD";
+        ///   string proxy_host = "PROXY_HOST_NAME";
+        ///   int proxy_port = 1234;
+        ///   string proxy_user_name = "PROXY_USER_NAME";
+        ///   string proxy_user_password = "PROXY_USER_PASSWORD";
         ///  </code>
         /// </example>
-        public void SetProxy(Hashtable proxy)
+        public void SetProxy(string proxy_host = "", int proxy_port = -1, string proxy_user_name = "", string proxy_user_password = "")
         {
-            if (proxy["proxy_user_host"] != null)
+            if (!string.IsNullOrEmpty(proxy_host))
             {
-                config["proxy_host"] = proxy["proxy_user_host"];
+                config["proxy_host"] = proxy_host;
             }
 
-            if (proxy["proxy_user_port"] != null)
+            if (proxy_port != -1)
             {
-                config["proxy_port"] = proxy["proxy_user_port"];
+                config["proxy_port"] = proxy_port;
             }
 
-            if (proxy["proxy_user_name"] != null)
+            if (!string.IsNullOrEmpty(proxy_user_name))
             {
-                config["proxy_username"] = proxy["proxy_user_name"];
+                config["proxy_username"] = proxy_user_name;
             }
 
-            if (proxy["proxy_user_password"] != null)
+            if (!string.IsNullOrEmpty(proxy_user_password))
             {
-                config["proxy_password"] = proxy["proxy_user_password"];
+                config["proxy_password"] = proxy_user_password;
             }
         }
 
@@ -339,26 +351,26 @@ namespace PayWithAmazon
         {
             string input = "";
             List<Hashtable> providerCredit = new List<Hashtable>();
-            bool isDict = false;
+            bool isProviderCredit = false;
             // For loop to take all the non empty parameters in the requestParameters and add it into the parameters Hashtable,
             // if the keys are matched from requestParameters Hashtable with the fieldMappings Hashtable
 
             foreach (DictionaryEntry pair in requestParameters)
             {
-                if (!(pair.Value.GetType() == typeof(List<Hashtable>)))
+                if (pair.Value != null && !(pair.Value.GetType() == typeof(List<Hashtable>)))
                 {
                     input = pair.Value.ToString().Trim();
-                    isDict = false;
+                    isProviderCredit = false;
                 }
                 else
                 {
-                    isDict = true;
+                    isProviderCredit = true;
                     providerCredit = pair.Value as List<Hashtable>;
                 }
 
-                if (fieldMappings.ContainsKey(pair.Key) == true && input != "" && input != null)
+                if (input != "" && input != null)
                 {
-                    if (isDict)
+                    if (isProviderCredit)
                     {
                         // If the parameter is a provider_credit_details or provider_credit_reversal_details, call the respective functions to set the values
                         if (pair.Key.Equals("provider_credit_details"))
@@ -373,7 +385,7 @@ namespace PayWithAmazon
                     }
                     else
                     {
-                        // For variables that are boolean values,strtolower them
+                        // For variables that are boolean values, change their case to lower
                         input = CheckIfBoolAndLowerValue(input);
                         parameters[fieldMappings[pair.Key]] = input;
                     }
@@ -429,7 +441,7 @@ namespace PayWithAmazon
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns>ResponseParser Object</returns>
-        private ResponseParser CalculateSignatureAndPost(Hashtable parameters)
+        public ResponseParser CalculateSignatureAndPost(Hashtable parameters)
         {
             // Call the signature and Post function to perform the actions.
             string parametersString = CalculateSignatureAndParametersToString(HashtableToDictionary<string, string>(parameters));
@@ -469,7 +481,10 @@ namespace PayWithAmazon
                 {
                     if (requestParameters.ContainsKey(param))
                     {
-                        input = requestParameters[param].ToString().Trim();
+                        if (requestParameters[param] != null)
+                        {
+                            input = requestParameters[param].ToString().Trim();
+                        }
                     }
                     if (input != null && input != "")
                     {
@@ -504,7 +519,6 @@ namespace PayWithAmazon
 
             foreach (Hashtable pair in providerCreditInfo)
             {
-
                 Hashtable innerDictionary = LowerKeys(pair);
                 providerIndex = providerIndex + 1;
 
@@ -611,34 +625,34 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   GetOrderReferenceDetailsRequest requestParameters = new GetOrderReferenceDetailsRequest();
         ///  
         ///   // Required params
-        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        ///   requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
         ///  
         ///   // Optional params
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["address_consent_token"] = "ACCESS_TOKEN";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithAddressConsentToken[("ACCESS_TOKEN");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser GetOrderReferenceDetails(Hashtable requestParameters)
+        public ResponseParser GetOrderReferenceDetails(GetOrderReferenceDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
+
             parameters["Action"] = "GetOrderReferenceDetails";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  {
-            {"merchant_id","SellerId"},
-            {"amazon_order_reference_id","AmazonOrderReferenceId"},
-            {"address_consent_token","AddressConsentToken"},
-            {"mws_auth_token","MWSAuthToken"}
-        };
+                {"merchant_id","SellerId"},
+                {"amazon_order_reference_id","AmazonOrderReferenceId"},
+                {"address_consent_token","AddressConsentToken"},
+                {"mws_auth_token","MWSAuthToken"}
+            };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
-            return (responseObject);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getOrderReferenceDetailsHashtable);
+            return responseObject;
         }
 
         /// <summary>
@@ -648,29 +662,28 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   SetOrderReferenceDetailsRequest requestParameters = new SetOrderReferenceDetailsRequest();
         ///  
         ///   // Required Parameters
-        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
-        ///   requestParameters["amount"] = "100";
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
+        ///   requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+        ///   requestParameters.WithAmount("100");
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
         /// 
         ///   // Optional 
-        ///   requestParameters["platform_id"] = "SOLUTION_PROVIDER_ID";
-        ///   requestParameters["seller_note"] = "CUSTOM_NOTE";
-        ///   requestParameters["seller_order_id"] = "CUSTOM_ORDER_ID";
-        ///   requestParameters["store_name"] = "CUSTOM_STORE_NAME";
-        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithPlatformId("SOLUTION_PROVIDER_ID");
+        ///   requestParameters.WithSellerNote("CUSTOM_NOTE");
+        ///   requestParameters.WithSellerOrderId("CUSTOM_ORDER_ID");
+        ///   requestParameters.WithStoreName("CUSTOM_STORE_NAME");
+        ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser SetOrderReferenceDetails(Hashtable requestParameters)
+        public ResponseParser SetOrderReferenceDetails(SetOrderReferenceDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "SetOrderReferenceDetails";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  {
                 {"merchant_id","SellerId"},
@@ -685,7 +698,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.setOrderReferenceDetailsHashtable);
             return (responseObject);
         }
 
@@ -696,22 +709,21 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         /// <code>
-        ///  Hashtable requestParameters = new Hashtable();
+        ///  ConfirmOrderReferenceRequest requestParameters = new ConfirmOrderReferenceRequest();
         ///  
         ///  // Required
-        ///  requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        ///  requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
         /// 
         ///  // Optional
-        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser ConfirmOrderReference(Hashtable requestParameters)
+        public ResponseParser ConfirmOrderReference(ConfirmOrderReferenceRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "ConfirmOrderReference";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  {
                 {"merchant_id","SellerId"},
@@ -719,7 +731,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.confirmOrderReferenceHashtable);
             return (responseObject);
         }
 
@@ -730,23 +742,22 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   CancelOrderReferenceRequest requestParameters = new CancelOrderReferenceRequest();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
+        ///   requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
         ///  
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["cancelation_reason"] = "CUSTOM_CANCEL_REASON";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithCancelationReason("CUSTOM_CANCEL_REASON");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser CancelOrderReference(Hashtable requestParameters)
+        public ResponseParser CancelOrderReference(CancelOrderReferenceRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "CancelOrderReference";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  {
                 {"merchant_id","SellerId"},
@@ -755,7 +766,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.cancelOrderReferenceHashtable);
             return (responseObject);
         }
 
@@ -766,23 +777,22 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   CloseOrderReferenceRequest requestParameters = new CloseOrderReferenceRequest();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_order_reference_id"] "S01/P01-XXXXX-XXXXX";
+        ///   requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
         /// 
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["closure_reason"] = "CLOSURE_REASON";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithClosureReason("CLOSURE_REASON");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser CloseOrderReference(Hashtable requestParameters)
+        public ResponseParser CloseOrderReference(CloseOrderReferenceRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "CloseOrderReference";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  {
                 {"merchant_id","SellerId"},
@@ -791,7 +801,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.closeOrderReferenceHashtable);
             return (responseObject);
         }
 
@@ -802,23 +812,22 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   CloseAuthorizationRequest requestParameters = new CloseAuthorizationRequest();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_authorization_id"] = "S01/P01-XXXXX-XXXXX-AXXXXX";
+        ///   requestParameters.WithAmazonAuthorizationId("S01/P01-XXXXX-XXXXX-AXXXXX");
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["closure_reason"] = "CLOSURE_REASON";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithClosureReason("CLOSURE_REASON");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser CloseAuthorization(Hashtable requestParameters)
+        public ResponseParser CloseAuthorization(CloseAuthorizationRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "CloseAuthorization";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable {
                 {"merchant_id","SellerId"},
@@ -826,7 +835,7 @@ namespace PayWithAmazon
                 {"closure_reason","ClosureReason"},
                 {"mws_auth_token","MWSAuthToken"}
             };
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.closeAuthorizationHashtable);
             return (responseObject);
         }
 
@@ -837,30 +846,29 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   AuthorizeRequest requestParameters = new AuthorizeRequest();
         ///    
         ///   // Required
-        ///   requestParameters["amazon_order_reference_id"] = "S01/P01-XXXXX-XXXXX";
-        ///   requestParameters["authorization_amount"] = "100";
+        ///   requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+        ///   requestParameters.WithAmount("100");
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///   requestParameters["authorization_reference_id"] = "UNIQUE_STRING";
-        ///   requestParameters["capture_now"] = false; // Defaults to false
-        ///   requestParameters["provider_credit_details"] = "list of Hashtable"; // [list(Hashtable)]
-        ///   requestParameters["seller_authorization_note"] = "CUSTOM_NOTE";
-        ///   requestParameters["transaction_timeout"] = "5"; // Defaults to 1440 minutes
-        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING");
+        ///   requestParameters.WithCaptureNow(false); // Defaults to false
+        ///   requestParameters.WithProviderCreditDetails("list_of_Hashtable"); // [list(Hashtable)]
+        ///   requestParameters.WithSellerAuthorizationNote("CUSTOM_NOTE");
+        ///   requestParameters.WithTransactionTimeout(5); // Defaults to 1440 minutes
+        ///   requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser Authorize(Hashtable requestParameters)
+        public ResponseParser Authorize(AuthorizeRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "Authorize";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  {
                 {"merchant_id","SellerId"},
@@ -875,8 +883,8 @@ namespace PayWithAmazon
                 {"soft_descriptor","SoftDescriptor"},
                 {"mws_auth_token","MWSAuthToken"},
             };
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
-            return (responseObject);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.authorizeHashtable);
+            return responseObject;
         }
 
         /// <summary>
@@ -886,22 +894,21 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   GetAuthorizationDetailsRequest requestParameters = new GetAuthorizationDetailsRequest();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_authorization_id"] = "S01/P01-XXXXX-XXXXX-AXXXXX";
+        ///   requestParameters.WithAmazonAuthorizationId"("S01/P01-XXXXX-XXXXX-AXXXXX)";
         ///  
         ///   // Optional 
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID";
-        ///   requestParameters["mws_auth_token"] "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser GetAuthorizationDetails(Hashtable requestParameters)
+        public ResponseParser GetAuthorizationDetails(GetAuthorizationDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "GetAuthorizationDetails";
-            requestParameters = new Hashtable(requestParameters, StringComparer.InvariantCultureIgnoreCase);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -910,7 +917,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"},
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getAuthorizationDetailsHashtable);
             return (responseObject);
         }
 
@@ -921,27 +928,26 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   CaptureRequest requestParameters = new CaptureRequest();
         ///   // Required
-        ///   requestParameters["amazon_authorization_id"] "S01/P01-XXXXX-XXXXX-AXXXX";
-        ///   requestParameters["capture_amount"] = "100";
-        ///   requestParameters["capture_reference_id"] = "UNIQUE_STRING";
+        ///   requestParameters.WithAmazonAuthorizationId("S01/P01-XXXXX-XXXXX-AXXXX");
+        ///   requestParameters.WithCaptureAmount("100");
+        ///   requestParameters.WithCaptureReferenceId("UNIQUE_STRING");
         ///  
         ///   // Optional 
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///   requestParameters["provider_credit_details"] = [list(Hashtable)]; // list of Provider Credit Hashtable(s) details
-        ///   requestParameters["seller_capture_note"] = "CUSTOM_NOTE";
-        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithProviderCreditDetails([list(Hashtable)]); // list of Provider Credit Hashtable(s) details
+        ///   requestParameters.WithSellerCaptureNote("CUSTOM_NOTE");
+        ///   requestParameters.WithSetSoftDescriptor("AMZ*CUSTOM");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser Capture(Hashtable requestParameters)
+        public ResponseParser Capture(CaptureRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "Capture";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -950,13 +956,13 @@ namespace PayWithAmazon
                 {"capture_amount","CaptureAmount.Amount"},
                 {"currency_code","CaptureAmount.CurrencyCode"},
                 {"capture_reference_id","CaptureReferenceId"},
-                {"provider_credit_details"	,typeof(List<Hashtable>)},
+                {"provider_credit_details",typeof(List<Hashtable>)},
                 {"seller_capture_note","SellerCaptureNote"},
                 {"soft_descriptor","SoftDescriptor"},
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.captureHashtable);
             return (responseObject);
         }
 
@@ -966,23 +972,22 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   GetCaptureDetailsRequest requestParameters = new GetCaptureDetailsRequest();
         ///   
         ///   // Required
         ///   requestParameters["amazon_capture_id"] = "S01/P01-XXXXX-XXXXX-CXXXXX" ;
         ///  
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser GetCaptureDetails(Hashtable requestParameters)
+        public ResponseParser GetCaptureDetails(GetCaptureDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "GetCaptureDetails";
-            requestParameters = new Hashtable(requestParameters, StringComparer.InvariantCultureIgnoreCase);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -991,7 +996,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"},
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getCaptureDetailsHashtable);
             return (responseObject);
         }
 
@@ -1001,29 +1006,28 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   RefundRequest requestParameters = new RefundRequest();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_capture_id"] = "S01/P01-XXXXX-XXXXX";
-        ///   requestParameters["refund_reference_id"] = "UNIQUE_STRING";
-        ///   requestParameters["refund_amount"] = "100";
+        ///   requestParameters.WithAmazonCaptureId("S01/P01-XXXXX-XXXXX-CXXXX");
+        ///   requestParameters.WithRefundReferenceId("UNIQUE_STRING");
+        ///   requestParameters.WithAmount("100");
         ///   
         ///   //Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///   requestParameters["provider_credit_reversal_details"] = [list(Hashtable)]; // list of Provider Credit Hashtable(s) details
-        ///   requestParameters["seller_refund_note"] = "CUSTOM_NOTE";
-        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithProviderCreditReversalDetails("PROVIDER_ID","10","USD"); // Provider Credit details
+        ///   requestParameters.WithSellerRefundNote("CUSTOM_NOTE");
+        ///   requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser Refund(Hashtable requestParameters)
+        public ResponseParser Refund(RefundRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "Refund";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1038,7 +1042,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.refundHashtable);
             return (responseObject);
         }
 
@@ -1048,23 +1052,22 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   GetRefundDetailsRequest requestParameters = new GetRefundDetailsRequest();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_refund_id"] = "S01/P01-XXXXX-XXXXX-RXXXXX";
+        ///   requestParameters.WithAmazonRefundId("S01/P01-XXXXX-XXXXX-RXXXXX");
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["mws_auth_token"] "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser GetRefundDetails(Hashtable requestParameters)
+        public ResponseParser GetRefundDetails(GetRefundDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "GetRefundDetails";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1073,7 +1076,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getRefundDetailsHashtable);
             return (responseObject);
         }
 
@@ -1084,18 +1087,19 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
+        ///  GetServiceStatusRequest requestParameters =  new GetServiceStatusRequest();
+        ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns></returns>
-        public ResponseParser GetServiceStatus(Hashtable requestParameters)
+        public ResponseParser GetServiceStatus(GetServiceStatusRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "GetServiceStatus";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()
             {
@@ -1103,7 +1107,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getServiceStatusRequestHashtable);
             return (responseObject);
         }
 
@@ -1113,30 +1117,29 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///    Hashtable requestParameters = new Hashtable();
+        ///    CreateOrderReferenceForIdRequest requestParameters = new CreateOrderReferenceForIdRequest();
         ///   
         ///   // Required
-        ///   requestParameters["Id"] = "C01/B01-XXXXX-XXXXX" // billing agreement ID
+        ///   requestParameters.WithId("C01/B01-XXXXX-XXXXX"); // billing agreement ID
         ///   
         ///   // Optional
-        ///   requestParameters["inherit_shipping_address"] = true; // Defaults to false
-        ///   requestParameters["ConfirmNow"]  = true; // Defaults to false
-        ///   requestParameters["amount"] = "100"; // Required when requestParameters["ConfirmNow"] is set to true
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///   requestParameters["seller_note"] = "CUSTOM_NOTE";
-        ///   requestParameters["seller_order_id"] = "CUSTOM_ORDER_ID";
-        ///   requestParameters["store_name"] = "CUSTOM_NAME";
-        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithInheritShippingAddress(true); // Defaults to false
+        ///   requestParameters.WithConfirmNow(true); // Defaults to false
+        ///   requestParameters.WithAmount("100"); // Required when requestParameters["ConfirmNow"] is set to true
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithSellerNote("CUSTOM_NOTE");
+        ///   requestParameters.WithSellerOrderId("CUSTOM_ORDER_ID");
+        ///   requestParameters.WithStoreName("CUSTOM_NAME");
+        ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser CreateOrderReferenceForId(Hashtable requestParameters)
+        public ResponseParser CreateOrderReferenceForId(CreateOrderReferenceForIdRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "CreateOrderReferenceForId";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1155,7 +1158,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.createOrderReferenceForIdHashtable);
             return (responseObject);
         }
 
@@ -1165,23 +1168,22 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///    Hashtable requestParameters = new Hashtable();
+        ///    GetBillingAgreementDetailsRequest requestParameters = new GetBillingAgreementDetailsRequest();
         ///    
         ///   // Required
-        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser GetBillingAgreementDetails(Hashtable requestParameters)
+        public ResponseParser GetBillingAgreementDetails(GetBillingAgreementDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "GetBillingAgreementDetails";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1191,7 +1193,7 @@ namespace PayWithAmazon
                  {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getBillingAgreementDetailsHashtable);
             return (responseObject);
         }
 
@@ -1201,30 +1203,29 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   SetBillingAgreementDetailsRequest requestParameters = new SetBillingAgreementDetailsRequest();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
-        ///   requestParameters["amount"] = "100";
+        ///   requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+        ///   requestParameters.WithAmount("100");
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///   requestParameters["platform_id"] = "PLATFORM_ID"; // Solution Provider ID
-        ///   requestParameters["seller_note"] = "CUSTOM_NOTE":
-        ///   requestParameters["seller_billing_agreement_id"] = "CUSTOM_ID"; 
-        ///   requestParameters["store_name"] = "CUSTOM_STORE_NAME";
-        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN" ;
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithPlatformId("PLATFORM_ID"); // Solution Provider ID
+        ///   requestParameters.WithSellerNote("CUSTOM_NOTE"):
+        ///   requestParameters.WithSellerBillingAgreementId("CUSTOM_ID"); 
+        ///   requestParameters.WithStoreName("CUSTOM_STORE_NAME");
+        ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser SetBillingAgreementDetails(Hashtable requestParameters)
+        public ResponseParser SetBillingAgreementDetails(SetBillingAgreementDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "SetBillingAgreementDetails";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1238,7 +1239,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.setBillingAgreementDetailsHashtable);
             return (responseObject);
         }
 
@@ -1249,22 +1250,21 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///    Hashtable requestParameters = new Hashtable();
+        ///    ConfirmOrderReferenceRequest requestParameters = new ConfirmOrderReferenceRequest();
         ///    
         ///   // Required
-        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"]  = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser ConfirmBillingAgreement(Hashtable requestParameters)
+        public ResponseParser ConfirmBillingAgreement(ConfirmBillingAgreementRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "ConfirmBillingAgreement";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1273,7 +1273,7 @@ namespace PayWithAmazon
                  {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.confirmBillingAgreementHashtable);
             return (responseObject);
         }
 
@@ -1284,22 +1284,21 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   ValidateBillingAgreementRequest requestParameters = new ValidateBillingAgreementRequest();
         ///    
         ///   // Required
-        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///   requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"]  = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser ValidateBillingAgreement(Hashtable requestParameters)
+        public ResponseParser ValidateBillingAgreement(ValidateBillingAgreementRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "ValidateBillingAgreement";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1308,7 +1307,7 @@ namespace PayWithAmazon
                  {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.validateBillingAgreementHashtable);
             return (responseObject);
         }
 
@@ -1318,37 +1317,36 @@ namespace PayWithAmazon
         /// </summary>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   AuthorizeOnBillingAgreementRequest requestParameters = new AuthorizeOnBillingAgreementRequest();
         ///    
         ///   // Required
-        ///   requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
-        ///   requestParameters["authorization_reference_id"] = "UNIQUE_STRING";
-        ///   requestParameters["authorization_amount"] = "100";
+        ///   requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+        ///   requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING");
+        ///   requestParameters.WithAmount("100");
         ///   
         ///   
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///   requestParameters["seller_authorization_note"] = "CUSTOM_NOTE";
-        ///   requestParameters["transaction_timeout"] = 5; // Defaults to 1440 minutes
-        ///   requestParameters["capture_now"] = false; // Defaults to false
-        ///   requestParameters["soft_descriptor"] = "AMZ*CUSTOM";
-        ///   requestParameters["seller_note"] = "CUSTOM_NOTE";
-        ///   requestParameters["platform_id"] = "PLATFORM_ID" // Solution Provider ID
-        ///   requestParameters["custom_information"] = "CUSTOM_INFO";
-        ///   requestParameters["seller_order_id"] = "CUSTOM_ID";
-        ///   requestParameters["store_name"] = "CUSTOM_NAME";
-        ///   requestParameters["inherit_shipping_address"] = true; // Defaults to true
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithSellerAuthorizationNote("CUSTOM_NOTE");
+        ///   requestParameters.WithTransactionTimeout(5); // Defaults to 1440 minutes
+        ///   requestParameters.WithCaptureNow(false); // Defaults to false
+        ///   requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
+        ///   requestParameters.WithSellerNote("CUSTOM_NOTE");
+        ///   requestParameters.WithPlatformId("PLATFORM_ID") // Solution Provider ID
+        ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
+        ///   requestParameters.WithSellerOrderId("CUSTOM_ID");
+        ///   requestParameters.WithStoreName("CUSTOM_NAME");
+        ///   requestParameters.WithInheritShippingAddress(true); // Defaults to true
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser AuthorizeOnBillingAgreement(Hashtable requestParameters)
+        public ResponseParser AuthorizeOnBillingAgreement(AuthorizeOnBillingAgreementRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "AuthorizeOnBillingAgreement";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()
             {
@@ -1370,7 +1368,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.authorizeOnBillingAgreementHashtable);
             return (responseObject);
         }
 
@@ -1381,23 +1379,22 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         /// <code>
-        ///  Hashtable requestParameters = new Hashtable();
+        ///  CloseBillingAgreementRequest requestParameters = new CloseBillingAgreementRequest();
         ///   
         ///  // Required
-        ///  requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
+        ///  requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
         ///   
         ///  // Optional
-        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///  requestParameters["closure_reason"] = "CLOSURE_REASON";
-        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///  requestParameters.WithClosureReason("CLOSURE_REASON");
+        ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser CloseBillingAgreement(Hashtable requestParameters)
+        public ResponseParser CloseBillingAgreement(CloseBillingAgreementRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "CloseBillingAgreement";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable()  
             {
@@ -1407,7 +1404,7 @@ namespace PayWithAmazon
                 {"mws_auth_token","MWSAuthToken"}
             };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.closeBillingAgreementHashtable);
             return (responseObject);
         }
 
@@ -1417,32 +1414,30 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         /// <code>
-        ///  Hashtable requestParameters = new Hashtable();
+        ///  GetProviderCreditReversalDetailsRequest requestParameters = new GetProviderCreditReversalDetailsRequest();
         ///  
         ///  // Required
-        ///  requestParameters["amazon_provider_credit_id"]  = "PROVIDER_CREDIT_ID";
+        ///  requestParameters.WithAmazonProviderCreditId("PROVIDER_CREDIT_ID");
         ///  
         ///  // Optional
-        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser GetProviderCreditDetails(Hashtable requestParameters)
+        public ResponseParser GetProviderCreditDetails(GetProviderCreditReversalDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "GetProviderCreditDetails";
 
-            requestParameters = LowerKeys(requestParameters);
-
             Hashtable fieldMappings = new Hashtable
-        {
-            {"merchant_id","SellerId"},
-            {"amazon_provider_credit_id","AmazonProviderCreditId"},
-            {"mws_auth_token", "MWSAuthToken"}
-        };
+            {
+                {"merchant_id","SellerId"},
+                {"amazon_provider_credit_id","AmazonProviderCreditId"},
+                {"mws_auth_token", "MWSAuthToken"}
+            };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getProviderCreditReversalDetailsHashtable);
             return (responseObject);
         }
 
@@ -1452,22 +1447,21 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         /// <code>
-        ///  Hashtable requestParameters = new Hashtable();
+        ///  GetProviderCreditReversalDetailsRequest requestParameters = new GetProviderCreditReversalDetailsRequest();
         ///  
         ///  // Required
-        ///  requestParameters["amazon_provider_credit_reversal_id"]  = "PROVIDER_CREDIT_REVERSAL_ID";
+        ///  requestParameters.WithAmazonProviderCreditReversalId("PROVIDER_CREDIT_REVERSAL_ID");
         ///  
         ///  // Optional
-        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser GetProviderCreditReversalDetails(Hashtable requestParameters)
+        public ResponseParser GetProviderCreditReversalDetails(GetProviderCreditReversalDetailsRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "GetProviderCreditReversalDetails";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable{
             {"merchant_id","SellerId"},
@@ -1475,7 +1469,7 @@ namespace PayWithAmazon
             {"mws_auth_token", "MWSAuthToken"}
         };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.getProviderCreditReversalDetailsHashtable);
 
             return (responseObject);
         }
@@ -1486,27 +1480,26 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         /// <code>
-        ///  Hashtable requestParameters = new Hashtable();
+        ///  ReverseProviderCreditRequest requestParameters = new ReverseProviderCreditRequest();
         ///  
         ///  // Required
-        ///  requestParameters["amazon_provider_credit_id"]  = "PROVIDER_CREDIT_ID";
-        ///  requestParameters["credit_reversal_reference_id"] = "UNIQUE_STRING";
-        ///  requestParameters["credit_reversal_amount"] = "10";
+        ///  requestParameters.WithAmazonProviderCreditId("PROVIDER_CREDIT_ID");
+        ///  requestParameters.WithCreditReversalReferenceId("UNIQUE_STRING");
+        ///  requestParameters.WithAmount("10");
         ///  
         ///  
         ///  // Optional
-        ///  requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///  requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
-        ///  requestParameters["credit_reversal_note"] = "CUSTOM_NOTE";
-        ///  requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///  requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///  requestParameters.WithCreditReversalNote("CUSTOM_NOTE");
+        ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
-        public ResponseParser ReverseProviderCredit(Hashtable requestParameters)
+        public ResponseParser ReverseProviderCredit(ReverseProviderCreditRequest requestParameters)
         {
             Hashtable parameters = new Hashtable();
             parameters["Action"] = "ReverseProviderCredit";
-            requestParameters = LowerKeys(requestParameters);
 
             Hashtable fieldMappings = new Hashtable{
             {"merchant_id","SellerId"},
@@ -1518,7 +1511,7 @@ namespace PayWithAmazon
             {"mws_auth_token","MWSAuthToken"}
         };
 
-            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters);
+            ResponseParser responseObject = SetParametersAndPost(parameters, fieldMappings, requestParameters.reverseProviderCreditHashtable);
 
             return (responseObject);
         }
@@ -1536,120 +1529,53 @@ namespace PayWithAmazon
         ///   Hashtable requestParameters = new Hashtable();
         ///   
         ///   // Required
-        ///   requestParameters["amazon_reference_id"] = "(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)";// order reference ID / billing agreement ID
+        ///   requestParameters.WithAmazonReferenceId("(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)");// order reference ID / billing agreement ID
         ///   // If requestParameters["amazon_reference_id"] is empty then the following is required,
         ///    requestParameters["amazon_order_reference_id"]="S01/P01-XXXXX-XXXXX";
         ///   // or,
-        ///    requestParameters["amazon_billing_agreement_id"] = "C01/B01-XXXXX-XXXXX";
-        ///    requestParameters["authorization_reference_id"] ="UNIQUE_STRING" // Any unique string that needs to be passed
+        ///    requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+        ///    requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING"); // Any unique string that needs to be passed
         ///    requestParameters["charge_amount"] = "100";
         ///    
         ///   // Optional
-        ///   requestParameters["merchant_id"] = "MERCHANT_ID"; // Required if config["merchant_id"] is null
-        ///   requestParameters["currency_code"] = "USD"; // Required if config["currency_code"] is null
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
         ///   requestParameters["charge_note"] =  "CUSTOM_NOTE" // Seller Note sent to the buyer
         ///   requestParameters["transaction_timeout"] = 5; // Defaults to 1440 minutes
         ///   requestParameters["capture_now"] = false; // captures payment automatically when set to true, defaults to false
         ///   requestParameters["charge_order_id"] = "CUSTOM_ID"; // Custom Order ID provided
-        ///   requestParameters["mws_auth_token"] = "MWS_AUTH_TOKEN";
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser response</returns>
-        public ResponseParser Charge(Hashtable requestParameters)
-        {
-            string chargeType = "";
-            Hashtable setParameters, authorizeParameters, confirmParameters = new Hashtable();
-            setParameters = authorizeParameters = confirmParameters = requestParameters;
-
-            if (requestParameters.ContainsKey("amazon_order_reference_id") && !string.IsNullOrEmpty(requestParameters["amazon_order_reference_id"].ToString()))
-            {
-                chargeType = "OrderReference";
-            }
-            else if (requestParameters.ContainsKey("amazon_billing_agreement_id") && !string.IsNullOrEmpty(requestParameters["amazon_billing_agreement_id"].ToString()))
-            {
-                chargeType = "BillingAgreement";
-            }
-            else if (requestParameters.ContainsKey("amazon_reference_id") && !string.IsNullOrEmpty(requestParameters["amazon_reference_id"].ToString()))
-            {
-                string switchChar = requestParameters["amazon_reference_id"].ToString();
-                switch (switchChar[0])
-                {
-                    case 'P':
-                    case 'S':
-                        chargeType = "OrderReference";
-                        setParameters["amazon_order_reference_id"] = requestParameters["amazon_reference_id"];
-                        authorizeParameters["amazon_order_reference_id"] = requestParameters["amazon_reference_id"];
-                        confirmParameters["amazon_order_reference_id"] = requestParameters["amazon_reference_id"];
-                        break;
-                    case 'B':
-                    case 'C':
-                        chargeType = "BillingAgreement";
-                        setParameters["amazon_billing_agreement_id"] = requestParameters["amazon_reference_id"];
-                        authorizeParameters["amazon_billing_agreement_id"] = requestParameters["amazon_reference_id"];
-                        confirmParameters["amazon_billing_agreement_id"] = requestParameters["amazon_reference_id"];
-                        break;
-                    default:
-                        throw new InvalidDataException("Invalid Amazon Reference ID");
-                }
-            }
-            else
-            {
-                throw new MissingFieldException("key amazon_order_reference_id or amazon_billing_agreement_id is null and is a required parameter");
-            }
-            // Set the other parameters if the values are present
-            setParameters["amount"] = requestParameters.ContainsKey("charge_amount") ? requestParameters["charge_amount"] : "";
-            authorizeParameters["authorization_amount"] = requestParameters.ContainsKey("charge_amount") ? requestParameters["charge_amount"] : "";
-
-            setParameters["seller_note"] = requestParameters.ContainsKey("charge_note") ? requestParameters["charge_note"] : "";
-            authorizeParameters["seller_authorization_note"] = requestParameters.ContainsKey("charge_note") ? requestParameters["charge_note"] : "";
-            authorizeParameters["seller_note"] = requestParameters.ContainsKey("charge_note") ? requestParameters["charge_note"] : "";
-
-            setParameters["seller_order_id"] = requestParameters.ContainsKey("charge_order_id") ? requestParameters["charge_order_id"] : "";
-            setParameters["seller_billing_agreement_id"] = requestParameters.ContainsKey("charge_order_id") ? requestParameters["charge_order_id"] : "";
-            authorizeParameters["seller_order_id"] = requestParameters.ContainsKey("charge_order_id") ? requestParameters["charge_order_id"] : "";
-
-            authorizeParameters["capture_now"] = requestParameters.ContainsKey("capture_now") ? requestParameters["capture_now"] : false;
-
-            ResponseParser response = MakeChargeCalls(chargeType, setParameters, confirmParameters, authorizeParameters);
-            return response;
-        }
-
-        /// <summary>
-        /// MakeChargeCalls - makes API calls based off the charge type (OrderReference or BillingAgreement)
-        /// </summary>
-        /// <param name="chargeType"></param>
-        /// <param name="setParameters"></param>
-        /// <param name="confirmParameters"></param>
-        /// <param name="authorizeParameters"></param>
-        /// <returns>ResponseParser response</returns>
-        private ResponseParser MakeChargeCalls(string chargeType, Hashtable setParameters, Hashtable confirmParameters, Hashtable authorizeParameters)
+        public ResponseParser Charge(ChargeRequest requestParameters)
         {
             ResponseParser response = null;
             ResponseParser statusResponse = null;
             string baStatus, oroStatus = "";
-            switch (chargeType)
+            switch (requestParameters.chargeType)
             {
                 case "OrderReference":
-                    statusResponse = GetOrderReferenceDetails(setParameters);
+                    statusResponse = GetOrderReferenceDetails(requestParameters.getOrderReferenceDetails);
                     // Call the function GetOrderReferenceStatus in ResponseParser.php providing it the XML response
                     // oroStatus - State of the order reference Id
                     oroStatus = statusResponse.GetOrderReferenceStatus(statusResponse.ToXml());
                     if (oroStatus.Equals("Draft"))
                     {
-                        response = SetOrderReferenceDetails(setParameters);
+                        response = SetOrderReferenceDetails(requestParameters.setOrderReferenceDetails);
 
                         if (success)
                         {
-                            response = ConfirmOrderReference(confirmParameters);
+                            response = ConfirmOrderReference(requestParameters.confirmOrderReference);
                         }
                     }
 
-                    statusResponse = GetOrderReferenceDetails(setParameters);
+                    statusResponse = GetOrderReferenceDetails(requestParameters.getOrderReferenceDetails);
                     oroStatus = statusResponse.GetOrderReferenceStatus(statusResponse.ToXml());
 
                     if (success && oroStatus.Equals("Open"))
                     {
-                        response = Authorize(authorizeParameters);
+                        response = Authorize(requestParameters.authorizeOrderReference);
                     }
                     if (!(oroStatus.Equals("Open") || oroStatus.Equals("Draft")))
                     {
@@ -1658,25 +1584,25 @@ namespace PayWithAmazon
                     break;
                 case "BillingAgreement":
                     // Get the billing agreement details and feed the response object to the ResponseParser
-                    statusResponse = GetBillingAgreementDetails(setParameters);
+                    statusResponse = GetBillingAgreementDetails(requestParameters.getBillingAgreementDetails);
                     // Call the function GetBillingAgreementDetailsStatus in ResponseParser.php providing it the XML response
                     // baStatus - State of the billing agreement
                     baStatus = statusResponse.GetBillingAgreementStatus(statusResponse.ToXml());
                     if (!baStatus.Equals("Open"))
                     {
-                        response = SetBillingAgreementDetails(setParameters);
+                        response = SetBillingAgreementDetails(requestParameters.setBillingAgreementDetails);
                         if (success)
                         {
-                            response = ConfirmBillingAgreement(confirmParameters);
+                            response = ConfirmBillingAgreement(requestParameters.confirmBillingAgreement);
                         }
                     }
                     // Check the billing agreement status again before making the Authorization.
-                    statusResponse = GetBillingAgreementDetails(setParameters);
+                    statusResponse = GetBillingAgreementDetails(requestParameters.getBillingAgreementDetails);
                     baStatus = statusResponse.GetBillingAgreementStatus(statusResponse.ToXml());
 
                     if (success && baStatus.Equals("Open"))
                     {
-                        response = AuthorizeOnBillingAgreement(authorizeParameters);
+                        response = AuthorizeOnBillingAgreement(requestParameters.authorizeOnBillingAgreement);
                     }
                     if (!(baStatus.Equals("Open")) || !(baStatus.Equals("Draft")))
                     {
@@ -1684,7 +1610,6 @@ namespace PayWithAmazon
                     }
                     break;
             }
-
             return response;
         }
 
@@ -2111,8 +2036,11 @@ namespace PayWithAmazon
             return Clean(s).Replace(@"\", @"\\").Replace(@"=", @"\=");
         }
 
-        // Collapse whitespace,and escape the following characters are escaped 
-
+        /// <summary>
+        /// Collapse whitespace,and escape the following characters are escaped 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>string s</returns>
         private static string QuoteAttributeValue(string s)
         {
             return Clean(s).Replace(@"\", @"\\").Replace(@";", @"\;").Replace(@")", @"\)");

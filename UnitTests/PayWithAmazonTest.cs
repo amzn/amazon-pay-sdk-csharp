@@ -10,30 +10,35 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.Net;
+using PayWithAmazon.ProviderCreditRequests;
+using PayWithAmazon.RecurringPaymentRequests;
+using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.CommonRequests;
 
 namespace UnitTests
 {
     [TestFixture]
     public class PayWithAmazonTest
     {
-        private Hashtable configParams = new Hashtable()
+        Configuration clientConfig = new Configuration();
+        public PayWithAmazonTest()
         {
-            {"merchant_id","test"},
-            {"access_key","test"},
-            {"secret_key","test"},
-            {"currency_code","usd"},
-            {"client_id","test"},
-            {"region","us"},
-            {"sandbox", true},
-            {"platform_id",null},
-            {"cabundle_file", null},
-            {"application_name","sdk testing"},
-            {"application_version","1.0"},
-            {"proxy_host", null},
-            {"proxy_port", -1},
-            {"proxy_username", null},
-            {"proxy_Password", null}
-        };
+            clientConfig.WithMerchantId("test")
+                .WithAccessKey("test")
+                .WithSecretKey("test")
+                .WithCurrencyCode("USD")
+                .WithClientId("test")
+                .WithRegion("us")
+                .WithSandbox(true)
+                .WithPlatformId("test")
+                .WithCABundleFile("test")
+                .WithApplicationName("test")
+                .WithApplicationVersion("1.0.0")
+                .WithProxyHost("")
+                .WithProxyPort(-1)
+                .WithProxyUserName("test")
+                .WithProxyUserPassword("test");
+        }
 
         [Test]
         public void TestConfig()
@@ -41,11 +46,10 @@ namespace UnitTests
 
             try
             {
-                Hashtable configParams = new Hashtable(){
-                {"a","A"},
-                {"b","B"}
-                };
-                Client client = new Client(configParams);
+                Configuration clientConfig = new Configuration();
+                clientConfig.WithAccessKey("A")
+                    .WithSecretKey("B");
+                Client client = new Client(clientConfig);
             }
             catch (KeyNotFoundException expected)
             {
@@ -54,9 +58,9 @@ namespace UnitTests
 
             try
             {
-                Hashtable configParams = new Hashtable();
-                configParams = null;
-                Client client = new Client(configParams);
+                Configuration clientConfig = new Configuration();
+                clientConfig = null;
+                Client client = new Client(clientConfig);
             }
             catch (NullReferenceException expected)
             {
@@ -99,7 +103,7 @@ namespace UnitTests
         [Test]
         public void TestSandboxSetter()
         {
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetSandbox(true);
             Assert.AreEqual(client.config["sandbox"], true);
         }
@@ -107,7 +111,7 @@ namespace UnitTests
         [Test]
         public void TestClientIDSetter()
         {
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             try
             {
                 client.SetClientId("");
@@ -127,87 +131,81 @@ namespace UnitTests
         }
 
         [Test]
-        public void TestProxySetter()
-        {
-            Client client = new Client(configParams);
-            Hashtable proxy = new Hashtable();
-            proxy.Add("proxy_user_host", null);
-            client.SetProxy(proxy);
-        }
-
-        [Test]
         public void TestGetOrderReferenceDetails()
         {
-            Hashtable fieldMappings = new Hashtable()
-            {
-                {"merchant_id","SellerId"},
-                {"amazon_order_reference_id","AmazonOrderReferenceId"},
-                {"address_consent_token","AddressConsentToken"},
-                {"mws_auth_token","MWSAuthToken"} 
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()  {
+                {"Action","GetOrderReferenceDetails"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"AddressConsentToken","test"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "GetOrderReferenceDetails";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API GetOrderReferenceDetails
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
 
-            client.GetOrderReferenceDetails(apiCallParams);
-            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            GetOrderReferenceDetailsRequest getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
+            getOrderReferenceDetails.WithAmazonOrderReferenceId("test")
+                .WithaddressConsentToken("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
 
+            client.GetOrderReferenceDetails(getOrderReferenceDetails);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
         }
 
         [Test]
         public void TestSetOrderReferenceDetails()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"Merchant_Id","SellerId"},
-                {"amazon_order_reference_id","AmazonOrderReferenceId"},
-                {"amount","OrderReferenceAttributes.OrderTotal.Amount"},
-                {"currency_code","OrderReferenceAttributes.OrderTotal.CurrencyCode"},
-                {"platform_id","OrderReferenceAttributes.PlatformId"},
-                {"seller_note","OrderReferenceAttributes.SellerNote"},
-                {"seller_order_id","OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId"},
-                {"store_name","OrderReferenceAttributes.SellerOrderAttributes.StoreName"},
-                {"custom_information","OrderReferenceAttributes.SellerOrderAttributes.CustomInformation"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","SetOrderReferenceDetails"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","test"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","TEST"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "SetOrderReferenceDetails";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API SetOrderReferenceDetails
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
 
-            client.SetOrderReferenceDetails(apiCallParams);
+            SetOrderReferenceDetailsRequest setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
+            setOrderReferenceDetails.WithAmazonOrderReferenceId("test")
+                .WithMerchantId("test")
+                .WithAmount("test")
+                .WithCurrencyCode("TEST")
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test")
+                .WithCustomInformation("test")
+                .WithMWSAuthToken("test");
+            client.SetOrderReferenceDetails(setOrderReferenceDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -216,33 +214,31 @@ namespace UnitTests
         [Test]
         public void TestConfirmOrderReference()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"merchant_id","SellerId"},
-                {"amazon_order_reference_id","AmazonOrderReferenceId"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","ConfirmOrderReference"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "ConfirmOrderReference";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API ConfirmOrderReference
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
+            ConfirmOrderReferenceRequest confirmOrderReference = new ConfirmOrderReferenceRequest();
+            confirmOrderReference.WithAmazonOrderReferenceId("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
 
-            client.ConfirmOrderReference(apiCallParams);
+            client.ConfirmOrderReference(confirmOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -250,34 +246,32 @@ namespace UnitTests
 
         public void TestCancelOrderReference()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"merchant_id","SellerId"},
-                {"amazon_order_reference_id","AmazonOrderReferenceId"},
-                {"cancelation_reason","CancelationReason"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","CancelOrderReference"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"CancelationReason","test"},
+                {"MWSAuthToken","test"}
             };
-
-            string action = "CancelOrderReference";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API CancelOrderReference
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.CancelOrderReference(apiCallParams);
+            CancelOrderReferenceRequest cancelOrderReference = new CancelOrderReferenceRequest();
+            cancelOrderReference.WithAmazonOrderReferenceId("test")
+                .WithAmazonOrderReferenceId("test")
+                .WithCancelationReason("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.CancelOrderReference(cancelOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -285,34 +279,32 @@ namespace UnitTests
 
         public void TestCloseOrderReference()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_order_reference_id","AmazonOrderReferenceId"},
-                    {"closure_reason","ClosureReason"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "CloseOrderReference";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","CloseOrderReference"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"ClosureReason","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API CloseOrderReference
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.CloseOrderReference(apiCallParams);
+            CloseOrderReferenceRequest closeOrderReference = new CloseOrderReferenceRequest();
+            closeOrderReference.WithAmazonOrderReferenceId("test")
+                .WithClosureReason("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.CloseOrderReference(closeOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -321,34 +313,34 @@ namespace UnitTests
         [Test]
         public void TestCloseAuthorization()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_authorization_id","AmazonAuthorizationId"},
-                    {"closure_reason","ClosureReason"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "CloseAuthorization";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","CloseAuthorization"},
+                {"SellerId","test"},
+                {"AmazonAuthorizationId","test"},
+                {"ClosureReason","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API CloseAuthorization
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
 
-            client.CloseAuthorization(apiCallParams);
+            CloseAuthorizationRequest closeAuthorization = new CloseAuthorizationRequest();
+            closeAuthorization.WithAmazonAuthorizationId("test")
+                .WithClosureReason("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+
+            client.CloseAuthorization(closeAuthorization);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -357,40 +349,45 @@ namespace UnitTests
         [Test]
         public void TestAuthorize()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_order_reference_id","AmazonOrderReferenceId"},
-                    {"authorization_amount","AuthorizationAmount.Amount"},
-                    {"currency_code","AuthorizationAmount.CurrencyCode"},
-                    {"authorization_reference_id","AuthorizationReferenceId"},
-                    {"capture_now","CaptureNow"},
-                    {"seller_authorization_note","SellerAuthorizationNote"},
-                    {"transaction_timeout","TransactionTimeout"},
-                    {"soft_descriptor","SoftDescriptor"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "Authorize";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","Authorize"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"AuthorizationAmount.Amount","test"},
+                {"AuthorizationAmount.CurrencyCode","TEST"},
+                {"AuthorizationReferenceId","test"},
+                {"CaptureNow","true"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"SoftDescriptor","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API Authorize
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
+            AuthorizeRequest authorize = new AuthorizeRequest();
+            authorize.WithAmazonOrderReferenceId("test")
+                .WithAmount("test")
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(true)
+                .WithCurrencyCode("TEST")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test");
+            client.Authorize(authorize);
 
-            client.Authorize(apiCallParams);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -399,33 +396,30 @@ namespace UnitTests
         [Test]
         public void TestGetAuthorizationDetails()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_authorization_id","AmazonAuthorizationId"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "GetAuthorizationDetails";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetAuthorizationDetails"},
+                {"SellerId","test"},
+                {"AmazonAuthorizationId","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API GetAuthorizationDetails
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.GetAuthorizationDetails(apiCallParams);
+            GetAuthorizationDetailsRequest getAuthorizationDetails = new GetAuthorizationDetailsRequest();
+            getAuthorizationDetails.WithAmazonAuthorizationId("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.GetAuthorizationDetails(getAuthorizationDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -434,38 +428,41 @@ namespace UnitTests
         [Test]
         public void TestCapture()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_authorization_id","AmazonAuthorizationId"},
-                    {"capture_amount","CaptureAmount.Amount"},
-                    {"currency_code","CaptureAmount.CurrencyCode"},
-                    {"capture_reference_id","CaptureReferenceId"},
-                    {"seller_capture_note","SellerCaptureNote"},
-                    {"soft_descriptor","SoftDescriptor"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "Capture";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","Capture"},
+                {"SellerId","test"},
+                {"AmazonAuthorizationId","test"},
+                {"CaptureAmount.Amount","test"},
+                {"CaptureAmount.CurrencyCode","TEST"},
+                {"CaptureReferenceId","test"},
+                {"SellerCaptureNote","test"},
+                {"SoftDescriptor","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API Capture
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
 
-            client.Capture(apiCallParams);
+            CaptureRequest capture = new CaptureRequest();
+            capture.WithAmazonAuthorizationId("test")
+                .WithAmount("test")
+                .WithCaptureReferenceId("test")
+                .WithCurrencyCode("TEST")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerCaptureNote("test")
+                .WithSoftDescriptor("test");
+            client.Capture(capture);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -474,33 +471,30 @@ namespace UnitTests
         [Test]
         public void TestGetCaptureDetails()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_capture_id","AmazonCaptureId"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "GetCaptureDetails";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetCaptureDetails"},
+                {"SellerId","test"},
+                {"AmazonCaptureId","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API GetCaptureDetails
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.GetCaptureDetails(apiCallParams);
+            GetCaptureDetailsRequest getCaptureDetails = new GetCaptureDetailsRequest();
+            getCaptureDetails.WithAmazonCaptureId("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.GetCaptureDetails(getCaptureDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -510,38 +504,40 @@ namespace UnitTests
         [Test]
         public void TestRefund()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id" ,"SellerId"},
-                    {"amazon_capture_id","AmazonCaptureId"},
-                    {"refund_reference_id","RefundReferenceId"},
-                    {"refund_amount" ,"RefundAmount.Amount"},
-                    {"currency_code" ,"RefundAmount.CurrencyCode"},
-                    {"seller_refund_note","SellerRefundNote"},
-                    {"soft_descriptor" ,"SoftDescriptor"},
-                    {"mws_auth_token" ,"MWSAuthToken"}
-                };
-
-            string action = "Refund";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","Refund"},
+                {"SellerId","test"},
+                {"AmazonCaptureId","test"},
+                {"RefundReferenceId","test"},
+                {"RefundAmount.Amount","test"},
+                {"RefundAmount.CurrencyCode","TEST"},
+                {"SellerRefundNote","test"},
+                {"SoftDescriptor","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API Refund
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.Refund(apiCallParams);
+            RefundRequest refund = new RefundRequest();
+            refund.WithAmazonCaptureId("test")
+                .WithAmount("test")
+                .WithCurrencyCode("TEST")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithRefundReferenceId("test")
+                .WithSellerRefundNote("test")
+                .WithSoftDescriptor("test");
+            client.Refund(refund);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -550,33 +546,31 @@ namespace UnitTests
         [Test]
         public void TestGetRefundDetails()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_refund_id","AmazonRefundId"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "GetRefundDetails";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetRefundDetails"},
+                {"SellerId","test"},
+                {"AmazonRefundId","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API GetRefundDetails
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
 
-            client.GetRefundDetails(apiCallParams);
+            GetRefundDetailsRequest getRefundDetails = new GetRefundDetailsRequest();
+            getRefundDetails.WithAmazonRefundId("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.GetRefundDetails(getRefundDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -585,32 +579,28 @@ namespace UnitTests
         [Test]
         public void TestGetServiceStatus()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "GetServiceStatus";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetServiceStatus"},
+                {"SellerId","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API GetServiceStatus
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.GetServiceStatus(apiCallParams);
+            GetServiceStatusRequest getServicetatus = new GetServiceStatusRequest();
+            getServicetatus.WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.GetServiceStatus(getServicetatus);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -619,43 +609,50 @@ namespace UnitTests
         [Test]
         public void TestCreateOrderReferenceForId()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"id","Id"},
-                    {"id_type","IdType"},
-                    {"inherit_shipping_address","InheritShippingAddress"},
-                    {"confirm_now","ConfirmNow"},
-                    {"amount","OrderReferenceAttributes.OrderTotal.Amount"},
-                    {"currency_code","OrderReferenceAttributes.OrderTotal.CurrencyCode"},
-                    {"platform_id","OrderReferenceAttributes.PlatformId"},
-                    {"seller_note","OrderReferenceAttributes.SellerNote"},
-                    {"seller_order_id","OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId"},
-                    {"store_name","OrderReferenceAttributes.SellerOrderAttributes.StoreName"},
-                    {"custom_information","OrderReferenceAttributes.SellerOrderAttributes.CustomInformation"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "CreateOrderReferenceForId";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","CreateOrderReferenceForId"},
+                {"SellerId","test"},
+                {"Id","test"},
+                {"IdType","test"},
+                {"InheritShippingAddress","true"},
+                {"ConfirmNow","true"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","test"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","TEST"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API CreateOrderReferenceForId
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.CreateOrderReferenceForId(apiCallParams);
+            CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
+            createOrderReferenceForId.WithAmount("test")
+                .WithConfirmNow(true)
+                .WithCurrencyCode("TEST")
+                .WithCustomInformation("test")
+                .WithId("test")
+                .WithIdType("test")
+                .WithInheritShippingAddress(true)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test");
+            client.CreateOrderReferenceForId(createOrderReferenceForId);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -664,34 +661,32 @@ namespace UnitTests
         [Test]
         public void TestGetBillingAgreementDetails()
         {
-            Hashtable fieldMappings = new Hashtable()
-                {
-                    {"merchant_id","SellerId"},
-                    {"amazon_billing_agreement_id","AmazonBillingAgreementId"},
-                    {"address_consent_token" ,"AddressConsentToken"},
-                    {"mws_auth_token","MWSAuthToken"}
-                };
-
-            string action = "GetBillingAgreementDetails";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetBillingAgreementDetails"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"AddressConsentToken","test"},
+                {"MWSAuthToken","test"}
+            };
 
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API GetBillingAgreementDetails
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.GetBillingAgreementDetails(apiCallParams);
+            GetBillingAgreementDetailsRequest getBillingAgreement = new GetBillingAgreementDetailsRequest();
+            getBillingAgreement.WithaddressConsentToken("test")
+                .WithAmazonBillingAgreementId("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.GetBillingAgreementDetails(getBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -700,38 +695,40 @@ namespace UnitTests
         [Test]
         public void TestSetBillingAgreementDetails()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"merchant_id","SellerId"},
-                {"amazon_billing_agreement_id","AmazonBillingAgreementId"},
-                {"platform_id","BillingAgreementAttributes.PlatformId"},
-                {"seller_note","BillingAgreementAttributes.SellerNote"},
-                {"seller_billing_agreement_id","BillingAgreementAttributes.SellerBillingAgreementAttributes.SellerBillingAgreementId"},
-                {"custom_information","BillingAgreementAttributes.SellerBillingAgreementAttributes.CustomInformation"},
-                {"store_name","BillingAgreementAttributes.SellerBillingAgreementAttributes.StoreName"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","SetBillingAgreementDetails"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"BillingAgreementAttributes.PlatformId","test"},
+                {"BillingAgreementAttributes.SellerNote","test"},
+                {"BillingAgreementAttributes.SellerBillingAgreementAttributes.SellerBillingAgreementId","test"},
+                {"BillingAgreementAttributes.SellerBillingAgreementAttributes.CustomInformation","test"},
+                {"BillingAgreementAttributes.SellerBillingAgreementAttributes.StoreName","test"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "SetBillingAgreementDetails";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API SetBillingAgreementDetails
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.SetBillingAgreementDetails(apiCallParams);
+            SetBillingAgreementDetailsRequest setBillingAgreementDetails = new SetBillingAgreementDetailsRequest();
+            setBillingAgreementDetails.WithAmazonBillingAgreementId("test")
+                .WithCustomInformation("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithPlatformId("test")
+                .WithSellerBillingAgreementId("test")
+                .WithSellerNote("test")
+                .WithStoreName("test");
+            client.SetBillingAgreementDetails(setBillingAgreementDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -740,33 +737,30 @@ namespace UnitTests
         [Test]
         public void TestConfirmBillingAgreement()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"merchant_id","SellerId"},
-                {"amazon_billing_agreement_id","AmazonBillingAgreementId"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","ConfirmBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "ConfirmBillingAgreement";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API ConfirmBillingAgreement
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.ConfirmBillingAgreement(apiCallParams);
+            ConfirmBillingAgreementRequest confirmBillingAgreement = new ConfirmBillingAgreementRequest();
+            confirmBillingAgreement.WithAmazonBillingreementId("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.ConfirmBillingAgreement(confirmBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -775,33 +769,31 @@ namespace UnitTests
         [Test]
         public void TestValidateBillingAgreement()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"merchant_id","SellerId"},
-                {"amazon_billing_agreement_id","AmazonBillingAgreementId"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","ValidateBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "ValidateBillingAgreement";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API ValidateBillingAgreement
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
 
-            client.ValidateBillingAgreement(apiCallParams);
+            ValidateBillingAgreementRequest validateBillingAgreement = new ValidateBillingAgreementRequest();
+            validateBillingAgreement.WithAmazonBillingAgreementId("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.ValidateBillingAgreement(validateBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -810,46 +802,56 @@ namespace UnitTests
         [Test]
         public void TestAuthorizeOnBillingAgreement()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"merchant_id","SellerId"},
-                {"amazon_billing_agreement_id","AmazonBillingAgreementId"},
-                {"authorization_reference_id","AuthorizationReferenceId"},
-                {"authorization_amount","AuthorizationAmount.Amount"},
-                {"currency_code","AuthorizationAmount.CurrencyCode"},
-                {"seller_authorization_note","SellerAuthorizationNote"},
-                {"transaction_timeout","TransactionTimeout"},
-                {"capture_now","CaptureNow"},
-                {"soft_descriptor","SoftDescriptor"},
-                {"seller_note","SellerNote"},
-                {"platform_id","PlatformId"},
-                {"custom_information","SellerOrderAttributes.CustomInformation"},
-                {"seller_order_id","SellerOrderAttributes.SellerOrderId"},
-                {"store_name","SellerOrderAttributes.StoreName"},
-                {"inherit_shipping_address","InheritShippingAddress"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","AuthorizeOnBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"AuthorizationReferenceId","test"},
+                {"AuthorizationAmount.Amount","test"},
+                {"AuthorizationAmount.CurrencyCode","TEST"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"CaptureNow","true"},
+                {"SoftDescriptor","test"},
+                {"SellerNote","test"},
+                {"PlatformId","test"},
+                {"SellerOrderAttributes.CustomInformation","test"},
+                {"SellerOrderAttributes.SellerOrderId","test"},
+                {"SellerOrderAttributes.StoreName","test"},
+                {"InheritShippingAddress","true"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "AuthorizeOnBillingAgreement";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API AuthorizeOnBillingAgreement
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.AuthorizeOnBillingAgreement(apiCallParams);
+            AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
+            authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
+                .WithAmount("test")
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(true)
+                .WithCurrencyCode("TEST")
+                .WithPlatformId("test")
+                .WithCustomInformation("test")
+                .WithInheritShippingAddress(true)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithSellerNote("test")
+                .WithSoftDescriptor("test")
+                .WithStoreName("test")
+                .WithSellerOrderId("test")
+                .WithTransactionTimeout(5);
+            client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -858,34 +860,32 @@ namespace UnitTests
         [Test]
         public void TestCloseBillingAgreement()
         {
-            Hashtable fieldMappings = new Hashtable()
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
-                {"merchant_id","SellerId"},
-                {"amazon_billing_agreement_id","AmazonBillingAgreementId"},
-                {"closure_reason","ClosureReason"},
-                {"mws_auth_token","MWSAuthToken"}
+                {"Action","CloseBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"ClosureReason","test"},
+                {"MWSAuthToken","test"}
             };
 
-            string action = "CloseBillingAgreement";
-            Hashtable parameters = SetParametersAndPost(fieldMappings, action);
-            Hashtable expectedParametershash = parameters["expectedParameters"] as Hashtable;
-            Hashtable apiCallParams = parameters["apiCallParams"] as Hashtable;
-
             // Test direct call to CalculateSignatureAndParametersToString
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-            Dictionary<string, string> expectedParameters = new Dictionary<string, string>();
-            expectedParameters = convertHashToDict(expectedParametershash);
 
             MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
             method.Invoke(client, new object[] { expectedParameters }).ToString();
             IDictionary<string, string> expectedParamsDict = client.GetParameters();
 
             // Test call to the API CloseBillingAgreement
-            client = new Client(configParams);
+            client = new Client(clientConfig);
             client.SetTimeStamp("0000");
-
-            client.CloseBillingAgreement(apiCallParams);
+            CloseBillingAgreementRequest closeBillingAgreement = new CloseBillingAgreementRequest();
+            closeBillingAgreement.WithAmazonBillingAgreementId("test")
+                .WithClosureReason("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
+            client.CloseBillingAgreement(closeBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -894,12 +894,26 @@ namespace UnitTests
         [Test]
         public void TestCharge()
         {
-            Client client = new Client(configParams);
-            Hashtable apiCallParams = new Hashtable();
+            Client client = new Client(clientConfig);
             try
             {
-                apiCallParams.Add("amazon_reference_id", "S01-TEST");
-                client.Charge(apiCallParams);
+                ChargeRequest charge = new ChargeRequest();
+                charge.WithAmazonReferenceId("S01-TEST")
+                    .WithAmount("test")
+                    .WithCaptureNow(true)
+                    .WithChargeNote("test")
+                    .WithChargeOrderId("test")
+                    .WithChargeReferenceId("test")
+                    .WithCurrencyCode("TEST")
+                    .WithCustomInformation("test")
+                    .WithInheritShippingAddress(true)
+                    .WithMerchantId("test")
+                    .WithMWSAuthToken("test")
+                    .WithPlatformId("test")
+                    .WithSoftDescriptor("test")
+                    .WithStoreName("test")
+                    .WithTransactionTimeout(5);
+                client.Charge(charge);
             }
             catch (NullReferenceException expected)
             {
@@ -907,22 +921,22 @@ namespace UnitTests
             }
             try
             {
-                client = new Client(configParams);
-                apiCallParams.Clear();
-                apiCallParams.Add("amazon_reference_id", "");
-                client.Charge(apiCallParams);
+                client = new Client(clientConfig);
+                ChargeRequest charge = new ChargeRequest();
+                charge.WithAmazonReferenceId("");
+                client.Charge(charge);
             }
             catch (MissingFieldException expected)
             {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "key amazon_order_reference_id or amazon_billing_agreement_id is null and is a required parameter", RegexOptions.IgnoreCase));
+                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Amazon Reference ID is a required field and should be a Order Reference ID / Billing Agreement ID", RegexOptions.IgnoreCase));
             }
 
             try
             {
-                apiCallParams.Clear();
-                client = new Client(configParams);
-                apiCallParams.Add("amazon_reference_id", "T01");
-                client.Charge(apiCallParams);
+                client = new Client(clientConfig);
+                ChargeRequest charge = new ChargeRequest();
+                charge.WithAmazonReferenceId("T01");
+                client.Charge(charge);
             }
             catch (InvalidDataException expected)
             {
@@ -935,8 +949,8 @@ namespace UnitTests
         {
             try
             {
-                configParams["region"] = "";
-                Client client = new Client(configParams);
+                clientConfig.WithRegion("");
+                Client client = new Client(clientConfig);
                 client.GetUserInfo("Atza");
             }
             catch (NullReferenceException expected)
@@ -946,8 +960,8 @@ namespace UnitTests
 
             try
             {
-                configParams["region"] = "us";
-                Client client = new Client(configParams);
+                clientConfig.WithRegion("us");
+                Client client = new Client(clientConfig);
                 client.GetUserInfo(null);
             }
             catch (NullReferenceException expected)
@@ -962,7 +976,7 @@ namespace UnitTests
             string parameters = "Actinon=hjhjhjh=saaa&jg=100";
             try
             {
-                Client client = new Client(configParams);
+                Client client = new Client(clientConfig);
 
                 string url = "https://dsenetsdk.ant.amazon.com/500error/500error.aspx";
                 client.SetMwsServiceUrl(url);
@@ -1043,13 +1057,7 @@ namespace UnitTests
 
         private Hashtable SetParametersAndPost(Hashtable fieldMappings, string action)
         {
-            Hashtable expectedParameters = new Hashtable();
-            Hashtable apiCallParams = new Hashtable();
-            Hashtable returnTable = new Hashtable();
-
-            Hashtable parameters = SetDefaultValues(fieldMappings);
-            expectedParameters = parameters["expectedParameters"] as Hashtable;
-            apiCallParams = parameters["apiCallParams"] as Hashtable;
+            Hashtable expectedParameters = SetDefaultValues(fieldMappings);
 
             expectedParameters.Add("Action", action);
 
@@ -1060,44 +1068,35 @@ namespace UnitTests
                     if (string.IsNullOrEmpty(expectedParameters[param.Value].ToString()))
                     {
                         expectedParameters[param.Value] = "test";
-                        apiCallParams[param.Key] = "test";
                     }
                 }
                 catch (NullReferenceException)
                 {
                     expectedParameters[param.Value] = "test";
-                    apiCallParams[param.Key] = "test";
                 }
             }
 
-            returnTable.Add("expectedParameters", expectedParameters);
-            returnTable.Add("apiCallParams", apiCallParams);
-
-            return returnTable;
+            return expectedParameters;
         }
 
         private Hashtable SetDefaultValues(Hashtable fieldMappings)
         {
             Hashtable expectedParameters = new Hashtable();
-            Hashtable apiCallParams = new Hashtable();
-            Hashtable returnTable = new Hashtable();
 
             if (fieldMappings.ContainsKey("platform_id"))
             {
-                expectedParameters[fieldMappings["platform_id"]] = null;
-                apiCallParams["platform_id"] = null;
+                expectedParameters[fieldMappings["platform_id"]] = "test";
             }
 
             if (fieldMappings.ContainsKey("currency_code"))
             {
                 expectedParameters[fieldMappings["currency_code"]] = "TEST";
-                apiCallParams["currency_code"] = "TEST";
             }
-
-            returnTable.Add("expectedParameters", expectedParameters);
-            returnTable.Add("apiCallParams", apiCallParams);
-
-            return returnTable;
+            if (fieldMappings.ContainsKey("transaction_timeout"))
+            {
+                expectedParameters[fieldMappings["transaction_timeout"]] = "5";
+            }
+            return expectedParameters;
         }
 
         /// <summary>
@@ -1107,7 +1106,7 @@ namespace UnitTests
         /// <returns></returns>
         private MethodInfo GetMethod(string methodName)
         {
-            Client client = new Client(configParams);
+            Client client = new Client(clientConfig);
             Type type = typeof(Client);
             var method = client.GetType()
                 .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);

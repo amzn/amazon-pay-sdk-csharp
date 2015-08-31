@@ -55,6 +55,15 @@
     <Compile Include="IpnHandler.cs" />
     <Compile Include="JsonParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderCreditRequests\GetProviderCreditReversalDetailsRequest.cs" />
+    <Compile Include="ProviderCreditRequests\ReverseProviderCreditRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\AuthorizeOnBillingAgreementRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\CloseBillingAgreementRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\ConfirmBillingAgreementRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\CreateOrderReferenceForIdRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\GetBillingAgreementDetailsRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\SetBillingAgreementDetailsRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\ValidateBillingAgreementRequest.cs" />
     <Compile Include="region.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -62,7 +71,24 @@
     </Compile>
     <Compile Include="Regions.cs" />
     <Compile Include="ResponseParser.cs" />
+    <Compile Include="StandardPaymentRequests\AuthorizeRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CancelOrderReferenceRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CaptureRequest.cs" />
+    <Compile Include="StandardPaymentRequests\ChargeRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CloseAuthorizationRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CloseOrderReferenceRequest.cs" />
+    <Compile Include="CommonRequests\Configuration.cs" />
+    <Compile Include="StandardPaymentRequests\ConfirmOrderReferenceRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetAuthorizationDetailsRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetCaptureDetailsRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetOrderReferenceDetailsRequest.cs" />
+    <Compile Include="ProviderCreditRequests\GetProviderCreditDetailsRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetRefundDetailsRequest.cs" />
+    <Compile Include="CommonRequests\GetServiceStatusRequest.cs" />
+    <Compile Include="StandardPaymentRequests\RefundRequest.cs" />
+    <Compile Include="StandardPaymentRequests\SetOrderReferenceDetailsRequest.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
