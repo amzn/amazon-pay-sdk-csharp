@@ -1526,25 +1526,27 @@ namespace PayWithAmazon
         /// <param name="requestParameters"></param>
         /// <example>
         ///  <code>
-        ///   Hashtable requestParameters = new Hashtable();
+        ///   ChargeRequest requestParameters = new ChargeRequest();
         ///   
         ///   // Required
         ///   requestParameters.WithAmazonReferenceId("(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)");// order reference ID / billing agreement ID
-        ///   // If requestParameters["amazon_reference_id"] is empty then the following is required,
-        ///    requestParameters["amazon_order_reference_id"]="S01/P01-XXXXX-XXXXX";
-        ///   // or,
-        ///    requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
-        ///    requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING"); // Any unique string that needs to be passed
-        ///    requestParameters["charge_amount"] = "100";
+        ///   requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING"); // Any unique string that needs to be passed
+        ///   requestParameters.WithAmount = "100";
         ///    
         ///   // Optional
-        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
-        ///   requestParameters["charge_note"] =  "CUSTOM_NOTE" // Seller Note sent to the buyer
-        ///   requestParameters["transaction_timeout"] = 5; // Defaults to 1440 minutes
-        ///   requestParameters["capture_now"] = false; // captures payment automatically when set to true, defaults to false
-        ///   requestParameters["charge_order_id"] = "CUSTOM_ID"; // Custom Order ID provided
+        ///   requestParameters.WithMerchantId("MERCHANT_ID");
+        ///   requestParameters.WithCurrencyCode("USD");
+        ///   requestParameters.WithPlatformId("SOLUTION_PROVIDER_MERCHANT_ID");
+        ///   requestParameters.WithSoftDescriptor("amz");
+        ///   requestParameters.WithStoreName("cool stuff store");
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///   requestParameters.WithChargeNote("sample note");
+        ///   requestParameters.WithChargeOrderId("1234-1234");
+        ///   requestParameters.WithCaptureNow(false);
+        ///   requestParameters.WithProviderCreditDetails("PROVIDER_MERCHANT_ID", "10", "USD");
+        ///   requestParameters.WithInheritShippingAddress(true);
+        ///   requestParameters.WithTransactionTimeout(5);
+        ///   requestParameters.WithCustomInformation("custom information");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser response</returns>

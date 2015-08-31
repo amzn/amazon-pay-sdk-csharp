@@ -14,8 +14,6 @@ Login and Pay with Amazon API Integration
 ## Sample
 
 * View the sample integration demo [here](https://amzn.github.io/login-and-pay-with-amazon-sdk-samples/)
-```
-```
 
 ## Quick Start
 
