@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +11,30 @@ namespace PayWithAmazon.StandardPaymentRequests
     /// </summary>
     public class RefundRequest
     {
-        public Hashtable refundHashtable = new Hashtable();
-        List<Hashtable> providerReverseCredit = new List<Hashtable>();
+        
+        private string action;
+        private string merchant_id;
+        private string amazon_capture_id;
+        private decimal amount;
+        private string currency_code;
+        private string seller_refund_note;
+        private string refund_reference_id;
+        private string soft_descriptor;
+        private string mws_auth_token;
+        List<Dictionary<string, string>> providerReverseCredit = new List<Dictionary<string, string>>();
+        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public RefundRequest()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            log.Debug("METHOD__GetRefundDetailsRequest Constructor | MESSAGE__Constructor Initiate");
+            this.action = Constants.Refund;
+            log.Debug("METHOD__GetRefundDetailsRequest | MESSAGE__Action:" + this.action);
+        }
+        public string GetAction()
+        {
+            return this.action;
+        }
         /// <summary>
         /// Sets the Merchant ID
         /// </summary>
@@ -20,8 +42,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithMerchantId(string merchant_id)
         {
-            refundHashtable["merchant_id"] = merchant_id;
+            this.merchant_id = merchant_id;
+            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id:" + this.merchant_id);
             return this;
+        }
+        public string GetMerchantId()
+        {
+            return this.merchant_id;
         }
 
         /// <summary>
@@ -31,8 +58,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithAmazonCaptureId(string amazon_capture_id)
         {
-            refundHashtable["amazon_capture_id"] = amazon_capture_id;
+            this.amazon_capture_id = amazon_capture_id;
+            log.Debug("METHOD__WithAmazonCaptureId | MESSAGE__amazon_capture_id:" + this.amazon_capture_id);
             return this;
+        }
+        public string GetAmazonCaptureId()
+        {
+            return this.amazon_capture_id;
         }
 
         /// <summary>
@@ -40,10 +72,15 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// </summary>
         /// <param name="refund_amount"></param>
         /// <returns>RefundRequest Object</returns>
-        public RefundRequest WithAmount(string refund_amount)
+        public RefundRequest WithAmount(decimal refund_amount)
         {
-            refundHashtable["refund_amount"] = refund_amount;
+            this.amount = refund_amount;
+            log.Debug("METHOD__WithAmount | MESSAGE__refund_amount:" + this.amount);
             return this;
+        }
+        public decimal GetAmount()
+        {
+            return this.amount;
         }
 
         /// <summary>
@@ -53,8 +90,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithCurrencyCode(string currency_code)
         {
-            refundHashtable["currency_code"] = currency_code;
+            this.currency_code = currency_code.ToUpper();
+            log.Debug("METHOD__WithCurrencyCode | MESSAGE__currency_code:" + this.currency_code);
             return this;
+        }
+        public string GetCurrencyCode()
+        {
+            return this.currency_code;
         }
 
         /// <summary>
@@ -64,8 +106,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithRefundReferenceId(string refund_reference_id)
         {
-            refundHashtable["refund_reference_id"] = refund_reference_id;
+            this.refund_reference_id = refund_reference_id;
+            log.Debug("METHOD__WithRefundReferenceId | MESSAGE__refund_reference_id:" + this.refund_reference_id);
             return this;
+        }
+        public string GetRefundReferenceId()
+        {
+            return this.refund_reference_id;
         }
 
         /// <summary>
@@ -75,18 +122,25 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <param name="amount"></param>
         /// <param name="currency_code"></param>
         /// <returns>RefundRequest Object</returns>
-        public RefundRequest WithProviderCreditReversalDetails(string provider_id, string amount, string currency_code)
+        public RefundRequest WithProviderCreditReversalDetails(string provider_id, decimal amount, string currency_code)
         {
-            Hashtable providerCreditDetails = new Hashtable();
+            Dictionary<string, string> providerCreditDetails = new Dictionary<string, string>();
             providerCreditDetails.Clear();
-            providerCreditDetails["provider_id"] = provider_id;
-            providerCreditDetails["credit_reversal_amount"] = amount;
-            providerCreditDetails["currency_code"] = currency_code;
+            providerCreditDetails[Constants.ProviderId] = provider_id;
+            log.Debug("METHOD__WithProviderCreditReversalDetails | MESSAGE__ProviderId:" + provider_id);
+
+            providerCreditDetails[Constants.CreditReversalAmount_Amount] = amount.ToString();
+            log.Debug("METHOD__WithProviderCreditReversalDetails | MESSAGE__CreditReversalAmount_Amount:" + amount);
+
+            providerCreditDetails[Constants.CreditReversalAmount_CurrencyCode] = currency_code.ToUpper();
+            log.Debug("METHOD__WithProviderCreditReversalDetails | MESSAGE__CreditReversalAmount_CurrencyCode:" + currency_code.ToUpper());
 
             providerReverseCredit.Add(providerCreditDetails);
-
-            refundHashtable.Add("provider_credit_details", providerReverseCredit);
             return this;
+        }
+        public IList<Dictionary<string, string>> GetProviderReverseCredit()
+        {
+            return this.providerReverseCredit.AsReadOnly();
         }
 
         /// <summary>
@@ -96,8 +150,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithSellerRefundNote(string seller_refund_note)
         {
-            refundHashtable["seller_refund_note"] = seller_refund_note;
+            this.seller_refund_note = seller_refund_note;
+            log.Debug("METHOD__WithSellerRefundNote | MESSAGE__seller_refund_note:" + seller_refund_note);
             return this;
+        }
+        public string GetSellerRefundNote()
+        {
+            return this.seller_refund_note;
         }
 
         /// <summary>
@@ -107,8 +166,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithSoftDescriptor(string soft_descriptor)
         {
-            refundHashtable["soft_descriptor"] = soft_descriptor;
+            this.soft_descriptor = soft_descriptor;
+            log.Debug("METHOD__WithSoftDescriptor | MESSAGE__soft_descriptor:" + soft_descriptor);
             return this;
+        }
+        public string GetSoftDescriptor()
+        {
+            return this.soft_descriptor;
         }
 
         /// <summary>
@@ -118,8 +182,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithMWSAuthToken(string mws_auth_token)
         {
-            refundHashtable["mws_auth_token"] = mws_auth_token;
+            this.mws_auth_token = mws_auth_token;
+            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token:" + mws_auth_token);
             return this;
+        }
+        public string GetMWSAuthToken()
+        {
+            return this.mws_auth_token;
         }
     }
 }

@@ -142,7 +142,7 @@ clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithRegion("REGION");
 
 // Or you can also provide a JSON file path which has the above configuration information in JSON format
-string config = "PATH_TO_JSON_FILE";
+string config = "PATH_TO_JSON_FILE\filename.fileextension";
 
 // Instantiate the client class with the config type
 Client client = new Client(config);
@@ -162,15 +162,6 @@ clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithSandbox(true);
 
 Client client = new Client(config);
-
-// Also you can set the sandbox variable in the configuration of the Client class by
-
-client.SetSandbox(true);
-```
-### Setting Proxy values
-Proxy parameters can be set after Instantiating the Client Object with the following setter
-```csharp
-client.SetProxy("PROXY_HOSTNAME","PROXY_PORT","PROXY_USER_NAME","PROXY_USER_PASSWORD"));
 ```
 
 ### Making an API Call
@@ -179,8 +170,12 @@ Below is an example on how to make the GetOrderReferenceDetails API call:
 
 ```csharp
 using PayWithAmazon;
+using PayWithAmazon.CommonRequests;
+using Newtonsoft.json;
+using Log4Net; // if required for logging
 using PayWithAmazon.StandardPaymentRequests;
 
+// STEP 1 : Create the object of the GetOrderReferenceDetailsRequest class to add the parameters for the API call
 GetOrderReferenceDetailsRequest requestParameters = new GetOrderReferenceDetailsRequest();
 
 // AMAZON_ORDER_REFERENCE_ID is obtained from the Pay with Amazon Address/Wallet widgets
@@ -189,15 +184,35 @@ GetOrderReferenceDetailsRequest requestParameters = new GetOrderReferenceDetails
 // Required Parameter
 requestParameters.WithAmazonOrderReferenceId("AMAZON_ORDER_REFERENCE_ID");
 
-// Optional Parameter
+// Optional Parameters
 requestParameters.WithAddressConsentToken("ACCESS_TOKEN");
 requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
 
-// response here is the object of the ResponseParser class, You can use this object to get the desired response type in the section Response Parsing 
-ResponseParser response = client.GetOrderReferenceDetails(requestParameters);
+// STEP 2 : Making the API call by passing in the GetOrderReferenceDetailsRequest object i.e requestParameters from step 1.
+// response here is the object of the GetOrderReferenceDetailsResponse class
+GetOrderReferenceDetailsResponse response = client.GetOrderReferenceDetails(requestParameters);
+
+// Getting response variables
+// Variable values can be obtained directly from the GetOrderReferenceDetailsResponse object received from making the API call in step 2
+
+// Check if the API call was successful
+bool isGetOrderReferenceDetailsSuccess = response.GetSuccess(); 
+	if(isGetOrderReferenceDetailsSuccess)
+	{
+		string amazonOrderReferenceId = response.GetAmazonOrderReferenceId();
+	}
+	else
+	{
+		string errorCode = response.GetErrorCode();
+		string ErrorMessage = response.GetErrorMessage();
+	}
 
 ```
-See the [API Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for information on parsing the API response.
+See the [GetOrderReferenceDetailsResponse](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for all the parameters returned.
+
+* Similarly other API calls can be made. See the [Request](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for Request classes for the required API call.
+* Pass the created Request object to the respective API function in the class [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response)
+* The Response object returned will be specefic to the API call made. See [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for Response classes
 
 ### IPN Handling
 
@@ -294,7 +309,7 @@ requestParameters.WithAmazonReferenceId("AMAZON_REFERENCE_ID")
 ResponseParser response = client.Charge(requestParameters);
 ```
 #####Obtain profile information (GetUserInfo method)
-1. obtains the user"s profile information from Amazon using the access token returned by the Button widget.
+1. obtains the user's profile information from Amazon using the access token returned by the Button widget.
 2. An access token is granted by the authorization server when a user logs in to a site.
 3. An access token is specific to a client, a user, and an access scope. A client must use an access token to retrieve customer profile data.
 
@@ -316,9 +331,6 @@ clientConfig.WithAccessToken("ACCESS_TOKEN")
 	.WithClientId("YOUR_LWA_CLIENT_ID");
 
 Client client = new Client(config);
-
-// Client ID can also be set using the setter function setClientId(client_id)
-client.SetClientId("YOUR_LWA_CLIENT_ID");
 
 // Get the Access Token from the URL
 string access_token = "ACCESS_TOKEN";

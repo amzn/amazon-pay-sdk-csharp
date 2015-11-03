@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,24 @@ namespace PayWithAmazon.RecurringPaymentRequests
     /// </summary>
     public class ValidateBillingAgreementRequest
     {
-        public Hashtable validateBillingAgreementHashtable = new Hashtable();
+        
+        private string action;
+        private string merchant_id;
+        private string amazon_billing_agreement_id;
+        private string mws_auth_token;
+        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public ValidateBillingAgreementRequest()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            log.Debug("METHOD__ValidateBillingAgreementRequest Constructor | MESSAGE__Constructor Initiate");
+            this.action = Constants.ValidateBillingAgreement;
+            log.Debug("METHOD__ValidateBillingAgreementRequest | MESSAGE__Action: " + this.action);
+        }
+        public string GetAction()
+        {
+            return this.action;
+        }
 
         /// <summary>
         /// Sets the Merchant ID
@@ -19,8 +37,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>ValidateBillingAgreementRequest Object</returns>
         public ValidateBillingAgreementRequest WithMerchantId(string merchant_id)
         {
-            validateBillingAgreementHashtable["merchant_id"] = merchant_id;
+            this.merchant_id = merchant_id;
+            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id: " + this.merchant_id);
             return this;
+        }
+        public string GetMerchantId()
+        {
+            return this.merchant_id;
         }
 
         /// <summary>
@@ -30,8 +53,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>ValidateBillingAgreementRequest Object</returns>
         public ValidateBillingAgreementRequest WithAmazonBillingAgreementId(string amazon_billing_agreement_id)
         {
-            validateBillingAgreementHashtable["amazon_billing_agreement_id"] = amazon_billing_agreement_id;
+            this.amazon_billing_agreement_id = amazon_billing_agreement_id;
+            log.Debug("METHOD__WithAmazonBillingAgreementId | MESSAGE__amazon_billing_agreement_id: " + this.amazon_billing_agreement_id);
             return this;
+        }
+        public string GetAmazonBillingAgreementId()
+        {
+            return this.amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -41,8 +69,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>ValidateBillingAgreementRequest Object</returns>
         public ValidateBillingAgreementRequest WithMWSAuthToken(string mws_auth_token)
         {
-            validateBillingAgreementHashtable["mws_auth_token"] = mws_auth_token;
+            this.mws_auth_token = mws_auth_token;
+            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token: " + this.mws_auth_token);
             return this;
+        }
+        public string GetMWSAuthToken()
+        {
+            return this.mws_auth_token;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using PayWithAmazon.RecurringPaymentRequests;
 using System.IO;
+using log4net;
 
 namespace PayWithAmazon.StandardPaymentRequests
 {
@@ -18,19 +19,21 @@ namespace PayWithAmazon.StandardPaymentRequests
         public AuthorizeRequest authorizeOrderReference;
 
         public string chargeType = "";
+        
 
         public GetBillingAgreementDetailsRequest getBillingAgreementDetails;
         public SetBillingAgreementDetailsRequest setBillingAgreementDetails;
         public ConfirmBillingAgreementRequest confirmBillingAgreement;
         public AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement;
-
-        public Hashtable chargeHashtable = new Hashtable();
-
+        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         /// <summary>
         /// constructor initializes the required API request objects
         /// </summary>
         public ChargeRequest()
         {
+            log4net.Config.XmlConfigurator.Configure();
+            log.Debug("METHOD__ChargeRequest Constructor | MESSAGE__Constructor Initiate");
+            
             getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
             setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
             confirmOrderReference = new ConfirmOrderReferenceRequest();
@@ -60,7 +63,7 @@ namespace PayWithAmazon.StandardPaymentRequests
                 case "BillingAgreement":
                     getBillingAgreementDetails.WithMerchantId(merchant_id);
                     setBillingAgreementDetails.WithMerchantId(merchant_id);
-                    confirmOrderReference.WithMerchantId(merchant_id);
+                    confirmBillingAgreement.WithMerchantId(merchant_id);
                     authorizeOnBillingAgreement.WithMerchantId(merchant_id);
                     break;
             }
@@ -112,7 +115,7 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// </summary>
         /// <param name="amount"></param>
         /// <returns>ChargeRequest</returns>
-        public ChargeRequest WithAmount(string amount)
+        public ChargeRequest WithAmount(decimal amount)
         {
             switch (chargeType)
             {
@@ -211,7 +214,7 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// </summary>
         /// <param name="capture_now"></param>
         /// <returns>ChargeRequest</returns>
-        public ChargeRequest WithCaptureNow(Boolean capture_now)
+        public ChargeRequest WithCaptureNow(bool capture_now)
         {
             switch (chargeType)
             {
@@ -230,7 +233,7 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// </summary>
         /// <param name="inherit_shipping_address"></param>
         /// <returns>ChargeRequest</returns>
-        public ChargeRequest WithInheritShippingAddress(Boolean inherit_shipping_address)
+        public ChargeRequest WithInheritShippingAddress(bool inherit_shipping_address)
         {
             authorizeOnBillingAgreement.WithInheritShippingAddress(inherit_shipping_address);
             return this;
@@ -342,7 +345,7 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <param name="amount"></param>
         /// <param name="currency_code"></param>
         /// <returns>ChargeRequest</returns>
-        public ChargeRequest WithProviderCreditDetails(string provider_id, string amount, string currency_code)
+        public ChargeRequest WithProviderCreditDetails(string provider_id, decimal amount, string currency_code)
         {
             authorizeOrderReference.WithProviderCreditDetails(provider_id, amount, currency_code);
             return this;

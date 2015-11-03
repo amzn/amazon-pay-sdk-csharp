@@ -1,0 +1,11 @@
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Release\PayWithAmazon.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Release\PayWithAmazon.pdb
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Release\Newtonsoft.Json.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Release\Newtonsoft.Json.xml
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\App.config
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\PayWithAmazon.dll.config
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\PayWithAmazon.XML
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\PayWithAmazon.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\PayWithAmazon.pdb
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\obj\Release\PayWithAmazon.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\obj\Release\PayWithAmazon.pdb

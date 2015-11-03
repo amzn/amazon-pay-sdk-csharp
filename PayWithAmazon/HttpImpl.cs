@@ -1,9 +1,11 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using PayWithAmazon.CommonRequests;
 
 namespace PayWithAmazon
 {
@@ -12,18 +14,20 @@ namespace PayWithAmazon
     /// </summary>
     class HttpImpl
     {
-        public string response;
-        public bool header = false;
-        public string accessToken = "";
-        public Hashtable responseHash;
-        public HttpStatusCode statusCode;
+        private string response;
+        private bool header = false;
+        private string accessToken = "";
+        public Dictionary<string,string> responseDict;
+        private Configuration clientConfig;
+        private int statusCode;
+        
+        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        Hashtable config = new Hashtable();
-
-        public HttpImpl(Hashtable config)
+        public HttpImpl(Configuration config)
         {
-            this.config = config;
-            responseHash = new Hashtable();
+            log4net.Config.XmlConfigurator.Configure();
+            clientConfig = config;
+            responseDict = new Dictionary<string,string>();
         }
 
         /// <summary>
@@ -55,12 +59,12 @@ namespace PayWithAmazon
         {
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
 
-            if (config["proxy_host"] != null && (System.Convert.ToInt32(config["proxy_port"])) != -1)
+            if (clientConfig.GetProxyHost() != null && (clientConfig.GetProxyPort()) != -1)
             {
-                WebProxy proxy = new WebProxy(config["proxy_host"].ToString(), System.Convert.ToInt32(config["proxy_port"]));
-                if (!(string.IsNullOrEmpty(config["proxy_username"].ToString()) && !(string.IsNullOrEmpty(config["proxy_password"].ToString()))))
+                WebProxy proxy = new WebProxy(clientConfig.GetProxyHost(), clientConfig.GetProxyPort());
+                if (!(string.IsNullOrEmpty(clientConfig.GetProxyUserName()) && !(string.IsNullOrEmpty(clientConfig.GetProxyUserPassword()))))
                 {
-                    proxy.Credentials = new NetworkCredential(config["proxy_username"].ToString(), config["proxy_password"].ToString());
+                    proxy.Credentials = new NetworkCredential(clientConfig.GetProxyUserName(), clientConfig.GetProxyUserPassword());
                 }
 
                 request.Proxy = proxy;
@@ -74,11 +78,10 @@ namespace PayWithAmazon
                 request.Headers.Add("Authorization: bearer " + accessToken);
             }
             request.Method = method;
-            request.Timeout = 50000;
             request.ContentType = "application/x-www-form-urlencoded; charset=utf-8";
             request.ContentLength = contentLength;
 
-            responseHash.Clear();
+            responseDict.Clear();
 
             return request;
         }
@@ -101,8 +104,8 @@ namespace PayWithAmazon
         /// <param name="url"></param>
         /// <param name="userAgent"></param>
         /// <param name="requestData"></param>
-        /// <returns>Hashtable responseHash</returns>
-        public Hashtable Post(string url, string userAgent, byte[] requestData)
+        /// <returns>Dictionary responseDict</returns>
+        public Dictionary<string,string> Post(string url, string userAgent, byte[] requestData)
         {
             HttpWebRequest request = ConfigureWebRequest("POST", url, userAgent, requestData.Length);
             using (Stream requestStream = request.GetRequestStream())
@@ -110,24 +113,23 @@ namespace PayWithAmazon
                 requestStream.Write(requestData, 0, requestData.Length);
             }
             execute(request);
-            responseHash.Add("response", response);
-            responseHash.Add("statusCode", statusCode);
+            responseDict.Add("response", response);
+            responseDict.Add("statusCode", statusCode.ToString());
 
-            return responseHash;
+            return responseDict;
         }
-        
+
         /// <summary>
         /// Executes the request
         /// </summary>
         /// <param name="request"></param>
         private void execute(HttpWebRequest request)
         {
-            statusCode = default(HttpStatusCode);
             try
             {
                 using (HttpWebResponse httpResponse = request.GetResponse() as HttpWebResponse)
                 {
-                    statusCode = httpResponse.StatusCode;
+                    statusCode = (int)httpResponse.StatusCode;
                     StreamReader reader = new StreamReader(httpResponse.GetResponseStream(), Encoding.UTF8);
                     this.response = reader.ReadToEnd();
                 }
@@ -137,13 +139,16 @@ namespace PayWithAmazon
             {
                 using (HttpWebResponse httpErrorResponse = (HttpWebResponse)we.Response as HttpWebResponse)
                 {
+
                     if (httpErrorResponse == null)
                     {
+                        log.Error("Http Response is empty " + we);
                         throw new NullReferenceException("Http Response is empty " + we);
                     }
                     if (httpErrorResponse != null)
                     {
-                        statusCode = httpErrorResponse.StatusCode;
+                        this.statusCode = (int)httpErrorResponse.StatusCode;
+                        log.Info("HTTP ERROR : Status code " + this.statusCode);
                         using (StreamReader reader = new StreamReader(httpErrorResponse.GetResponseStream(), Encoding.UTF8))
                         {
                             this.response = reader.ReadToEnd();

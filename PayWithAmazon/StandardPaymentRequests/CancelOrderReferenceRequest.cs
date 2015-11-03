@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,26 @@ namespace PayWithAmazon.StandardPaymentRequests
     /// </summary>
     public class CancelOrderReferenceRequest
     {
-        public Hashtable cancelOrderReferenceHashtable = new Hashtable();
+        
+        private string merchant_id;
+        private string amazon_order_reference_id;
+        private string cancelation_reason;
+        private string mws_auth_token;
+        private string action;
+
+        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public CancelOrderReferenceRequest()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            log.Debug("METHOD__CancelOrderReferenceRequest Constructor | MESSAGE__Constructor Initiate");
+            this.action = Constants.CancelOrderReference;
+            log.Debug("METHOD__CancelOrderReferenceRequest Constructor | MESSAGE__Action " + this.action);
+        }
+        public string GetAction()
+        {
+            return this.action;
+        }
 
         /// <summary>
         /// Sets the Merchant ID
@@ -19,8 +39,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>CancelOrderReferenceRequest Object</returns>
         public CancelOrderReferenceRequest WithMerchantId(string merchant_id)
         {
-            cancelOrderReferenceHashtable["merchant_id"] = merchant_id;
+            this.merchant_id = merchant_id;
+            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id " + this.merchant_id);
             return this;
+        }
+        public string GetMerchantId()
+        {
+            return this.merchant_id;
         }
 
         /// <summary>
@@ -30,8 +55,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>CancelOrderReferenceRequest Object</returns>
         public CancelOrderReferenceRequest WithAmazonOrderReferenceId(string amazon_order_reference_id)
         {
-            cancelOrderReferenceHashtable["amazon_order_reference_id"] = amazon_order_reference_id;
+            this.amazon_order_reference_id = amazon_order_reference_id;
+            log.Debug("METHOD__WithAmazonOrderReferenceId | MESSAGE__amazon_order_reference_id " + this.amazon_order_reference_id);
             return this;
+        }
+        public string GetAmazonOrderReferenceId()
+        {
+            return this.amazon_order_reference_id;
         }
 
         /// <summary>
@@ -41,8 +71,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>CancelOrderReferenceRequest Object</returns>
         public CancelOrderReferenceRequest WithCancelationReason(string cancelation_reason)
         {
-            cancelOrderReferenceHashtable["cancelation_reason"] = cancelation_reason;
+            this.cancelation_reason = cancelation_reason;
+            log.Debug("METHOD__WithCancelationReason | MESSAGE__cancelation_reason " + this.cancelation_reason);
             return this;
+        }
+        public string GetCancelationReason()
+        {
+            return this.cancelation_reason;
         }
 
         /// <summary>
@@ -52,8 +87,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>CancelOrderReferenceRequest Object</returns>
         public CancelOrderReferenceRequest WithMWSAuthToken(string mws_auth_token)
         {
-            cancelOrderReferenceHashtable["mws_auth_token"] = mws_auth_token;
+            this.mws_auth_token = mws_auth_token;
+            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token " + this.mws_auth_token);
             return this;
+        }
+        public string GetMWSAuthToken()
+        {
+            return this.mws_auth_token;
         }
     }
 }

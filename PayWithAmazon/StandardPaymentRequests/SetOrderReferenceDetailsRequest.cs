@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,31 @@ namespace PayWithAmazon.StandardPaymentRequests
     /// </summary>
     public class SetOrderReferenceDetailsRequest
     {
-        public Hashtable setOrderReferenceDetailsHashtable = new Hashtable();
+        
+        private string action;
+        private string merchant_id;
+        private string amazon_order_reference_id;
+        private decimal amount;
+        private string currency_code;
+        private string platform_id;
+        private string seller_note;
+        private string seller_order_id;
+        private string store_name;
+        private string custom_information;
+        private string mws_auth_token;
+        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public SetOrderReferenceDetailsRequest()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            log.Debug("METHOD__SetOrderReferenceDetailsRequest Constructor | MESSAGE__Constructor Initiate");
+            this.action = Constants.SetOrderReferenceDetails;
+            log.Debug("METHOD__SetOrderReferenceDetailsRequest | MESSAGE__Action: " + this.action);
+        }
+        public string GetAction()
+        {
+            return this.action;
+        }
         /// <summary>
         /// Sets the Merchant ID
         /// </summary>
@@ -19,8 +43,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithMerchantId(string merchant_id)
         {
-            setOrderReferenceDetailsHashtable["merchant_id"] = merchant_id;
+            this.merchant_id = merchant_id;
+            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id: " + this.merchant_id);
             return this;
+        }
+        public string GetMerchantId()
+        {
+            return this.merchant_id;
         }
 
         /// <summary>
@@ -30,19 +59,30 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithAmazonOrderReferenceId(string amazon_order_reference_id)
         {
-            setOrderReferenceDetailsHashtable["amazon_order_reference_id"] = amazon_order_reference_id;
+            this.amazon_order_reference_id = amazon_order_reference_id;
+            log.Debug("METHOD__WithAmazonOrderReferenceId | MESSAGE__amazon_order_reference_id: " + this.amazon_order_reference_id);
             return this;
         }
 
+        public string GetAmazonOrderReferenceId()
+        {
+            return this.amazon_order_reference_id;
+        }
         /// <summary>
         /// Sets the Amount for the order
         /// </summary>
         /// <param name="amount"></param>
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
-        public SetOrderReferenceDetailsRequest WithAmount(string amount)
+        public SetOrderReferenceDetailsRequest WithAmount(decimal amount)
         {
-            setOrderReferenceDetailsHashtable["amount"] = amount;
+            this.amount = amount;
+            log.Debug("METHOD__WithAmount | MESSAGE__amount: " + this.amount);
             return this;
+        }
+
+        public decimal GetAmount()
+        {
+            return this.amount;
         }
 
         /// <summary>
@@ -52,8 +92,14 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithCurrencyCode(string currency_code)
         {
-            setOrderReferenceDetailsHashtable["currency_code"] = currency_code;
+            this.currency_code = currency_code.ToUpper();
+            log.Debug("METHOD__WithCurrencyCode | MESSAGE__currency_code: " + this.currency_code);
             return this;
+        }
+
+        public string GetCurrencyCode()
+        {
+            return this.currency_code;
         }
 
         /// <summary>
@@ -63,8 +109,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithPlatformId(string platform_id)
         {
-            setOrderReferenceDetailsHashtable["platform_id"] = platform_id;
+            this.platform_id = platform_id;
+            log.Debug("METHOD__WithPlatformId | MESSAGE__platform_id: " + this.platform_id);
             return this;
+        }
+        public string GetPlatformId()
+        {
+            return this.platform_id;
         }
 
         /// <summary>
@@ -74,10 +125,14 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithSellerNote(string seller_note)
         {
-            setOrderReferenceDetailsHashtable["seller_note"] = seller_note;
+            this.seller_note = seller_note;
+            log.Debug("METHOD__WithSellerNote | MESSAGE__seller_note: " + this.seller_note);
             return this;
         }
-
+        public string GetSellerNote()
+        {
+            return this.seller_note;
+        }
         /// <summary>
         /// Sets the Seller Order ID
         /// </summary>
@@ -85,8 +140,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithSellerOrderId(string seller_order_id)
         {
-            setOrderReferenceDetailsHashtable["seller_order_id"] = seller_order_id;
+            this.seller_order_id = seller_order_id;
+            log.Debug("METHOD__WithSellerOrderId | MESSAGE__seller_order_id: " + this.seller_order_id);
             return this;
+        }
+        public string GetSellerOrderId()
+        {
+            return this.seller_order_id;
         }
 
         /// <summary>
@@ -96,8 +156,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithStoreName(string store_name)
         {
-            setOrderReferenceDetailsHashtable["store_name"] = store_name;
+            this.store_name = store_name;
+            log.Debug("METHOD__WithStoreName | MESSAGE__store_name: " + this.store_name);
             return this;
+        }
+        public string GetStoreName()
+        {
+            return this.store_name;
         }
 
         /// <summary>
@@ -107,8 +172,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithCustomInformation(string custom_information)
         {
-            setOrderReferenceDetailsHashtable["custom_information"] = custom_information;
+            this.custom_information = custom_information;
+            log.Debug("METHOD__WithCustomInformation | MESSAGE__custom_information: " + this.custom_information);
             return this;
+        }
+        public string GetCustomInformation()
+        {
+            return this.custom_information;
         }
 
         /// <summary>
@@ -118,8 +188,13 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
         public SetOrderReferenceDetailsRequest WithMWSAuthToken(string mws_auth_token)
         {
-            setOrderReferenceDetailsHashtable["mws_auth_token"] = mws_auth_token;
+            this.mws_auth_token = mws_auth_token;
+            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token: " + this.mws_auth_token);
             return this;
+        }
+        public string GetMWSAuthToken()
+        {
+            return this.mws_auth_token;
         }
     }
 }

@@ -12,29 +12,29 @@ namespace PayWithAmazon
     /// <summary>
     /// ResponseParser - Methods provided to convert the Response from the POST to XML, Dictionary or JSON
     /// </summary>
-    public class ResponseParser
+    public static class ResponseParser
     {
-        public string xmlResponse = null;
+        public static string xmlResponse = null;
 
-        public ResponseParser(string xml)
+        /*public ResponseParser(string xml)
         {
             xmlResponse = xml.Trim();
-        }
+        }*/
 
         /// <summary>
         /// Convert API response to XML
         /// </summary>
         /// <returns>string xml</returns>
-        public string ToXml()
+        public static void SetXml(string xml)
         {
-            return xmlResponse;
+            xmlResponse = xml;
         }
 
         /// <summary>
         /// Convert API response to JSON
         /// </summary>
         /// <returns>string json</returns>
-        public string ToJson()
+        public static string ToJson()
         {
             string json = "";
             var xml = new XmlDocument();
@@ -43,74 +43,20 @@ namespace PayWithAmazon
 
             return json;
         }
-        
+
         /// <summary>
         /// Convert API response to Dictionary
         /// </summary>
         /// <returns>Dictionary(string,object)</returns>
-        public Dictionary<string, object> ToDict()
+        public static Dictionary<string, object> ToDict()
         {
             string json = ToJson();
+            NestedJsonToDictionary jsonToDict = new NestedJsonToDictionary(json);
+            
+           /* Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
+           json, new JsonConverter[] { new JsonParser() });*/
 
-            Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
-           json, new JsonConverter[] { new JsonParser() });
-
-            return dict;
-        }
-
-        private string RemoveNamespace(string xml)
-        {
-            string filter = @"xmlns(:\w+)?=""([^""]+)""|xsi(:\w+)?=""([^""]+)""";
-            xml = Regex.Replace(xml, filter, "");
-            return xml;
-        }
-
-        /// <summary>
-        /// Get the billing agreement State for the Charge function
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns>string baStatus</returns>
-        public string GetBillingAgreementStatus(string xml)
-        {
-            string baStatus = "";
-            try
-            {
-                xml = RemoveNamespace(xml);
-
-                XmlDocument results = new XmlDocument();
-                results.LoadXml(xml);
-
-                baStatus = results.SelectSingleNode("//GetBillingAgreementDetailsResponse/GetBillingAgreementDetailsResult/BillingAgreementDetails/BillingAgreementStatus/State").InnerText;
-            }
-            catch (NullReferenceException e)
-            {
-                throw new NullReferenceException("state not found" + e);
-            }
-            return baStatus;
-        }
-
-        /// <summary>
-        /// Get the order reference State for the Charge function
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns>string OroStatus</returns>
-        public string GetOrderReferenceStatus(string xml)
-        {
-            string OroStatus = "";
-            try
-            {
-                xml = RemoveNamespace(xml);
-
-                XmlDocument results = new XmlDocument();
-                results.LoadXml(xml);
-
-                OroStatus = results.SelectSingleNode("//GetOrderReferenceDetailsResponse/GetOrderReferenceDetailsResult/OrderReferenceDetails/OrderReferenceStatus/State").InnerText;
-            }
-            catch (NullReferenceException e)
-            {
-                throw new NullReferenceException("state not found" + e);
-            }
-            return OroStatus;
+            return jsonToDict.GetDictionary();
         }
     }
 }

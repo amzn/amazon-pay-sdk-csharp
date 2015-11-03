@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,30 @@ namespace PayWithAmazon.RecurringPaymentRequests
     /// </summary>
     public class SetBillingAgreementDetailsRequest
     {
-        public Hashtable setBillingAgreementDetailsHashtable = new Hashtable();
+        
+        private string action;
+        private string merchant_id;
+        private string amazon_billing_agreement_id;
+        private string platform_id;
+        private string seller_note;
+        private string seller_order_id;
+        private string seller_billing_agreement_id;
+        private string store_name;
+        private string custom_information;
+        private string mws_auth_token;
+        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public SetBillingAgreementDetailsRequest()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            log.Debug("METHOD__SetBillingAgreementDetailsRequest Constructor | MESSAGE__Constructor Initiate");
+            this.action = Constants.SetBillingAgreementDetails;
+            log.Debug("METHOD__SetBillingAgreementDetailsRequest | MESSAGE__Action: " + this.action);
+        }
+        public string GetAction()
+        {
+            return this.action;
+        }
         /// <summary>
         /// Sets the Merchant ID
         /// </summary>
@@ -19,8 +42,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithMerchantId(string merchant_id)
         {
-            setBillingAgreementDetailsHashtable["merchant_id"] = merchant_id;
+            this.merchant_id = merchant_id;
+            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id: " + this.merchant_id);
             return this;
+        }
+        public string GetMerchantId()
+        {
+            return this.merchant_id;
         }
 
         /// <summary>
@@ -30,8 +58,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithAmazonBillingAgreementId(string amazon_billing_agreement_id)
         {
-            setBillingAgreementDetailsHashtable["amazon_billing_agreement_id"] = amazon_billing_agreement_id;
+            this.amazon_billing_agreement_id = amazon_billing_agreement_id;
+            log.Debug("METHOD__WithAmazonBillingAgreementId | MESSAGE__amazon_billing_agreement_id: " + this.amazon_billing_agreement_id);
             return this;
+        }
+        public string GetAmazonBillingAgreementId()
+        {
+            return this.amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -41,8 +74,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithPlatformId(string platform_id)
         {
-            setBillingAgreementDetailsHashtable["platform_id"] = platform_id;
+            this.platform_id = platform_id;
+            log.Debug("METHOD__WithPlatformId | MESSAGE__platform_id: " + this.platform_id);
             return this;
+        }
+        public string GetPlatformId()
+        {
+            return this.platform_id;
         }
 
         /// <summary>
@@ -52,8 +90,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithSellerNote(string seller_note)
         {
-            setBillingAgreementDetailsHashtable["seller_note"] = seller_note;
+            this.seller_note = seller_note;
+            log.Debug("METHOD__WithSellerNote | MESSAGE__seller_note: " + this.seller_note);
             return this;
+        }
+        public string GetSellerNote()
+        {
+            return this.seller_note;
         }
 
         /// <summary>
@@ -63,8 +106,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithSellerBillingAgreementId(string seller_billing_agreement_id)
         {
-            setBillingAgreementDetailsHashtable["seller_billing_agreement_id"] = seller_billing_agreement_id;
+            this.seller_billing_agreement_id = seller_billing_agreement_id;
+            log.Debug("METHOD__WithSellerBillingAgreementId | MESSAGE__seller_billing_agreement_id: " + this.seller_billing_agreement_id);
             return this;
+        }
+        public string GetSellerBillingAgreementId()
+        {
+            return this.seller_billing_agreement_id;
         }
 
         /// <summary>
@@ -74,10 +122,14 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithStoreName(string store_name)
         {
-            setBillingAgreementDetailsHashtable["store_name"] = store_name;
+            this.store_name = store_name;
+            log.Debug("METHOD__WithStoreName | MESSAGE__store_name: " + this.store_name);
             return this;
         }
-
+        public string GetStoreName()
+        {
+            return this.store_name;
+        }
         /// <summary>
         /// Sets the Custom Information
         /// </summary>
@@ -85,8 +137,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithCustomInformation(string custom_information)
         {
-            setBillingAgreementDetailsHashtable["custom_information"] = custom_information;
+            this.custom_information = custom_information;
+            log.Debug("METHOD__WithCustomInformation | MESSAGE__custom_information: " + this.custom_information);
             return this;
+        }
+        public string GetCustomInformation()
+        {
+            return this.custom_information;
         }
 
         /// <summary>
@@ -96,8 +153,13 @@ namespace PayWithAmazon.RecurringPaymentRequests
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
         public SetBillingAgreementDetailsRequest WithMWSAuthToken(string mws_auth_token)
         {
-            setBillingAgreementDetailsHashtable["mws_auth_token"] = mws_auth_token;
+            this.mws_auth_token = mws_auth_token;
+            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token: " + this.mws_auth_token);
             return this;
+        }
+        public string GetMWSAuthToken()
+        {
+            return this.mws_auth_token;
         }
     }
 }

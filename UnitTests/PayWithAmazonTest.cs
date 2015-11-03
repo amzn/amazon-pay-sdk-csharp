@@ -21,6 +21,7 @@ namespace UnitTests
     public class PayWithAmazonTest
     {
         Configuration clientConfig = new Configuration();
+
         public PayWithAmazonTest()
         {
             clientConfig.WithMerchantId("test")
@@ -28,7 +29,7 @@ namespace UnitTests
                 .WithSecretKey("test")
                 .WithCurrencyCode("USD")
                 .WithClientId("test")
-                .WithRegion("us")
+                .WithRegion(Regions.supportedRegions.us.ToString())
                 .WithSandbox(true)
                 .WithPlatformId("test")
                 .WithCABundleFile("test")
@@ -37,7 +38,8 @@ namespace UnitTests
                 .WithProxyHost("")
                 .WithProxyPort(-1)
                 .WithProxyUserName("test")
-                .WithProxyUserPassword("test");
+                .WithProxyUserPassword("test")
+                .WithAutoRetryOnThrottle(true);
         }
 
         [Test]
@@ -96,37 +98,7 @@ namespace UnitTests
             }
             catch (JsonReaderException expected)
             {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "incorrect json", RegexOptions.IgnoreCase));
-            }
-        }
-
-        [Test]
-        public void TestSandboxSetter()
-        {
-            Client client = new Client(clientConfig);
-            client.SetSandbox(true);
-            Assert.AreEqual(client.config["sandbox"], true);
-        }
-
-        [Test]
-        public void TestClientIDSetter()
-        {
-            Client client = new Client(clientConfig);
-            try
-            {
-                client.SetClientId("");
-            }
-            catch (NullReferenceException expected)
-            {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Client ID value cannot be empty", RegexOptions.IgnoreCase));
-            }
-            try
-            {
-                client.SetClientId(null);
-            }
-            catch (NullReferenceException expected)
-            {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Client ID value cannot be empty", RegexOptions.IgnoreCase));
+                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Incorrect json", RegexOptions.IgnoreCase));
             }
         }
 
@@ -155,9 +127,9 @@ namespace UnitTests
 
             GetOrderReferenceDetailsRequest getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
             getOrderReferenceDetails.WithAmazonOrderReferenceId("test")
-                .WithaddressConsentToken("test")
-                .WithMerchantId("test")
-                .WithMWSAuthToken("test");
+            .WithaddressConsentToken("test")
+            .WithMerchantId("test")
+            .WithMWSAuthToken("test");
 
             client.GetOrderReferenceDetails(getOrderReferenceDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
@@ -172,7 +144,7 @@ namespace UnitTests
                 {"Action","SetOrderReferenceDetails"},
                 {"SellerId","test"},
                 {"AmazonOrderReferenceId","test"},
-                {"OrderReferenceAttributes.OrderTotal.Amount","test"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100"},
                 {"OrderReferenceAttributes.OrderTotal.CurrencyCode","TEST"},
                 {"OrderReferenceAttributes.PlatformId","test"},
                 {"OrderReferenceAttributes.SellerNote","test"},
@@ -197,7 +169,7 @@ namespace UnitTests
             SetOrderReferenceDetailsRequest setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
             setOrderReferenceDetails.WithAmazonOrderReferenceId("test")
                 .WithMerchantId("test")
-                .WithAmount("test")
+                .WithAmount(100)
                 .WithCurrencyCode("TEST")
                 .WithPlatformId("test")
                 .WithSellerNote("test")
@@ -354,7 +326,7 @@ namespace UnitTests
                 {"Action","Authorize"},
                 {"SellerId","test"},
                 {"AmazonOrderReferenceId","test"},
-                {"AuthorizationAmount.Amount","test"},
+                {"AuthorizationAmount.Amount","100"},
                 {"AuthorizationAmount.CurrencyCode","TEST"},
                 {"AuthorizationReferenceId","test"},
                 {"CaptureNow","true"},
@@ -377,7 +349,7 @@ namespace UnitTests
             client.SetTimeStamp("0000");
             AuthorizeRequest authorize = new AuthorizeRequest();
             authorize.WithAmazonOrderReferenceId("test")
-                .WithAmount("test")
+                .WithAmount(100)
                 .WithAuthorizationReferenceId("test")
                 .WithCaptureNow(true)
                 .WithCurrencyCode("TEST")
@@ -433,7 +405,7 @@ namespace UnitTests
                 {"Action","Capture"},
                 {"SellerId","test"},
                 {"AmazonAuthorizationId","test"},
-                {"CaptureAmount.Amount","test"},
+                {"CaptureAmount.Amount","100"},
                 {"CaptureAmount.CurrencyCode","TEST"},
                 {"CaptureReferenceId","test"},
                 {"SellerCaptureNote","test"},
@@ -455,7 +427,7 @@ namespace UnitTests
 
             CaptureRequest capture = new CaptureRequest();
             capture.WithAmazonAuthorizationId("test")
-                .WithAmount("test")
+                .WithAmount(100)
                 .WithCaptureReferenceId("test")
                 .WithCurrencyCode("TEST")
                 .WithMerchantId("test")
@@ -510,7 +482,7 @@ namespace UnitTests
                 {"SellerId","test"},
                 {"AmazonCaptureId","test"},
                 {"RefundReferenceId","test"},
-                {"RefundAmount.Amount","test"},
+                {"RefundAmount.Amount","100"},
                 {"RefundAmount.CurrencyCode","TEST"},
                 {"SellerRefundNote","test"},
                 {"SoftDescriptor","test"},
@@ -530,7 +502,7 @@ namespace UnitTests
             client.SetTimeStamp("0000");
             RefundRequest refund = new RefundRequest();
             refund.WithAmazonCaptureId("test")
-                .WithAmount("test")
+                .WithAmount(100)
                 .WithCurrencyCode("TEST")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test")
@@ -617,7 +589,7 @@ namespace UnitTests
                 {"IdType","test"},
                 {"InheritShippingAddress","true"},
                 {"ConfirmNow","true"},
-                {"OrderReferenceAttributes.OrderTotal.Amount","test"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100"},
                 {"OrderReferenceAttributes.OrderTotal.CurrencyCode","TEST"},
                 {"OrderReferenceAttributes.PlatformId","test"},
                 {"OrderReferenceAttributes.SellerNote","test"},
@@ -639,8 +611,8 @@ namespace UnitTests
             client = new Client(clientConfig);
             client.SetTimeStamp("0000");
             CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
-            createOrderReferenceForId.WithAmount("test")
-                .WithConfirmNow(true)
+            createOrderReferenceForId.WithConfirmNow(true)
+                .WithAmount(100)
                 .WithCurrencyCode("TEST")
                 .WithCustomInformation("test")
                 .WithId("test")
@@ -808,7 +780,7 @@ namespace UnitTests
                 {"SellerId","test"},
                 {"AmazonBillingAgreementId","test"},
                 {"AuthorizationReferenceId","test"},
-                {"AuthorizationAmount.Amount","test"},
+                {"AuthorizationAmount.Amount","100"},
                 {"AuthorizationAmount.CurrencyCode","TEST"},
                 {"SellerAuthorizationNote","test"},
                 {"TransactionTimeout","5"},
@@ -836,7 +808,7 @@ namespace UnitTests
             client.SetTimeStamp("0000");
             AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
             authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
-                .WithAmount("test")
+                .WithAmount(100)
                 .WithAuthorizationReferenceId("test")
                 .WithCaptureNow(true)
                 .WithCurrencyCode("TEST")
@@ -847,6 +819,7 @@ namespace UnitTests
                 .WithMWSAuthToken("test")
                 .WithSellerAuthorizationNote("test")
                 .WithSellerNote("test")
+                .WithTransactionTimeout(5)
                 .WithSoftDescriptor("test")
                 .WithStoreName("test")
                 .WithSellerOrderId("test")
@@ -899,7 +872,7 @@ namespace UnitTests
             {
                 ChargeRequest charge = new ChargeRequest();
                 charge.WithAmazonReferenceId("S01-TEST")
-                    .WithAmount("test")
+                    .WithAmount(100)
                     .WithCaptureNow(true)
                     .WithChargeNote("test")
                     .WithChargeOrderId("test")
@@ -917,7 +890,7 @@ namespace UnitTests
             }
             catch (NullReferenceException expected)
             {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "state not found", RegexOptions.IgnoreCase));
+                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "state value is null", RegexOptions.IgnoreCase));
             }
             try
             {
@@ -973,17 +946,21 @@ namespace UnitTests
         [Test]
         public void Test500or503()
         {
-            string parameters = "Actinon=hjhjhjh=saaa&jg=100";
             try
             {
                 Client client = new Client(clientConfig);
 
                 string url = "https://dsenetsdk.ant.amazon.com/500error/500error.aspx";
-                client.SetMwsServiceUrl(url);
 
-                MethodInfo method = GetMethod("Invoke");
-                method.Invoke(client, new object[] { parameters }).ToString();
+                client.SetMwsTestUrl(url);
+                client.SetTimeStamp("0000");
 
+                CloseBillingAgreementRequest closeBillingAgreement = new CloseBillingAgreementRequest();
+                closeBillingAgreement.WithAmazonBillingAgreementId("test")
+                    .WithClosureReason("test")
+                    .WithMerchantId("test")
+                    .WithMWSAuthToken("test");
+                client.CloseBillingAgreement(closeBillingAgreement);
             }
             catch (WebException expected)
             {
@@ -1005,8 +982,8 @@ namespace UnitTests
 
             string json = File.ReadAllText("json.txt");
 
-            ResponseParser responseObj = new ResponseParser(response["ResponseBody"].ToString());
-            string jsonResponse = responseObj.ToJson();
+            ResponseParser.SetXml(response["ResponseBody"].ToString());
+            string jsonResponse = ResponseParser.ToJson();
             Assert.AreEqual(json, jsonResponse);
         }
 
@@ -1030,8 +1007,8 @@ namespace UnitTests
                   {"SellerNote","This is testing API call"}
               };
 
-            ResponseParser responseObj = new ResponseParser(response["ResponseBody"].ToString());
-            Dictionary<string, object> returnDictResponse = responseObj.ToDict();
+            ResponseParser.SetXml(response["ResponseBody"].ToString());
+            Dictionary<string, object> returnDictResponse = ResponseParser.ToDict();
 
             foreach (KeyValuePair<string, object> item in returnDictResponse)
             {
@@ -1053,50 +1030,6 @@ namespace UnitTests
             }
 
             CollectionAssert.AreEqual(dictResponse, compareDict);
-        }
-
-        private Hashtable SetParametersAndPost(Hashtable fieldMappings, string action)
-        {
-            Hashtable expectedParameters = SetDefaultValues(fieldMappings);
-
-            expectedParameters.Add("Action", action);
-
-            foreach (DictionaryEntry param in fieldMappings)
-            {
-                try
-                {
-                    if (string.IsNullOrEmpty(expectedParameters[param.Value].ToString()))
-                    {
-                        expectedParameters[param.Value] = "test";
-                    }
-                }
-                catch (NullReferenceException)
-                {
-                    expectedParameters[param.Value] = "test";
-                }
-            }
-
-            return expectedParameters;
-        }
-
-        private Hashtable SetDefaultValues(Hashtable fieldMappings)
-        {
-            Hashtable expectedParameters = new Hashtable();
-
-            if (fieldMappings.ContainsKey("platform_id"))
-            {
-                expectedParameters[fieldMappings["platform_id"]] = "test";
-            }
-
-            if (fieldMappings.ContainsKey("currency_code"))
-            {
-                expectedParameters[fieldMappings["currency_code"]] = "TEST";
-            }
-            if (fieldMappings.ContainsKey("transaction_timeout"))
-            {
-                expectedParameters[fieldMappings["transaction_timeout"]] = "5";
-            }
-            return expectedParameters;
         }
 
         /// <summary>

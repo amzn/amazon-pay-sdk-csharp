@@ -1,0 +1,9 @@
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Debug\PayWithAmazon.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Debug\PayWithAmazon.pdb
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Debug\Newtonsoft.Json.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\bin\Debug\Newtonsoft.Json.xml
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\obj\Debug\PayWithAmazon.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\obj\Debug\PayWithAmazon.pdb
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\PayWithAmazon.dll
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\lib\PayWithAmazon.pdb
+C:\Users\shrakuma\Documents\Visual Studio 2013\Projects\PayWithAmazon\PayWithAmazon\obj\Debug\PayWithAmazon.csprojResolveAssemblyReference.cache
