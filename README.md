@@ -262,7 +262,9 @@ bool isGetOrderReferenceDetailsSuccess = getOrderReferenceDetailsResponse.GetSuc
 	if(isGetOrderReferenceDetailsSuccess)
 	{
 		string amazonOrderReferenceId = getOrderReferenceDetailsResponse.GetAmazonOrderReferenceId();
-		if(hasConstraint)
+		
+		// Checking if any constraints on the Amazon OrderReference ID exist in the response for which an action should be taken.
+		if(getOrderReferenceDetailsResponse.GetHasConstraint())
 		{
 			List<string> constraintIdList = getOrderReferenceDetailsResponse.GetConstraintIdList();
 			List<string> constraintDescriptionList = getOrderReferenceDetailsResponse.GetDescriptionList();
