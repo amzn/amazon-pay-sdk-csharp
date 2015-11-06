@@ -190,7 +190,7 @@ requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
 
 // STEP 2 : Making the API call by passing in the GetOrderReferenceDetailsRequest object i.e requestParameters from step 1.
 // response here is the object of the GetOrderReferenceDetailsResponse class
-GetOrderReferenceDetailsResponse response = client.GetOrderReferenceDetails(requestParameters);
+OrderReferenceDetailsResponse response = client.GetOrderReferenceDetails(requestParameters);
 
 // Getting response variables
 // Variable values can be obtained directly from the GetOrderReferenceDetailsResponse object received from making the API call in step 2
