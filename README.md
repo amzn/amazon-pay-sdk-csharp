@@ -280,6 +280,7 @@ Also [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tre
 
 ### Setting the Currency Code parameter
 For API calls that need the currency code parameter, there are two ways to set it
+
 1. Setting it in the configuration class object globally
 ```csharp
 using PayWithAmazon;
@@ -297,6 +298,7 @@ clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
 
 Client client = new Client(config);
 ```
+
 2. Setting it while making the API call
 This takes priority over setting it globally. If this is not set via the following way the global value is taken.
 ```csharp
