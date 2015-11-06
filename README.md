@@ -141,11 +141,12 @@ Folder PATH listing
 
 ## Setting Configuration
 
-Setting configuration while instantiating the Client object
+**Setting configuration while instantiating the Client object**
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
 using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.Responses;
 
 // Your Login and Pay with Amazon keys are available in your Seller Central account
 
@@ -166,7 +167,7 @@ string config = "PATH_TO_JSON_FILE\filename.fileextension";
 // Instantiate the client class with the config type
 Client client = new Client(config);
 ```
-Setting configuration while instantiating the Client object with Json file
+**Setting configuration while instantiating the Client object with Json file**
 * key names for json are mentioned in the table Parameters List
 * keys are not case sensitive, Ex `merchant_id` can also be named as `Merchant_ID`
 * The full path with the file name that has correct readbale permissions should be provided to the client class constructor
@@ -198,6 +199,7 @@ Setting configuration while instantiating the Client object with Json file
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
 using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.Responses;
 
 string config = "PATH_TO_JSON_FILE\filename.fileextension";
 
@@ -207,10 +209,11 @@ Client client = new Client(config);
 
 ### Testing in Sandbox Mode
 
-The sandbox parameter defaults to false if not specified:
+**The sandbox parameter defaults to false if not specified**
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
+using PayWithAmazon.Responses;
 
 Configuration config = new Configuration();
 clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
@@ -224,13 +227,14 @@ Client client = new Client(config);
 
 ### Making an API Call
 
-Below is an example on how to make the GetOrderReferenceDetails API call:
+**Below is an example on how to make the GetOrderReferenceDetails API call**
 
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
 using Newtonsoft.json;
 using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.Responses;
 
 // STEP 1 : Create the object of the GetOrderReferenceDetailsRequest class to add the parameters for the API call
 GetOrderReferenceDetailsRequest requestParameters = new GetOrderReferenceDetailsRequest();
@@ -283,7 +287,7 @@ sections for Request classes for the required API calls.
 * [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) classes contain the variables and their Getters.
 
 ### Setting the Currency Code parameter
-For API calls that need the currency code parameter, there are two ways to set it
+**For API calls that need the currency code parameter, there are two ways to set it**
 
 **Setting it in the configuration class object globally**
 
@@ -292,6 +296,7 @@ using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
 using Newtonsoft.json;
 using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.Responses;
 
 Configuration config = new Configuration();
 clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
@@ -311,6 +316,7 @@ using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
 using Newtonsoft.json;
 using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.Responses;
 
 Configuration config = new Configuration();
 clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
@@ -340,7 +346,7 @@ In your web project you can create a file (for example ipn.aspx with a CodeBehin
 See [IPN Documentation](https://payments.amazon.com/documentation/lpwa/201749840#201750560) for all the information on IPN and types.
 ```csharp
 using PayWithAmazon;
-
+using PayWithAmazon.Responses;
 // Get the IPN headers and Message body
 Stream s = Request.InputStream;
 StreamReader sr = new StreamReader(s);
@@ -375,13 +381,17 @@ IPN's contain the XML response for the selective API calls made
 
 ```csharp
 using PayWithAmazon;
+using PayWithAmazon.Responses;
 
 // Getting response objects.
 string notificationType = ipnObject.GetNotificationType();
+
+AuthorizeResponse authResponse = null;
+
 // Example - In this case the Authorize notification was returned 
 if (notificationType.Equals(NotificationType.PaymentAuthorize.ToString()))
 {
-	AuthorizeResponse authResponse = ipnObject.GetAuthorizeResponse();
+	authResponse = ipnObject.GetAuthorizeResponse();
 }
 // With the authResponse object you can get the required variable values
 // Example - see AuthorizeResponse class for all variables and their Getter functions. 
@@ -435,6 +445,8 @@ using PayWithAmazon.CommonRequests;
 using Newtonsoft.json;
 using PayWithAmazon.StandardPaymentRequests;
 using PayWithAmazon.RecurringPaymentRequests;
+using PayWithAmazon.Responses;
+
 try
 {
 	// ChargeRequest class object
@@ -482,6 +494,7 @@ catch (InvalidDataException ex)
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
+using PayWithAmazon.Responses;
 
 // Your Login and Pay with Amazon keys are available in your Seller Central account
 
