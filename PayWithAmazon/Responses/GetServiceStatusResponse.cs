@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -21,11 +20,9 @@ namespace PayWithAmazon.Responses
         public string errorCode;
         public string errorMessage;
         public bool success = false;
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public GetServiceStatusResponse(string xml)
         {
-            log4net.Config.XmlConfigurator.Configure();
             this.xml = xml;
             ResponseParser.SetXml(xml);
             this.json = ResponseParser.ToJson();
@@ -35,18 +32,13 @@ namespace PayWithAmazon.Responses
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                log.Debug("METHOD__GetServiceStatusResponse Constructor | MESSAGE__success:" + this.success);
                 this.errorCode = errorResponse.GetErrorCode();
-                log.Debug("METHOD__GetServiceStatusResponse Constructor | MESSAGE__errorCode:" + this.errorCode);
                 this.errorMessage = errorResponse.GetErrorMessage();
-                log.Debug("METHOD__GetServiceStatusResponse Constructor | MESSAGE__errorMessage:" + this.errorMessage);
                 this.requestId = errorResponse.GetRequestId();
-                log.Debug("METHOD__GetServiceStatusResponse Constructor | MESSAGE__RequestId:" + this.requestId);
             }
             else
             {
                 success = true;
-                log.Debug("METHOD__GetServiceStatusResponse Constructor | MESSAGE__success:" + this.success);
                 ParseDictionaryToVariables(this.dictionary);
             }
         }
@@ -86,15 +78,12 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RequestId:" + this.requestId);
                                     break;
                                 case Operator.Status:
                                     status = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Status:" + this.status);
                                     break;
                                 case Operator.Timestamp:
                                     timestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Timestamp:" + this.timestamp);
                                     break;
                             }
                         }

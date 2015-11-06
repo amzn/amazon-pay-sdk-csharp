@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -22,11 +21,9 @@ namespace PayWithAmazon.Responses
         private string county;
         private string addressType;
 
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public BillingAddressDetails(IDictionary dictionary)
         {
-            log4net.Config.XmlConfigurator.Configure();
+
             ParseDictionaryToVariables(dictionary);
         }
 
@@ -66,51 +63,39 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.PostalCode:
                                     postalCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__PostalCode:" + this.postalCode);
                                     break;
                                 case Operator.Name:
                                     name = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Name:" + this.name);
                                     break;
                                 case Operator.Phone:
                                     phone = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Phone:" + this.phone);
                                     break;
                                 case Operator.CountryCode:
                                     countryCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CountryCode:" + this.countryCode);
                                     break;
                                 case Operator.StateOrRegion:
                                     stateOrRegion = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__StateOrRegion:" + this.stateOrRegion);
                                     break;
                                 case Operator.AddressLine1:
                                     addressLine1 = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AddressLine1:" + this.addressLine1);
                                     break;
                                 case Operator.AddressLine2:
                                     addressLine2 = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AddressLine2:" + this.addressLine2);
                                     break;
                                 case Operator.AddressLine3:
                                     addressLine3 = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AddressLine3:" + this.addressLine3);
                                     break;
                                 case Operator.City:
                                     city = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__City:" + this.city);
                                     break;
                                 case Operator.County:
                                     county = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__County:" + this.county);
                                     break;
                                 case Operator.District:
                                     district = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__District:" + this.district);
                                     break;
                                 case Operator.AddressType:
                                     addressType = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AddressType:" + this.addressType);
                                     break;
                             }
                         }

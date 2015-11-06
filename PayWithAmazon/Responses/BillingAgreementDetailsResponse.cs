@@ -1,5 +1,4 @@
-﻿using log4net;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,10 +47,11 @@ namespace PayWithAmazon.Responses
 
         // Buyer Login Details
         public string phone;
-        public string name;
+        private string buyerName;
         public string email;
 
         // Buyer Address Details
+        private string buyerShippingName;
         public string addressLine1;
         public string addressLine2;
         public string addressLine3;
@@ -70,11 +70,10 @@ namespace PayWithAmazon.Responses
         private string parentKey;
 
         BillingAddressDetails billingAddress;
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public BillingAgreementDetailsResponse(string xml)
         {
-            log4net.Config.XmlConfigurator.Configure();
             this.xml = xml;
             ResponseParser.SetXml(xml);
             this.json = ResponseParser.ToJson();
@@ -84,18 +83,13 @@ namespace PayWithAmazon.Responses
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                log.Debug("METHOD__BillingAgreementDetailsResponse Constructor | MESSAGE__success:" + this.success);
                 this.errorCode = errorResponse.GetErrorCode();
-                log.Debug("METHOD__BillingAgreementDetailsResponse Constructor | MESSAGE__errorCode:" + this.errorCode);
                 this.errorMessage = errorResponse.GetErrorMessage();
-                log.Debug("METHOD__BillingAgreementDetailsResponse Constructor | MESSAGE__errorMessage:" + this.errorMessage);
                 this.requestId = errorResponse.GetRequestId();
-                log.Debug("METHOD__BillingAgreementDetailsResponse Constructor | MESSAGE__RequestId:" + this.requestId);
             }
             else
             {
                 success = true;
-                log.Debug("METHOD__BillingAgreementDetailsResponse Constructor | MESSAGE__success:" + this.success);
                 ParseDictionaryToVariables(this.dictionary);
             }
         }
@@ -105,7 +99,7 @@ namespace PayWithAmazon.Responses
             AmazonBillingAgreementId, TimePeriodStartDate, TimePeriodEndDate, RequestId, LastUpdatedTimestamp, ReasonCode, ReasonDescription, State, AmountLimitPerTimePeriod,
             CurrentRemainingBalance, SellerNote, Amount, CurrencyCode, PlatformId, PostalCode, Name, Type, Id, Email, Phone, CountryCode, StateOrRegion, AddressLine1, AddressLine2,
             AddressLine3, City, County, District, DestinationType, ReleaseEnvironment, SellerOrderId, SellerBillingAgreementId, CustomInformation,
-            StoreName, Constraint, ConstraintID, Description, member, BillingAddress
+            StoreName, Constraint, ConstraintID, Description, member, BillingAddress,Buyer
         }
 
         /// <summary>
@@ -149,135 +143,115 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.AmazonBillingAgreementId:
                                     amazonBillingAgreementId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmazonBillingAgreementId:" + this.amazonBillingAgreementId);
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RequestId:" + this.requestId);
                                     break;
                                 case Operator.TimePeriodStartDate:
                                     timePeriodStartDate = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__TimePeriodStartDate:" + this.timePeriodStartDate);
                                     break;
                                 case Operator.TimePeriodEndDate:
                                     timePeriodEndDate = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__TimePeriodEndDate:" + this.timePeriodEndDate);
                                     break;
                                 case Operator.LastUpdatedTimestamp:
                                     lastUpdatedTimestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__LastUpdatedTimestamp:" + this.lastUpdatedTimestamp);
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = Int32.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonCode:" + this.reasonCode);
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonDescription:" + this.reasonDescription);
                                     break;
                                 case Operator.State:
                                     billingAgreementState = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__BillingAgreementState:" + this.billingAgreementState);
                                     break;
                                 case Operator.SellerNote:
                                     sellerNote = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SellerNote:" + this.sellerNote);
                                     break;
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.AmountLimitPerTimePeriod.ToString()))
                                     {
                                         amountLimitPerTimePeriod = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmountLimitPerTimePeriod:" + this.amountLimitPerTimePeriod);
                                     }
                                     else if (parentKey.Equals(Operator.CurrentRemainingBalance.ToString()))
                                     {
                                         currentRemainingBalanceAmount = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CurrentRemainingBalance:" + this.currentRemainingBalanceAmount);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
                                     if (parentKey.Equals(Operator.AmountLimitPerTimePeriod.ToString()))
                                     {
                                         amountLimitPerTimePeriodCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmountLimitPerTimePeriodCurrencyCode:" + this.amountLimitPerTimePeriodCurrencyCode);
                                     }
                                     else if (parentKey.Equals(Operator.CurrentRemainingBalance.ToString()))
                                     {
                                         currentRemainingBalanceCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CurrentRemainingBalanceCurrencyCode:" + this.currentRemainingBalanceCurrencyCode);
                                     }
                                     break;
                                 case Operator.PlatformId:
                                     platformId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__PlatformId:" + this.platformId);
                                     break;
                                 case Operator.PostalCode:
                                     postalCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__PostalCode:" + this.postalCode);
                                     break;
                                 case Operator.Name:
-                                    name = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Name:" + this.name);
+                                    /* Name is the Key in XML that is same for both Buyer name and Shipping Address name
+                                     * When flattened the XML attribute is lost but saved in the parentKey Variable.
+                                     * when parentKey equals 'Buyer' then parse it into buyerName else into buyerShippingName
+                                     */
+                                    if (parentKey.Equals(Operator.Buyer.ToString()))
+                                    {
+                                        buyerName = obj.ToString();
+                                    }
+                                    else
+                                    {
+                                        buyerShippingName = obj.ToString();
+                                    }
                                     break;
                                 case Operator.Email:
                                     email = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Email:" + this.email);
                                     break;
                                 case Operator.Phone:
                                     phone = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Phone:" + this.phone);
                                     break;
                                 case Operator.CountryCode:
                                     countryCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CountryCode:" + this.countryCode);
                                     break;
                                 case Operator.StateOrRegion:
                                     stateOrRegion = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__StateOrRegion:" + this.stateOrRegion);
                                     break;
                                 case Operator.AddressLine1:
                                     addressLine1 = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AddressLine1:" + this.addressLine1);
                                     break;
                                 case Operator.AddressLine2:
                                     addressLine2 = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AddressLine2:" + this.addressLine2);
                                     break;
                                 case Operator.AddressLine3:
                                     addressLine3 = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AddressLine3:" + this.addressLine3);
                                     break;
                                 case Operator.City:
                                     city = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__City:" + this.city);
                                     break;
                                 case Operator.County:
                                     county = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__County:" + this.county);
                                     break;
                                 case Operator.District:
                                     district = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__District:" + this.district);
                                     break;
                                 case Operator.DestinationType:
                                     destinationType = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__DestinationType:" + this.destinationType);
                                     break;
                                 case Operator.ReleaseEnvironment:
                                     releaseEnvironment = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReleaseEnvironment:" + this.releaseEnvironment);
                                     break;
                                 case Operator.SellerOrderId:
                                     sellerOrderId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SellerOrderId:" + this.sellerOrderId);
                                     break;
                                 case Operator.SellerBillingAgreementId:
                                     sellerBillingAgreementId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SellerBillingAgreementId:" + this.sellerBillingAgreementId);
                                     break;
                                 case Operator.StoreName:
                                     storeName = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__StoreName:" + this.storeName);
                                     break;
                                 /* The below case is when multiple constraints exist in the response. The flattening of the nested Dictionary
                                  * contains JArray of JObjects. Each Jobject contains ConstraintID and it's Description which is parsed and added to the List
@@ -294,24 +268,20 @@ namespace PayWithAmazon.Responses
                                             if (key.Equals(Operator.ConstraintID.ToString()))
                                             {
                                                 constraintId.Add(value);
-                                                log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ConstraintID:" + value);
                                             }
                                             if (key.Equals(Operator.Description.ToString()))
                                             {
                                                 description.Add(value);
-                                                log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Description:" + value);
                                             }
                                         }
                                     }
                                     break;
                                 case Operator.ConstraintID:
                                     constraintId.Add(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ConstraintID:" + obj.ToString());
                                     hasConstraint = true;
                                     break;
                                 case Operator.Description:
                                     description.Add(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__Description:" + obj.ToString());
                                     hasConstraint = true;
                                     break;
                             }
@@ -360,6 +330,10 @@ namespace PayWithAmazon.Responses
         public string GetAddressLine1()
         {
             return this.addressLine1;
+        }
+        public string GetBuyerShippingName()
+        {
+            return this.buyerShippingName;
         }
         public string GetAddressLine2()
         {
@@ -441,9 +415,9 @@ namespace PayWithAmazon.Responses
         {
             return this.json;
         }
-        public string GetName()
+        public string GetBuyerName()
         {
-            return this.name;
+            return this.buyerName;
         }
         public string GetPhone()
         {

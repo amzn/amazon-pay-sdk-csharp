@@ -27,9 +27,9 @@ namespace UnitTests
             clientConfig.WithMerchantId("test")
                 .WithAccessKey("test")
                 .WithSecretKey("test")
-                .WithCurrencyCode("USD")
+                .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithClientId("test")
-                .WithRegion(Regions.supportedRegions.us.ToString())
+                .WithRegion(Regions.supportedRegions.us)
                 .WithSandbox(true)
                 .WithPlatformId("test")
                 .WithCABundleFile("test")
@@ -145,7 +145,7 @@ namespace UnitTests
                 {"SellerId","test"},
                 {"AmazonOrderReferenceId","test"},
                 {"OrderReferenceAttributes.OrderTotal.Amount","100"},
-                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","TEST"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
                 {"OrderReferenceAttributes.PlatformId","test"},
                 {"OrderReferenceAttributes.SellerNote","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
@@ -170,7 +170,7 @@ namespace UnitTests
             setOrderReferenceDetails.WithAmazonOrderReferenceId("test")
                 .WithMerchantId("test")
                 .WithAmount(100)
-                .WithCurrencyCode("TEST")
+                .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithPlatformId("test")
                 .WithSellerNote("test")
                 .WithSellerOrderId("test")
@@ -327,7 +327,7 @@ namespace UnitTests
                 {"SellerId","test"},
                 {"AmazonOrderReferenceId","test"},
                 {"AuthorizationAmount.Amount","100"},
-                {"AuthorizationAmount.CurrencyCode","TEST"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
                 {"AuthorizationReferenceId","test"},
                 {"CaptureNow","true"},
                 {"SellerAuthorizationNote","test"},
@@ -352,7 +352,7 @@ namespace UnitTests
                 .WithAmount(100)
                 .WithAuthorizationReferenceId("test")
                 .WithCaptureNow(true)
-                .WithCurrencyCode("TEST")
+                .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test")
                 .WithSellerAuthorizationNote("test")
@@ -406,7 +406,7 @@ namespace UnitTests
                 {"SellerId","test"},
                 {"AmazonAuthorizationId","test"},
                 {"CaptureAmount.Amount","100"},
-                {"CaptureAmount.CurrencyCode","TEST"},
+                {"CaptureAmount.CurrencyCode","USD"},
                 {"CaptureReferenceId","test"},
                 {"SellerCaptureNote","test"},
                 {"SoftDescriptor","test"},
@@ -429,7 +429,7 @@ namespace UnitTests
             capture.WithAmazonAuthorizationId("test")
                 .WithAmount(100)
                 .WithCaptureReferenceId("test")
-                .WithCurrencyCode("TEST")
+                .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test")
                 .WithSellerCaptureNote("test")
@@ -483,7 +483,7 @@ namespace UnitTests
                 {"AmazonCaptureId","test"},
                 {"RefundReferenceId","test"},
                 {"RefundAmount.Amount","100"},
-                {"RefundAmount.CurrencyCode","TEST"},
+                {"RefundAmount.CurrencyCode","USD"},
                 {"SellerRefundNote","test"},
                 {"SoftDescriptor","test"},
                 {"MWSAuthToken","test"}
@@ -503,7 +503,7 @@ namespace UnitTests
             RefundRequest refund = new RefundRequest();
             refund.WithAmazonCaptureId("test")
                 .WithAmount(100)
-                .WithCurrencyCode("TEST")
+                .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test")
                 .WithRefundReferenceId("test")
@@ -590,7 +590,7 @@ namespace UnitTests
                 {"InheritShippingAddress","true"},
                 {"ConfirmNow","true"},
                 {"OrderReferenceAttributes.OrderTotal.Amount","100"},
-                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","TEST"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
                 {"OrderReferenceAttributes.PlatformId","test"},
                 {"OrderReferenceAttributes.SellerNote","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
@@ -613,7 +613,7 @@ namespace UnitTests
             CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
             createOrderReferenceForId.WithConfirmNow(true)
                 .WithAmount(100)
-                .WithCurrencyCode("TEST")
+                .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithCustomInformation("test")
                 .WithId("test")
                 .WithIdType("test")
@@ -781,7 +781,7 @@ namespace UnitTests
                 {"AmazonBillingAgreementId","test"},
                 {"AuthorizationReferenceId","test"},
                 {"AuthorizationAmount.Amount","100"},
-                {"AuthorizationAmount.CurrencyCode","TEST"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
                 {"SellerAuthorizationNote","test"},
                 {"TransactionTimeout","5"},
                 {"CaptureNow","true"},
@@ -811,7 +811,7 @@ namespace UnitTests
                 .WithAmount(100)
                 .WithAuthorizationReferenceId("test")
                 .WithCaptureNow(true)
-                .WithCurrencyCode("TEST")
+                .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithPlatformId("test")
                 .WithCustomInformation("test")
                 .WithInheritShippingAddress(true)
@@ -877,7 +877,7 @@ namespace UnitTests
                     .WithChargeNote("test")
                     .WithChargeOrderId("test")
                     .WithChargeReferenceId("test")
-                    .WithCurrencyCode("TEST")
+                    .WithCurrencyCode(Regions.currencyCode.USD)
                     .WithCustomInformation("test")
                     .WithInheritShippingAddress(true)
                     .WithMerchantId("test")
@@ -922,7 +922,8 @@ namespace UnitTests
         {
             try
             {
-                clientConfig.WithRegion("");
+                Enum emptyRegion = null;
+                clientConfig.WithRegion(emptyRegion);
                 Client client = new Client(clientConfig);
                 client.GetUserInfo("Atza");
             }
@@ -933,7 +934,7 @@ namespace UnitTests
 
             try
             {
-                clientConfig.WithRegion("us");
+                clientConfig.WithRegion(Regions.supportedRegions.us);
                 Client client = new Client(clientConfig);
                 client.GetUserInfo(null);
             }

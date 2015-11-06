@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -28,11 +27,10 @@ namespace PayWithAmazon.Responses
         private string errorMessage;
         public string parentKey;
         private bool success = false;
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public ValidateBillingAgreementResponse(string xml)
         {
-            log4net.Config.XmlConfigurator.Configure();
             this.xml = xml;
             ResponseParser.SetXml(xml);
             this.json = ResponseParser.ToJson();
@@ -42,18 +40,13 @@ namespace PayWithAmazon.Responses
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                log.Debug("METHOD__ValidateBillingAgreementResponse Constructor | MESSAGE__success:" + this.success);
                 this.errorCode = errorResponse.GetErrorCode();
-                log.Debug("METHOD__ValidateBillingAgreementResponse Constructor | MESSAGE__errorCode:" + this.errorCode);
                 this.errorMessage = errorResponse.GetErrorMessage();
-                log.Debug("METHOD__ValidateBillingAgreementResponse Constructor | MESSAGE__errorMessage:" + this.errorMessage);
                 this.requestId = errorResponse.GetRequestId();
-                log.Debug("METHOD__ValidateBillingAgreementResponse Constructor | MESSAGE__RequestId:" + this.requestId);
             }
             else
             {
                 success = true;
-                log.Debug("METHOD__ValidateBillingAgreementResponse Constructor | MESSAGE__success:" + this.success);
                 ParseDictionaryToVariables(this.dictionary);
             }
         }
@@ -94,31 +87,24 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.ValidationResult:
                                     validationResult = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ValidationResult:" + this.validationResult);
                                     break;
                                 case Operator.FailureReasonCode:
                                     failureReasonCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__FailureReasonCode:" + this.failureReasonCode);
                                     break;
                                 case Operator.State:
                                     billingAgreementState = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__BillingAgreementState:" + this.billingAgreementState);
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = int.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__reasonCode:" + this.reasonCode);
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonDescription:" + this.reasonDescription);
                                     break;
                                 case Operator.LastUpdatedTimestamp:
                                     lastUpdatedTimestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__LastUpdatedTimestamp:" + this.lastUpdatedTimestamp);
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RequestId:" + this.requestId);
                                     break;
                             }
                         }

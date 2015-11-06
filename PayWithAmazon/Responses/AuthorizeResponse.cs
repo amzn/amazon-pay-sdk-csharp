@@ -1,5 +1,4 @@
-﻿using log4net;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,11 +50,10 @@ namespace PayWithAmazon.Responses
         public string parentKey;
 
         public bool success = false;
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public AuthorizeResponse(string xml)
         {
-            log4net.Config.XmlConfigurator.Configure();
             this.xml = xml;
             ResponseParser.SetXml(xml);
             this.json = ResponseParser.ToJson();
@@ -65,18 +63,13 @@ namespace PayWithAmazon.Responses
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                log.Debug("METHOD__AuthorizeResponse Constructor | MESSAGE__success:" + this.success);
                 this.errorCode = errorResponse.GetErrorCode();
-                log.Debug("METHOD__AuthorizeResponse Constructor | MESSAGE__errorCode:" + this.errorCode);
                 this.errorMessage = errorResponse.GetErrorMessage();
-                log.Debug("METHOD__AuthorizeResponse Constructor | MESSAGE__errorMessage:" + this.errorMessage);
                 this.requestId = errorResponse.GetRequestId();
-                log.Debug("METHOD__AuthorizeResponse Constructor | MESSAGE__RequestId:" + this.requestId);
             }
             else
             {
                 success = true;
-                log.Debug("METHOD__AuthorizeResponse Constructor | MESSAGE__success:" + this.success);
                 ParseDictionaryToVariables(this.dictionary);
             }
         }
@@ -118,89 +111,70 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.AmazonOrderReferenceId:
                                     amazonOrderReferenceId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmazonOrderReferenceId:" + this.amazonOrderReferenceId);
                                     break;
                                 case Operator.AmazonAuthorizationId:
                                     authorizationId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmazonAuthorizationId:" + this.authorizationId);
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RequestId:" + this.requestId);
                                     break;
                                 case Operator.SellerAuthorizationNote:
                                     sellerAuthorizationNote = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SellerAuthorizationNote:" + this.sellerAuthorizationNote);
                                     break;
                                 case Operator.ExpirationTimestamp:
                                     expirationTimeStamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ExpirationTimestamp:" + this.expirationTimeStamp);
                                     break;
                                 case Operator.LastUpdateTimestamp:
                                     lastUpdateTimestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__LastUpdateTimestamp:" + this.lastUpdateTimestamp);
                                     break;
                                 case Operator.CreationTimestamp:
                                     creationTimestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreationTimestamp:" + this.creationTimestamp);
                                     break;
                                 case Operator.AuthorizationReferenceId:
                                     authorizationReferenceId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AuthorizationReferenceId:" + this.authorizationReferenceId);
                                     break;
                                 case Operator.State:
                                     authorizationState = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AuthorizationState:" + this.authorizationState);
                                     break;
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.AuthorizationAmount.ToString()))
                                     {
                                         authorizationAmount = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AuthorizationAmount:" + this.authorizationAmount);
                                     }
                                     else if (parentKey.Equals(Operator.CapturedAmount.ToString()))
                                     {
                                         capturedAmount = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CapturedAmount:" + this.capturedAmount);
                                     }
                                     else if (parentKey.Equals(Operator.AuthorizationFee.ToString()))
                                     {
                                         authorizationFee = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AuthorizationFee:" + this.authorizationFee);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
                                     if (parentKey.Equals(Operator.AuthorizationAmount.ToString()))
                                     {
                                         authorizationAmountCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__authorizationAmountCurrencyCode:" + this.authorizationAmountCurrencyCode);
                                     }
                                     else if (parentKey.Equals(Operator.CapturedAmount.ToString()))
                                     {
                                         capturedAmountCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__capturedAmountCurrencyCode:" + this.capturedAmountCurrencyCode);
                                     }
                                     else if (parentKey.Equals(Operator.AuthorizationFee.ToString()))
                                     {
                                         authorizationFeeCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__authorizationFeeCurrencyCode:" + this.authorizationFeeCurrencyCode);
                                     }
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonCode:" + this.reasonCode);
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonDescription:" + this.reasonDescription);
                                     break;
                                 case Operator.CaptureNow:
                                     captureNow = bool.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CaptureNow:" + this.captureNow);
                                     break;
                                 case Operator.SoftDescriptor:
                                     softDescriptor = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SoftDescriptor:" + this.softDescriptor);
                                     break;
                                 case Operator.member:
                                     if (obj.GetType() == typeof(JArray))
@@ -209,13 +183,11 @@ namespace PayWithAmazon.Responses
                                         foreach (string capId in capIdArray)
                                         {
                                             captureId.Add(capId);
-                                            log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CaptureId:" + capId);
                                         }
                                     }
                                     else
                                     {
                                         captureId.Add(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CaptureId:" + obj.ToString());
                                     }
                                     break;
                             }

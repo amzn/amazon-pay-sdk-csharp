@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +10,6 @@ namespace PayWithAmazon.ProviderCreditRequests
     /// </summary>
     public class ReverseProviderCreditRequest
     {
-        
         private string action;
         private string merchant_id;
         private string amazon_provider_credit_id;
@@ -20,14 +18,10 @@ namespace PayWithAmazon.ProviderCreditRequests
         private string currency_code;
         private string credit_reversal_note;
         private string mws_auth_token;
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public ReverseProviderCreditRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__ReverseProviderCreditRequest Constructor | MESSAGE__Constructor Initiate");
             this.action = Constants.ReverseProviderCredit;
-            log.Debug("METHOD__ReverseProviderCreditRequest | MESSAGE__Action: " + this.action);
         }
         public string GetAction()
         {
@@ -42,7 +36,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public ReverseProviderCreditRequest WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id: " + this.merchant_id);
             return this;
         }
         public string GetMerchantId()
@@ -58,7 +51,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public ReverseProviderCreditRequest WithAmazonProviderCreditId(string amazon_provider_credit_id)
         {
             this.amazon_provider_credit_id = amazon_provider_credit_id;
-            log.Debug("METHOD__WithAmazonProviderCreditId | MESSAGE__amazon_provider_credit_id: " + this.amazon_provider_credit_id);
             return this;
         }
         public string GetAmazonProviderCreditId()
@@ -74,7 +66,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public ReverseProviderCreditRequest WithCreditReversalReferenceId(string credit_reversal_reference_id)
         {
             this.credit_reversal_reference_id = credit_reversal_reference_id;
-            log.Debug("METHOD__WithCreditReversalReferenceId | MESSAGE__credit_reversal_reference_id: " + this.credit_reversal_reference_id);
             return this;
         }
         public string GetCreditReversalReferenceId()
@@ -90,7 +81,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public ReverseProviderCreditRequest WithAmount(decimal amount)
         {
             this.amount = amount;
-            log.Debug("METHOD__WithAmount | MESSAGE__amount: " + this.amount);
             return this;
         }
         public decimal GetAmount()
@@ -103,10 +93,9 @@ namespace PayWithAmazon.ProviderCreditRequests
         /// </summary>
         /// <param name="currency_code"></param>
         /// <returns>ReverseProviderCreditRequest Object</returns>
-        public ReverseProviderCreditRequest WithCurrencyCode(string currency_code)
+        public ReverseProviderCreditRequest WithCurrencyCode(Enum currency_code)
         {
-            this.currency_code = currency_code.ToUpper();
-            log.Debug("METHOD__WithCurrencyCode | MESSAGE__currency_code: " + this.currency_code);
+            this.currency_code = currency_code.ToString();
             return this;
         }
         public string GetCurrencyCode()
@@ -122,7 +111,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public ReverseProviderCreditRequest WithCreditReversalNote(string credit_reversal_note)
         {
             this.credit_reversal_note = credit_reversal_note;
-            log.Debug("METHOD__WithCreditReversalNote | MESSAGE__credit_reversal_note: " + this.credit_reversal_note);
             return this;
         }
         public string GetCreditReversalNote()
@@ -137,7 +125,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public ReverseProviderCreditRequest WithMWSAuthToken(string mws_auth_token)
         {
             this.mws_auth_token = mws_auth_token;
-            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token: " + this.mws_auth_token);
             return this;
         }
         public string GetMWSAuthToken()

@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -11,21 +10,15 @@ namespace PayWithAmazon.StandardPaymentRequests
     /// </summary>
     public class CancelOrderReferenceRequest
     {
-        
         private string merchant_id;
         private string amazon_order_reference_id;
         private string cancelation_reason;
         private string mws_auth_token;
         private string action;
 
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public CancelOrderReferenceRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__CancelOrderReferenceRequest Constructor | MESSAGE__Constructor Initiate");
             this.action = Constants.CancelOrderReference;
-            log.Debug("METHOD__CancelOrderReferenceRequest Constructor | MESSAGE__Action " + this.action);
         }
         public string GetAction()
         {
@@ -40,7 +33,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CancelOrderReferenceRequest WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id " + this.merchant_id);
             return this;
         }
         public string GetMerchantId()
@@ -56,7 +48,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CancelOrderReferenceRequest WithAmazonOrderReferenceId(string amazon_order_reference_id)
         {
             this.amazon_order_reference_id = amazon_order_reference_id;
-            log.Debug("METHOD__WithAmazonOrderReferenceId | MESSAGE__amazon_order_reference_id " + this.amazon_order_reference_id);
             return this;
         }
         public string GetAmazonOrderReferenceId()
@@ -72,7 +63,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CancelOrderReferenceRequest WithCancelationReason(string cancelation_reason)
         {
             this.cancelation_reason = cancelation_reason;
-            log.Debug("METHOD__WithCancelationReason | MESSAGE__cancelation_reason " + this.cancelation_reason);
             return this;
         }
         public string GetCancelationReason()
@@ -88,7 +78,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CancelOrderReferenceRequest WithMWSAuthToken(string mws_auth_token)
         {
             this.mws_auth_token = mws_auth_token;
-            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token " + this.mws_auth_token);
             return this;
         }
         public string GetMWSAuthToken()

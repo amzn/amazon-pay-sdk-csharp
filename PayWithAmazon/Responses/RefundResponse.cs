@@ -1,5 +1,4 @@
-﻿using log4net;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,11 +43,10 @@ namespace PayWithAmazon.Responses
         public string errorMessage;
         public string parentKey;
         public bool success = false;
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public RefundResponse(string xml)
         {
-            log4net.Config.XmlConfigurator.Configure();
             this.xml = xml;
             ResponseParser.SetXml(xml);
             this.json = ResponseParser.ToJson();
@@ -58,18 +56,13 @@ namespace PayWithAmazon.Responses
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                log.Debug("METHOD__RefundResponse Constructor | MESSAGE__success:" + this.success);
                 this.errorCode = errorResponse.GetErrorCode();
-                log.Debug("METHOD__RefundResponse Constructor | MESSAGE__errorCode:" + this.errorCode);
                 this.errorMessage = errorResponse.GetErrorMessage();
-                log.Debug("METHOD__RefundResponse Constructor | MESSAGE__errorMessage:" + this.errorMessage);
                 this.requestId = errorResponse.GetRequestId();
-                log.Debug("METHOD__RefundResponse Constructor | MESSAGE__RequestId:" + this.requestId);
             }
             else
             {
                 success = true;
-                log.Debug("METHOD__RefundResponse Constructor | MESSAGE__success:" + this.success);
                 ParseDictionaryToVariables(this.dictionary);
             }
         }
@@ -111,71 +104,56 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.AmazonRefundId:
                                     amazonRefundId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmazonRefundId:" + this.amazonRefundId);
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RequestId:" + this.requestId);
                                     break;
                                 case Operator.SellerRefundNote:
                                     sellerRefundNote = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SellerRefundNote:" + this.sellerRefundNote);
                                     break;
                                 case Operator.RefundReferenceId:
                                     refundReferenceId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RefundReferenceId:" + this.refundReferenceId);
                                     break;
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.RefundAmount.ToString()))
                                     {
                                         refundAmount = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RefundAmount:" + this.refundAmount);
                                     }
                                     else if (parentKey.Equals(Operator.FeeRefunded.ToString()))
                                     {
                                         feeRefunded = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__FeeRefunded:" + this.feeRefunded);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
                                     if (parentKey.Equals(Operator.RefundAmount.ToString()))
                                     {
                                         refundCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RefundCurrencyCode:" + this.refundCurrencyCode);
                                     }
                                     else if (parentKey.Equals(Operator.FeeRefunded.ToString()))
                                     {
                                         feeRefundedCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__FeeRefundedCurrencyCode:" + this.feeRefundedCurrencyCode);
                                     }
                                     break;
                                 case Operator.RefundType:
                                     refundType = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RefundType:" + this.refundType);
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonCode:" + this.reasonCode);
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonDescription:" + this.reasonDescription);
                                     break;
                                 case Operator.State:
                                     refundState = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RefundState:" + this.refundState);
                                     break;
                                 case Operator.SoftDescriptor:
                                     softDescriptor = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SoftDescriptor:" + this.softDescriptor);
                                     break;
                                 case Operator.LastUpdateTimestamp:
                                     lastUpdateTimestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__LastUpdateTimestamp:" + this.lastUpdateTimestamp);
                                     break;
                                 case Operator.CreationTimestamp:
                                     creationTimestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreationTimestamp:" + this.creationTimestamp);
                                     break;
                                 case Operator.member:
                                     if (parentKey.Equals(Operator.ProviderCreditReversalSummaryList.ToString()))
@@ -190,12 +168,10 @@ namespace PayWithAmazon.Responses
                                                 if (key.Equals(Operator.ProviderId.ToString()))
                                                 {
                                                     providerId.Add(value);
-                                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ProviderId:" + value);
                                                 }
                                                 if (key.Equals(Operator.ProviderCreditReversalId.ToString()))
                                                 {
                                                     providerCreditReversalId.Add(value);
-                                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ProviderCreditReversalId:" + value);
                                                 }
                                             }
                                         }
@@ -204,11 +180,9 @@ namespace PayWithAmazon.Responses
 
                                 case Operator.ProviderId:
                                     providerId.Add(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ProviderId:" + obj.ToString());
                                     break;
                                 case Operator.ProviderCreditReversalId:
                                     providerCreditReversalId.Add(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ProviderCreditReversalId:" + obj.ToString());
                                     break;
                             }
                         }

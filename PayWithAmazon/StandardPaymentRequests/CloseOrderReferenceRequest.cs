@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -11,20 +10,15 @@ namespace PayWithAmazon.StandardPaymentRequests
     /// </summary>
     public class CloseOrderReferenceRequest
     {
-        
         private string merchant_id;
         private string amazon_order_reference_id;
         private string closure_reason;
         private string mws_auth_token;
         private string action;
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public CloseOrderReferenceRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__CloseOrderReferenceRequest Constructor | MESSAGE__Constructor Initiate");
             this.action = Constants.CloseOrderReference;
-            log.Debug("METHOD__CloseOrderReferenceRequest | MESSAGE__Action:" + this.action);
         }
         public string GetAction()
         {
@@ -37,9 +31,8 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// <returns>CloseOrderReferenceRequest Object</returns>
         public CloseOrderReferenceRequest WithMerchantId(string merchant_id)
         {
-           this.merchant_id = merchant_id;
-           log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id:" + this.merchant_id);
-           return this;
+            this.merchant_id = merchant_id;
+            return this;
         }
         public string GetMerchantId()
         {
@@ -53,7 +46,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CloseOrderReferenceRequest WithAmazonOrderReferenceId(string amazon_order_reference_id)
         {
             this.amazon_order_reference_id = amazon_order_reference_id;
-            log.Debug("METHOD__WithAmazonOrderReferenceId | MESSAGE__amazon_order_reference_id:" + this.amazon_order_reference_id);
             return this;
         }
         public string GetAmazonOrderReferenceId()
@@ -68,7 +60,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CloseOrderReferenceRequest WithClosureReason(string closure_reason)
         {
             this.closure_reason = closure_reason;
-            log.Debug("METHOD__WithClosureReason | MESSAGE__closure_reason:" + this.closure_reason);
             return this;
         }
         public string GetClosureReason()
@@ -83,7 +74,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CloseOrderReferenceRequest WithMWSAuthToken(string mws_auth_token)
         {
             this.mws_auth_token = mws_auth_token;
-            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token:" + this.mws_auth_token);
             return this;
         }
         public string GetMWSAuthToken()

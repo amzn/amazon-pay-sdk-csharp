@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -21,13 +20,11 @@ namespace PayWithAmazon
         private Configuration clientConfig;
         private int statusCode;
         
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public HttpImpl(Configuration config)
         {
-            log4net.Config.XmlConfigurator.Configure();
-            clientConfig = config;
             responseDict = new Dictionary<string,string>();
+            this.clientConfig = config;
         }
 
         /// <summary>
@@ -142,13 +139,11 @@ namespace PayWithAmazon
 
                     if (httpErrorResponse == null)
                     {
-                        log.Error("Http Response is empty " + we);
                         throw new NullReferenceException("Http Response is empty " + we);
                     }
                     if (httpErrorResponse != null)
                     {
                         this.statusCode = (int)httpErrorResponse.StatusCode;
-                        log.Info("HTTP ERROR : Status code " + this.statusCode);
                         using (StreamReader reader = new StreamReader(httpErrorResponse.GetResponseStream(), Encoding.UTF8))
                         {
                             this.response = reader.ReadToEnd();

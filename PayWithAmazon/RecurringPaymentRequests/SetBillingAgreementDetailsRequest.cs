@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +10,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
     /// </summary>
     public class SetBillingAgreementDetailsRequest
     {
-        
         private string action;
         private string merchant_id;
         private string amazon_billing_agreement_id;
@@ -22,14 +20,10 @@ namespace PayWithAmazon.RecurringPaymentRequests
         private string store_name;
         private string custom_information;
         private string mws_auth_token;
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public SetBillingAgreementDetailsRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__SetBillingAgreementDetailsRequest Constructor | MESSAGE__Constructor Initiate");
             this.action = Constants.SetBillingAgreementDetails;
-            log.Debug("METHOD__SetBillingAgreementDetailsRequest | MESSAGE__Action: " + this.action);
         }
         public string GetAction()
         {
@@ -43,7 +37,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id: " + this.merchant_id);
             return this;
         }
         public string GetMerchantId()
@@ -59,7 +52,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithAmazonBillingAgreementId(string amazon_billing_agreement_id)
         {
             this.amazon_billing_agreement_id = amazon_billing_agreement_id;
-            log.Debug("METHOD__WithAmazonBillingAgreementId | MESSAGE__amazon_billing_agreement_id: " + this.amazon_billing_agreement_id);
             return this;
         }
         public string GetAmazonBillingAgreementId()
@@ -75,7 +67,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithPlatformId(string platform_id)
         {
             this.platform_id = platform_id;
-            log.Debug("METHOD__WithPlatformId | MESSAGE__platform_id: " + this.platform_id);
             return this;
         }
         public string GetPlatformId()
@@ -91,7 +82,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithSellerNote(string seller_note)
         {
             this.seller_note = seller_note;
-            log.Debug("METHOD__WithSellerNote | MESSAGE__seller_note: " + this.seller_note);
             return this;
         }
         public string GetSellerNote()
@@ -107,7 +97,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithSellerBillingAgreementId(string seller_billing_agreement_id)
         {
             this.seller_billing_agreement_id = seller_billing_agreement_id;
-            log.Debug("METHOD__WithSellerBillingAgreementId | MESSAGE__seller_billing_agreement_id: " + this.seller_billing_agreement_id);
             return this;
         }
         public string GetSellerBillingAgreementId()
@@ -123,7 +112,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithStoreName(string store_name)
         {
             this.store_name = store_name;
-            log.Debug("METHOD__WithStoreName | MESSAGE__store_name: " + this.store_name);
             return this;
         }
         public string GetStoreName()
@@ -138,7 +126,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithCustomInformation(string custom_information)
         {
             this.custom_information = custom_information;
-            log.Debug("METHOD__WithCustomInformation | MESSAGE__custom_information: " + this.custom_information);
             return this;
         }
         public string GetCustomInformation()
@@ -154,7 +141,6 @@ namespace PayWithAmazon.RecurringPaymentRequests
         public SetBillingAgreementDetailsRequest WithMWSAuthToken(string mws_auth_token)
         {
             this.mws_auth_token = mws_auth_token;
-            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token: " + this.mws_auth_token);
             return this;
         }
         public string GetMWSAuthToken()

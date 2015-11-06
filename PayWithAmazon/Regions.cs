@@ -13,12 +13,16 @@ namespace PayWithAmazon
         /// <summary>
         /// Enum for supported Region values
         /// </summary>
-        public  enum supportedRegions
+        public enum supportedRegions
         {
             us, uk, de, jp
         }
+        public enum currencyCode
+        {
+            USD, GBP, EUR, JPY
+        }
 
-        private  enum commonRegions
+        private enum commonRegions
         {
             eu, na
         }

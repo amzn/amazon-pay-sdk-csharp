@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using PayWithAmazon.RecurringPaymentRequests;
 using System.IO;
-using log4net;
+
 
 namespace PayWithAmazon.StandardPaymentRequests
 {
@@ -19,21 +19,18 @@ namespace PayWithAmazon.StandardPaymentRequests
         public AuthorizeRequest authorizeOrderReference;
 
         public string chargeType = "";
-        
+
 
         public GetBillingAgreementDetailsRequest getBillingAgreementDetails;
         public SetBillingAgreementDetailsRequest setBillingAgreementDetails;
         public ConfirmBillingAgreementRequest confirmBillingAgreement;
         public AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement;
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// constructor initializes the required API request objects
         /// </summary>
         public ChargeRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__ChargeRequest Constructor | MESSAGE__Constructor Initiate");
-            
             getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
             setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
             confirmOrderReference = new ConfirmOrderReferenceRequest();
@@ -135,7 +132,7 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// </summary>
         /// <param name="currency_code"></param>
         /// <returns>ChargeRequest</returns>
-        public ChargeRequest WithCurrencyCode(string currency_code)
+        public ChargeRequest WithCurrencyCode(Enum currency_code)
         {
             switch (chargeType)
             {

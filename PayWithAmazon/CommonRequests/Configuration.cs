@@ -1,5 +1,4 @@
-﻿using log4net;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ namespace PayWithAmazon.CommonRequests
     /// </summary>
     public class Configuration
     {
-
         private string merchant_id;
         private string access_key;
         private string secret_key;
@@ -32,8 +30,7 @@ namespace PayWithAmazon.CommonRequests
         private bool auto_retry_on_throttle = true;
 
         private Dictionary<string, string> dictionaryFromJson;
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        
+
         private enum configurationKeys
         {
             merchant_id, access_key, secret_key, region, currency_code, sandbox, platform_id, cabundle_file, application_name,
@@ -42,8 +39,6 @@ namespace PayWithAmazon.CommonRequests
 
         public Configuration()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__Configuration Constructor | MESSAGE__Constructor Initiate");
             this.proxy_port = -1;
         }
 
@@ -64,11 +59,33 @@ namespace PayWithAmazon.CommonRequests
                                 break;
                             case configurationKeys.secret_key: WithSecretKey(pair.Value);
                                 break;
-                            case configurationKeys.region: WithRegion(pair.Value);
+                            case configurationKeys.region:
+                                // Checking if the value in the json for region is present in the supported region enum of the Regions class
+                                if (Enum.IsDefined(typeof(Regions.supportedRegions), pair.Value.ToLower()))
+                                {
+                                    // If the region is present convert it to an enum type and pass it to the WithRegion method
+                                    var region = (Regions.supportedRegions)Enum.Parse(typeof(Regions.supportedRegions), pair.Value.ToLower());
+                                    WithRegion((Enum)region);
+                                }
+                                else
+                                {
+                                    throw new InvalidDataException("Region :" + pair.Value + " is not supported");
+                                }
                                 break;
                             case configurationKeys.sandbox: WithSandbox(bool.Parse(pair.Value.ToLower()));
                                 break;
-                            case configurationKeys.currency_code: WithCurrencyCode(pair.Value);
+                            case configurationKeys.currency_code:
+                                // Checking if the value in the json for Currency Code is present in the currencyCode enum of the Regions class
+                                if (Enum.IsDefined(typeof(Regions.currencyCode), pair.Value.ToUpper()))
+                                {
+                                    // If the Currency Code is present convert it to an enum type and pass it to the WithRegion method
+                                    var currencyCode = (Regions.currencyCode)Enum.Parse(typeof(Regions.currencyCode), pair.Value.ToUpper());
+                                    WithCurrencyCode((Enum)currencyCode);
+                                }
+                                else
+                                {
+                                    throw new InvalidDataException("Currency Code :" + pair.Value + " is not supported");
+                                }
                                 break;
                             case configurationKeys.platform_id: WithPlatformId(pair.Value);
                                 break;
@@ -92,15 +109,10 @@ namespace PayWithAmazon.CommonRequests
                                 break;
                         }
                     }
-                    else
-                    {
-                        log.Error("METHOD__Json Constructor | MESSAGE__" + pair.Key + " : key is not a part of the configuration");
-                    }
                 }
             }
             catch (JsonReaderException e)
             {
-                log.Error("METHOD__Json Constructor | MESSAGE__Incorrect JSON Format. Check your JSON config file for syntax errors");
                 throw new JsonReaderException("Incorrect JSON Format. Check your JSON config file for syntax errors\n" + e);
             }
 
@@ -114,7 +126,7 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id: " + this.merchant_id);
+
             return this;
         }
         public string GetMerchantId()
@@ -130,7 +142,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithAccessKey(string access_key)
         {
             this.access_key = access_key;
-            log.Debug("METHOD__WithAccessKey | MESSAGE__access_key: " + this.access_key);
             return this;
         }
         public string GetAccessKey()
@@ -146,7 +157,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithSecretKey(string secret_key)
         {
             this.secret_key = secret_key;
-            log.Debug("METHOD__WithSecretKey | MESSAGE__secret_key: value not logged for safety");
             return this;
         }
         public string GetSecretKey()
@@ -159,10 +169,9 @@ namespace PayWithAmazon.CommonRequests
         /// </summary>
         /// <param name="region"></param>
         /// <returns>Configuration Object</returns>
-        public Configuration WithRegion(string region)
+        public Configuration WithRegion(Enum region)
         {
-            this.region = region.ToLower();
-            log.Debug("METHOD__WithRegion | MESSAGE__region: " + this.region);
+            this.region = region.ToString().ToLower();
             return this;
         }
         public string GetRegion()
@@ -175,10 +184,9 @@ namespace PayWithAmazon.CommonRequests
         /// </summary>
         /// <param name="currency_code"></param>
         /// <returns>Configuration Object</returns>
-        public Configuration WithCurrencyCode(string currency_code)
+        public Configuration WithCurrencyCode(Enum currency_code)
         {
-            this.currency_code = currency_code.ToUpper();
-            log.Debug("METHOD__WithCurrencyCode | MESSAGE__currency_code: " + this.currency_code);
+            this.currency_code = currency_code.ToString();
             return this;
         }
         public string GetCurrencyCode()
@@ -194,7 +202,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithSandbox(bool sandbox = false)
         {
             this.sandbox = sandbox;
-            log.Debug("METHOD__WithSandbox | MESSAGE__sandbox: " + this.sandbox);
             return this;
         }
         public string GetSandbox()
@@ -210,7 +217,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithPlatformId(string platform_id)
         {
             this.platform_id = platform_id;
-            log.Debug("METHOD__WithPlatformId | MESSAGE__platform_id: " + this.platform_id);
             return this;
         }
         public string GetPlatformId()
@@ -226,7 +232,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithCABundleFile(string cabundle_file)
         {
             this.cabundle_file = cabundle_file;
-            log.Debug("METHOD__WithCABundleFile | MESSAGE__cabundle_file: " + this.cabundle_file);
             return this;
         }
         public string GetCABundleFile()
@@ -242,7 +247,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithApplicationName(string application_name)
         {
             this.application_name = application_name;
-            log.Debug("METHOD__WithApplicationName | MESSAGE__application_name: " + this.application_name);
             return this;
         }
         public string GetApplicationName()
@@ -258,7 +262,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithApplicationVersion(string application_version)
         {
             this.application_version = application_version;
-            log.Debug("METHOD__WithApplicationVersion | MESSAGE__application_version: " + this.application_version);
             return this;
         }
         public string GetApplicationVersion()
@@ -274,7 +277,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithProxyHost(string proxy_host)
         {
             this.proxy_host = proxy_host;
-            log.Debug("METHOD__WithProxyHost | MESSAGE__proxy_host: " + this.proxy_host);
             return this;
         }
         public string GetProxyHost()
@@ -290,7 +292,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithProxyPort(int proxy_port)
         {
             this.proxy_port = proxy_port;
-            log.Debug("METHOD__WithProxyPort | MESSAGE__proxy_port: " + this.proxy_port);
             return this;
         }
         public int GetProxyPort()
@@ -306,7 +307,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithProxyUserName(string proxy_username)
         {
             this.proxy_username = proxy_username;
-            log.Debug("METHOD__WithProxyUserName | MESSAGE__proxy_username: Value not logged for safety");
             return this;
         }
         public string GetProxyUserName()
@@ -322,7 +322,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithProxyUserPassword(string proxy_password)
         {
             this.proxy_password = proxy_password;
-            log.Debug("METHOD__WithProxyUserPassword | MESSAGE__proxy_password: Value not logged for safety");
             return this;
         }
         public string GetProxyUserPassword()
@@ -338,7 +337,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithClientId(string client_id)
         {
             this.client_id = client_id;
-            log.Debug("METHOD__WithClientId | MESSAGE__client_id: " + this.client_id);
             return this;
         }
         public string GetClientId()
@@ -354,7 +352,6 @@ namespace PayWithAmazon.CommonRequests
         public Configuration WithAutoRetryOnThrottle(bool auto_retry_on_throttle)
         {
             this.auto_retry_on_throttle = auto_retry_on_throttle;
-            log.Debug("METHOD__WithAutoRetryOnThrottle | MESSAGE__auto_retry_on_throttle: " + this.auto_retry_on_throttle);
             return this;
         }
         public bool GetAutoRetryOnThrottle()

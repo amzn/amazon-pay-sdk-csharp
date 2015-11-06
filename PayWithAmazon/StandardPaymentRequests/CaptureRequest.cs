@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +10,7 @@ namespace PayWithAmazon.StandardPaymentRequests
     /// </summary>
     public class CaptureRequest
     {
-        
+
         private string action;
         private string merchant_id;
         private string amazon_authorization_id;
@@ -22,14 +21,10 @@ namespace PayWithAmazon.StandardPaymentRequests
         private string soft_descriptor;
         private string mws_auth_token;
         List<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public CaptureRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__CaptureRequest Constructor | MESSAGE__Constructor Initiate");
             this.action = Constants.Capture;
-            log.Debug("METHOD__CaptureRequest Constructor | MESSAGE__Constructor Initiate Action: " + this.action);
         }
         public string GetAction()
         {
@@ -43,7 +38,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CaptureRequest WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id:" + this.merchant_id);
             return this;
         }
         public string GetMerchantId()
@@ -58,7 +52,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CaptureRequest WithAmazonAuthorizationId(string amazon_authorization_id)
         {
             this.amazon_authorization_id = amazon_authorization_id;
-            log.Debug("METHOD__WithAmazonAuthorizationId | MESSAGE__amazon_authorization_id:" + this.amazon_authorization_id);
             return this;
         }
         public string GetAmazonAuthorizationId()
@@ -73,7 +66,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CaptureRequest WithAmount(decimal capture_amount)
         {
             this.amount = capture_amount;
-            log.Debug("METHOD__WithAmount | MESSAGE__amount:" + this.amount);
             return this;
         }
         public decimal GetAmount()
@@ -85,10 +77,9 @@ namespace PayWithAmazon.StandardPaymentRequests
         /// </summary>
         /// <param name="currency_code"></param>
         /// <returns>CaptureRequest Object</returns>
-        public CaptureRequest WithCurrencyCode(string currency_code)
+        public CaptureRequest WithCurrencyCode(Enum currency_code)
         {
-            this.currency_code = currency_code.ToUpper();
-            log.Debug("METHOD__WithCurrencyCode | MESSAGE__currency_code:" + this.currency_code);
+            this.currency_code = currency_code.ToString();
             return this;
         }
         public string GetCurrencyCode()
@@ -103,7 +94,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CaptureRequest WithCaptureReferenceId(string capture_reference_id)
         {
             this.capture_reference_id = capture_reference_id;
-            log.Debug("METHOD__WithCaptureReferenceId | MESSAGE__capture_reference_id:" + this.capture_reference_id);
             return this;
         }
         public string GetCaptureReferenceId()
@@ -123,17 +113,11 @@ namespace PayWithAmazon.StandardPaymentRequests
             Dictionary<string, string> providerCreditDetails = new Dictionary<string, string>();
             providerCreditDetails.Clear();
             providerCreditDetails[Constants.ProviderId] = provider_id;
-            log.Debug("METHOD__WithProviderCreditDetails | MESSAGE__ProviderId " + provider_id);
-
             providerCreditDetails[Constants.CreditAmount_Amount] = amount.ToString();
-            log.Debug("METHOD__WithProviderCreditDetails | MESSAGE__CreditAmount_Amount " + amount);
-
             providerCreditDetails[Constants.CreditAmount_CurrencyCode] = currency_code.ToUpper();
-            log.Debug("METHOD__WithProviderCreditDetails | MESSAGE__CreditAmount_CurrencyCode " + Constants.CreditAmount_CurrencyCode + currency_code.ToUpper());
 
             providerCredit.Add(providerCreditDetails);
             return this;
-
         }
         public IList<Dictionary<string, string>> GetProviderCreditDetails()
         {
@@ -148,7 +132,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CaptureRequest WithSellerCaptureNote(string seller_capture_note)
         {
             this.seller_capture_note = seller_capture_note;
-            log.Debug("METHOD__WithSellerCaptureNote | MESSAGE__seller_capture_note:" + this.seller_capture_note);
             return this;
 
         }
@@ -164,7 +147,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CaptureRequest WithSoftDescriptor(string soft_descriptor)
         {
             this.soft_descriptor = soft_descriptor;
-            log.Debug("METHOD__WithSoftDescriptor | MESSAGE__soft_descriptor:" + this.soft_descriptor);
             return this;
 
         }
@@ -180,7 +162,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public CaptureRequest WithMWSAuthToken(string mws_auth_token)
         {
             this.mws_auth_token = mws_auth_token;
-            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token:" + this.mws_auth_token);
             return this;
         }
         public string GetMWSAuthToken()

@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using PayWithAmazon;
 using System.Xml;
-using log4net;
+
 using PayWithAmazon.Responses;
 
 namespace PayWithAmazon
@@ -36,7 +36,7 @@ namespace PayWithAmazon
         private JObject parsedMessage;
         private X509Certificate2 x509Cert;
 
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private string notificationReferenceId;
         private string notificationType;
         private string sellerId;
@@ -58,8 +58,6 @@ namespace PayWithAmazon
         /// <param name="jsonMessage"></param>
         public IpnHandler(NameValueCollection headers, string jsonMessage)
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__IpnHandler Constructor | MESSAGE__Constructor Initiate");
             try
             {
                 if (!string.IsNullOrEmpty(jsonMessage))
@@ -70,7 +68,6 @@ namespace PayWithAmazon
             }
             catch (HttpParseException ex)
             {
-                log.Error("METHOD__IpnHandler Constructor | Error Parsing the IPN notification", ex);
                 throw new HttpParseException("Error Parsing the IPN notification", ex);
             }
 
@@ -119,19 +116,16 @@ namespace PayWithAmazon
             }
             catch (NullReferenceException nre)
             {
-                log.Error("METHOD__ValidateHeader | Expected headers to be passed, null value received", nre);
                 throw new NullReferenceException("Expected headers to be passed, null value received", nre);
             }
 
             if (messageType == null)
             {
-                log.Error("METHOD__ValidateHeader | Error with message - header does not contain x-amz-sns-message-type");
                 throw new NullReferenceException("Error with message - header does not contain x-amz-sns-message-type");
             }
 
             if (!messageType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
             {
-                log.Error("METHOD__ValidateHeader | " + String.Format("Error with sns message - header x-amz-sns-message-type is invalid", messageType));
                 throw new NullReferenceException(String.Format("Error with sns message - header x-amz-sns-message-type is invalid", messageType));
             }
         }
@@ -144,7 +138,6 @@ namespace PayWithAmazon
             string notificatonType = GetMandatoryField("Type");
             if (!notificatonType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
             {
-                log.Error(String.Format("Error with sns notification - unexpected message with Type of ", notificatonType));
                 throw new Exception("METHOD__ValidateMessageType |" + String.Format("Error with sns notification - unexpected message with Type of ", notificatonType));
             }
         }
@@ -161,7 +154,6 @@ namespace PayWithAmazon
             }
             catch (Exception ex)
             {
-                log.Error("METHOD__parseMessage | Error with message - content is not in json format", ex);
                 throw new Exception("Error with message - content is not in json format", ex);
             }
         }
@@ -190,7 +182,6 @@ namespace PayWithAmazon
             }
             catch (FormatException fe)
             {
-                log.Error("METHOD__GetMandatoryFieldAsDateTime |" + String.Format("Error with message - expected field should be of type DateTime object", fieldName), fe);
                 throw new FormatException(String.Format("Error with message - expected field should be of type DateTime object", fieldName), fe);
             }
         }
@@ -206,7 +197,6 @@ namespace PayWithAmazon
 
             if (value == null)
             {
-                log.Error("METHOD__GetValueAsToken |" + String.Format("Error with message - mandatory field cannot be found", fieldName));
                 throw new NullReferenceException(String.Format("Error with message - mandatory field cannot be found", fieldName));
             }
             return value;
@@ -242,7 +232,6 @@ namespace PayWithAmazon
                     VerifySnsMessageWithVersion1SignatureAlgorithm();
                     break;
                 default:
-                    log.Error("METHOD__ValidateMessageIsTrusted |" + String.Format("Error with sns message verification - message is signed with unknown signature specification", signatureVersion));
                     throw new InvalidDataException(String.Format("Error with sns message verification - message is signed with unknown signature specification", signatureVersion));
             }
         }
@@ -255,7 +244,6 @@ namespace PayWithAmazon
             bool isValid = VerifyMsgMatchesSignatureV1WithCert();
             if (!isValid)
             {
-                log.Error("METHOD__VerifySnsMessageWithVersion1SignatureAlgorithm |" + String.Format("Error with sns message - signature verification failed", "1"));
                 throw new InvalidDataException(String.Format("Error with sns message - signature verification failed", "1"));
             }
         }
@@ -270,7 +258,6 @@ namespace PayWithAmazon
         {
             if (!GetMandatoryField("Type").Equals("Notification"))
             {
-                log.Error("METHOD__VerifyMsgMatchesSignatureV1WithCert | Error with sns message verification - message is not of type Notification, no implementation of signing algorithm is present for other notification types");
                 throw new InvalidDataException("Error with sns message verification - message is not of type Notification, no implementation of signing algorithm is present for other notification types");
             }
 
@@ -278,7 +265,6 @@ namespace PayWithAmazon
             x509Cert = GetCertificate(certPath);
             if (!VerifyCertIsIssuedByAmazon())
             {
-                log.Error("METHOD__VerifyMsgMatchesSignatureV1WithCert | Error with sns message verification - certificate in Notification is not a valid certificate issued to Amazon");
                 throw new InvalidDataException("Error with sns message verification - certificate in Notification is not a valid certificate issued to Amazon");
             }
 
@@ -430,7 +416,6 @@ namespace PayWithAmazon
             }
             catch (HttpException ex)
             {
-                log.Error("METHOD__GetCertificate | Error requesting certificate " + ex);
                 throw new HttpException("Error requesting certificate", ex);
             }
 
@@ -482,7 +467,7 @@ namespace PayWithAmazon
             return x509Cert.PublicKey.Key;
         }
 
-        
+
         /// <summary>
         /// Parse the Notification into API Response objects.
         /// </summary>
@@ -496,31 +481,24 @@ namespace PayWithAmazon
                 switch ((NotificationType)Enum.Parse(typeof(NotificationType), this.GetNotificationType()))
                 {
                     case NotificationType.OrderReferenceNotification:
-                        log.Debug("METHOD__ResponseObject | Notification type: " + NotificationType.OrderReferenceNotification + " Received");
                         orderReferenceDetailsObject = new OrderReferenceDetailsResponse(xml);
                         break;
                     case NotificationType.BillingAgreementNotification:
-                        log.Debug("METHOD__ResponseObject | Notification type: " + NotificationType.OrderReferenceNotification + " Received");
                         billingAgreementDetailsObject = new BillingAgreementDetailsResponse(xml);
                         break;
                     case NotificationType.PaymentAuthorize:
-                        log.Debug("METHOD__ResponseObject | Notification type: " + NotificationType.PaymentAuthorize + " Received");
                         authorizeResponseObject = new AuthorizeResponse(xml);
                         break;
                     case NotificationType.PaymentCapture:
-                        log.Debug("METHOD__ResponseObject | Notification type: " + NotificationType.PaymentCapture + " Received");
                         captureResponseObject = new CaptureResponse(xml);
                         break;
                     case NotificationType.PaymentRefund:
-                        log.Debug("METHOD__ResponseObject | Notification type:" + NotificationType.PaymentRefund + " Received");
                         refundResponseObject = new RefundResponse(xml);
                         break;
                     case NotificationType.ProviderCredit:
-                        log.Debug("METHOD__ResponseObject | Notification type:" + NotificationType.ProviderCredit + " Received");
                         providerCreditResponseObject = new GetProviderCreditDetailsResponse(xml);
                         break;
                     case NotificationType.ProviderCreditReversal:
-                        log.Debug("METHOD__ResponseObject | Notification type:" + NotificationType.ProviderCreditReversal + " Received");
                         providerCreditReversalResponseObject = new GetProviderCreditReversalDetailsResponse(xml);
                         break;
                 }
@@ -575,7 +553,6 @@ namespace PayWithAmazon
             JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());
             this.notificationReferenceId = message.GetValue("NotificationReferenceId").ToString();
             this.notificationType = message.GetValue("NotificationType").ToString();
-            log.Debug(notificationType);
             this.sellerId = message.GetValue("SellerId").ToString();
             this.releaseEnvironment = message.GetValue("ReleaseEnvironment").ToString();
         }

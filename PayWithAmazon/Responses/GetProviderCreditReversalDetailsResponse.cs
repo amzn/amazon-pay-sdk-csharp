@@ -1,5 +1,4 @@
-﻿using log4net;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,11 +31,10 @@ namespace PayWithAmazon.Responses
         public string errorMessage;
         public bool success = false;
         public string parentKey;
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
 
         public GetProviderCreditReversalDetailsResponse(string xml)
         {
-            log4net.Config.XmlConfigurator.Configure();
             this.xml = xml;
             ResponseParser.SetXml(xml);
             this.json = ResponseParser.ToJson();
@@ -46,18 +44,13 @@ namespace PayWithAmazon.Responses
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                log.Debug("METHOD__GetProviderCreditReversalDetailsResponse Constructor | MESSAGE__success:" + this.success);
                 this.errorCode = errorResponse.GetErrorCode();
-                log.Debug("METHOD__GetProviderCreditReversalDetailsResponse Constructor | MESSAGE__errorCode:" + this.errorCode);
                 this.errorMessage = errorResponse.GetErrorMessage();
-                log.Debug("METHOD__GetProviderCreditReversalDetailsResponse Constructor | MESSAGE__errorMessage:" + this.errorMessage);
                 this.requestId = errorResponse.GetRequestId();
-                log.Debug("METHOD__GetProviderCreditReversalDetailsResponse Constructor | MESSAGE__RequestId:" + this.requestId);
             }
             else
             {
                 success = true;
-                log.Debug("METHOD__GetProviderCreditReversalDetailsResponse Constructor | MESSAGE__success:" + this.success);
                 ParseDictionaryToVariables(this.dictionary);
             }
         }
@@ -99,43 +92,33 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.AmazonProviderCreditReversalId:
                                     this.amazonProviderCreditReversalId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmazonProviderCreditReversalId:" + this.amazonProviderCreditReversalId);
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RequestId:" + this.requestId);
                                     break;
                                 case Operator.CreditReversalNote:
                                     creditReversalNote = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReversalNote:" + this.creditReversalNote);
                                     break;
                                 case Operator.CreditReversalReferenceId:
                                     creditReversalReferenceId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReversalReferenceId:" + this.creditReversalReferenceId);
                                     break;
                                 case Operator.Amount:
                                     creditReversalAmount = decimal.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReversalAmount:" + this.creditReversalAmount);
                                     break;
                                 case Operator.CurrencyCode:
                                     creditReversalAmountCurrencyCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReversalAmountCurrencyCode:" + this.creditReversalAmountCurrencyCode);
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonCode:" + this.reasonCode);
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonDescription:" + this.reasonDescription);
                                     break;
                                 case Operator.State:
                                     creditReversalStatus = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReversalStatus:" + this.creditReversalStatus);
                                     break;
                                 case Operator.LastUpdateTimestamp:
                                     lastUpdateTimestamp = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__LastUpdateTimestamp:" + this.lastUpdateTimestamp);
                                     break;
                             }
                         }

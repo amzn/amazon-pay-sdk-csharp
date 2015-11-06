@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -11,19 +10,14 @@ namespace PayWithAmazon.ProviderCreditRequests
     /// </summary>
     public class GetProviderCreditReversalDetailsRequest
     {
-        
         private string action;
         private string merchant_id;
         private string amazon_provider_credit_reversal_id;
         private string mws_auth_token;
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public GetProviderCreditReversalDetailsRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__GetProviderCreditReversalDetailsRequest Constructor | MESSAGE__Constructor Initiate");
             this.action = Constants.GetProviderCreditReversalDetails;
-            log.Debug("METHOD__GetProviderCreditReversalDetailsRequest | MESSAGE__Action: " + this.action);
         }
         public string GetAction()
         {
@@ -38,7 +32,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public GetProviderCreditReversalDetailsRequest WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id: " + this.merchant_id);
             return this;
         }
         public string GetMerchantId()
@@ -54,7 +47,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public GetProviderCreditReversalDetailsRequest WithAmazonProviderCreditReversalId(string amazon_provider_credit_reversal_id)
         {
             this.amazon_provider_credit_reversal_id = amazon_provider_credit_reversal_id;
-            log.Debug("METHOD__WithAmazonProviderCreditReversalId | MESSAGE__amazon_provider_credit_reversal_id: " + this.amazon_provider_credit_reversal_id);
             return this;
         }
         public string GetAmazonProviderCreditReversalId()
@@ -70,7 +62,6 @@ namespace PayWithAmazon.ProviderCreditRequests
         public GetProviderCreditReversalDetailsRequest WithMWSAuthToken(string mws_auth_token)
         {
             this.mws_auth_token = mws_auth_token;
-            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token: " + this.mws_auth_token);
             return this;
         }
         public string GetMWSAuthToken()

@@ -1,5 +1,4 @@
-﻿using log4net;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,11 +37,10 @@ namespace PayWithAmazon.Responses
         public string errorMessage;
         public bool success = false;
         public string parentKey;
-        private static ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         public GetProviderCreditDetailsResponse(string xml)
         {
-            log4net.Config.XmlConfigurator.Configure();
             this.xml = xml;
             ResponseParser.SetXml(xml);
             this.json = ResponseParser.ToJson();
@@ -52,18 +50,13 @@ namespace PayWithAmazon.Responses
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                log.Debug("METHOD__GetProviderCreditDetailsResponse Constructor | MESSAGE__success:" + this.success);
                 this.errorCode = errorResponse.GetErrorCode();
-                log.Debug("METHOD__GetProviderCreditDetailsResponse Constructor | MESSAGE__errorCode:" + this.errorCode);
                 this.errorMessage = errorResponse.GetErrorMessage();
-                log.Debug("METHOD__GetProviderCreditDetailsResponse Constructor | MESSAGE__errorMessage:" + this.errorMessage);
                 this.requestId = errorResponse.GetRequestId();
-                log.Debug("METHOD__GetProviderCreditDetailsResponse Constructor | MESSAGE__RequestId:" + this.requestId);
             }
             else
             {
                 success = true;
-                log.Debug("METHOD__GetProviderCreditDetailsResponse Constructor | MESSAGE__success:" + this.success);
                 ParseDictionaryToVariables(this.dictionary);
             }
         }
@@ -105,67 +98,53 @@ namespace PayWithAmazon.Responses
                             {
                                 case Operator.AmazonProviderCreditId:
                                     this.amazonProviderCreditId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__AmazonProviderCreditId:" + this.amazonProviderCreditId);
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__RequestId:" + this.requestId);
                                     break;
                                 case Operator.ProviderId:
                                     providerId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ProviderId:" + this.providerId);
                                     break;
                                 case Operator.SellerId:
                                     sellerId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__LastUpdateTimestamp:" + this.sellerId);
                                     break;
                                 case Operator.CreditReferenceId:
                                     creditReferenceId = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReferenceId:" + this.creditReferenceId);
                                     break;
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.CreditAmount.ToString()))
                                     {
                                         creditAmount = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditAmount:" + this.creditAmount);
                                     }
                                     else if (parentKey.Equals(Operator.CreditReversalAmount.ToString()))
                                     {
                                         creditReversalAmount = decimal.Parse(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReversalAmount:" + this.creditReversalAmount);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
                                     if (parentKey.Equals(Operator.CreditAmount.ToString()))
                                     {
                                         creditAmountCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditAmountCurrencyCode:" + this.creditAmountCurrencyCode);
                                     }
                                     else if (parentKey.Equals(Operator.CreditReversalAmount.ToString()))
                                     {
                                         creditReversalAmountCurrencyCode = obj.ToString();
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditReversalAmountCurrencyCode:" + this.creditReversalAmountCurrencyCode);
                                     }
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonCode:" + this.reasonCode);
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ReasonDescription:" + this.reasonDescription);
                                     break;
                                 case Operator.State:
                                     creditStatus = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__CreditStatus:" + this.creditStatus);
                                     break;
                                 case Operator.SoftDescriptor:
                                     softDescriptor = obj.ToString();
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__SoftDescriptor:" + this.softDescriptor);
                                     break;
                                 case Operator.LastUpdateTimestamp:
                                     lastUpdateTimestamp = DateTime.Parse(obj.ToString());
-                                    log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__LastUpdateTimestamp:" + this.lastUpdateTimestamp);
                                     break;
                                 /* The below case parses two types of Amazon Provider Credit Reversal ID member fields. When the nested Dictionary is flattened
                                  * it contains JArray. JArray contains the member field which contains the Amazon Provider Credit Reversal ID. this is added to the List
@@ -177,13 +156,11 @@ namespace PayWithAmazon.Responses
                                         foreach (string creditReversalId in array)
                                         {
                                             creditReversalIdList.Add(creditReversalId);
-                                            log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ProviderCreditReversalId:" + creditReversalId);
                                         }
                                     }
                                     else
                                     {
                                         creditReversalIdList.Add(obj.ToString());
-                                        log.Debug("METHOD__ParseDictionaryToVariables | MESSAGE__ProviderCreditReversalId:" + obj.ToString());
                                     }
                                     break;
                             }

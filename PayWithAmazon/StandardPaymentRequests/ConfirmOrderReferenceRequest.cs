@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -15,15 +14,10 @@ namespace PayWithAmazon.StandardPaymentRequests
         private string amazon_order_reference_id;
         private string merchant_id;
         private string mws_auth_token;
-        
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public ConfirmOrderReferenceRequest()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Debug("METHOD__ConfirmOrderReferenceRequest Constructor | MESSAGE__Constructor Initiate");
             this.action = Constants.ConfirmOrderReference;
-            log.Debug("METHOD__CloseOrderReferenceRequest | MESSAGE__Action:" + this.action);
         }
         public string GetAction()
         {
@@ -37,7 +31,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public ConfirmOrderReferenceRequest WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            log.Debug("METHOD__WithMerchantId | MESSAGE__merchant_id:" + this.merchant_id);
             return this;
         }
 
@@ -53,7 +46,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public ConfirmOrderReferenceRequest WithAmazonOrderReferenceId(string amazon_order_reference_id)
         {
             this.amazon_order_reference_id = amazon_order_reference_id;
-            log.Debug("METHOD__WithAmazonOrderReferenceId | MESSAGE__amazon_order_reference_id:" + this.amazon_order_reference_id);
             return this;
         }
         public string GetAmazonOrderReferenceId()
@@ -68,7 +60,6 @@ namespace PayWithAmazon.StandardPaymentRequests
         public ConfirmOrderReferenceRequest WithMWSAuthToken(string mws_auth_token)
         {
             this.mws_auth_token = mws_auth_token;
-            log.Debug("METHOD__WithMWSAuthToken | MESSAGE__mws_auth_token:" + this.mws_auth_token);
             return this;
         }
 

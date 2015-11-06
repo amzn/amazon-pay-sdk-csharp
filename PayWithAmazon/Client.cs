@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Xml;
 using Newtonsoft.Json;
-using log4net;
 using PayWithAmazon.StandardPaymentRequests;
 using PayWithAmazon.Responses;
 using PayWithAmazon.ProviderCreditRequests;
@@ -39,8 +38,6 @@ namespace PayWithAmazon
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
 
-        private ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Takes the Configuration Object of the Configuration class
         /// </summary>
@@ -54,10 +51,10 @@ namespace PayWithAmazon
         ///  // Following keys can be found in your seller central account.
         ///  clientConfig.WithSecretKey("MWS_SECRET_KEY"); 
         ///  clientConfig.WithAccessKey("MWS_ACCESS_KEY");
-        ///  clientConfig.WithRegion("us");
+        ///  clientConfig.WithRegion(Regions.supportedRegions.us);
         ///  
         ///  // Optional
-        ///  clientConfig.WithCurrencyCode("USD");
+        ///  clientConfig.WithCurrencyCode(Regions.currencyCode.USD);
         ///  clientConfig.WithSandbox(false); // true for sandbox , Defaults to false
         ///  clientConfig.WithPlatformId("PLATFORM_ID"); // Solution Provider ID
         ///  clientConfig.WithCABundleFile("CA_BUNDLE_PATH");
@@ -73,12 +70,8 @@ namespace PayWithAmazon
         /// </example>
         public Client(Configuration clientConfig)
         {
-            log4net.Config.XmlConfigurator.Configure();
-            log.Info("PayWithAmazon_Client Initiated Client constructor with the configuration class object");
-
             if (clientConfig == null)
             {
-                log.Error(clientConfig + "METHOD__Client Constructor(configuration class obj) | MESSAGE__configuration class object is null");
                 throw new NullReferenceException("config is null");
             }
 
@@ -92,13 +85,11 @@ namespace PayWithAmazon
         /// <param name="jsonFilePath"></param>
         public Client(string jsonFilePath)
         {
-            log4net.Config.XmlConfigurator.Configure();
             string json;
             if (!string.IsNullOrEmpty(jsonFilePath))
             {
                 if (!File.Exists(@jsonFilePath))
                 {
-                    log.Debug("METHOD__Client Constructor(json string) | MESSAGE__File not found in path: " + jsonFilePath);
                     throw new FileNotFoundException("File not found");
                 }
                 else
@@ -112,7 +103,6 @@ namespace PayWithAmazon
             }
             else
             {
-                log.Debug("METHOD__Client Constructor(json string) | MESSAGE__Json file path is not provided");
                 throw new NullReferenceException("Json file path is not provided");
             }
         }
@@ -155,7 +145,6 @@ namespace PayWithAmazon
         /// <returns>string XML response</returns>
         private string SetParametersAndPost(Dictionary<string, string> requestParameters, IList<Dictionary<string, string>> providerDetails = null)
         {
-            log.Info("METHOD__SetParametersAndPost | MESSAGE__Initiating SetParametersAndPost");
             Dictionary<string, string> parameters = new Dictionary<String, String>();
             // For loop to take all the non empty parameters in the requestParameters and add it into the parameters Dictionary,
             // if the keys are matched from requestParameters Dictionary with the fieldMappings Dictionary
@@ -165,24 +154,20 @@ namespace PayWithAmazon
                 if (pair.Value != null && pair.Value != "")
                 {
                     parameters[pair.Key] = pair.Value;
-                    log.Debug("METHOD__SetParametersAndPost | MESSAGE__input key value pair added to final parameters list Key:" + pair.Key + " Value:" + pair.Value);
                 }
             }
             if (providerDetails != null && providerDetails.Count > 0)
             {
                 if (requestParameters.ContainsKey(Constants.provider_credit_details))
                 {
-                    log.Debug("METHOD__SetParametersAndPost | MESSAGE__Calling SetProviderCreditDetails");
                     parameters = SetProviderCreditDetails(parameters, providerDetails);
                 }
                 if (requestParameters.ContainsKey(Constants.provider_credit_reversal_details))
                 {
-                    log.Debug("METHOD__SetParametersAndPost | MESSAGE__Calling SetProviderCreditReversalDetails");
                     parameters = SetProviderCreditReversalDetails(parameters, providerDetails);
                 }
             }
 
-            log.Debug("METHOD__SetParametersAndPost | MESSAGE__Calling SetDefaultValues");
             parameters = SetDefaultValues(parameters, requestParameters);
             string response = CalculateSignatureAndPost(parameters);
             return response;
@@ -193,17 +178,14 @@ namespace PayWithAmazon
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns>string response</returns>
-        public string CalculateSignatureAndPost(Dictionary<string, string> parameters)
+        private string CalculateSignatureAndPost(Dictionary<string, string> parameters)
         {
-            log.Debug("METHOD__SetParametersAndPost | MESSAGE__CalculateSignatureAndPost initiated ");
             // Call the signature and Post function to perform the actions.
             string parametersString = CalculateSignatureAndParametersToString(parameters);
 
-            log.Info("METHOD__SetParametersAndPost | MESSAGE__CalculateSignatureAndPost POST Parameters as string: " + parametersString);
             // Invokes Http POST method with string converted Parameters as data
             string response = Invoke(parametersString);
 
-            log.Info("METHOD__SetParametersAndPost | MESSAGE__CalculateSignatureAndPost XML response: " + response);
             return response;
         }
 
@@ -217,22 +199,13 @@ namespace PayWithAmazon
         /// <returns>Dictionary parameters</returns>
         private Dictionary<string, string> SetDefaultValues(Dictionary<string, string> parameters, Dictionary<string, string> requestParameters)
         {
-            log.Debug("METHOD__SetDefaultValues | MESSAGE__SetDefaultValues initiated");
-
             if (requestParameters.ContainsKey(Constants.SellerId))
             {
                 if (requestParameters[Constants.SellerId] == null || requestParameters[Constants.SellerId].ToString().Trim() == "")
                 {
-                    log.Debug("METHOD__SetDefaultValues | MESSAGE__SellerId value was null in requestParameters sent, trying to get from Client config if present");
                     if (this.clientConfig.GetMerchantId() != null && this.clientConfig.GetMerchantId().ToString().Trim() != "")
                     {
                         parameters[Constants.SellerId] = this.clientConfig.GetMerchantId();
-                        log.Debug("METHOD__SetDefaultValues | MESSAGE__Default SellerId: " + parameters[Constants.SellerId] + " added from the configuration object");
-                    }
-                    else
-                    {
-                        log.Debug("METHOD__SetDefaultValues | MESSAGE__SellerId is a required parameter and is empty");
-                        log.Error("METHOD__SetDefaultValues | MESSAGE__SellerId is a required parameter and is empty");
                     }
                 }
             }
@@ -243,16 +216,9 @@ namespace PayWithAmazon
                 {
                     if (param.Value == null || param.Value == "")
                     {
-                        log.Debug("METHOD__SetDefaultValues | MESSAGE__CurrencyCode value was null in requestParameters sent, trying to get from Client config if present");
                         if (this.clientConfig.GetCurrencyCode() != null && this.clientConfig.GetCurrencyCode().Trim() != "")
                         {
                             parameters[param.Key] = this.clientConfig.GetCurrencyCode();
-                            log.Debug("METHOD__SetDefaultValues | MESSAGE__Default CurrencyCode: " + this.clientConfig.GetCurrencyCode() + " added from the configuration object");
-                        }
-                        else
-                        {
-                            log.Debug("METHOD__SetDefaultValues | MESSAGE__CurrencyCode is a required parameter and is empty");
-                            log.Error("METHOD__SetDefaultValues | MESSAGE__CurrencyCode is a required parameter and is empty");
                         }
                     }
                 }
@@ -261,15 +227,9 @@ namespace PayWithAmazon
                 {
                     if (param.Value == null || param.Value.ToString() == "")
                     {
-                        log.Debug("METHOD__SetDefaultValues | MESSAGE__PlatformID value was null in requestParameters sent, trying to get from Client config if present");
                         if (this.clientConfig.GetPlatformId() != null && this.clientConfig.GetPlatformId().Trim() != "")
                         {
-                            log.Debug("METHOD__SetDefaultValues | MESSAGE__PlatformID value is taken from Client config value:" + this.clientConfig.GetPlatformId());
                             parameters[param.Key] = this.clientConfig.GetPlatformId();
-                        }
-                        else
-                        {
-                            log.Debug("METHOD__SetDefaultValues | MESSAGE__PlatformID value value is empty");
                         }
                     }
                 }
@@ -286,30 +246,27 @@ namespace PayWithAmazon
         /// <returns>Dictionary parameters</returns>
         private Dictionary<string, string> SetProviderCreditDetails(Dictionary<string, string> parameters, IList<Dictionary<string, string>> providerCreditInfo)
         {
-            log.Debug("METHOD__SetProviderCreditDetails | MESSAGE__SetProviderCreditDetails initiated");
             int providerIndex = 0;
             string providerString = "ProviderCreditList.member.";
 
-                foreach (Dictionary<string, string> innerDictionary in providerCreditInfo)
+            foreach (Dictionary<string, string> innerDictionary in providerCreditInfo)
+            {
+                providerIndex = providerIndex + 1;
+
+                foreach (KeyValuePair<string, string> keypair in innerDictionary)
                 {
-                    providerIndex = providerIndex + 1;
-
-                    foreach (KeyValuePair<string, string> keypair in innerDictionary)
+                    if (keypair.Value.Trim() != "" && keypair.Value != null)
                     {
-                        if (keypair.Value.Trim() != "" && keypair.Value != null)
-                        {
-                            parameters[providerString + providerIndex + "." + keypair.Key] = keypair.Value;
-                            log.Debug("METHOD__SetProviderCreditDetails | MESSAGE__ProviderCreditList key: " + providerString + providerIndex + "." + keypair.Key + " Value = " + keypair.Value);
-                        }
-                    }
-
-                    // If currency code is not entered take it from the configuration object
-                    if (string.IsNullOrEmpty(parameters[providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode]))
-                    {
-                        parameters[providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode] = this.clientConfig.GetCurrencyCode().ToUpper();
-                        log.Debug("METHOD__SetProviderCreditDetails | MESSAGE__ProviderCreditList key: " + providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode + " Value = " + this.clientConfig.GetCurrencyCode().ToUpper());
+                        parameters[providerString + providerIndex + "." + keypair.Key] = keypair.Value;
                     }
                 }
+
+                // If currency code is not entered take it from the configuration object
+                if (string.IsNullOrEmpty(parameters[providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode]))
+                {
+                    parameters[providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode] = this.clientConfig.GetCurrencyCode();
+                }
+            }
             return parameters;
         }
 
@@ -321,30 +278,27 @@ namespace PayWithAmazon
         /// <returns>Dictionary parameters</returns>
         private Dictionary<string, string> SetProviderCreditReversalDetails(Dictionary<string, string> parameters, IList<Dictionary<string, string>> providerCreditInfo)
         {
-            log.Debug("METHOD__SetProviderCreditReversalDetails | MESSAGE__SetProviderCreditReversalDetails initiated");
             int providerIndex = 0;
             string providerString = "ProviderCreditReversalList.member.";
 
-                foreach (Dictionary<string, string> innerDictionary in providerCreditInfo)
+            foreach (Dictionary<string, string> innerDictionary in providerCreditInfo)
+            {
+                providerIndex = providerIndex + 1;
+
+                foreach (KeyValuePair<string, string> keypair in innerDictionary)
                 {
-                    providerIndex = providerIndex + 1;
-
-                    foreach (KeyValuePair<string, string> keypair in innerDictionary)
+                    if (keypair.Value.ToString().Trim() != "" && keypair.Value != null)
                     {
-                        if (keypair.Value.ToString().Trim() != "" && keypair.Value != null)
-                        {
-                            parameters[providerString + providerIndex + "." + keypair.Key] = keypair.Value;
-                            log.Debug("METHOD__SetProviderCreditReversalDetails | MESSAGE__ProviderCreditReversalList key: " + providerString + providerIndex + "." + keypair.Key + " = " + keypair.Value);
-                        }
-                    }
-
-                    // If currency code is not entered take it from the configuration object
-                    if (string.IsNullOrEmpty(parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode]))
-                    {
-                        parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode] = this.clientConfig.GetCurrencyCode().ToUpper();
-                        log.Debug("METHOD__SetProviderCreditReversalDetails | MESSAGE__ProviderCreditReversalList key: " + parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode]);
+                        parameters[providerString + providerIndex + "." + keypair.Key] = keypair.Value;
                     }
                 }
+
+                // If currency code is not entered take it from the configuration object
+                if (string.IsNullOrEmpty(parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode]))
+                {
+                    parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode] = this.clientConfig.GetCurrencyCode();
+                }
+            }
             return parameters;
         }
 
@@ -355,20 +309,15 @@ namespace PayWithAmazon
         /// <returns>string response - json output of profile information</returns>
         public string GetUserInfo(string accessToken)
         {
-            log.Debug("METHOD__GetUserInfo | Initiated");
             string response;
             string profileEndpoint = GetProfileEndpointUrl();
 
-
-
             if (string.IsNullOrEmpty(accessToken))
             {
-                log.Error("METHOD__GetUserInfo | MESSAGE__Access Token is a required parameter and is not set");
                 throw new NullReferenceException("Access Token is a required parameter and is not set");
             }
             if (string.IsNullOrEmpty(this.clientConfig.GetClientId().ToString()))
             {
-                log.Error("METHOD__GetUserInfo | MESSAGE__client ID is a required parameter and is not set");
                 throw new NullReferenceException("client ID is a required parameter and is not set");
             }
 
@@ -377,7 +326,6 @@ namespace PayWithAmazon
 
             HttpImpl httpRequest = new HttpImpl(clientConfig);
             response = httpRequest.Get(url);
-            log.Debug("METHOD__GetUserInfo | Message__Access/Address Consent Token verification Response output:" + response);
 
             Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
 
@@ -386,7 +334,6 @@ namespace PayWithAmazon
             {
                 if (!(data[aud].Equals(this.clientConfig.GetClientId().ToString()))) // describe the aud variable nd add value into a final string
                 {
-                    log.Error("METHOD__GetUserInfo | MESSAGE__The Access token entered is incorrect");
                     throw new InvalidDataException("The Access token entered is incorrect");
                 }
                 else
@@ -397,8 +344,6 @@ namespace PayWithAmazon
                     httpRequest.setHttpHeader();
 
                     response = httpRequest.Get(url);
-                    log.Debug("METHOD__GetUserInfo | Message__Final Response output:" + response);
-                    log.Debug("METHOD__GetUserInfo | Exit");
                 }
             }
 
@@ -450,7 +395,7 @@ namespace PayWithAmazon
         ///   // Required Parameters
         ///   requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
         ///   requestParameters.WithAmount("100");
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
         /// 
         ///   // Optional 
@@ -635,10 +580,10 @@ namespace PayWithAmazon
         ///   
         ///   // Optional
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///   requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING");
         ///   requestParameters.WithCaptureNow(false); // Defaults to false
-        ///   requestParameters.WithProviderCreditDetails("list_of_Dictionary"); // [list(Dictionary)]
+        ///   requestParameters.WithProviderCreditDetails("PROVIDER_ID",10,"USD"); // If there are multiple providers, call the WithProviderCreditDetails nultiple times for each
         ///   requestParameters.WithSellerAuthorizationNote("CUSTOM_NOTE");
         ///   requestParameters.WithTransactionTimeout(5); // Defaults to 1440 minutes
         ///   requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
@@ -719,8 +664,8 @@ namespace PayWithAmazon
         ///  
         ///   // Optional 
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
-        ///   requestParameters.WithProviderCreditDetails([list(Dictionary)]); // list of Provider Credit Dictionary(s) details
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+        ///   requestParameters.WithProviderCreditDetails("PROVIDER_ID",10,"USD"); // If there are multiple providers, call the WithProviderCreditDetails nultiple times for each
         ///   requestParameters.WithSellerCaptureNote("CUSTOM_NOTE");
         ///   requestParameters.WithSetSoftDescriptor("AMZ*CUSTOM");
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
@@ -798,7 +743,7 @@ namespace PayWithAmazon
         ///   
         ///   //Optional
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///   requestParameters.WithProviderCreditReversalDetails("PROVIDER_ID","10","USD"); // Provider Credit details
         ///   requestParameters.WithSellerRefundNote("CUSTOM_NOTE");
         ///   requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
@@ -907,7 +852,7 @@ namespace PayWithAmazon
         ///   requestParameters.WithInheritShippingAddress(true); // Defaults to false
         ///   requestParameters.WithConfirmNow(true); // Defaults to false
         ///   requestParameters.WithAmount("100"); // Required when requestParameters["ConfirmNow"] is set to true
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///   requestParameters.WithSellerNote("CUSTOM_NOTE");
         ///   requestParameters.WithSellerOrderId("CUSTOM_ORDER_ID");
         ///   requestParameters.WithStoreName("CUSTOM_NAME");
@@ -988,7 +933,7 @@ namespace PayWithAmazon
         ///   
         ///   // Optional
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///   requestParameters.WithPlatformId("PLATFORM_ID"); // Solution Provider ID
         ///   requestParameters.WithSellerNote("CUSTOM_NOTE"):
         ///   requestParameters.WithSellerBillingAgreementId("CUSTOM_ID"); 
@@ -1098,7 +1043,7 @@ namespace PayWithAmazon
         ///   
         ///   // Optional
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///   requestParameters.WithSellerAuthorizationNote("CUSTOM_NOTE");
         ///   requestParameters.WithTransactionTimeout(5); // Defaults to 1440 minutes
         ///   requestParameters.WithCaptureNow(false); // Defaults to false
@@ -1253,7 +1198,7 @@ namespace PayWithAmazon
         ///  
         ///  // Optional
         ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///  requestParameters.WithCurrencyCode("USD"); // Required if config["currency_code"] is null
+        ///  requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///  requestParameters.WithCreditReversalNote("CUSTOM_NOTE");
         ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         /// </code>
@@ -1295,7 +1240,7 @@ namespace PayWithAmazon
         ///    
         ///   // Optional
         ///   requestParameters.WithMerchantId("MERCHANT_ID");
-        ///   requestParameters.WithCurrencyCode("USD");
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD);
         ///   requestParameters.WithPlatformId("SOLUTION_PROVIDER_MERCHANT_ID");
         ///   requestParameters.WithSoftDescriptor("amz");
         ///   requestParameters.WithStoreName("cool stuff store");
@@ -1303,7 +1248,7 @@ namespace PayWithAmazon
         ///   requestParameters.WithChargeNote("sample note");
         ///   requestParameters.WithChargeOrderId("1234-1234");
         ///   requestParameters.WithCaptureNow(false);
-        ///   requestParameters.WithProviderCreditDetails("PROVIDER_MERCHANT_ID", "10", "USD");
+        ///   requestParameters.WithProviderCreditDetails("PROVIDER_MERCHANT_ID", "10", "USD"); // This is only for the Order Reference type
         ///   requestParameters.WithInheritShippingAddress(true);
         ///   requestParameters.WithTransactionTimeout(5);
         ///   requestParameters.WithCustomInformation("custom information");
@@ -1329,7 +1274,6 @@ namespace PayWithAmazon
                     oroStatus = getOrderReferenceDetails.GetOrderReferenceState();
                     if (oroStatus == null)
                     {
-                        log.Error("METHOD__Charge | MESSAGE__" + "The order reference state value is null \n " + xml);
                         throw new NullReferenceException("The order reference state value is null" + xml);
                     }
                     if (oroStatus.Equals(Constants.Draft))
@@ -1344,7 +1288,6 @@ namespace PayWithAmazon
                             confirmSuccess = confirmOrderResponseObject.GetSuccess();
                             if (!confirmSuccess)
                             {
-                                log.Error("METHOD__Charge | MESSAGE__" + "ConfirmOrderReference API call Failed Error XML: \n " + xml);
                                 chargeException = new InvalidDataException(Constants.ConfirmOrderReference);
                                 chargeException.Data["errorMessage"] = confirmOrderResponseObject.GetErrorMessage();
                                 chargeException.Data["errorCode"] = confirmOrderResponseObject.GetErrorCode();
@@ -1353,7 +1296,6 @@ namespace PayWithAmazon
                         }
                         else
                         {
-                            log.Error("METHOD__Charge | MESSAGE__" + "SetOrderReferenceDetails API call Failed Error XML: \n " + xml);
                             chargeException = new InvalidDataException(Constants.SetOrderReferenceDetails);
                             chargeException.Data["errorMessage"] = setorderReferenceDetailsResponseObject.GetErrorMessage();
                             chargeException.Data["errorCode"] = setorderReferenceDetailsResponseObject.GetErrorCode();
@@ -1375,7 +1317,6 @@ namespace PayWithAmazon
                     }
                     if (!authorizeSuccess)
                     {
-                        log.Error("METHOD__Charge | MESSAGE__" + "auth API call Failed Error XML: \n " + xml);
                         chargeException = new InvalidDataException(Constants.Authorize);
                         chargeException.Data["errorMessage"] = authorizeResponseObject.GetErrorMessage();
                         chargeException.Data["errorCode"] = authorizeResponseObject.GetErrorCode();
@@ -1383,7 +1324,6 @@ namespace PayWithAmazon
                     }
                     if (!(oroStatus.Equals(Constants.Open) || oroStatus.Equals(Constants.Draft)))
                     {
-                        log.Error("METHOD__Charge | MESSAGE__" + "The order reference is in the " + oroStatus + " State. It should be in the Draft or Open State \n" + xml);
                         throw new ArgumentException("The order reference is in the " + oroStatus + " State. It should be in the Draft or Open State" + xml);
                     }
                     break;
@@ -1399,7 +1339,6 @@ namespace PayWithAmazon
                     baStatus = billingAgreementDetailsResponse.GetBillingAgreementState();
                     if (baStatus == null)
                     {
-                        log.Error("METHOD__Charge | MESSAGE__" + "The Billing Agreement state value is null \n" + xml);
                         throw new NullReferenceException("The Billing Agreement state value is null" + xml);
                     }
                     if (!baStatus.Equals(Constants.Open))
@@ -1417,7 +1356,6 @@ namespace PayWithAmazon
 
                             if (!confirmSuccess)
                             {
-                                log.Error("METHOD__Charge | MESSAGE__" + "ConfirmBillingAgreement API call Failed Error XML: \n " + xml);
                                 chargeException = new InvalidDataException(Constants.ConfirmBillingAgreement);
                                 chargeException.Data["errorMessage"] = confirmBillingAgreementResponse.GetErrorMessage();
                                 chargeException.Data["errorCode"] = confirmBillingAgreementResponse.GetErrorCode();
@@ -1426,7 +1364,6 @@ namespace PayWithAmazon
                         }
                         else
                         {
-                            log.Error("METHOD__Charge | MESSAGE__" + "SetBillingAgreement API call Failed Error XML: \n " + xml);
                             chargeException = new InvalidDataException(Constants.SetBillingAgreementDetails);
                             chargeException.Data["errorMessage"] = setBillingAgreementDetailsResponse.GetErrorMessage();
                             chargeException.Data["errorCode"] = setBillingAgreementDetailsResponse.GetErrorCode();
@@ -1448,7 +1385,6 @@ namespace PayWithAmazon
                     }
                     if (!authorizeSuccess)
                     {
-                        log.Error("METHOD__Charge | MESSAGE__" + "auth API call Failed Error XML: \n " + xml);
                         chargeException = new InvalidDataException(Constants.AuthorizeOnBillingAgreement);
                         chargeException.Data["errorMessage"] = authorizeResponseObject.GetErrorMessage();
                         chargeException.Data["errorCode"] = authorizeResponseObject.GetErrorCode();
@@ -1456,7 +1392,6 @@ namespace PayWithAmazon
                     }
                     if (!(baStatus.Equals(Constants.Open) || (baStatus.Equals(Constants.Draft))))
                     {
-                        log.Error("METHOD__Charge | MESSAGE__" + "The billing agreement is in the " + baStatus + " State. It should be in the Draft or Open State, Authorize Response Error XML\n" + xml);
                         throw new ArgumentException("The billing agreement is in the " + baStatus + " State. It should be in the Draft or Open State Authorize Response Error XML" + xml);
                     }
                     break;
@@ -1556,7 +1491,6 @@ namespace PayWithAmazon
             }
             else
             {
-                log.Error("METHOD__PauseOnRetry | MESSAGE__" + "Maximum number of retry attempts reached : " + (retries - 1) + " statusCode: " + status);
                 throw new WebException("Maximum number of retry attempts reached : " + (retries - 1) + " statusCode: " + status);
             }
         }
@@ -1580,13 +1514,11 @@ namespace PayWithAmazon
                 }
                 else
                 {
-                    log.Error("METHOD__ProfileEndpointUrl | MESSAGE__" + region + " is not a valid region");
                     throw new InvalidDataException(region + " is not a valid region");
                 }
             }
             else
             {
-                log.Error("METHOD__ProfileEndpointUrl | MESSAGE__region is a required parameter and is not set");
                 throw new NullReferenceException("region is a required parameter and is not set");
             }
 
