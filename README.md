@@ -312,6 +312,7 @@ Client client = new Client(config);
 ```
 
 **Setting it while making the API call**
+
 This takes priority over setting it globally. If this is not set via the following way the global value is taken.
 ```csharp
 using PayWithAmazon;
