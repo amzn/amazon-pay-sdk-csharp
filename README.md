@@ -167,7 +167,7 @@ string config = "PATH_TO_JSON_FILE\filename.fileextension";
 Client client = new Client(config);
 ```
 Setting configuration while instantiating the Client object with Json file
-* follow the key values mentioned in the table above
+* key names for json are mentioned in the table Parameters List
 * keys are not case sensitive, Ex `merchant_id` can also be named as `Merchant_ID`
 * The full path with the file name that has correct readbale permissions should be provided to the client class constructor
 
@@ -280,12 +280,12 @@ sections for Request classes for the required API calls.
 	* [Common Requests](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/CommonRequests) - This folder contains Configuration class and GerServiceStatus API call.
 * Pass the created Request object to the respective API function in the class [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs)
 * The Response object returned will be specefic to the API call made. See API call functions in [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs) for the return type.
-* [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) section to view the variables and their Getters.
+* [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) classes contain the variables and their Getters.
 
 ### Setting the Currency Code parameter
 For API calls that need the currency code parameter, there are two ways to set it
 
-1. Setting it in the configuration class object globally
+**Setting it in the configuration class object globally**
 
 ```csharp
 using PayWithAmazon;
@@ -304,8 +304,7 @@ clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
 Client client = new Client(config);
 ```
 
-2. Setting it while making the API call
-
+**Setting it while making the API call**
 This takes priority over setting it globally. If this is not set via the following way the global value is taken.
 ```csharp
 using PayWithAmazon;
@@ -350,9 +349,11 @@ NameValueCollection headers = Request.Headers;
 
 // Create an object of the IpnHandler class
 IpnHandler ipnObject = new IpnHandler(headers, ipnMessage);
-string xml = ipn.ToXml();
-string json = ipn.ToJson();
-Dictionary<string,object> dictionary = ipn.ToDict();
+
+// Response types
+string xml = ipnObject.ToXml();
+string json = ipnObject.ToJson();
+Dictionary<string,object> dictionary = ipnObject.ToDict();
 
 // Getting IPN common elements
 string notificationType = ipnObject.GetNotificationType();
@@ -361,9 +362,9 @@ string notificationReferenceId = ipnObject.GetNotificationReferenceId();
 string releaseEnvironment = ipnObject.GetReleaseEnvironment();
 ```
 
-IPN's also have the XML response for the selective API calls made
+IPN's contain the XML response for the selective API calls made
 
-Notification types returned
+**Notification types returned**
 * OrderReferenceNotification
 * BillingAgreementNotification
 * PaymentAuthorize
