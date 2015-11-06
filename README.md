@@ -145,6 +145,7 @@ Setting configuration while instantiating the Client object
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
+using PayWithAmazon.StandardPaymentRequests;
 
 // Your Login and Pay with Amazon keys are available in your Seller Central account
 
@@ -156,7 +157,7 @@ clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
 	
 	/* Supported regions are mentioned in the Regions class and accessed by the enum supportedRegions. 
 	 * Example for 'us' is shown below
-	 /
+	 */
 	.WithRegion(Regions.supportedRegions.us);
 
 // Or you can also provide a JSON file path which has the above configuration information in JSON format
@@ -171,9 +172,6 @@ Setting configuration while instantiating the Client object with Json file
 * The full path with the file name that has correct readbale permissions should be provided to the client class constructor
 
 ```csharp
-using PayWithAmazon;
-using PayWithAmazon.CommonRequests;
-
 // Your Login and Pay with Amazon keys are available in your Seller Central account
 // Sample Json file input
 {
@@ -182,11 +180,11 @@ using PayWithAmazon.CommonRequests;
 	"access_key": "YOUR_ACCESS_KEY",
 	"secret_key": "YOUR_SECRET_KEY",
 	"region": "REGION",
+	"sandbox": true,
    
 	// Optional parameters
 	"currency_code": "CURRENCY_CODE",
 	"client_id": "amzn.oa2.client.xxx",
-	"sandbox": true,
 	"application_name": "sdk testing",
 	"application_version": "1.0",
 	"proxy_host": null,
@@ -195,6 +193,11 @@ using PayWithAmazon.CommonRequests;
 	"proxy_password": null
 	"auto_retry_on_throttle": true
 }
+```
+```csharp
+using PayWithAmazon;
+using PayWithAmazon.CommonRequests;
+using PayWithAmazon.StandardPaymentRequests;
 
 string config = "PATH_TO_JSON_FILE\filename.fileextension";
 
@@ -204,7 +207,7 @@ Client client = new Client(config);
 
 ### Testing in Sandbox Mode
 
-The sandbox parameter is defaults to false if not specified:
+The sandbox parameter defaults to false if not specified:
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
@@ -242,28 +245,29 @@ requestParameters.WithAmazonOrderReferenceId("AMAZON_ORDER_REFERENCE_ID");
 requestParameters.WithAddressConsentToken("ACCESS_TOKEN");
 requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
 
-// STEP 2 : Making the API call by passing in the GetOrderReferenceDetailsRequest object i.e requestParameters from step 1.
-// response here is the object of the GetOrderReferenceDetailsResponse class
-OrderReferenceDetailsResponse response = client.GetOrderReferenceDetails(requestParameters);
+/* STEP 2 : Making the API call by passing in the GetOrderReferenceDetailsRequest object i.e requestParameters from step 1.
+ * response here is the object of the GetOrderReferenceDetailsResponse class
+ */
+OrderReferenceDetailsResponse getOrderReferenceDetailsResponse = client.GetOrderReferenceDetails(requestParameters);
 
 // Getting response variables
-// Variable values can be obtained directly from the GetOrderReferenceDetailsResponse object received from making the API call in step 2
+// Variable values can be obtained directly from the OrderReferenceDetailsResponse object received from making the API call in step 2
 
 // Check if the API call was successful
-bool isGetOrderReferenceDetailsSuccess = response.GetSuccess(); 
+bool isGetOrderReferenceDetailsSuccess = getOrderReferenceDetailsResponse.GetSuccess(); 
 	if(isGetOrderReferenceDetailsSuccess)
 	{
-		string amazonOrderReferenceId = response.GetAmazonOrderReferenceId();
+		string amazonOrderReferenceId = getOrderReferenceDetailsResponse.GetAmazonOrderReferenceId();
 		if(hasConstraint)
 		{
-			List<string> constraintIdList = response.GetConstraintIdList();
-			List<string> constraintDescriptionList = response.GetDescriptionList();
+			List<string> constraintIdList = getOrderReferenceDetailsResponse.GetConstraintIdList();
+			List<string> constraintDescriptionList = getOrderReferenceDetailsResponse.GetDescriptionList();
 		}
 	}
 	else
 	{
-		string errorCode = response.GetErrorCode();
-		string ErrorMessage = response.GetErrorMessage();
+		string errorCode = getOrderReferenceDetailsResponse.GetErrorCode();
+		string ErrorMessage = getOrderReferenceDetailsResponse.GetErrorMessage();
 	}
 ```
 See the [GetOrderReferenceDetailsResponse](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for all the parameters returned.
@@ -275,13 +279,14 @@ sections for Request classes for the required API calls.
 	* [Provider Credit Requests](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/ProviderCreditRequests)
 	* [Common Requests](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/CommonRequests) - This folder contains Configuration class and GerServiceStatus API call.
 * Pass the created Request object to the respective API function in the class [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs)
-* The Response object returned will be specefic to the API call made See . See API call functions in [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs) to see the return type.
-Also [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) section for Response classes.
+* The Response object returned will be specefic to the API call made. See API call functions in [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs) for the return type.
+* [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) section to view the variables and their Getters.
 
 ### Setting the Currency Code parameter
 For API calls that need the currency code parameter, there are two ways to set it
 
 1. Setting it in the configuration class object globally
+
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
@@ -300,6 +305,7 @@ Client client = new Client(config);
 ```
 
 2. Setting it while making the API call
+
 This takes priority over setting it globally. If this is not set via the following way the global value is taken.
 ```csharp
 using PayWithAmazon;
@@ -356,6 +362,7 @@ string releaseEnvironment = ipnObject.GetReleaseEnvironment();
 ```
 
 IPN's also have the XML response for the selective API calls made
+
 Notification types returned
 * OrderReferenceNotification
 * BillingAgreementNotification
@@ -364,6 +371,7 @@ Notification types returned
 * PaymentRefund
 * ProviderCredit
 * ProviderCreditReversal
+
 ```csharp
 using PayWithAmazon;
 
@@ -410,8 +418,8 @@ and the amount captured by making the `capture` API call after the shipment is c
 | Authorization Reference ID | yes       | Unique string to be passed									                                             |
 | Transaction Timeout 	     | no        | Timeout for Authorization - Defaults to 1440 minutes						                                 |
 | Capture Now	             | no        | Will capture the payment automatically when set to `true`. Defaults to `false`						     |
-| Charge Note         	     | no        | Note that is sent to the buyer. <br>Maps to API call variables `seller_note` , `seller_authorization_note`|
-| Charge Order ID     	     | no        | Custom order ID provided <br>Maps to API call variables `seller_order_id` , `seller_billing_agreement_id` |
+| Charge Note         	     | no        | Note that is sent to the buyer. <br>Maps to API call variables `seller_note` , `SellerAuthorizationNote`	 |
+| Charge Order ID     	     | no        | Custom order ID provided <br>Maps to API call variables `SellerOrderId` , `SellerBillingAgreementId` 	 |
 | Store Name          	     | no        | Name of the store                                                                                         |
 | Platform ID         	     | no        | Merchant ID of the Solution Provider                                                                      |
 | Custom Information  	     | no        | Any custom string                                                                                         |

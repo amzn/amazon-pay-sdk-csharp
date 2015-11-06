@@ -62,6 +62,7 @@ namespace PayWithAmazon
             {
                 if (!string.IsNullOrEmpty(jsonMessage))
                 {
+                    headers = LowerHeadersKeysCase(headers);
                     ParseRawMessage(headers, jsonMessage);
                     GetIpnResponseObjects();
                 }
@@ -71,6 +72,21 @@ namespace PayWithAmazon
                 throw new HttpParseException("Error Parsing the IPN notification", ex);
             }
 
+        }
+
+        /// <summary>
+        /// Converting the key to lowercase in NameValueCollection headers as headers key can be uppercase in the request
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <returns>Lower cased keys in NameValueCollection headers</returns>
+        private NameValueCollection LowerHeadersKeysCase(NameValueCollection headers)
+        {
+            NameValueCollection lowerKeyHeaders = new NameValueCollection();
+            foreach(string key in headers.AllKeys)
+            {
+                lowerKeyHeaders.Add(key.ToLower(), headers[key]);
+            }
+            return lowerKeyHeaders;
         }
 
         /// <summary>

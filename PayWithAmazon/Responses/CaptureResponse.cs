@@ -74,7 +74,8 @@ namespace PayWithAmazon.Responses
         private enum Operator
         {
             AmazonCaptureId, RequestId, SellerCaptureNote, CaptureReferenceId, Amount, CaptureAmount, RefundedAmount, CaptureFee, CurrencyCode, ReasonCode,
-            ReasonDescription, State, SoftDescriptor, LastUpdateTimestamp, CreationTimestamp, member, IdList, ProviderCreditSummaryList, ProviderId, ProviderCreditId
+            ReasonDescription, State, SoftDescriptor, LastUpdateTimestamp, CreationTimestamp, member, IdList,
+            ProviderCreditSummaryList, ProviderId, ProviderSellerId, ProviderCreditId
         }
 
         /// <summary>
@@ -189,7 +190,8 @@ namespace PayWithAmazon.Responses
                                             {
                                                 string key = property.Name;
                                                 string value = property.Value.ToString();
-                                                if (key.Equals(Operator.ProviderId.ToString()))
+                                                if (key.Equals(Operator.ProviderId.ToString()) ||
+                                                    key.Equals(Operator.ProviderSellerId.ToString()))
                                                 {
                                                     providerId.Add(value);
                                                 }
@@ -203,6 +205,9 @@ namespace PayWithAmazon.Responses
                                     break;
 
                                 case Operator.ProviderId:
+                                    providerId.Add(obj.ToString());
+                                    break;
+                                case Operator.ProviderSellerId:
                                     providerId.Add(obj.ToString());
                                     break;
                                 case Operator.ProviderCreditId:

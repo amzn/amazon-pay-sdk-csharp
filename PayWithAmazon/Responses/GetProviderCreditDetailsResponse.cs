@@ -63,8 +63,8 @@ namespace PayWithAmazon.Responses
 
         private enum Operator
         {
-            AmazonProviderCreditId, RequestId, ProviderId, CreditReferenceId, Amount, CreditAmount, CreditReversalAmount, CurrencyCode, ReasonCode, ReasonDescription,
-            State, SoftDescriptor, LastUpdateTimestamp, member, SellerId
+            AmazonProviderCreditId, RequestId, ProviderId, ProviderSellerId, CreditReferenceId, Amount, CreditAmount, CreditReversalAmount, CurrencyCode, ReasonCode, ReasonDescription,
+            State, SoftDescriptor, LastUpdateTimestamp, member, Id, SellerId
         }
 
         /// <summary>
@@ -103,6 +103,9 @@ namespace PayWithAmazon.Responses
                                     requestId = obj.ToString();
                                     break;
                                 case Operator.ProviderId:
+                                    providerId = obj.ToString();
+                                    break;
+                                case Operator.ProviderSellerId:
                                     providerId = obj.ToString();
                                     break;
                                 case Operator.SellerId:
@@ -150,6 +153,24 @@ namespace PayWithAmazon.Responses
                                  * it contains JArray. JArray contains the member field which contains the Amazon Provider Credit Reversal ID. this is added to the List
                                  */
                                 case Operator.member:
+                                    if (obj.GetType() == typeof(JArray))
+                                    {
+                                        JArray array = JArray.Parse(obj.ToString());
+                                        foreach (string creditReversalId in array)
+                                        {
+                                            creditReversalIdList.Add(creditReversalId);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        creditReversalIdList.Add(obj.ToString());
+                                    }
+                                    break;
+                                /* The reason for below case is due to IPN key value discrepancy. In the API response XML 
+                                 * the Amazon Credit Reversal ID'S have the attribute <member>Amazon Credit Reversal ID</member>
+                                 * in the IPN it's returned as <Id>Amazon Credit Reversal ID</Id>
+                                 */
+                                case Operator.Id:
                                     if (obj.GetType() == typeof(JArray))
                                     {
                                         JArray array = JArray.Parse(obj.ToString());

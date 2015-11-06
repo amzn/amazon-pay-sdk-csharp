@@ -70,7 +70,7 @@ namespace PayWithAmazon.Responses
         private enum Operator
         {
             AmazonRefundId, RequestId, SellerRefundNote, RefundReferenceId, Amount, CurrencyCode, RefundAmount, FeeRefunded, ReasonCode, ReasonDescription, RefundType,
-            SoftDescriptor, State, ProviderCreditReversalSummaryList, LastUpdateTimestamp, CreationTimestamp, member, ProviderId, ProviderCreditReversalId
+            SoftDescriptor, State, ProviderCreditReversalSummaryList, LastUpdateTimestamp, CreationTimestamp, member, ProviderId, ProviderSellerId, ProviderCreditReversalId
         }
 
         /// <summary>
@@ -165,7 +165,8 @@ namespace PayWithAmazon.Responses
                                             {
                                                 string key = property.Name;
                                                 string value = property.Value.ToString();
-                                                if (key.Equals(Operator.ProviderId.ToString()))
+                                                if (key.Equals(Operator.ProviderId.ToString()) ||
+                                                    key.Equals(Operator.ProviderSellerId.ToString()))
                                                 {
                                                     providerId.Add(value);
                                                 }
@@ -179,6 +180,9 @@ namespace PayWithAmazon.Responses
                                     break;
 
                                 case Operator.ProviderId:
+                                    providerId.Add(obj.ToString());
+                                    break;
+                                case Operator.ProviderSellerId:
                                     providerId.Add(obj.ToString());
                                     break;
                                 case Operator.ProviderCreditReversalId:
