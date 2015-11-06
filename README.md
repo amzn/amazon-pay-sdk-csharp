@@ -270,7 +270,7 @@ bool isGetOrderReferenceDetailsSuccess = getOrderReferenceDetailsResponse.GetSuc
 		string ErrorMessage = getOrderReferenceDetailsResponse.GetErrorMessage();
 	}
 ```
-See the [GetOrderReferenceDetailsResponse](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for all the parameters returned.
+See the [OrderReferenceDetailsResponse](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Responses/OrderReferenceDetailsResponse.cs) section for all the parameters returned.
 
 * Similarly other API calls can be made. 
 sections for Request classes for the required API calls.
