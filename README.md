@@ -168,7 +168,7 @@ string config = "PATH_TO_JSON_FILE\filename.fileextension";
 Client client = new Client(config);
 ```
 **Setting configuration while instantiating the Client object with Json file**
-* key names for json are mentioned in the table Parameters List
+* key names for json are mentioned in the table [Parameters List](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/README.md#parameters-list)
 * keys are not case sensitive, Ex `merchant_id` can also be named as `Merchant_ID`
 * The full path with the file name that has correct readbale permissions should be provided to the client class constructor
 
