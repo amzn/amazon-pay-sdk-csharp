@@ -30,10 +30,6 @@ Client takes in parameters in the following format
 ## Directory Structure
 ```
 Folder PATH listing
-|   PayWithAmazon.sln
-|   PayWithAmazonDoc-CHM.shfbproj
-|   README.md
-|   
 +---Helpdocs
 |       Pay With Amazon Documentation.chm
 |       
@@ -44,21 +40,19 @@ Folder PATH listing
 |       nunit.framework.dll
 |       PayWithAmazon.dll
 |       TestResult.xml
-|       UnitTests.dll             
+|       UnitTests.dll
+|                     
 +---PayWithAmazon
-|   |   Client.cs - Main fine with the API calls
-|   |   HttpImpl.cs - HTTP POST/GET requests 
-|   |   IClient.cs - Interface class for Client class
-|   |   IpnHandler.cs -  IPN handller and verifier class
-|   |   JsonParser.cs - Recursive JSON parser for Client class
+|   |   Client.cs
+|   |   Constants.cs
+|   |   HttpImpl.cs
+|   |   IpnHandler.cs
+|   |   NestedJsonToDictionary.cs
 |   |   PayWithAmazon.csproj
 |   |   region.Designer.cs
-|   |   Regions.cs - Regions supported
-|   |   ResponseParser.cs - API Respone format class
-|   |         
-|   +---CommonRequests
-|   |       Configuration.cs - Client class configuration parameters request class
-|   |       GetServiceStatusRequest.cs    
+|   |   Regions.cs
+|   |   ResponseParser.cs
+|   |   Signature.cs     
 |   +---ProviderCreditRequests
 |   |       GetProviderCreditDetailsRequest.cs
 |   |       GetProviderCreditReversalDetailsRequest.cs
@@ -72,6 +66,25 @@ Folder PATH listing
 |   |       GetBillingAgreementDetailsRequest.cs
 |   |       SetBillingAgreementDetailsRequest.cs
 |   |       ValidateBillingAgreementRequest.cs
+|   |       
+|   +---Responses
+|   |       AuthorizeResponse.cs
+|   |       BillingAddressDetails.cs
+|   |       BillingAgreementDetailsResponse.cs
+|   |       CancelOrderReferenceResponse.cs
+|   |       CaptureResponse.cs
+|   |       CloseAuthorizationResponse.cs
+|   |       CloseBillingAgreementResponse.cs
+|   |       CloseOrderReferenceResponse.cs
+|   |       ConfirmBillingAgreementResponse.cs
+|   |       ConfirmOrderReferenceResponse.cs
+|   |       ErrorResponse.cs
+|   |       GetProviderCreditDetailsResponse.cs
+|   |       GetProviderCreditReversalDetailsResponse.cs
+|   |       GetServiceStatusResponse.cs
+|   |       OrderReferenceDetailsResponse.cs
+|   |       RefundResponse.cs
+|   |       ValidateBillingAgreementResponse.cs
 |   |       
 |   \---StandardPaymentRequests
 |           AuthorizeRequest.cs
@@ -90,7 +103,7 @@ Folder PATH listing
 |           
 +---snk
 |       PayWithAmazonPublic.snk
-|                  
+|                 
 \---UnitTests
     |   config.json
     |   Json.txt
@@ -101,29 +114,30 @@ Folder PATH listing
 
 ##Parameters List
 
+
 ####Mandatory Parameters
-| Parameter    | Values          								|
-|--------------|------------------------------------------------|
-| Merchant Id  | Default : `null`								|
-| Access Key   | Default : `null`								|
-| Secret Key   | Default : `null`								|
-| Region       | Default : `null`<br>Other: `us`,`de`,`uk`,`jp`	|
+| Parameter    | Json file Key name | Values          								|
+|--------------|--------------------|-----------------------------------------------|
+| Merchant Id  | `merchant_id` 		| Default : `null`								|
+| Access Key   | `access_key`  		| Default : `null`								|
+| Secret Key   | `secret_key`  		| Default : `null`								|
+| Region       | `region`      		| Default : `null`<br>Other: `us`,`de`,`uk`,`jp`|
 
 ####Optional Parameters
-| Parameter           | Values                                      	   |
-|---------------------|----------------------------------------------------|
-| Currency Code       | Default : `null`<br>Other: `USD`,`EUR`,`GBP`,`JPY` |
-| Environment         | Default : `false`<br>Other: `true`	    		   |
-| Platform ID         | Default : `null` 			    				   |
-| CA Bundle File      | Default : `null`			    				   |
-| Application Name    | Default : `null`			    				   |
-| Application Version | Default : `null`			    				   |
-| Proxy Host          | Default : `null`			    				   |
-| Proxy Port          | Default : `-1`  			    				   |
-| Proxy Username      | Default : `null`			    				   |
-| Proxy Password      | Default : `null`			    				   |
-| LWA Client ID       | Default : `null`			    				   |
-| Handle Throttle     | Default : `true`<br>Other: `false`	    		   |
+| Parameter           		| Json file Key name         	| Values                                      	   	|
+|---------------------------|-------------------------------|---------------------------------------------------|
+| Currency Code       		| `currency_code`       	   	| Default : `null`<br>Other: `USD`,`EUR`,`GBP`,`JPY`|
+| Environment         		| `sandbox`             		| Default : `false`<br>Other: `true`	    		|
+| Platform ID         		| `platform_id`         		| Default : `null` 			    				   	|
+| CA Bundle File      		| `cabundle_file`       		| Default : `null`			    				   	|
+| Application Name    		| `application_name`    		| Default : `null`			    				   	|
+| Application Version 		| `application_version` 		| Default : `null`			    				   	|
+| Proxy Host          		| `proxy_host`          		| Default : `null`			    				   	|
+| Proxy Port          		| `proxy_port`          		| Default : `-1`  			    				   	|
+| Proxy Username      		| `proxy_username`      		| Default : `null`			    				   	|
+| Proxy Password      		| `proxy_password`      		| Default : `null`			    				   	|
+| LWA Client ID       		| `client_id`           		| Default : `null`			    				   	|
+| Auto Retry On Throttle   	| `auto_retry_on_throttle`    	| Default : `true`<br>Other: `false`	    		|
 
 ## Setting Configuration
 
@@ -139,7 +153,11 @@ Configuration config = new Configuration();
 clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithMerchantId("YOUR_MERCHANT_ID")
 	.WithSecretKey("YOUR_SECRET_KEY")
-	.WithRegion("REGION");
+	
+	/* Supported regions are mentioned in the Regions class and accessed by the enum supportedRegions. 
+	 * Example for 'us' is shown below
+	 /
+	.WithRegion(Regions.supportedRegions.us);
 
 // Or you can also provide a JSON file path which has the above configuration information in JSON format
 string config = "PATH_TO_JSON_FILE\filename.fileextension";
@@ -147,6 +165,43 @@ string config = "PATH_TO_JSON_FILE\filename.fileextension";
 // Instantiate the client class with the config type
 Client client = new Client(config);
 ```
+Setting configuration while instantiating the Client object with Json file
+* follow the key values mentioned in the table above
+* keys are not case sensitive, Ex `merchant_id` can also be named as `Merchant_ID`
+* The full path with the file name that has correct readbale permissions should be provided to the client class constructor
+
+```csharp
+using PayWithAmazon;
+using PayWithAmazon.CommonRequests;
+
+// Your Login and Pay with Amazon keys are available in your Seller Central account
+// Sample Json file input
+{
+	// Required parameters
+	"merchant_id": "YOUR_MERCHANT_ID",
+	"access_key": "YOUR_ACCESS_KEY",
+	"secret_key": "YOUR_SECRET_KEY",
+	"region": "REGION",
+   
+	// Optional parameters
+	"currency_code": "CURRENCY_CODE",
+	"client_id": "amzn.oa2.client.xxx",
+	"sandbox": true,
+	"application_name": "sdk testing",
+	"application_version": "1.0",
+	"proxy_host": null,
+	"proxy_port": -1,
+	"proxy_username": null,
+	"proxy_password": null
+	"auto_retry_on_throttle": true
+}
+
+string config = "PATH_TO_JSON_FILE\filename.fileextension";
+
+// Instantiate the client class with the Json file path
+Client client = new Client(config);
+```
+
 ### Testing in Sandbox Mode
 
 The sandbox parameter is defaults to false if not specified:
@@ -158,7 +213,7 @@ Configuration config = new Configuration();
 clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithMerchantId("YOUR_MERCHANT_ID")
 	.WithSecretKey("YOUR_SECRET_KEY")
-	.WithRegion("REGION")
+	.WithRegion(Regions.supportedRegions.us)
 	.WithSandbox(true);
 
 Client client = new Client(config);
@@ -172,7 +227,6 @@ Below is an example on how to make the GetOrderReferenceDetails API call:
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
 using Newtonsoft.json;
-using Log4Net; // if required for logging
 using PayWithAmazon.StandardPaymentRequests;
 
 // STEP 1 : Create the object of the GetOrderReferenceDetailsRequest class to add the parameters for the API call
@@ -200,19 +254,73 @@ bool isGetOrderReferenceDetailsSuccess = response.GetSuccess();
 	if(isGetOrderReferenceDetailsSuccess)
 	{
 		string amazonOrderReferenceId = response.GetAmazonOrderReferenceId();
+		if(hasConstraint)
+		{
+			List<string> constraintIdList = response.GetConstraintIdList();
+			List<string> constraintDescriptionList = response.GetDescriptionList();
+		}
 	}
 	else
 	{
 		string errorCode = response.GetErrorCode();
 		string ErrorMessage = response.GetErrorMessage();
 	}
-
 ```
 See the [GetOrderReferenceDetailsResponse](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for all the parameters returned.
 
-* Similarly other API calls can be made. See the [Request](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for Request classes for the required API call.
-* Pass the created Request object to the respective API function in the class [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response)
-* The Response object returned will be specefic to the API call made. See [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#api-response) section for Response classes
+* Similarly other API calls can be made. 
+sections for Request classes for the required API calls.
+	* [Standard Payments Requests](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/StandardPaymentRequests)
+	* [Recurring Payments Requests](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/RecurringPaymentRequests)
+	* [Provider Credit Requests](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/ProviderCreditRequests)
+	* [Common Requests](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/CommonRequests) - This folder contains Configuration class and GerServiceStatus API call.
+* Pass the created Request object to the respective API function in the class [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs)
+* The Response object returned will be specefic to the API call made See . See API call functions in [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs) to see the return type.
+Also [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) section for Response classes.
+
+### Setting the Currency Code parameter
+For API calls that need the currency code parameter, there are two ways to set it
+1. Setting it in the configuration class object globally
+```csharp
+using PayWithAmazon;
+using PayWithAmazon.CommonRequests;
+using Newtonsoft.json;
+using PayWithAmazon.StandardPaymentRequests;
+
+Configuration config = new Configuration();
+clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+	.WithMerchantId("YOUR_MERCHANT_ID")
+	.WithSecretKey("YOUR_SECRET_KEY")
+	.WithRegion(Regions.supportedRegions.us)
+	.WithSandbox(true)
+	.WithCurrencyCode(Regions.currencyCode.USD);
+
+Client client = new Client(config);
+```
+2. Setting it while making the API call
+This takes priority over setting it globally. If this is not set via the following way the global value is taken.
+```csharp
+using PayWithAmazon;
+using PayWithAmazon.CommonRequests;
+using Newtonsoft.json;
+using PayWithAmazon.StandardPaymentRequests;
+
+Configuration config = new Configuration();
+clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+	.WithMerchantId("YOUR_MERCHANT_ID")
+	.WithSecretKey("YOUR_SECRET_KEY")
+	.WithRegion(Regions.supportedRegions.us)
+	.WithSandbox(true);
+
+Client client = new Client(config);
+
+// Creating the SetOrderReferenceDetailsRequest object
+SetOrderReferenceDetailsRequest requestParameters = new SetOrderReferenceDetailsRequest();
+requestParameters.WithCurrencyCode(Regions.currencyCode.USD);
+
+// Making the SetOrderReferenceDetails API call 
+OrderReferenceDetailsResponse setOrderReferenceDetailsResponse = client.SetOrderReferenceDetails(requestParameters);
+```
 
 ### IPN Handling
 
@@ -222,6 +330,7 @@ See the [GetOrderReferenceDetailsResponse](https://github.com/amzn/login-and-pay
 
 In your web project you can create a file (for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
 
+See [IPN Documentation](https://payments.amazon.com/documentation/lpwa/201749840#201750560) for all the information on IPN and types.
 ```csharp
 using PayWithAmazon;
 
@@ -231,11 +340,42 @@ StreamReader sr = new StreamReader(s);
 string ipnMessage = sr.ReadToEnd();
 NameValueCollection headers = Request.Headers;
 
-// Create an object(ipn) of the IpnHandler class
-IpnHandler ipnResponse = new IpnHandler(headers, ipnMessage);
+// Create an object of the IpnHandler class
+IpnHandler ipnObject = new IpnHandler(headers, ipnMessage);
+string xml = ipn.ToXml();
+string json = ipn.ToJson();
+Dictionary<string,object> dictionary = ipn.ToDict();
 
+// Getting IPN common elements
+string notificationType = ipnObject.GetNotificationType();
+string merchantId = ipnObject.GetSellerId();
+string notificationReferenceId = ipnObject.GetNotificationReferenceId();
+string releaseEnvironment = ipnObject.GetReleaseEnvironment();
 ```
-See the [IPN Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp#ipn-response) section for information on parsing the IPN response.
+
+IPN's also have the XML response for the selective API calls made
+Notification types returned
+* OrderReferenceNotification
+* BillingAgreementNotification
+* PaymentAuthorize
+* PaymentCapture
+* PaymentRefund
+* ProviderCredit
+* ProviderCreditReversal
+```csharp
+using PayWithAmazon;
+
+// Getting response objects.
+string notificationType = ipnObject.GetNotificationType();
+// Example - In this case the Authorize notification was returned 
+if (notificationType.Equals(NotificationType.PaymentAuthorize.ToString()))
+{
+	AuthorizeResponse authResponse = ipnObject.GetAuthorizeResponse();
+}
+// With the authResponse object you can get the required variable values
+// Example - see AuthorizeResponse class for all variables and their Getter functions. 
+string amazonAuthorizationId = authResponse.GetAmazonAuthorizationId();
+```
 
 ### Convenience Methods
 
@@ -281,32 +421,41 @@ and the amount captured by making the `capture` API call after the shipment is c
 ```csharp
 using PayWithAmazon;
 using PayWithAmazon.CommonRequests;
+using Newtonsoft.json;
 using PayWithAmazon.StandardPaymentRequests;
 using PayWithAmazon.RecurringPaymentRequests;
+try
+{
+	// ChargeRequest class object
+	ChargeRequest requestParameters = new ChargeRequest();
 
-// ChargeRequest class object
-ChargeRequest requestParameters = new ChargeRequest();
+	// Adding the parameters values to the ChargeRequest class
+	requestParameters.WithAmazonReferenceId("AMAZON_REFERENCE_ID")
+		.WithChargeReferenceId("AUTHORIZATION_REFERENCE_ID")
+		.WithAmount("100.50")
+		.WithMerchantId("MERCHANT_ID")
+		.WithCurrencyCode(Regions.currencyCode.USD)
+		.WithPlatformId("SOLUTION_PROVIDER_MERCHANT_ID")
+		.WithSoftDescriptor("AMZ*")
+		.WithStoreName("cool stuff store")
+		.WithMWSAuthToken("MWS_AUTH_TOKEN")
+		.WithChargeNote("sample note")
+		.WithChargeOrderId("1234-1234")
+		.WithCaptureNow(false)
+		.WithProviderCreditDetails("PROVIDER_MERCHANT_ID", "10", Regions.currencyCode.USD)
+		.WithInheritShippingAddress(true)
+		.WithTransactionTimeout(5)
+		.WithCustomInformation("custom information");
 
-// Adding the parameters values to the ChargeRequest class
-requestParameters.WithAmazonReferenceId("AMAZON_REFERENCE_ID")
-	.WithChargeReferenceId("AUTHORIZATION_REFERENCE_ID")
-	.WithAmount("100.50")
-	.WithMerchantId("MERCHANT_ID")
-	.WithCurrencyCode("USD")
-	.WithPlatformId("SOLUTION_PROVIDER_MERCHANT_ID")
-	.WithSoftDescriptor("amz")
-	.WithStoreName("cool stuff store")
-	.WithMWSAuthToken("MWS_AUTH_TOKEN")
-	.WithChargeNote("sample note")
-	.WithChargeOrderId("1234-1234")
-	.WithCaptureNow(false)
-	.WithProviderCreditDetails("PROVIDER_MERCHANT_ID", "10", "USD")
-	.WithInheritShippingAddress(true)
-	.WithTransactionTimeout(5)
-	.WithCustomInformation("custom information");
-
-// Get the Authorization response from the charge method
-ResponseParser response = client.Charge(requestParameters);
+	// Get the Authorization response from the charge method
+	AuthorizeResponse response = client.Charge(requestParameters);
+}
+catch (InvalidDataException ex)
+{
+ string errorMessage = ex.Data["errorMessage"];
+ string errorCode = ex.Data["errorCode"];
+ string exceptionMessage = ex.Message;
+}
 ```
 #####Obtain profile information (GetUserInfo method)
 1. obtains the user's profile information from Amazon using the access token returned by the Button widget.
@@ -346,40 +495,4 @@ string buyerName = jsonObject.GetValue("name").ToString();
 string email = jsonObject.GetValue("email").ToString();
 // Buyer User Id
 string userId = jsonObject.GetValue("user_id").ToString();
-```
-### Response Parsing
-
-Responses are provided in 3 formats
-
-1. XML response
-2. Dictionary
-3. JSON format
-
-#####API Response
-```csharp
-// Returns an object(response) of the class ResponseParser.cs
-ResponseParser response = client.GetOrderReferenceDetails(requestParameters);
-
-// XML response
-response.ToXml();
-
-// Dictionary response
-response.ToDict();
-
-// JSON response
-response.ToJson();
-```
-
-#####IPN Response
-```csharp
-IpnHandler ipnResponse = new IpnHandler(headers,ipnMessage);
-
-// XML message response
-ipnResponse.ToXml();
-
-// Dictionary response
-ipnResponse.ToDict();
-
-// JSON response
-ipnResponse.ToJson();
 ```
