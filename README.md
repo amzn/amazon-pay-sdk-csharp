@@ -201,7 +201,7 @@ using PayWithAmazon.CommonRequests;
 using PayWithAmazon.StandardPaymentRequests;
 using PayWithAmazon.Responses;
 
-string config = "PATH_TO_JSON_FILE\filename.fileextension";
+string config = "PATH_TO_JSON_FILE\filename.FileExtension";
 
 // Instantiate the client class with the Json file path
 Client client = new Client(config);
@@ -261,6 +261,16 @@ OrderReferenceDetailsResponse getOrderReferenceDetailsResponse = client.GetOrder
 bool isGetOrderReferenceDetailsSuccess = getOrderReferenceDetailsResponse.GetSuccess(); 
 	if(isGetOrderReferenceDetailsSuccess)
 	{
+		// Getting the XML Response
+		string xml = getOrderReferenceDetailsResponse.GetXml();
+		
+		// Json Response
+		string json = getOrderReferenceDetailsResponse.GetJson();
+		
+		// Dictionary
+		Dictionary<string, object> dictionary = getOrderReferenceDetailsResponse.GetDict();
+		
+		// Getting individual variable values that is parsed in the Response class
 		string amazonOrderReferenceId = getOrderReferenceDetailsResponse.GetAmazonOrderReferenceId();
 		
 		// Checking if any constraints on the Amazon OrderReference ID exist in the response for which an action should be taken.
@@ -287,6 +297,7 @@ sections for Request classes for the required API calls.
 * Pass the created Request object to the respective API function in the class [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs)
 * The Response object returned will be specefic to the API call made. See API call functions in [Client.cs](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/blob/DoDo/PayWithAmazon/Client.cs) for the return type.
 * [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) classes contain the variables and their Getters.
+* Each Response class provides XML response via responseObject.GetXml(), Json Response via responseObject.GetJson() and Dictionary<string,object> via responseObject.GetDict().
 
 ### Setting the Currency Code parameter
 **For API calls that need the currency code parameter, there are two ways to set it**
