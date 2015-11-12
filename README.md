@@ -300,7 +300,7 @@ sections for Request classes for the required API calls.
 * Each Response class provides XML response via responseObject.GetXml(), Json Response via responseObject.GetJson() and Dictionary<string,object> via responseObject.GetDict().
 
 ### Setting the Amount parameter
-**For API calls that need the currency code parameter, there type is decimal**
+**For API calls that need the Amount parameter, the type of the amount parameter is `decimal`**
 
 ```csharp
 using PayWithAmazon;
