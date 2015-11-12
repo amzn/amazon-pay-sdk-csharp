@@ -299,6 +299,40 @@ sections for Request classes for the required API calls.
 * [Response](https://github.com/amzn/login-and-pay-with-amazon-sdk-csharp/tree/DoDo/PayWithAmazon/Responses) classes contain the variables and their Getters.
 * Each Response class provides XML response via responseObject.GetXml(), Json Response via responseObject.GetJson() and Dictionary<string,object> via responseObject.GetDict().
 
+### Setting the Amount parameter
+**For API calls that need the currency code parameter, there type is decimal**
+
+```csharp
+using PayWithAmazon;
+using PayWithAmazon.CommonRequests;
+using Newtonsoft.json;
+using PayWithAmazon.StandardPaymentRequests;
+using PayWithAmazon.Responses;
+
+Configuration config = new Configuration();
+clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+	.WithMerchantId("YOUR_MERCHANT_ID")
+	.WithSecretKey("YOUR_SECRET_KEY")
+	.WithRegion(Regions.supportedRegions.us)
+	.WithSandbox(true);
+
+Client client = new Client(config);
+
+// Example SetOrderReferenceDetails API call
+// Creating the SetOrderReferenceDetailsRequest object
+SetOrderReferenceDetailsRequest requestParameters = new SetOrderReferenceDetailsRequest();
+
+// If the amount type was a string or a non decimal value type, 
+// convert it into decimal type.
+requestParameters.WithAmount(decimal.Parse("amount"));
+
+// Also in general decimal values can be directly passed by
+requestParameters.WithAmount(19.95m);
+
+// Making the SetOrderReferenceDetails API call 
+OrderReferenceDetailsResponse setOrderReferenceDetailsResponse = client.SetOrderReferenceDetails(requestParameters);
+```
+
 ### Setting the Currency Code parameter
 **For API calls that need the currency code parameter, there are two ways to set it**
 

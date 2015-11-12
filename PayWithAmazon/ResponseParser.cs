@@ -52,10 +52,6 @@ namespace PayWithAmazon
         {
             string json = ToJson();
             NestedJsonToDictionary jsonToDict = new NestedJsonToDictionary(json);
-            
-           /* Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
-           json, new JsonConverter[] { new JsonParser() });*/
-
             return jsonToDict.GetDictionary();
         }
     }

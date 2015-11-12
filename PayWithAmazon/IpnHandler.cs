@@ -15,6 +15,7 @@ using PayWithAmazon;
 using System.Xml;
 
 using PayWithAmazon.Responses;
+using System.Text.RegularExpressions;
 
 namespace PayWithAmazon
 {
@@ -82,7 +83,7 @@ namespace PayWithAmazon
         private NameValueCollection LowerHeadersKeysCase(NameValueCollection headers)
         {
             NameValueCollection lowerKeyHeaders = new NameValueCollection();
-            foreach(string key in headers.AllKeys)
+            foreach (string key in headers.AllKeys)
             {
                 lowerKeyHeaders.Add(key.ToLower(), headers[key]);
             }
@@ -115,6 +116,7 @@ namespace PayWithAmazon
         {
             ValidateHeader(headers);
             parseMessage(snsJson);
+            ValidateCertUrl();
             ValidateMessageType();
         }
 
@@ -237,11 +239,43 @@ namespace PayWithAmazon
         }
 
         /// <summary>
+        /// Verifies that the signing certificate url is from a recognizable source. 
+        /// Returns the cert url if it cen be verified, otherwise throws an exception.
+        /// </summary>
+        /// <param name="signingCertURL"></param>
+        /// <returns></returns>
+        private void ValidateCertUrl()
+        {
+            bool isValidUrl = false;
+            string signingCertURL = GetMandatoryField("SigningCertURL");
+            var uri = new Uri(signingCertURL);
+
+            if (uri.Scheme == "https" && signingCertURL.EndsWith(".pem", StringComparison.Ordinal))
+            {
+                const string pattern = @"^sns\.[a-zA-Z0-9\-]{3,}\.amazonaws\.com(\.cn)?$";
+                var regex = new Regex(pattern);
+                if (!regex.IsMatch(uri.Host))
+                {
+                    isValidUrl = false;
+                }
+                else
+                {
+                    isValidUrl = true;
+                }
+            }
+            if (!isValidUrl)
+            {
+                throw new InvalidDataException("Signing certificate url is not from a recognised source.");
+            }
+        }
+
+        /// <summary>
         /// Validates if the Signature version is correct , else throws an exception 
         /// </summary>
         private void ValidateMessageIsTrusted()
         {
             string signatureVersion = GetMandatoryField("SignatureVersion");
+
             switch (signatureVersion)
             {
                 case "1":
