@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PayWithAmazon.Responses
 {
-    public class ConfirmBillingAgreementResponse
+    public class ConfirmBillingAgreementResponse : IResponse
     {
          public string xml;
         public string json;

@@ -15,7 +15,7 @@ namespace PayWithAmazon.Responses
     /// </code>
     /// </summary>
 
-    public class ConfirmOrderReferenceResponse
+    public class ConfirmOrderReferenceResponse : IResponse
     {
         public string xml;
         public string json;

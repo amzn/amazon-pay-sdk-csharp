@@ -11,7 +11,7 @@ namespace PayWithAmazon.Responses
     /// Documentation Source https://payments.amazon.com/documentation/apireference/201752580
     /// </summary>
 
-    public class OrderReferenceDetailsResponse
+    public class OrderReferenceDetailsResponse : IResponse
     {
         private string xml;
         private string json;

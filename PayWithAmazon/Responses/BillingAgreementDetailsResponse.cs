@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PayWithAmazon.Responses
 {
-    public class BillingAgreementDetailsResponse
+    public class BillingAgreementDetailsResponse : IResponse
     {
         /// <summary>
         /// Documentation Source https://payments.amazon.com/documentation/apireference/201752500

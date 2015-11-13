@@ -10,7 +10,7 @@ namespace PayWithAmazon.Responses
     /// Documentation Source https://payments.amazon.com/documentation/apireference/201752580
     /// </summary>
 
-    public class CaptureResponse
+    public class CaptureResponse : IResponse
     {
         public string xml;
         public string json;

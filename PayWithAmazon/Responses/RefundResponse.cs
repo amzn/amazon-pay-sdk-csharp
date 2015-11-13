@@ -10,7 +10,7 @@ namespace PayWithAmazon.Responses
     /// Documentation Source https://payments.amazon.com/documentation/apireference/201752740
     /// </summary>
 
-    public class RefundResponse
+    public class RefundResponse : IResponse
     {
         public string xml;
         public string json;

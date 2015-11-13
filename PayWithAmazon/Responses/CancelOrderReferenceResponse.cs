@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PayWithAmazon.Responses
 {
-    public class CancelOrderReferenceResponse
+    public class CancelOrderReferenceResponse : IResponse
     {
         public string xml;
         public string json;

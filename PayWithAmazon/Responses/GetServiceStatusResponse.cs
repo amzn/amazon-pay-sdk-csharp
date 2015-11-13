@@ -9,7 +9,7 @@ namespace PayWithAmazon.Responses
     /// Documentation Source https://payments.amazon.com/documentation/apireference/201752740#201752110
     /// </summary>
 
-    public class GetServiceStatusResponse
+    public class GetServiceStatusResponse : IResponse
     {
         public string xml;
         public string json;

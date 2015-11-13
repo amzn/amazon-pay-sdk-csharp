@@ -26,7 +26,7 @@ namespace PayWithAmazon
     /// Makes API calls to MWS for Pay With Amazon
     /// returns Request Object
     /// </summary>
-    public class Client
+    public class Client : PayWithAmazon.IClient
     {
         private Dictionary<string, string> parameters = new Dictionary<string, string>();
         private string mwsTestUrl = "";

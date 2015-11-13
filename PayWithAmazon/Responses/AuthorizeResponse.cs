@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PayWithAmazon.Responses
 {
-    public class AuthorizeResponse
+    public class AuthorizeResponse : IResponse
     {
         /// <summary>
         /// Documentation source https://payments.amazon.com/documentation/apireference/201752450

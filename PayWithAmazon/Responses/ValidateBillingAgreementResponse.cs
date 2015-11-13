@@ -9,7 +9,7 @@ namespace PayWithAmazon.Responses
     /// Documentation Source https://payments.amazon.com/documentation/apireference/201752740#201751720
     /// </summary>
 
-    public class ValidateBillingAgreementResponse
+    public class ValidateBillingAgreementResponse : IResponse
     {
         public string xml;
         public string json;

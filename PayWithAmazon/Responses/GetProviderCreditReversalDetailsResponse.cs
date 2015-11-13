@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PayWithAmazon.Responses
 {
-    public class GetProviderCreditReversalDetailsResponse
+    public class GetProviderCreditReversalDetailsResponse : IResponse
     {
         public string xml;
         public string json;
