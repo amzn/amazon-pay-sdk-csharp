@@ -18,7 +18,7 @@ namespace PayWithAmazon.Responses
         private string failureReasonCode;
         private string billingAgreementState;
 
-        private int reasonCode;
+        private string reasonCode;
         private string reasonDescription;
         private string requestId;
         private DateTime lastUpdatedTimestamp;
@@ -95,7 +95,7 @@ namespace PayWithAmazon.Responses
                                     billingAgreementState = obj.ToString();
                                     break;
                                 case Operator.ReasonCode:
-                                    reasonCode = int.Parse(obj.ToString());
+                                    reasonCode = obj.ToString();
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
@@ -121,7 +121,7 @@ namespace PayWithAmazon.Responses
         {
             return this.failureReasonCode;
         }
-        public int GetReasonCode()
+        public string GetReasonCode()
         {
             return this.reasonCode;
         }

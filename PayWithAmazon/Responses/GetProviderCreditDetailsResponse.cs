@@ -191,82 +191,181 @@ namespace PayWithAmazon.Responses
             }
         }
 
+        /// <summary>
+        /// Get the Amazon Provider Credit ID
+        /// </summary>
+        /// <returns>string amazonProviderCreditId</returns>
         public string GetAmazonProviderCreditId()
         {
             return this.amazonProviderCreditId;
         }
+
+        /// <summary>
+        /// Get the requestId
+        /// </summary>
+        /// <returns>string requestId</returns>
         public string GetRequestId()
         {
             return this.requestId;
         }
+
+        /// <summary>
+        /// Get the Creation timestamp of the Amazon Provider Credit ID
+        /// </summary>
+        /// <returns>DateTime creationTimestamp</returns>
         public DateTime GetCreationTimestamp()
         {
             return this.creationTimestamp;
         }
+
+        /// <summary>
+        /// Get the Amount Credit
+        /// </summary>
+        /// <returns>decimal creditAmount</returns>
         public decimal GetCreditAmount()
         {
             return this.creditAmount;
         }
+
+        /// <summary>
+        /// Gret the Currency Code of Credit Amount
+        /// </summary>
+        /// <returns>string creditAmountCurrencyCode</returns>
         public string GetCreditAmountCurrencyCode()
         {
             return this.creditAmountCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the Credit Reference ID
+        /// </summary>
+        /// <returns>string creditReferenceId</returns>
         public string GetCreditReferenceId()
         {
             return this.creditReferenceId;
         }
+
+        /// <summary>
+        /// Get the reversed credit amount
+        /// </summary>
+        /// <returns>decimal creditReversalAmount</returns>
         public decimal GetCreditReversalAmount()
         {
             return this.creditReversalAmount;
         }
+
+        /// <summary>
+        /// Get the Currency code of the Credit Amount Reversed
+        /// </summary>
+        /// <returns>string creditReversalAmountCurrencyCode</returns>
         public string GetCreditReversalAmountCurrencyCode()
         {
             return this.creditReversalAmountCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the List of the Credit Reversal ID(s)
+        /// </summary>
+        /// <returns>IList creditReversalIdList</returns>
         public IList<string> GetCreditReversalIdList()
         {
             return this.creditReversalIdList.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get the status of the Amazon Provider Credit ID
+        /// </summary>
+        /// <returns>string creditStatus</returns>
         public string GetCreditStatus()
         {
             return this.creditStatus;
         }
+
+        /// <summary>
+        /// Get the Reason Code for the state of the Amazon Provider Credit ID
+        /// </summary>
+        /// <returns>string reasonCode</returns>
         public string GetReasonCode()
         {
             return this.reasonCode;
         }
+
+        /// <summary>
+        /// Get the Reason Description for the state of the Amazon Provider Credit ID
+        /// </summary>
+        /// <returns>string reasonDescription</returns>
         public string GetReasonDescription()
         {
             return this.reasonDescription;
         }
+
+        /// <summary>
+        /// Get the Soft desciptor
+        /// </summary>
+        /// <returns>string softDescriptor</returns>
         public string GetSoftDescriptor()
         {
             return this.softDescriptor;
         }
+
+        /// <summary>
+        /// Get the Merchant ID of the seller associated with the Provider
+        /// </summary>
+        /// <returns>string sellerId</returns>
         public string GetSellerId()
         {
             return this.sellerId;
         }
+
+        /// <summary>
+        /// Get the ErrorCode when te API call failed
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage when the API call failed
+        /// </summary>
+        /// <returns>string errorMesage</returns>
         public string GetErrorMessage()
         {
             return errorMessage;
         }
+
+        /// <summary>
+        /// Get the bool value to know if the API call was a success(true) or a failure(false)
+        /// </summary>
+        /// <returns>success can be true or false</returns>
         public bool GetSuccess()
         {
             return this.success;
         }
+
+        /// <summary>
+        /// Response returned in XML format
+        /// </summary>
+        /// <returns>XML format Response</returns>
         public string GetXml()
         {
             return this.xml;
         }
+
+        /// <summary>
+        /// Response in Dictionary Format
+        /// </summary>
+        /// <returns>Dictionary<string,object> type Response</returns>
         public IDictionary GetDictionary()
         {
             return this.dictionary;
         }
+
+        /// <summary>
+        /// Response returned in JSON format
+        /// </summary>
+        /// <returns>JSON format Response</returns>
         public string GetJson()
         {
             return this.json;

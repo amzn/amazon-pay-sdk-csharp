@@ -69,22 +69,46 @@ namespace PayWithAmazon.Responses
             }
         }
 
+        /// <summary>
+        /// Get the ErrorCode when te API call failed
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return this.errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage when the API call failed
+        /// </summary>
+        /// <returns>string errorMesage</returns>
         public string GetErrorMessage()
         {
             return this.errorMessage;
         }
+
+        /// <summary>
+        /// Return true or false if the ErrorCode is set 
+        /// </summary>
+        /// <returns>boolean errorCode</returns>
         public bool IsSetErrorCode()
         {
             return errorCode != null;
         }
+
+        /// <summary>
+        /// Return true or false if the ErrorMessage is set 
+        /// </summary>
+        /// <returns>boolean errorMessage</returns>
         public bool IsSetErrorMessage()
         {
             return errorMessage != null;
         }
+
+        /// <summary>
+        /// Get the requestId
+        /// </summary>
+        /// <returns>string requestId</returns>
         public string GetRequestId()
         {
             return this.requestId;

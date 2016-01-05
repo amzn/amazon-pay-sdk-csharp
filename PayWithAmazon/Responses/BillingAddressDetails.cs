@@ -104,51 +104,109 @@ namespace PayWithAmazon.Responses
             }
         }
 
-
+        /// <summary>
+        /// Get the Billing Address Line 1 of the buyer
+        /// </summary>
+        /// <returns>addressLine1</returns>
         public string GetAddressLine1()
         {
             return this.addressLine1;
         }
+
+        /// <summary>
+        /// Get the Billing Address Line 2 of the Buyer
+        /// </summary>
+        /// <returns>addressLine2</returns>
         public string GetAddressLine2()
         {
             return this.addressLine2;
         }
+
+        /// <summary>
+        /// Get the Billing Address Line 3 of the Buyer
+        /// </summary>
+        /// <returns>addressLine3</returns>
         public string GetAddressLine3()
         {
             return this.addressLine3;
         }
+
+        /// <summary>
+        /// Get the Billing Address City of the Buyer
+        /// </summary>
+        /// <returns>city</returns>
         public string GetCity()
         {
             return this.city;
         }
+
+        /// <summary>
+        /// Get the Billing Address countryCode of the Buyer
+        /// </summary>
+        /// <returns>countryCode</returns>
         public string GetCountryCode()
         {
             return this.countryCode;
         }
+
+        /// <summary>
+        /// Get the Billing Address county of the Buyer
+        /// </summary>
+        /// <returns>county</returns>
         public string GetCounty()
         {
             return this.county;
         }
+
+        /// <summary>
+        /// Get the Billing Address addressType of the Buyer
+        /// </summary>
+        /// <returns>addressType</returns>
         public string GetAddressType()
         {
             return this.addressType;
         }
+
+        /// <summary>
+        /// Get the Billing Address district of the Buyer
+        /// </summary>
+        /// <returns>district</returns>
         public string GetDistrict()
         {
             return this.district;
         }
+
+        /// <summary>
+        /// Get the Billing Address Buyers name
+        /// </summary>
+        /// <returns>name</returns>
         public string GetName()
         {
             return this.name;
         }
+
+        /// <summary>
+        /// Get the Billing Address Buyers phone number
+        /// </summary>
+        /// <returns>phone</returns>
         public string GetPhone()
         {
             return this.phone;
         }
+
+        /// <summary>
+        /// Get the Billing Address Buyers postalCode
+        /// </summary>
+        /// <returns>postalCode</returns>
         public string GetPostalCode()
         {
             return this.postalCode;
         }
+
+        /// <summary>
+        /// Get the Billing Address Buyers stateOrRegion
+        /// </summary>
+        /// <returns>stateOrRegion</returns>
         public string GetStateOrRegion()
         {
             return this.stateOrRegion;

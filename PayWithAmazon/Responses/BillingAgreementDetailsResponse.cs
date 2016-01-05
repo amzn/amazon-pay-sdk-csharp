@@ -23,7 +23,7 @@ namespace PayWithAmazon.Responses
         public List<string> constraintId = new List<string>();
         public List<string> description = new List<string>();
         public bool hasConstraint = false;
-        public int reasonCode;
+        public string reasonCode;
         public string reasonDescription;
         public string requestId;
 
@@ -99,7 +99,7 @@ namespace PayWithAmazon.Responses
             AmazonBillingAgreementId, TimePeriodStartDate, TimePeriodEndDate, RequestId, LastUpdatedTimestamp, ReasonCode, ReasonDescription, State, AmountLimitPerTimePeriod,
             CurrentRemainingBalance, SellerNote, Amount, CurrencyCode, PlatformId, PostalCode, Name, Type, Id, Email, Phone, CountryCode, StateOrRegion, AddressLine1, AddressLine2,
             AddressLine3, City, County, District, DestinationType, ReleaseEnvironment, SellerOrderId, SellerBillingAgreementId, CustomInformation,
-            StoreName, Constraint, ConstraintID, Description, member, BillingAddress,Buyer
+            StoreName, Constraint, ConstraintID, Description, member, BillingAddress, Buyer
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace PayWithAmazon.Responses
                                     lastUpdatedTimestamp = DateTime.Parse(obj.ToString());
                                     break;
                                 case Operator.ReasonCode:
-                                    reasonCode = Int32.Parse(obj.ToString());
+                                    reasonCode = obj.ToString();
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
@@ -291,170 +291,379 @@ namespace PayWithAmazon.Responses
             }
         }
 
+        /// <summary>
+        /// Get the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>string amazonBillingAgreementId</returns>
         public string GetAmazonBillingAgreementId()
         {
             return this.amazonBillingAgreementId;
         }
+
+        /// <summary>
+        /// Get the requestId
+        /// </summary>
+        /// <returns>string requestId</returns>
         public string GetRequestId()
         {
             return this.requestId;
         }
+
+        /// <summary>
+        /// Get the last Updated Timestamp
+        /// </summary>
+        /// <returns>DateTime lastUpdatedTimestamp</returns>
         public DateTime GetLastUpdatedTimestamp()
         {
             return this.lastUpdatedTimestamp;
         }
+
+        /// <summary>
+        /// Get the Time Period Start Date
+        /// </summary>
+        /// <returns>DateTime timePeriodStartDate</returns>
         public DateTime GetTimePeriodStartDate()
         {
             return this.timePeriodStartDate;
         }
+
+        /// <summary>
+        /// Get the Time Period End Date
+        /// </summary>
+        /// <returns>DateTime timePeriodEndDate</returns>
         public DateTime GetTimePeriodEndDate()
         {
             return this.timePeriodEndDate;
         }
+
+        /// <summary>
+        /// Get the custom Seller Billing Agreement if set
+        /// </summary>
+        /// <returns>sellerBillingAgreementId</returns>
         public string GetSellerBillingAgreementId()
         {
             return this.sellerBillingAgreementId;
         }
-        public int GetReasonCode()
+
+        /// <summary>
+        /// If the Billing Agreement is not in the Open state and if closed/canceled get the Reason Code 
+        /// </summary>
+        /// <returns>string reasonCode</returns>
+        public string GetReasonCode()
         {
             return this.reasonCode;
         }
+
+        /// <summary>
+        /// If the Billing Agreement is not in the Open state and if closed/canceled get the Reason Description 
+        /// </summary>
+        /// <returns>string reasonDescription</returns>
         public string GetReasonDescription()
         {
             return this.reasonDescription;
         }
+
+        /// <summary>
+        /// Get the state of the Billing Agreement
+        /// </summary>
+        /// <returns>string billingAgreementState</returns>
         public string GetBillingAgreementState()
         {
             return this.billingAgreementState;
         }
+
+        /// <summary>
+        /// Get the shipping Address Line 1 of the Buyer
+        /// </summary>
+        /// <returns>string addressLine1</returns>
         public string GetAddressLine1()
         {
             return this.addressLine1;
         }
+
+        /// <summary>
+        /// Get the Shipping Name as provided by the Buyer from the Wallet Widget
+        /// </summary>
+        /// <returns>string buyerShippingName</returns>
         public string GetBuyerShippingName()
         {
             return this.buyerShippingName;
         }
+
+        /// <summary>
+        /// Get the shipping Address Line 2 of the Buyer
+        /// </summary>
+        /// <returns>string addressLine2</returns>
         public string GetAddressLine2()
         {
             return this.addressLine2;
         }
+
+        /// <summary>
+        /// Get the shipping Address Line 3 of the Buyer
+        /// </summary>
+        /// <returns>string addressLine3</returns>
         public string GetAddressLine3()
         {
             return this.addressLine3;
         }
+
+        /// <summary>
+        /// Get the Limit Amount Per Time Period for the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>string amountLimitPerTimePeriod</returns>
         public decimal GetAmountLimitPerTimePeriod()
         {
             return this.amountLimitPerTimePeriod;
         }
+
+        /// <summary>
+        /// Get the Amount Limit Per Time Period Currency Code for the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>string amountLimitPerTimePeriodCurrencyCode</returns>
         public string GetAmountLimitPerTimePeriodCurrencyCode()
         {
             return this.amountLimitPerTimePeriodCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the Current Remaining Balance Amount for the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>string currentRemainingBalanceAmount</returns>
         public decimal GetCurrentRemainingBalanceAmount()
         {
             return this.currentRemainingBalanceAmount;
         }
+
+        /// <summary>
+        /// Get the Current Remaining Balance Amount Currency Code for the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>string currentRemainingBalanceAmount</returns>
         public string GetCurrentRemainingBalanceCurrencyCode()
         {
             return this.currentRemainingBalanceCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the  shipping address city of the Buyer
+        /// </summary>
+        /// <returns>string city</returns>
         public string GetCity()
         {
             return this.city;
         }
+
+        /// <summary>
+        /// Get any List of constraints if exuists on the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>IList constraintId</returns>
         public IList<string> GetConstraintIdList()
         {
             return this.constraintId.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get List of respective Descriptions for the constraints returned on the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>IList description</returns>
         public IList<string> GetDescriptionList()
         {
             return this.description.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get the shipping address country Code of the Buyer
+        /// </summary>
+        /// <returns>string countryCode</returns>
         public string GetCountryCode()
         {
             return this.countryCode;
         }
+
+        /// <summary>
+        /// Get the shipping address county of the Buyer
+        /// </summary>
+        /// <returns>string county</returns
         public string GetCounty()
         {
             return this.county;
         }
+
+        /// <summary>
+        /// Get the destinationType whether if it's a physical desitination or a Billing address
+        /// </summary>
+        /// <returns>string destinationType</returns
         public string GetDestinationType()
         {
             return this.destinationType;
         }
+
+        /// <summary>
+        /// Response in Dictionary Format
+        /// </summary>
+        /// <returns>Dictionary<string,object> type Response</returns>
         public IDictionary GetDictionary()
         {
             return this.dictionary;
         }
+
+        /// <summary>
+        /// Get the shipping address district of the Buyer
+        /// </summary>
+        /// <returns>string district</returns>
         public string GetDistrict()
         {
             return this.district;
         }
+
+        /// <summary>
+        /// Get the Email of the Buyer
+        /// </summary>
+        /// <returns>string email</returns>
         public string GetEmail()
         {
             return this.email;
         }
+
+        /// <summary>
+        /// Get the ErrorCode when te API call failed
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return this.errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage when the API call failed
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorMessage()
         {
             return this.errorMessage;
         }
+
+        /// <summary>
+        /// Get the bool value to know if the API call was a success(true) or a failure(false)
+        /// </summary>
+        /// <returns>success can be true or false</returns>
         public bool GetSuccess()
         {
             return success;
         }
+
+        /// <summary>
+        /// Get the boolean value to check if the Constaints exist
+        /// </summary>
+        /// <returns>true or false for hasConstraint</returns>
         public bool GetHasConstraint()
         {
             return this.hasConstraint;
         }
+
+        /// <summary>
+        /// Response returned in JSON format
+        /// </summary>
+        /// <returns>JSON format Response</returns>
         public string GetJson()
         {
             return this.json;
         }
+
+        /// <summary>
+        /// Get the Buyer name 
+        /// </summary>
+        /// <returns>string buyerName</returns>
         public string GetBuyerName()
         {
             return this.buyerName;
         }
+
+        /// <summary>
+        /// Get the Buyer phone number
+        /// </summary>
+        /// <returns>string phone</returns>
         public string GetPhone()
         {
             return this.phone;
         }
+
+        /// <summary>
+        /// Get the Platform ID
+        /// </summary>
+        /// <returns>string platformId</returns>
         public string GetPlatformId()
         {
             return this.platformId;
         }
+
+        /// <summary>
+        /// Get the Shipping address Postal code 
+        /// </summary>
+        /// <returns>string postalCode</returns>
         public string GetPostalCode()
         {
             return this.postalCode;
         }
+
+        /// <summary>
+        /// Get the Release environment , Sandbox or Live
+        /// </summary>
+        /// <returns>string releaseEnvironment</returns>
         public string GetReleaseEnvironment()
         {
             return this.releaseEnvironment;
         }
+
+        /// <summary>
+        /// Get the Seller Note
+        /// </summary>
+        /// <returns>string sellerNote</returns>
         public string GetSellerNote()
         {
             return this.sellerNote;
         }
+
+        /// <summary>
+        /// Get the custom Seller Order ID
+        /// </summary>
+        /// <returns>string sellerOrderId</returns>
         public string GetSellerOrderId()
         {
             return this.sellerOrderId;
         }
+
+        /// <summary>
+        /// Get the Shipping Address StateOrRegion
+        /// </summary>
+        /// <returns>string stateOrRegion</returns>
         public string GetStateOrRegion()
         {
             return this.stateOrRegion;
         }
+
+        /// <summary>
+        /// Get the Merchant Store Name
+        /// </summary>
+        /// <returns>string storeName</returns>
         public string GetStoreName()
         {
             return this.storeName;
         }
+
+        /// <summary>
+        /// Get the Billing Address class object. Applies to case where in the billing address is returned in the response
+        /// </summary>
+        /// <returns>BillingAddressDetails billingAddress</returns>
         public BillingAddressDetails GetBillingAddressDetails()
         {
             return this.billingAddress;
         }
+
+        /// <summary>
+        /// Response returned in XML format
+        /// </summary>
+        /// <returns>XML format Response</returns>
         public string GetXml()
         {
             return this.xml;

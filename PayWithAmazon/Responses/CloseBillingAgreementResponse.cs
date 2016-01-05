@@ -82,30 +82,64 @@ namespace PayWithAmazon.Responses
             }
         }
 
+        /// <summary>
+        /// Get the requestId
+        /// </summary>
+        /// <returns>string requestId</returns>
         public string GetRequestId()
         {
             return this.requestId;
         }
+
+        /// <summary>
+        /// Get the bool value to know if the API call was a success(true) or a failure(false)
+        /// </summary>
+        /// <returns>success can be true or false</returns>
         public bool GetSuccess()
         {
             return success;
         }
+
+        /// <summary>
+        /// Get the ErrorCode when te API call failed
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage when the API call failed
+        /// </summary>
+        /// <returns>string errorMesage</returns>
         public string GetErrorMessage()
         {
             return errorMessage;
         }
+
+        /// <summary>
+        /// Response returned in JSON format
+        /// </summary>
+        /// <returns>JSON format Response</returns>
         public string GetJson()
         {
             return this.json;
         }
+
+        /// <summary>
+        /// Response returned in XML format
+        /// </summary>
+        /// <returns>XML format Response</returns>
         public string GetXml()
         {
             return this.xml;
         }
+
+        /// <summary>
+        /// Response in Dictionary Format
+        /// </summary>
+        /// <returns>Dictionary<string,object> type Response</returns>
         public IDictionary GetDictionary()
         {
             return this.dictionary;

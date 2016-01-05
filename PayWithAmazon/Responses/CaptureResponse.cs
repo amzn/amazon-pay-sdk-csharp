@@ -220,66 +220,136 @@ namespace PayWithAmazon.Responses
             }
         }
 
+        /// <summary>
+        /// Get the Amazon Capture ID
+        /// </summary>
+        /// <returns>string amazonCaptureId</returns>
         public string GetCaptureId()
         {
             return this.amazonCaptureId;
         }
+
+        /// <summary>
+        /// Get the Request ID
+        /// </summary>
+        /// <returns>string requestId</returns>
         public string GetRequestId()
         {
             return this.requestId;
         }
+
+        /// <summary>
+        /// Get the unique Capture Reference Id
+        /// </summary>
+        /// <returns>string captureReferenceId</returns>
         public string GetCaptureReferenceId()
         {
             return this.captureReferenceId;
         }
+
+        /// <summary>
+        /// Get the last Update Timestamp of the Amazon Capture ID
+        /// </summary>
+        /// <returns>DateTime lastUpdateTimestamp</returns>
         public DateTime GetLastUpdatedTimestamp()
         {
             return this.lastUpdateTimestamp;
         }
+
+        /// <summary>
+        /// Get the Seller Capture Note provided 
+        /// </summary>
+        /// <returns>string sellerCaptureNote</returns>
         public string GetSellerCaptureNote()
         {
             return this.sellerCaptureNote;
         }
+
+        /// <summary>
+        /// Get the Captured Amount
+        /// </summary>
+        /// <returns>decimal captureAmount</returns>
         public decimal GetCaptureAmount()
         {
             return this.captureAmount;
         }
+
+        /// <summary>
+        /// Get the Currency Code of the amount Captured
+        /// </summary>
+        /// <returns>string captureCurrencyCode</returns>
         public string GetCaptureAmountCurrencyCode()
         {
             return this.captureCurrencyCode;
         }
-        public decimal GetCapturedAmount()
-        {
-            return this.captureAmount;
-        }
+
+        /// <summary>
+        /// Get the Capture Fee
+        /// </summary>
+        /// <returns>decimal captureFeeAmount</returns>
         public decimal GetCaptureFee()
         {
             return this.captureFeeAmount;
         }
+
+        /// <summary>
+        /// Get teh CaptureFee Currency Code
+        /// </summary>
+        /// <returns>string captureFeeCurrencyCode</returns>
         public string GetCaptureFeeCurrencyCode()
         {
             return this.captureFeeCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the state of the Amazon Capture ID
+        /// </summary>
+        /// <returns>string captureState</returns>
         public string GetCaptureState()
         {
             return this.captureState;
         }
+
+        /// <summary>
+        /// Get the IList of the Refund IDS 
+        /// </summary>
+        /// <returns>IList refundId</returns>
         public IList<string> GetRefundIdList()
         {
             return this.refundId.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get the List of Provider Credit IDS
+        /// </summary>
+        /// <returns>IList providerCreditId</returns>
         public IList<string> GetProviderCreditIdList()
         {
             return this.providerCreditId.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get the List of the Provider ID(s)
+        /// </summary>
+        /// <returns>IList providerId</returns>
         public IList<string> GetProviderIdList()
         {
             return this.providerId.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get the Creation Timestamp of the Amazon Capture ID
+        /// </summary>
+        /// <returns>DateTime creationTimestamp</returns>
         public DateTime GetCreationTimestamp()
         {
             return this.creationTimestamp;
         }
+
+        /// <summary>
+        /// Get the Reason code when the Amazon Capture ID is in a different state than Open
+        /// </summary>
+        /// <returns>string reasonCode</returns>
         public string GetReasonCode()
         {
             return this.reasonCode;
@@ -292,26 +362,56 @@ namespace PayWithAmazon.Responses
         {
             return this.softDescriptor;
         }
+
+        /// <summary>
+        /// Get the ErrorCode when te API call failed
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage when the API call failed
+        /// </summary>
+        /// <returns>string errorMesage</returns>
         public string GetErrorMessage()
         {
             return errorMessage;
         }
+
+        /// <summary>
+        /// Get the bool value to know if the API call was a success(true) or a failure(false)
+        /// </summary>
+        /// <returns>success can be true or false</returns>
         public bool GetSuccess()
         {
             return success;
         }
+
+        /// <summary>
+        /// Response returned in JSON format
+        /// </summary>
+        /// <returns>JSON format Response</returns>
         public string GetJson()
         {
             return this.json;
         }
+
+        /// <summary>
+        /// Response returned in XML format
+        /// </summary>
+        /// <returns>XML format Response</returns>
         public string GetXml()
         {
             return this.xml;
         }
+
+        /// <summary>
+        /// Response in Dictionary Format
+        /// </summary>
+        /// <returns>Dictionary<string,object> type Response</returns>
         public IDictionary GetDictionary()
         {
             return this.dictionary;
