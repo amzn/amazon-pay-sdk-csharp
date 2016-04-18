@@ -22,7 +22,6 @@ using OffAmazonPaymentsService;
 using OffAmazonPaymentsService.Model;
 
 
-
 namespace OffAmazonPaymentsServiceSampleLibrary
 {
     public class GetBillingAgreementDetailsSample : SampleBase
@@ -200,7 +199,7 @@ namespace OffAmazonPaymentsServiceSampleLibrary
                         if (billingAgreementDetails.IsSetBillingAddress())
                         {
                             Console.WriteLine("                    BillingAddress");
-                            BillingAddress  billingAddress = billingAgreementDetails.BillingAddress;
+                            BillingAddress billingAddress = billingAgreementDetails.BillingAddress;
                             if (billingAddress.IsSetAddressType())
                             {
                                 Console.WriteLine("                        AddressType");
@@ -351,6 +350,11 @@ namespace OffAmazonPaymentsServiceSampleLibrary
                         {
                             Console.WriteLine("                    BillingAgreementConsent");
                             Console.WriteLine("                        {0}", billingAgreementDetails.BillingAgreementConsent);
+                        }
+                        if (billingAgreementDetails.IsSetOrderLanguage())
+                        {
+                            Console.WriteLine("                    OrderLanguage");
+                            Console.WriteLine("                        {0}", billingAgreementDetails.OrderLanguage);
                         }
                     }
                 }

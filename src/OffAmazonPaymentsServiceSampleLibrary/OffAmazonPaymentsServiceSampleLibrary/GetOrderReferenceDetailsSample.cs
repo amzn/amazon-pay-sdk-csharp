@@ -355,6 +355,11 @@ namespace OffAmazonPaymentsServiceSampleLibrary
                         		outputBuffer.WriteLine("                            {0}", member);
                         }
                     }
+                    if (orderReferenceDetails.IsSetOrderLanguage())
+                    {
+                        outputBuffer.WriteLine("                    OrderLanguage");
+                        outputBuffer.WriteLine("                        {0}", orderReferenceDetails.OrderLanguage);
+                    }
                 }
             }
             if (response.IsSetResponseMetadata())

@@ -207,6 +207,11 @@ namespace OffAmazonPaymentsServiceSampleLibrary
                         	Console.WriteLine("                    AddressVerificationCode");
                         	Console.WriteLine("                        {0}", authorizationDetails.AddressVerificationCode);
                         }
+                        if (authorizationDetails.IsSetSoftDecline())
+                        {
+                            Console.WriteLine("                    SoftDecline");
+                            Console.WriteLine("                        {0}", authorizationDetails.SoftDecline);
+                        }
                     }
                 }
             }
