@@ -1,0 +1,11 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "d1c4d7bc-d39e-59f5-a717-9b44c6e261e7",
+  "TopicArn" : "arn:aws:sns:us-east-1:598607868003:A341L3VCFKNMIYA0677458196RUTCRWHDJQ",
+  "Message" : "{\"NotificationReferenceId\":\"f4540fc3-8129-4883-911c-f81a45d2dc35\",\"MarketplaceID\":\"165580\",\"NotificationType\":\"OrderReferenceNotification\",\"SellerId\":\"A0677458196RUTCRWHDJQ\",\"ReleaseEnvironment\":\"Sandbox\",\"Version\":\"2013-01-01\",\"NotificationData\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><OrderReferenceNotification xmlns=\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\">\\n    <OrderReference>\\n        <AmazonOrderReferenceId>S01-3736839-1925560<\\/AmazonOrderReferenceId>\\n        <OrderTotal>\\n            <Amount>79.30<\\/Amount>\\n            <CurrencyCode>USD<\\/CurrencyCode>\\n        <\\/OrderTotal>\\n        <SellerOrderAttributes>\\n            <SellerId>A0677458196RUTCRWHDJQ<\\/SellerId>\\n            <OrderItemCategories/>\\n        <\\/SellerOrderAttributes>\\n        <OrderReferenceStatus>\\n            <State>Closed<\\/State>\\n            <LastUpdateTimestamp>2014-12-02T19:30:00.905Z<\\/LastUpdateTimestamp>\\n            <ReasonCode>SellerClosed<\\/ReasonCode>\\n        <\\/OrderReferenceStatus>\\n        <CreationTimestamp>2014-12-02T19:27:52.333Z<\\/CreationTimestamp>\\n        <ExpirationTimestamp>2015-05-31T19:27:52.333Z<\\/ExpirationTimestamp>\\n    <\\/OrderReference>\\n<\\/OrderReferenceNotification>\",\"Timestamp\":\"2014-12-02T07:30:04Z\"}",
+  "Timestamp" : "2014-12-02T19:30:04.906Z",
+  "SignatureVersion" : "1",
+  "Signature" : "hyoB+uNQgTwYemW+gai9dW3Cytx0SK+hDNeSVee5SuwPA5BmmGYJ39r+NKdwvlrW+wfLAyUFLHOk8ywaRPLdUtkdyeBUpLdaeQGVtHU25G2mffi7DUa6xaG3UV3DlB8Zfyh3guxRsb6G9fU+p9+11JtiqDOr4txZMEFKrVPKrwsJchJuSzwjuxoaYAkzMcwspDpyY+VRby8PO1XNgxI4zmYnyVSI5LEdSVZz7tO5gYcm5BWEFswId0aY1T0WgfMNZ0+28HFKWd5FwBB25BnLp2k9e+reGi70Ixywk7l368We3otng5HAQaMQMSzqC42oPb+RI72ThszVMb8HxD66nQ==",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-d6d679a1d18e95c2f9ffcf11f4f9e198.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:598607868003:A341L3VCFKNMIYA0677458196RUTCRWHDJQ:77d6db86-7c31-459f-96d9-e9bd3eb6620b"
+}

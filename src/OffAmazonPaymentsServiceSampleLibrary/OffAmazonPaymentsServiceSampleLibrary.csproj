@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,15 +7,15 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OffAmazonPaymentsService.Samples</RootNamespace>
-    <AssemblyName>OffAmazonPaymentsService.Samples</AssemblyName>
+    <RootNamespace>OffAmazonPaymentsServiceSamplesLibrary</RootNamespace>
+    <AssemblyName>OffAmazonPaymentsServiceSamplesLibrary</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <ProjectGuid>{5F47091D-0A9E-4D99-8C01-05E951B9417A}</ProjectGuid>
+    <ProjectGuid>{D2B3D32B-F7D8-306F-A251-FFFD01A880A2}</ProjectGuid>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,6 +31,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,16 +50,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OffAmazonPaymentsService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\OffAmazonPaymentsService.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -73,6 +72,12 @@
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\CloseOrderReferenceSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\ConfirmBillingAgreementSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\ConfirmOrderReferenceSample.cs" />
+    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceProviderRefund.cs" />
+    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceProviderCheckout.cs" />
+    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceReverseProviderCredit.cs" />
+    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\ReverseProviderCreditSample.cs" />
+    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\GetProviderCreditReversalDetailsSample.cs" />
+    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\GetProviderCreditDetailsSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\CreateOrderReferenceForIdSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\GetAuthorizationDetailsSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\GetBillingAgreementDetailsSample.cs" />
@@ -82,22 +87,17 @@
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsAddressConsentSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceCancellation.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceAutomaticPaymentsSimpleCheckout.cs" />
+    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceSamples.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\SampleBase.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceMultipleShipment.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceRefund.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceSimpleCheckout.cs" />
-    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceProviderRefund.cs" />
-    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceProviderCheckout.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OrderItem.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\RefundSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\SetBillingAgreementDetailsSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\SetOrderReferenceDetailsSample.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\Utilities\TaxAndShippingRates.cs" />
     <Compile Include="OffAmazonPaymentsServiceSampleLibrary\ValidateBillingAgreementSample.cs" />
-    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceReverseProviderCredit.cs" />
-    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\ReverseProviderCreditSample.cs" />
-    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\GetProviderCreditReversalDetailsSample.cs" />
-    <Compile Include="OffAmazonPaymentsServiceSampleLibrary\GetProviderCreditDetailsSample.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -113,6 +113,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OffAmazonPaymentsService\OffAmazonPaymentsService.csproj">
+      <Project>{580855e8-38f5-3eb3-9614-34707fbc5be6}</Project>
+      <Name>OffAmazonPaymentsService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

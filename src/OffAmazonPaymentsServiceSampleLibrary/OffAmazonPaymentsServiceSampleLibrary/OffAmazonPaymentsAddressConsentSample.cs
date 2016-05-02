@@ -1,4 +1,4 @@
-/******************************************************************************* 
+﻿/******************************************************************************* 
  *  Copyright 2008-2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *  Licensed under the Apache License, Version 2.0 (the "License"); 
  *  
@@ -30,7 +30,7 @@ namespace OffAmazonPaymentsNotifications.Samples.Samples
          * Address consent sample - for US users only
          * This demonstrates how the get order reference request returns additional
          * information about the merchant when an address consent token is passed in
-         * from a user Login and Pay with Amazon session
+         * from a user @@ProductName@@ session
          *
          * This use case requires the OffAmazonButton with the correct login options
          * scope - check the integration guide on how to setup the button for shipment

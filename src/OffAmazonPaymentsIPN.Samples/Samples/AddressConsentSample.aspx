@@ -1,4 +1,4 @@
-<!-- /*******************************************************************************
+﻿<!-- /*******************************************************************************
  *  Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *  Licensed under the Apache License, Version 2.0 (the "License");	
  *
@@ -20,12 +20,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Login and Pay with Amazon  Address Consent Example</title>
+    <title>@@ProductName@@  Address Consent Example</title>
 </head>
 <body>
     <form id="form1" runat="server">
     <div>
-        <h1>Login and Pay with Amazon Address Consent Example</h1>
+        <h1>@@ProductName@@ Address Consent Example</h1>
         <br />
         <p>This example shows the difference in GetOrderRefenceDetails response when
         using the AddressConsent token field</p>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetCaptureDetailsResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+  <GetCaptureDetailsResult>
+    <CaptureDetails>
+      <AmazonCaptureId>string</AmazonCaptureId>
+      <CaptureReferenceId>string</CaptureReferenceId>
+      <SellerCaptureNote>string</SellerCaptureNote>
+      <CaptureAmount>
+        <Amount>string</Amount>
+        <CurrencyCode>string</CurrencyCode>
+      </CaptureAmount>
+      <RefundedAmount>
+        <Amount>string</Amount>
+        <CurrencyCode>string</CurrencyCode>
+      </RefundedAmount>
+      <CaptureFee>
+        <Amount>string</Amount>
+        <CurrencyCode>string</CurrencyCode>
+      </CaptureFee>
+      <IdList>
+        <!--1 or more repetitions:-->
+        <member>string</member>
+      </IdList>
+      <CreationTimestamp>2008-09-28T18:49:45</CreationTimestamp>
+      <CaptureStatus>
+        <!--Optional:-->
+        <State>PENDING</State>
+        <!--Optional:-->
+        <LastUpdateTimestamp>2004-02-14T10:44:14</LastUpdateTimestamp>
+        <!--Optional:-->
+        <ReasonCode>string</ReasonCode>
+        <!--Optional:-->
+        <ReasonDescription>string</ReasonDescription>
+      </CaptureStatus>
+      <SoftDescriptor>string</SoftDescriptor>
+      <!--Optional:-->
+      <ProviderCreditSummaryList>
+        <!--1 or more repetitions:-->
+        <member>
+          <ProviderId>string</ProviderId>
+          <ProviderCreditId>string</ProviderCreditId>
+        </member>
+      </ProviderCreditSummaryList>
+    </CaptureDetails>
+  </GetCaptureDetailsResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetCaptureDetailsResponse>

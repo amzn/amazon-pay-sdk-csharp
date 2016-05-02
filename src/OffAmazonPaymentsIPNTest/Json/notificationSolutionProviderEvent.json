@@ -1,0 +1,11 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "0ad0fb14-327f-5814-b049-b7eda12088be",
+  "TopicArn" : "arn:aws:sns:us-east-1:598607868003:A35A4JO734ER04A0437628130W0T0FI1ZKB",
+  "Message" : "{\"NotificationReferenceId\":\"bda4261a-2788-4323-8f13-5c3fe2bbe507\",\"MarketplaceID\":\"165570\",\"NotificationType\":\"SolutionProviderEvent\",\"SellerId\":\"A0437628130W0T0FI1ZKB\",\"ReleaseEnvironment\":\"Live\",\"Version\":\"2013-01-01\",\"NotificationData\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><SolutionProviderMerchantNotification xmlns=\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\">\\n    <MerchantRegistrationDetails>\\n        <SellerId>A084148810XXPO5JPSIDF<\\/SellerId>\\n        <Type>Register<\\/Type>\\n        <Options>\\n            <SolutionProviderOption>\\n                <name>hostingType<\\/name>\\n                <value>hosted<\\/value>\\n            <\\/SolutionProviderOption>\\n            <SolutionProviderOption>\\n                <name>lwaClientId<\\/name>\\n                <value>amzn1.application-oa2-client.8bdc525f35564d6a938eae1abdf7c4cf<\\/value>\\n            <\\/SolutionProviderOption>\\n            <SolutionProviderOption>\\n                <name>lwaApplicatiId<\\/name>\\n                <value>amzn1.application.9fac26d1cd944049a838a0b77d52f21d<\\/value>\\n            <\\/SolutionProviderOption>\\n        <\\/Options>\\n    <\\/MerchantRegistrationDetails>\\n<\\/SolutionProviderMerchantNotification>\",\"Timestamp\":\"2014-12-03T10:39:27Z\"}",
+  "Timestamp" : "2014-12-03T22:39:27.188Z",
+  "SignatureVersion" : "1",
+  "Signature" : "Yg0EEMUnt88IBJmZFLL7ixUwk4BfQbAMi0sJmAM42H1EDJuflisLqOH0Ymmak/XQN/+Pfug6TSwhp2Bp74Wx42KQmiY9BZQjTDBzC9BMx4a7cvnLtq7EmdJTnX/Y6wk8BUs6khvYDKxfaiBwuclTnE82h+dOZbZBvC5lqrKGpD950M4aqpWwCRvZzatvLgI2+bxUod5h4hdmRQ544DRNAyF/GyuPRPrBiV3ahQTk8u8IaBmPE/Wso0UnTMogISfq8rKG6D3Z/Q8X/Q6tCkZD8kFuxYSWCSweO1sNdxhjVTK+ETghl292BmbzOUeY7TYlPo19X0pMUIOOdxMpvMVNUA==",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-d6d679a1d18e95c2f9ffcf11f4f9e198.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:598607868003:A35A4JO734ER04A0437628130W0T0FI1ZKB:fa8f95fe-a9b0-4e85-a91c-0a3557731059"
+}

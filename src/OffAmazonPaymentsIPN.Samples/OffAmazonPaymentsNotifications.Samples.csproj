@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -42,15 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\Json.NET\Bin\Net20\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="OffAmazonPaymentsNotifications, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\OffAmazonPaymentsNotifications.dll</HintPath>
-    </Reference>
-    <Reference Include="OffAmazonPaymentsService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\OffAmazonPaymentsService.dll</HintPath>
+      <HintPath>..\lib\distributed\Json.NET\Bin\Net20\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -194,18 +186,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\OffAmazonPaymentsIPN\OffAmazonPaymentsNotifications.csproj">
+      <Project>{cecbc2f2-cd9a-467a-b595-0d85242997e2}</Project>
+      <Name>OffAmazonPaymentsNotifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OffAmazonPaymentsService.Sample\OffAmazonPaymentsService.Sample.csproj">
+      <Project>{4437ce9b-23e1-4a77-940c-eb1320ec6951}</Project>
+      <Name>OffAmazonPaymentsService.Sample</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OffAmazonPaymentsServiceSampleLibrary\OffAmazonPaymentsServiceSampleLibrary.csproj">
       <Project>{5f47091d-0a9e-4d99-8c01-05e951b9417a}</Project>
       <Name>OffAmazonPaymentsServiceSampleLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OffAmazonPaymentsService\OffAmazonPaymentsService.csproj">
+      <Project>{580855e8-38f5-3eb3-9614-34707fbc5be6}</Project>
+      <Name>OffAmazonPaymentsService</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Local ISS.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

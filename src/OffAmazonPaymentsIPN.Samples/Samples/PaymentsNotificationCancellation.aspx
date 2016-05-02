@@ -1,4 +1,4 @@
-<!-- /*******************************************************************************
+﻿<!-- /*******************************************************************************
  *  Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *  Licensed under the Apache License, Version 2.0 (the "License");	
  *
@@ -25,7 +25,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <h1>Login and Pay with Amazon Cancellation Sample</h1>  
+        <h1>@@ProductName@@ Cancellation Sample</h1>  
         <h4>This page demonstrates a merchant use case where the order needs to be cancelled before the first Capture has been performed</h4>
         <h4>This is done using the CancelOrderReference call to cancel to order, and this should be called prior to the first Capture. </h4>
         <br />

@@ -1,0 +1,11 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "5100f897-9acc-5a17-8fc7-b46fb1b4823b",
+  "TopicArn" : "arn:aws:sns:us-east-1:598607868003:A341L3VCFKNMIYA0677458196RUTCRWHDJQ",
+  "Message" : "{\"NotificationReferenceId\":\"24e0cd9d-eeb2-4725-b823-1c1218f4a52e\",\"MarketplaceID\":\"165580\",\"NotificationType\":\"ProviderCreditReversal\",\"SellerId\":\"A0677458196RUTCRWHDJQ\",\"ReleaseEnvironment\":\"Sandbox\",\"Version\":\"2013-01-01\",\"NotificationData\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><ProviderCreditReversalNotification xmlns=\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\">\\n    <ProviderCreditReversalDetails>\\n        <AmazonProviderCreditReversalId>S01-0414412-1503685-Q079466<\\/AmazonProviderCreditReversalId>\\n        <SellerId>A0677458196RUTCRWHDJQ<\\/SellerId>\\n        <ProviderSellerId>A08593053M41F7TQ7YR7W<\\/ProviderSellerId>\\n        <CreditReversalReferenceId>S0104144121503685C004044r663<\\/CreditReversalReferenceId>\\n        <CreditReversalAmount>\\n            <Amount>1.0<\\/Amount>\\n            <CurrencyCode>USD<\\/CurrencyCode>\\n        <\\/CreditReversalAmount>\\n        <CreationTimestamp>2014-12-02T21:02:45.046Z<\\/CreationTimestamp>\\n        <CreditReversalStatus>\\n            <State>Completed<\\/State>\\n            <LastUpdateTimestamp>2014-12-02T21:03:20.344Z<\\/LastUpdateTimestamp>\\n        <\\/CreditReversalStatus>\\n    <\\/ProviderCreditReversalDetails>\\n<\\/ProviderCreditReversalNotification>\",\"Timestamp\":\"2014-12-02T09:03:52Z\"}",
+  "Timestamp" : "2014-12-02T21:03:52.956Z",
+  "SignatureVersion" : "1",
+  "Signature" : "MO7baziFWk62SKR/kB9p+VIbT4wClMxoDNwGPjQxkdNjV/WiTjs3ReA35YyLEyXYKM6+1muNe7uZXphU64wzHGs2BpKjFVzOvgnKPe2krY2iV2zFqGbJsNIKqD46ofm9IMgtEAd3SkUdurz2pOj+SeEEMhFHBr843dKs3OSEvoAk5M3vOLR/MjVuJupq3K932oOdPWcCd+V0nYS3To2PNlYnGSrKeYDXUgH2PF+vYCcXmQv05IDxea2OykoK7c7rrF4mKf7zl3aKtua9eTCNcmm3T/JQdqfHSU4xyhWRGbZ6kfoq2XqeKavn88gCJNr8ZxHbukzvr/APMKTw3uNLpg==",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-d6d679a1d18e95c2f9ffcf11f4f9e198.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:598607868003:A341L3VCFKNMIYA0677458196RUTCRWHDJQ:77d6db86-7c31-459f-96d9-e9bd3eb6620b"
+}

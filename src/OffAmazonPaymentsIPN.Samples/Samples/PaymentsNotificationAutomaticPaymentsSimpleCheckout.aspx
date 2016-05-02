@@ -1,4 +1,4 @@
-<!-- /*******************************************************************************
+﻿<!-- /*******************************************************************************
  *  Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *  Licensed under the Apache License, Version 2.0 (the "License");	
  *
@@ -25,7 +25,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <h1>Login and Pay with Amazon Automatic Payments Simple Checkout Sample</h1>
+            <h1>@@ProductName@@ Automatic Payments Simple Checkout Sample</h1>
             <table>
             <tr>
                 <td>BillingAgreementId:</td>

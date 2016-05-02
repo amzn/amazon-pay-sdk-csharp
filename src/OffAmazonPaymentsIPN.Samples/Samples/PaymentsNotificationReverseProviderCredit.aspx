@@ -1,4 +1,4 @@
-<!-- /*******************************************************************************
+﻿<!-- /*******************************************************************************
  *  Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *  Licensed under the Apache License, Version 2.0 (the "License");	
  *
@@ -25,7 +25,7 @@
     <form id="form1" runat="server">
     <div>
         <table>
-            <tr><td><h1>Login and Pay with Amazon Reverse Provider Credit Sample</h1></td></tr>
+            <tr><td><h1>@@ProductName@@ Reverse Provider Credit Sample</h1></td></tr>
             <tr><td><h3>This page demonstrates the scenario where solution provider needs to perform a reverse provider credit on a previously captured amount where provider credit was taken for a closed order reference.</h3></td></tr>
             <tr><td>Amazon Provider Credit Id:</td><td><asp:TextBox ID="tb_ProiverCreditId" runat="server" Width="215px"></asp:TextBox></td><td><asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tb_ProiverCreditId" ErrorMessage="The amazon provider credit id cannot be empty" ForeColor="Red"></asp:RequiredFieldValidator></td></tr>
             <tr><td>Credit Reversal Amount:</td><td><asp:TextBox ID="tb_CreditReversalAmt" runat="server" Width="215px"></asp:TextBox></td><td><asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tb_CreditReversalAmt" ErrorMessage="The credit reversal amount cannot be empty" ForeColor="Red"></asp:RequiredFieldValidator><asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="tb_CreditReversalAmt" ErrorMessage="The order amount is not in number format" ForeColor="Red" ValidationExpression="^[0-9]*\.?[0-9]+$"></asp:RegularExpressionValidator></td></tr>

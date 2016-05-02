@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OffAmazonPaymentsService</RootNamespace>
+    <AssemblyName>OffAmazonPaymentsService</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <ProjectGuid>{580855E8-38F5-3EB3-9614-34707FBC5BE6}</ProjectGuid>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="OffAmazonPaymentsService\Model\AuthorizeOnBillingAgreementRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\AuthorizeOnBillingAgreementResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\AuthorizeOnBillingAgreementResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\BillingAddress.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\BillingAgreementAttributes.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\BillingAgreementDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\BillingAgreementLimits.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\BillingAgreementStatus.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseBillingAgreementRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseBillingAgreementResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseBillingAgreementResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ConfirmBillingAgreementRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ConfirmBillingAgreementResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ConfirmBillingAgreementResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CreateOrderReferenceForIdRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CreateOrderReferenceForIdResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CreateOrderReferenceForIdResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetBillingAgreementDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetBillingAgreementDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetBillingAgreementDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetProviderCreditDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetProviderCreditDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetProviderCreditDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetProviderCreditReversalDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetProviderCreditReversalDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetProviderCreditReversalDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\NonEmptyString.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ParentDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCredit.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditList.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditReversal.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditReversalDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditReversalList.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditReversalSummary.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditReversalSummaryList.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditSummary.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ProviderCreditSummaryList.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\RequestStatus.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ReverseProviderCreditRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ReverseProviderCreditResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ReverseProviderCreditResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SellerBillingAgreementAttributes.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SetBillingAgreementDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SetBillingAgreementDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SetBillingAgreementDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Type.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ValidateBillingAgreementRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ValidateBillingAgreementResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ValidateBillingAgreementResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\OffAmazonPaymentsService.cs" />
+    <Compile Include="OffAmazonPaymentsService\OffAmazonPaymentsServiceClient.cs" />
+    <Compile Include="OffAmazonPaymentsService\OffAmazonPaymentsServiceConfig.cs" />
+    <Compile Include="OffAmazonPaymentsService\OffAmazonPaymentsServiceException.cs" />
+    <Compile Include="OffAmazonPaymentsService\OffAmazonPaymentsServicePropertyCollection.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Address.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\AuthorizationDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\AuthorizeRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\AuthorizeResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\AuthorizeResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Buyer.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CancelOrderReferenceRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CancelOrderReferenceResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CancelOrderReferenceResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CaptureDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CaptureIds.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CaptureRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CaptureResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CaptureResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseAuthorizationRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseAuthorizationResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseAuthorizationResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseOrderReferenceRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseOrderReferenceResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\CloseOrderReferenceResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ConfirmOrderReferenceRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ConfirmOrderReferenceResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Constraint.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Constraints.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Destination.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Error.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ErrorResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetAuthorizationDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetAuthorizationDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetAuthorizationDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetCaptureDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetCaptureDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetCaptureDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetOrderReferenceDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetOrderReferenceDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetOrderReferenceDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetRefundDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetRefundDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\GetRefundDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\IdList.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\OrderItemCategories.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\OrderReferenceAttributes.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\OrderReferenceDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\OrderReferenceStatus.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\OrderTotal.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\PaymentStatus.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Price.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\RefundDetails.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\RefundIds.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\RefundRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\RefundResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\RefundResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\RefundType.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ReleaseEnvironment.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ResponseHeaderMetadata.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\ResponseMetadata.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SellerOrderAttributes.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SetOrderReferenceDetailsRequest.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SetOrderReferenceDetailsResponse.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\SetOrderReferenceDetailsResult.cs" />
+    <Compile Include="OffAmazonPaymentsService\Model\Status.cs" />
+    <Compile Include="OffAmazonPaymentsService\Mock\*.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\DERegionDependentSettings.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\UKRegionDependentSettings.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\EURegionDependentSettings.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\UrlBuilder.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\NARegionDependentSettings.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\RegionDependentSettingsImpl.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\USRegionDependentSettings.cs" />
+    <Compile Include="OffAmazonPaymentsService\RegionDependentSettings\RegionDependentSettings.cs" />
+    <Compile Include="OffAmazonPaymentsService\Util\*.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\CaptureResponse.xml">
+      <LogicalName>CaptureResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\RefundResponse.xml">
+      <LogicalName>RefundResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\CloseAuthorizationResponse.xml">
+      <LogicalName>CloseAuthorizationResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\GetRefundDetailsResponse.xml">
+      <LogicalName>GetRefundDetailsResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\GetCaptureDetailsResponse.xml">
+      <LogicalName>GetCaptureDetailsResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\CloseOrderReferenceResponse.xml">
+      <LogicalName>CloseOrderReferenceResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\ConfirmOrderReferenceResponse.xml">
+      <LogicalName>ConfirmOrderReferenceResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\GetOrderReferenceDetailsResponse.xml">
+      <LogicalName>GetOrderReferenceDetailsResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\AuthorizeResponse.xml">
+      <LogicalName>AuthorizeResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\SetOrderReferenceDetailsResponse.xml">
+      <LogicalName>SetOrderReferenceDetailsResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\GetAuthorizationDetailsResponse.xml">
+      <LogicalName>GetAuthorizationDetailsResponse.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OffAmazonPaymentsService\Mock\CancelOrderReferenceResponse.xml">
+      <LogicalName>CancelOrderReferenceResponse.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OffAmazonPaymentsService\Mock\AuthorizeOnBillingAgreementResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\CloseBillingAgreementResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\ConfirmBillingAgreementResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\CreateOrderReferenceForIdResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\ErrorResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\GetBillingAgreementDetailsResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\GetProviderCreditDetailsResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\ReverseProviderCreditResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\SetBillingAgreementDetailsResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\ValidateBillingAgreementResponse.xml" />
+    <Content Include="OffAmazonPaymentsService\Mock\GetProviderCreditReversalDetailsResponse.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

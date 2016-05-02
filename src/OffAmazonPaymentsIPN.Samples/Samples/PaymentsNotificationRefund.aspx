@@ -1,4 +1,4 @@
-<!-- /*******************************************************************************
+﻿<!-- /*******************************************************************************
  *  Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *  Licensed under the Apache License, Version 2.0 (the "License");	
  *
@@ -25,7 +25,7 @@
     <form id="form1" runat="server">
     <div>
         <table>
-            <tr><td><h1>Login and Pay with Amazon Refund Sample</h1></td></tr>
+            <tr><td><h1>@@ProductName@@ Refund Sample</h1></td></tr>
             <tr><td><h3>This page demonstrates the scenario where merchant needs to perform a refund on a previously captured amount for a closed order reference.</h3></td></tr>
             <tr><td>Amazon Capture Reference Id:</td><td><asp:TextBox ID="tb_CapId" runat="server" Width="215px"></asp:TextBox></td><td><asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tb_CapId" ErrorMessage="The amazon capture reference id cannot be empty" ForeColor="Red"></asp:RequiredFieldValidator></td></tr>
             <tr><td>Refund Amount:</td><td><asp:TextBox ID="tb_RefundAmt" runat="server" Width="215px"></asp:TextBox></td><td><asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tb_RefundAmt" ErrorMessage="The order amount cannot be empty" ForeColor="Red"></asp:RequiredFieldValidator><asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="tb_RefundAmt" ErrorMessage="The order amount is not in number format" ForeColor="Red" ValidationExpression="^[0-9]*\.?[0-9]+$"></asp:RegularExpressionValidator></td></tr>

@@ -1,0 +1,3733 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NMock2</name>
+    </assembly>
+    <members>
+        <member name="T:NMock2.Actions.CollectAction">
+            <summary>
+            Action that returns the n-th element of the arguments to an invocation.
+            </summary>
+        </member>
+        <member name="T:NMock2.IAction">
+            <summary>
+            An action defines something that has to be done.
+            For example the action to return a result value.
+            </summary>
+        </member>
+        <member name="T:NMock2.Monitoring.IInvokable">
+            <summary>
+            IInvokable objects can be invoked.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.IInvokable.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="T:NMock2.ISelfDescribing">
+            <summary>
+            This interface is used to get a description of the implementator.
+            </summary>
+        </member>
+        <member name="M:NMock2.ISelfDescribing.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="F:NMock2.Actions.CollectAction.argumentIndex">
+            <summary>
+            Stores the index of the argument.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.CollectAction.collectedArgumentValue">
+            <summary>
+            Stores the parameter when this action gets invoked.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.CollectAction.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.CollectAction"/> class.
+            </summary>
+            <param name="argumentIndex">Index of the argument to collect.</param>
+        </member>
+        <member name="M:NMock2.Actions.CollectAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.CollectAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="P:NMock2.Actions.CollectAction.Parameter">
+            <summary>
+            Gets the collected parameter.
+            </summary>
+            <value>The collected parameter (n-th parameter of parameter list of the method's call.</value>
+        </member>
+        <member name="T:NMock2.Actions.DelegateAction">
+            <summary>
+            Action that executes the delegate passed to the constructor.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.DelegateAction.handler">
+            <summary>
+            Stores the handler of the delegate action.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.DelegateAction.#ctor(NMock2.Actions.DelegateAction.Handler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.DelegateAction"/> class.
+            </summary>
+            <param name="actionHandler">The action handler.</param>
+        </member>
+        <member name="M:NMock2.Actions.DelegateAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.DelegateAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.DelegateAction.Handler">
+            <summary>
+            Delegate that is executed on invocation of the action.
+            </summary>
+        </member>
+        <member name="T:NMock2.Actions.FireAction">
+            <summary>
+            Action that fires an event.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.FireAction.eventName">
+            <summary>
+            Stores the name of the event to fire.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.FireAction.eventArgs">
+            <summary>
+            Stores the event arguments.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.FireAction.#ctor(System.String,System.Object[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.FireAction"/> class.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="eventArgs">The event args.</param>
+        </member>
+        <member name="M:NMock2.Actions.FireAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object. The event is fired on the receiver of the invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.FireAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.CollectAction`1">
+            <summary>
+            Action that calls the collect delegate passed to constructor with the n-th element of the arguments to an invocation.
+            </summary>
+            <typeparam name="T">Type of the argument to collect.</typeparam>
+        </member>
+        <member name="F:NMock2.Actions.CollectAction`1.argumentIndex">
+            <summary>
+            Stores the index of the argument.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.CollectAction`1.collectDelegate">
+            <summary>
+            Stores the collect delegate.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.CollectAction`1.#ctor(System.Int32,NMock2.Actions.CollectAction{`0}.Collect)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.CollectAction`1"/> class.
+            </summary>
+            <param name="argumentIndex">Index of the argument.</param>
+            <param name="collectDelegate">The collect delegate.</param>
+        </member>
+        <member name="M:NMock2.Actions.CollectAction`1.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.CollectAction`1.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.CollectAction`1.Collect">
+            <summary>
+            Delegate that is called on collecting an argument.
+            </summary>
+            <param name="collectedParameter">The collected generic parameter.</param>
+        </member>
+        <member name="T:NMock2.Actions.LazyReturnAction">
+            <summary>
+            Action that sets the result value on an invocation. The value is aquired by calling the delegate specified in the constructor.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.LazyReturnAction.evaluate">
+            <summary>
+            Stores the evaluate delegate for this action.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.LazyReturnAction.#ctor(NMock2.Actions.LazyReturnAction.Evaluate)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.LazyReturnAction"/> class.
+            </summary>
+            <param name="evaluate">The delegate used to aquire the return value.</param>
+        </member>
+        <member name="M:NMock2.Actions.LazyReturnAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.LazyReturnAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.LazyReturnAction.Evaluate">
+            <summary>
+            Delegate that is used to get the return value.
+            </summary>
+            <returns>
+            Returns an object...
+            </returns>
+        </member>
+        <member name="T:NMock2.Actions.ResultSynthesizer">
+            <summary>
+            Responsible for handling the results of an invocation.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.ResultSynthesizer.defaultResults">
+            <summary>
+            Stores the default results.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.ResultSynthesizer.results">
+            <summary>
+            Stores the results.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.ResultSynthesizer.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:NMock2.Actions.ResultSynthesizer"/> class.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.ResultSynthesizer.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.ResultSynthesizer.SetResult(System.Type,System.Object)">
+            <summary>
+            Sets the result of the specified <paramref name="returnType"/>.
+            </summary>
+            <param name="returnType">The type to be returned as a result.</param>
+            <param name="result">The result to be set.</param>
+        </member>
+        <member name="M:NMock2.Actions.ResultSynthesizer.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="M:NMock2.Actions.ResultSynthesizer.NewEmptyArray(System.Type)">
+            <summary>
+            Gets a new the empty array of the specified <paramref name="arrayType"/>.
+            </summary>
+            <param name="arrayType">Type of the array to be returned.</param>
+            <returns>
+            Returns a new empty array of the specified <paramref name="arrayType"/>.
+            </returns>
+        </member>
+        <member name="M:NMock2.Actions.ResultSynthesizer.GetAction(System.Type,System.Collections.Hashtable)">
+            <summary>
+            Gets the action of the specified <paramref name="returnType"/>.
+            </summary>
+            <param name="returnType">Type of the returned action.</param>
+            <param name="results">The results to get the action from. This is used as a parameter for the <see cref="F:NMock2.Actions.ResultSynthesizer.defaultResults"/>.</param>
+            <returns>
+            Returns the action of the specified <paramref name="returnType"/> out of the <paramref name="results"/>.
+            </returns>
+        </member>
+        <member name="M:NMock2.Actions.ResultSynthesizer.SetAction(System.Type,NMock2.IAction)">
+            <summary>
+            Sets the action of the specified <paramref name="returnType"/>.
+            </summary>
+            <param name="returnType">Type of the action to be set.</param>
+            <param name="action">The action to be set.</param>
+        </member>
+        <member name="T:NMock2.Actions.ReturnAction">
+            <summary>
+            Action that sets the result value on an invocation.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.ReturnAction.result">
+            <summary>
+            Stores the result to set on the invocation as the return value.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.ReturnAction.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.ReturnAction"/> class.
+            </summary>
+            <param name="result">The result to set on the invocation as the return value.</param>
+        </member>
+        <member name="M:NMock2.Actions.ReturnAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object. Sets the result value of the invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.ReturnAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.ReturnCloneAction">
+            <summary>
+            Action that set the result value of an invocation to a clone of the specified prototype.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.ReturnCloneAction.prototype">
+            <summary>
+            Stores the prototype that will be cloned.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.ReturnCloneAction.#ctor(System.ICloneable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.ReturnCloneAction"/> class.
+            </summary>
+            <param name="prototype">The prototype.</param>
+        </member>
+        <member name="M:NMock2.Actions.ReturnCloneAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object. Sets the result value of the invocation to a clone of the prototype.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.ReturnCloneAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.SetIndexedParameterAction">
+            <summary>
+            Action that sets a parameter (method argument) of the invocation to the specified value.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.SetIndexedParameterAction.index">
+            <summary>
+            Stores the index of the paremter to set.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.SetIndexedParameterAction.value">
+            <summary>
+            Stores the value of the parameter to set.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.SetIndexedParameterAction.#ctor(System.Int32,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.SetIndexedParameterAction"/> class.
+            </summary>
+            <param name="index">The index of the parameter to set.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:NMock2.Actions.SetIndexedParameterAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object. Sets the parameter at the specified index of the invocation to the specified value.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.SetIndexedParameterAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.SetNamedParameterAction">
+            <summary>
+            Action that sets the parameter of the invocation with the specified name to the specified value.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.SetNamedParameterAction.name">
+            <summary>
+            Stores the name of the parameter when the class gets initialized.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.SetNamedParameterAction.value">
+            <summary>
+            Stores the value of the parameter when the class gets initialized.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.SetNamedParameterAction.#ctor(System.String,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.SetNamedParameterAction"/> class.
+            </summary>
+            <param name="name">The name of the parameter to set.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:NMock2.Actions.SetNamedParameterAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object. Sets the value of the parameter with the specified name of the invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.SetNamedParameterAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Actions.SignalAction">
+            <summary>
+            Action that signals an event.
+            You can use this action to synchronize threads when an expectation is invoked.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.SignalAction.signal">
+            <summary>
+            Stores the wait handle to be signalled.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.SignalAction.#ctor(System.Threading.EventWaitHandle)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.SignalAction"/> class.
+            </summary>
+            <param name="signal">The signal.</param>
+        </member>
+        <member name="M:NMock2.Actions.SignalAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object by signaling the event.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.SignalAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="P:NMock2.Actions.SignalAction.Signal">
+            <summary>
+            Gets the signal.
+            You can use this signal to wait for this action beeing invoked.
+            </summary>
+            <value>The signal.</value>
+        </member>
+        <member name="T:NMock2.Actions.ThrowAction">
+            <summary>
+            Action that sets the exception of an invocation.
+            </summary>
+        </member>
+        <member name="F:NMock2.Actions.ThrowAction.exception">
+            <summary>
+            Stores the exception to be thrown.
+            </summary>
+        </member>
+        <member name="M:NMock2.Actions.ThrowAction.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Actions.ThrowAction"/> class.
+            </summary>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="M:NMock2.Actions.ThrowAction.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Invokes this object. Sets the exception the invocation will throw.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Actions.ThrowAction.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Collect">
+            <summary>
+            Gather information about invocations.
+            </summary>
+        </member>
+        <member name="M:NMock2.Collect.MethodArgument``1(System.Int32,NMock2.Actions.CollectAction{``0}.Collect)">
+            <summary>
+            Calls the specified <paramref name="collectDelegate"/> with the method argument at index <paramref name="argumentIndex"/>.
+            Can only be used as action of an expectation on a method call.
+            </summary>
+            <typeparam name="TArgument">The type of the argument.</typeparam>
+            <param name="argumentIndex">Index of the argument.</param>
+            <param name="collectDelegate">The collect delegate.</param>
+            <returns>Action that collects a method argument.</returns>
+        </member>
+        <member name="M:NMock2.Collect.PropertyValue``1(NMock2.Actions.CollectAction{``0}.Collect)">
+            <summary>
+            Calls the specified <paramref name="collectDelegate"/> with the value that is set to the property.
+            Can only be used as action of an expectation on a property setter. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="collectDelegate">The collect delegate.</param>
+            <returns>Action that collects a property value.</returns>
+        </member>
+        <member name="T:NMock2.DefinedAs">
+            <summary>
+            Defines the initial characteristics of a new mock object.
+            This is normally used in conjunction with <see cref="M:NMock2.Mockery.NewMock``1(NMock2.IMockDefinition)"/>
+            </summary>
+        </member>
+        <member name="M:NMock2.DefinedAs.Implementing``1">
+            <summary>
+            Specifies a type that this mock should implement. This may be a class or interface,
+            but there can only be a maximum of one class implemented by a mock.
+            </summary>
+            <typeparam name="T">The type to implement.</typeparam>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.DefinedAs.Implementing(System.Type[])">
+            <summary>
+            Specifies the types that this mock should implement. These may be a class or interface,
+            but there can only be a maximum of one class implemented by a mock.
+            </summary>
+            <param name="types">The types to implement.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.DefinedAs.OfStyle(NMock2.MockStyle)">
+            <summary>
+            Specifies how the mock object should behave when first created.
+            </summary>
+            <param name="style">A MockStyle value.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.DefinedAs.WithArgs(System.Object[])">
+            <summary>
+            Specifies the arguments for the constructor of the class to be mocked.
+            Only applicable when mocking a class with a non-default constructor.
+            </summary>
+            <param name="args">The arguments for the class constructor.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.DefinedAs.Named(System.String)">
+            <summary>
+            Specifies a name for the mock. This will be used in error messages,
+            and as the return value of ToString() if not mocking a class.
+            </summary>
+            <param name="name">The name for the mock.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="T:NMock2.IMockDefinition">
+            <summary>
+            The definition of a mock object.
+            </summary>
+            <remarks>
+            Implementations of this interface encapsulate the details of
+            how a mock object is defined, and provide the ability to be able to
+            instantiate an instance of it.
+            </remarks>
+        </member>
+        <member name="M:NMock2.IMockDefinition.Create(System.Type,NMock2.Mockery,NMock2.Monitoring.IMockObjectFactory)">
+            <summary>
+            This method supports NMock2 infrastructure and is not intended to be called directly from your code.
+            </summary>
+            <param name="primaryType">The primary type that is being mocked.</param>
+            <param name="mockery">The current <see cref="T:NMock2.Mockery"/> instance.</param>
+            <param name="mockFactory">An <see cref="T:NMock2.Monitoring.IMockObjectFactory"/> to use when creating the mock.</param>
+            <returns>A new mock instance.</returns>
+        </member>
+        <member name="T:NMock2.Internal.MockBuilder">
+            <summary>
+            Allows a mock object to be incrementally defined, and then finally created.
+            </summary>
+        </member>
+        <member name="T:NMock2.Syntax.IMockDefinitionSyntax">
+            <summary>
+            Syntax describing the initial characteristics of a new mock object.
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.IMockDefinitionSyntax.Implementing``1">
+            <summary>
+            Specifies a type that this mock should implement. This may be a class or interface,
+            but there can only be a maximum of one class implemented by a mock.
+            </summary>
+            <typeparam name="T">The type to implement.</typeparam>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMockDefinitionSyntax.Implementing(System.Type[])">
+            <summary>
+            Specifies the types that this mock should implement. These may be a class or interface,
+            but there can only be a maximum of one class implemented by a mock.
+            </summary>
+            <param name="types">The types to implement.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMockDefinitionSyntax.OfStyle(NMock2.MockStyle)">
+            <summary>
+            Specifies how the mock object should behave when first created.
+            It is invalid to set the MockStyle of a mock more than once.
+            </summary>
+            <param name="style">A MockStyle value.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMockDefinitionSyntax.WithArgs(System.Object[])">
+            <summary>
+            Specifies the arguments for the constructor of the class to be mocked.
+            Only applicable when mocking a class with a non-default constructor.
+            It is invalid to specify the constructor arguments of a mock more than once.
+            </summary>
+            <param name="args">The arguments for the class constructor.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMockDefinitionSyntax.Named(System.String)">
+            <summary>
+            Specifies a name for the mock. This will be used in error messages,
+            and as the return value of ToString() if not mocking a class.
+            It is invalid to specify the name of a mock more than once.
+            </summary>
+            <param name="name">The name for the mock.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="F:NMock2.Internal.MockBuilder.EmptyArgsArray">
+            <summary>
+            A single empty array instance that is used as a default value
+            for constructor arguments.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockBuilder.name">
+            <summary>
+            The name of the mock object. Null is a valid value.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockBuilder.types">
+            <summary>
+            The types that the mock object needs to implement.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockBuilder.constructorArgs">
+            <summary>
+            Constructor arguments for any class type that this mock might subclass.
+            If not subclassing, or if using a default constructor, then this should
+            be an empty array.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockBuilder.mockStyle">
+            <summary>
+            The MockStyle for the mock. If not specified, this will ultimately be
+            assumed to be MockStyle.Default.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.Implementing``1">
+            <summary>
+            Specifies a type that this mock should implement. This may be a class or interface,
+            but there can only be a maximum of one class implemented by a mock.
+            </summary>
+            <typeparam name="T">The type to implement.</typeparam>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.Implementing(System.Type[])">
+            <summary>
+            Specifies the types that this mock should implement. These may be a class or interface,
+            but there can only be a maximum of one class implemented by a mock.
+            </summary>
+            <param name="types">The types to implement.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.OfStyle(NMock2.MockStyle)">
+            <summary>
+            Specifies how the mock object should behave when first created.
+            It is invalid to set the MockStyle of a mock more than once.
+            </summary>
+            <param name="style">A MockStyle value.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.WithArgs(System.Object[])">
+            <summary>
+            Specifies the arguments for the constructor of the class to be mocked.
+            Only applicable when mocking a class with a non-default constructor.
+            It is invalid to specify the constructor arguments of a mock more than once.
+            </summary>
+            <param name="args">The arguments for the class constructor.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.Named(System.String)">
+            <summary>
+            Specifies a name for the mock. This will be used in error messages,
+            and as the return value of ToString() if not mocking a class.
+            It is invalid to specify the name of a mock more than once.
+            </summary>
+            <param name="name">The name for the mock.</param>
+            <returns>The mock object definition.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.Create(System.Type,NMock2.Mockery,NMock2.Monitoring.IMockObjectFactory)">
+            <summary>
+            This method supports NMock2 infrastructure and is not intended to be called directly from your code.
+            </summary>
+            <param name="primaryType">The primary type that is being mocked.</param>
+            <param name="mockery">The current <see cref="T:NMock2.Mockery"/> instance.</param>
+            <param name="mockObjectFactory">An <see cref="T:NMock2.Monitoring.IMockObjectFactory"/> to use when creating the mock.</param>
+            <returns>A new mock instance.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.DefaultNameFor(System.Type)">
+            <summary>
+            Returns the default name for a type that is used to name mocks.
+            </summary>
+            <param name="type">The type to get the default name for.</param>
+            <returns>Default name for the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.FirstLowerCaseChar(System.String)">
+            <summary>
+            Finds the first lower case char in the specified string.
+            </summary>
+            <param name="s">The string to inspect.</param>
+            <returns>the first lower case char in the specified string.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockBuilder.CheckInterfacesDoNotContainToStringMethodDeclaration(NMock2.Internal.CompositeType)">
+            <summary>
+            Checks that interfaces do not contain ToString method declarations.
+            </summary>
+            <param name="mockedTypes">The types that are to be mocked.</param>
+        </member>
+        <member name="T:NMock2.Internal.StubMockStyleDictionary">
+            <summary>
+            Provides functionality to map stubs and specific types of a stub to mock styles.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.StubMockStyleDictionary.mockStyleForType">
+            <summary>
+            holds mappings from stub.type to mock style.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.StubMockStyleDictionary.mockStyleForStub">
+            <summary>
+            holds mappings from stub to mock style (holds for all types unless there is a mapping defined in <see cref="F:NMock2.Internal.StubMockStyleDictionary.mockStyleForType"/>.
+            </summary>
+        </member>
+        <member name="P:NMock2.Internal.StubMockStyleDictionary.Item(NMock2.Internal.IMockObject)">
+            <summary>
+            Gets or sets the mock style for the specified mock.
+            </summary>
+            <param name="mock">the mock object</param>
+            <value>mock style. null if no value defined.</value>
+        </member>
+        <member name="P:NMock2.Internal.StubMockStyleDictionary.Item(NMock2.Internal.IMockObject,System.Type)">
+            <summary>
+            Gets or sets the mock style for the specified mock and type.
+            </summary>
+            <param name="mock">the mock object</param>
+            <param name="nestedMockType">the type of the nested mock.</param>
+            <value>mock style. null if no value defined.</value>
+        </member>
+        <member name="T:NMock2.Internal.StubMockStyleDictionary.Key">
+            <summary>
+            Key into the <see cref="F:NMock2.Internal.StubMockStyleDictionary.mockStyleForType"/> dictionary.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.StubMockStyleDictionary.Key.#ctor(NMock2.Internal.IMockObject,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.StubMockStyleDictionary.Key"/> class.
+            </summary>
+            <param name="mock">The mock object.</param>
+            <param name="nestedMockType">Type of the nested mock.</param>
+        </member>
+        <member name="M:NMock2.Internal.StubMockStyleDictionary.Key.Equals(System.Object)">
+            <summary>
+            Whether this instance equals the specified other.
+            </summary>
+            <param name="other">The other to compare to.</param>
+            <returns>A value indicating whether both instances are equal.</returns>
+        </member>
+        <member name="M:NMock2.Internal.StubMockStyleDictionary.Key.Equals(NMock2.Internal.StubMockStyleDictionary.Key)">
+            <summary>
+            Whether this instance equals the specified other.
+            </summary>
+            <param name="other">The other to compare to.</param>
+            <returns>A value indicating whether both instances are equal.</returns>
+        </member>
+        <member name="M:NMock2.Internal.StubMockStyleDictionary.Key.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type.
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="P:NMock2.Internal.StubMockStyleDictionary.Key.Mock">
+            <summary>
+            Gets the mock.
+            </summary>
+            <value>The mock object.</value>
+        </member>
+        <member name="P:NMock2.Internal.StubMockStyleDictionary.Key.NestedMockType">
+            <summary>
+            Gets the type of the nested mock.
+            </summary>
+            <value>The type of the nested mock.</value>
+        </member>
+        <member name="T:NMock2.Internal.CompositeType">
+            <summary>
+            Represents one or more types that are to be mocked. Provides operations
+            that work over top of all the contained types, as well as a means of
+            grouping and identifying unique combinations of types.
+            </summary>
+            <remarks>Duplicate types are ignored when added. Only interface and class types are
+            supported, and there may only be a maximum of one class type per CompositeType instance.</remarks>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.#ctor(System.Type[])">
+            <summary>
+            Initializes a new instance of the CompositeType class from the supplied types.
+            </summary>
+            <param name="types">The types to include in the CompositeType.</param>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.#ctor(System.Type,System.Type[])">
+            <summary>
+            Initializes a new instance of the CompositeType class from the supplied types.
+            </summary>
+            <param name="type">The first type to include in the CompositeType. This cannot be null.</param>
+            <param name="additionalTypes">Zero or more further types to include in the CompositeType.</param>
+            <remarks>This constructor is mostly included for convenience.</remarks>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.GetMatchingMethods(NMock2.Matcher,System.Boolean)">
+            <summary>
+            Gets any methods of the contained type(s) that match the specified matcher.
+            </summary>
+            <param name="matcher">The matcher.</param>
+            <param name="firstMatchOnly">if set to <c>true</c> then only the first match is returned.</param>
+            <returns>The methods of the contained type(s) that match the specified matcher.</returns>
+            <remarks>Only non-private methods can be matched.</remarks>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.GetHashCode">
+            <summary>
+            Returns the hash code for this instance.
+            </summary>
+            <returns>An Int32 containing the hash code for this instance.</returns>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.Equals(System.Object)">
+            <summary>
+            Determines whether the specified Object is equal to the current CompositeType.
+            </summary>
+            <param name="obj">The Object to compare with the current CompositeType.</param>
+            <returns>true if the specified Object is equal to the current CompositeType; otherwise, false.</returns>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.ToString">
+            <summary>
+            Returns a String that represents the current CompositeType.
+            </summary>
+            <returns>A String that represents the current CompositeType.</returns>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.Equals(NMock2.Internal.CompositeType)">
+            <summary>
+            Determines whether the specified CompositeType is equal to the current CompositeType.
+            </summary>
+            <param name="other">The CompositeType to compare with the current CompositeType.</param>
+            <returns>true if the specified CompositeType is equal to the current CompositeType; otherwise, false.</returns>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.Initialize(System.Type[])">
+            <summary>
+            Initializes the specified types.
+            </summary>
+            <param name="types">The types.</param>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.GetInterfacesImplementedByType(System.Type)">
+            <summary>
+            Gets the interfaces implemented by the specified type.
+            </summary>
+            <param name="type">The interface type to inspect.</param>
+            <returns>The interfaces implemented by the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Internal.CompositeType.IsMethodVisible(System.Reflection.MethodInfo)">
+            <summary>
+            Filters out private methods.
+            </summary>
+            <param name="methodInfo">The method to test for visibility.</param>
+            <returns>True if the method is not private, otherwise false.</returns>
+        </member>
+        <member name="P:NMock2.Internal.CompositeType.PrimaryType">
+            <summary>
+            Gets the 'primary' type we are mocking. This may be a class or an interface
+            and will determine the proxy generation method that will be used.
+            </summary>
+        </member>
+        <member name="P:NMock2.Internal.CompositeType.AdditionalInterfaceTypes">
+            <summary>
+            Gets any additional types to be mocked. These will always be interfaces.
+            </summary>
+        </member>
+        <member name="T:NMock2.Expect">
+            <summary>
+            Defines expectations on dynamic mocks.
+            Expectations that are not fulfilled result in exceptions in <see cref="M:NMock2.Mockery.VerifyAllExpectationsHaveBeenMet"/>
+            or when the <see cref="T:NMock2.Mockery"/> is disposed.
+            </summary>
+        </member>
+        <member name="M:NMock2.Expect.Exactly(System.Int32)">
+            <summary>
+            Gets a receiver of a method, property, etc. that has to be called exactly <paramref name="count"/> times.
+            </summary>
+            <param name="count">Expected number of invocations.</param>
+            <returns>Returns a receiver of a method, property, etc. that has to be called exactly <paramref name="count"/> times.</returns>
+        </member>
+        <member name="M:NMock2.Expect.AtLeast(System.Int32)">
+            <summary>
+            Gets a receiver of a method, property, etc. that has to be called at least <paramref name="count"/> times.
+            </summary>
+            <param name="count">Minimal allowed number of invocations.</param>
+            <returns>Returns a receiver of a method, property, etc. that has to be called at least <paramref name="count"/> times.</returns>
+        </member>
+        <member name="M:NMock2.Expect.AtMost(System.Int32)">
+            <summary>
+            Gets a receiver of a method, property, etc. that has to be called at most <paramref name="count"/> times.
+            </summary>
+            <param name="count">Maximal allowed number of invocations.</param>
+            <returns>Returns a receiver of a method, property, etc. that has to be called at most <paramref name="count"/> times.</returns>
+        </member>
+        <member name="M:NMock2.Expect.Between(System.Int32,System.Int32)">
+            <summary>
+            Gets a receiver of a method, property, etc. that has to be called between <paramref name="minCount"/>
+            and <paramref name="maxCount"/> times.
+            </summary>
+            <param name="minCount">Minimal allowed number of invocations.</param>
+            <param name="maxCount">Maximaal allowed number of invocations.</param>
+            <returns>Returns a receiver of a method, property, etc. that has to be called between <paramref name="count"/> times.</returns>
+        </member>
+        <member name="M:NMock2.Expect.On(System.Object)">
+            <summary>
+            Default expectation, specifies that a method, property, etc. that has to be called at least once.
+            </summary>
+            <param name="receiver">The receiver.</param>
+            <returns>Returns a receiver of a method, property, etc. that has to be called at least once.</returns>
+        </member>
+        <member name="M:NMock2.Expect.Times(System.Int32)">
+            <summary>
+            Returns a string representing grammatically correctness of n times depending on the value of <paramref name="n"/>.
+            </summary>
+            <param name="n">An integer value representing n times.</param>
+            <returns>String representation of n times.</returns>
+        </member>
+        <member name="P:NMock2.Expect.Never">
+            <summary>
+            Gets a receiver of a method, property, etc. that must never be called.
+            </summary>
+        </member>
+        <member name="P:NMock2.Expect.Once">
+            <summary>
+            Gets a receiver of a method, property, etc. that has to be called exactly once.
+            </summary>
+        </member>
+        <member name="P:NMock2.Expect.AtLeastOnce">
+            <summary>
+            Gets a receiver of a method, property, etc. that has to be called at least once.
+            </summary>
+        </member>
+        <member name="T:NMock2.Fire">
+            <summary>
+            Fires a mocked event.
+            </summary>
+        </member>
+        <member name="M:NMock2.Fire.Event(System.String)">
+            <summary>
+            Fires the specified event.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <returns>Returns the event mock corresponding to the given <paramref name="eventName"/>.</returns>
+        </member>
+        <member name="M:NMock2.Fire.On(System.Object)">
+            <summary>
+            Defines the mock the event is fired on.
+            </summary>
+            <param name="mock">The mock the event is fired on.</param>
+            <returns>Returns the event fire syntax.</returns>
+        </member>
+        <member name="T:NMock2.Has">
+            <summary>
+            Provides shortcuts to matchers.
+            </summary>
+        </member>
+        <member name="M:NMock2.Has.ToString(NMock2.Matcher)">
+            <summary>
+            Returns a matcher for testing string representation of objects.
+            </summary>
+            <param name="matcher">The wrapped matcher.</param>
+            <returns>Returns a <see cref="T:NMock2.Matchers.ToStringMatcher"/> for testing string representation of objects.</returns>
+        </member>
+        <member name="M:NMock2.Has.Property(System.String,NMock2.Matcher)">
+            <summary>
+            Returns a matcher for checking property values.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="valueMatcher">The value matcher.</param>
+            <returns>Returns a <see cref="T:NMock2.Matchers.PropertyMatcher"/> for checking property values.</returns>
+        </member>
+        <member name="M:NMock2.Has.Field(System.String,NMock2.Matcher)">
+            <summary>
+            Returns a matcher for checking field values.
+            </summary>
+            <param name="fieldName">Name of the field.</param>
+            <param name="valueMatcher">The value matcher.</param>
+            <returns>Returns a <see cref="T:NMock2.Matchers.FieldMatcher"/> for checking field values.</returns>
+        </member>
+        <member name="T:NMock2.IExpectation">
+            <summary>
+            Represents an expectation.
+            </summary>
+        </member>
+        <member name="M:NMock2.IExpectation.Matches(NMock2.Monitoring.Invocation)">
+            <summary>
+            Checks whether stored expectations matches the specified invocation.
+            </summary>
+            <param name="invocation">The invocation to check.</param>
+            <returns>Returns whether one of the stored expectations has met the specified invocation.</returns>
+        </member>
+        <member name="M:NMock2.IExpectation.MatchesIgnoringIsActive(NMock2.Monitoring.Invocation)">
+            <summary>
+            Matcheses the ignoring is active.
+            </summary>
+            <param name="invocation">The invocation.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NMock2.IExpectation.Perform(NMock2.Monitoring.Invocation)">
+            <summary>
+            Performs the specified invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.IExpectation.DescribeActiveExpectationsTo(System.IO.TextWriter)">
+            <summary>
+            Describes the active expectations to.
+            </summary>
+            <param name="writer">The writer.</param>
+        </member>
+        <member name="M:NMock2.IExpectation.DescribeUnmetExpectationsTo(System.IO.TextWriter)">
+            <summary>
+            Describes the unmet expectations to.
+            </summary>
+            <param name="writer">The writer.</param>
+        </member>
+        <member name="M:NMock2.IExpectation.QueryExpectationsBelongingTo(NMock2.Internal.IMockObject,System.Collections.Generic.IList{NMock2.IExpectation})">
+            <summary>
+            Adds all expectations to <paramref name="result"/> that are associated to <paramref name="mock"/>.
+            </summary>
+            <param name="mock">The mock for which expectations are queried.</param>
+            <param name="result">The result to add matching expectations to.</param>
+        </member>
+        <member name="P:NMock2.IExpectation.IsActive">
+            <summary>
+            Gets a value indicating whether this instance is active.
+            </summary>
+            <value><c>true</c> if this instance is active; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:NMock2.IExpectation.HasBeenMet">
+            <summary>
+            Gets a value indicating whether this instance has been met.
+            </summary>
+            <value>
+                <c>true</c> if this instance has been met; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:NMock2.Internal.BuildableExpectation.#ctor(System.String,NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.BuildableExpectation"/> class.
+            </summary>
+            <param name="expectationDescription">The expectation description.</param>
+            <param name="requiredCountMatcher">The required count matcher.</param>
+            <param name="matchingCountMatcher">The matching count matcher.</param>
+        </member>
+        <member name="M:NMock2.Internal.BuildableExpectation.Matches(NMock2.Monitoring.Invocation)">
+            <summary>
+            Checks whether stored expectations matches the specified invocation.
+            </summary>
+            <param name="invocation">The invocation to check.</param>
+            <returns>Returns whether one of the stored expectations has met the specified invocation.</returns>
+        </member>
+        <member name="M:NMock2.Internal.BuildableExpectation.QueryExpectationsBelongingTo(NMock2.Internal.IMockObject,System.Collections.Generic.IList{NMock2.IExpectation})">
+            <summary>
+            Adds itself to the <paramref name="result"/> if the <see cref="P:NMock2.Internal.BuildableExpectation.Receiver"/> matches
+            the specified <paramref name="mock"/>.
+            </summary>
+            <param name="mock">The mock for which expectations are queried.</param>
+            <param name="result">The result to add matching expectations to.</param>
+        </member>
+        <member name="T:NMock2.Internal.DescriptionWriter">
+            <summary>
+            Used to describe Matchers and other classes for exception handling.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.DescriptionWriter.Write(System.Object)">
+            <summary>
+            Writes the text representation of an object to the text stream by calling ToString on that object.
+            </summary>
+            <param name="value">The object to write.</param>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:System.IO.TextWriter"/> is closed.
+            </exception>
+            <exception cref="T:System.IO.IOException">
+            An I/O error occurs.
+            </exception>
+        </member>
+        <member name="M:NMock2.Internal.DescriptionWriter.FormatValue(System.Object)">
+            <summary>
+            Formats the given <paramref name="value"/> depending on null and the type of the value.
+            </summary>
+            <param name="value">The value to format.</param>
+            <returns>Returns the formatted string.</returns>
+        </member>
+        <member name="M:NMock2.Internal.DescriptionWriter.FormatString(System.String)">
+            <summary>
+            Replaces backslashes with three escaped backslashes.
+            </summary>
+            <param name="s">The string to replace backslashes.</param>
+            <returns>Returns the escaped string.</returns>
+        </member>
+        <member name="T:NMock2.Internal.EventInvocationBuilder">
+            <summary>
+            Builder for event invocations.
+            </summary>
+        </member>
+        <member name="T:NMock2.Syntax.IEventSyntax">
+            <summary>
+            Syntax for defining the object that fires an event. 
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.IEventSyntax.On(System.Object)">
+            <summary>
+            Defines the object that fires the event.
+            </summary>
+            <param name="o">The object firing the event.</param>
+            <returns>Event argument syntax defining the arguments passed to the event.</returns>
+        </member>
+        <member name="T:NMock2.Syntax.IEventArgumentSyntax">
+            <summary>
+            Syntax for defining event arguments.
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.IEventArgumentSyntax.With(System.Object[])">
+            <summary>
+            Defines the event arguments.
+            </summary>
+            <param name="args">The event args.</param>
+        </member>
+        <member name="F:NMock2.Internal.EventInvocationBuilder.eventName">
+            <summary>
+            Stores the event name to be mocked.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.EventInvocationBuilder.mock">
+            <summary>
+            Stores the mock when called in the On mehtod.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.EventInvocationBuilder.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.EventInvocationBuilder"/> class.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+        </member>
+        <member name="M:NMock2.Internal.EventInvocationBuilder.On(System.Object)">
+            <summary>
+            Specifies the mock on which the event is fired.
+            </summary>
+            <param name="o">The mock on which the event is fired.</param>
+            <returns>
+            Event argument sytax defining the arguments passed to the event.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.EventInvocationBuilder.With(System.Object[])">
+            <summary>
+            Specifies the event arguments that are passed to the event and fires the event.
+            </summary>
+            <param name="args">The args to be passed to raise the event.</param>
+        </member>
+        <member name="T:NMock2.Internal.NewEventInvocationBuilder">
+            <summary>
+            Builder for event invocations.
+            </summary>
+        </member>
+        <member name="T:NMock2.Syntax.INewEventSyntax">
+            <summary>
+            Syntax for defining the event that is fired.
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.INewEventSyntax.Event(System.String)">
+            <summary>
+            Defines the event to fire.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <returns>Event argument syntax defining the arguments passed to the event.</returns>
+        </member>
+        <member name="F:NMock2.Internal.NewEventInvocationBuilder.eventName">
+            <summary>
+            Stores the event name to be mocked.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.NewEventInvocationBuilder.mock">
+            <summary>
+            Stores the mock when called in the On method.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.NewEventInvocationBuilder.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.NewEventInvocationBuilder"/> class.
+            </summary>
+            <param name="mock">The mock.</param>
+        </member>
+        <member name="M:NMock2.Internal.NewEventInvocationBuilder.Event(System.String)">
+            <summary>
+            Defines the event to fire.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <returns>
+            Event argument syntax defining the arguments passed to the event.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.NewEventInvocationBuilder.With(System.Object[])">
+            <summary>
+            Specifies the event arguments that are passed to the event and fires the event.
+            </summary>
+            <param name="args">The args to be passed to raise the event.</param>
+        </member>
+        <member name="T:NMock2.Syntax.IReceiverSyntax">
+            <summary>
+            Syntax defining a receiver.
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.IReceiverSyntax.On(System.Object)">
+            <summary>
+            Defines the receiver.
+            </summary>
+            <param name="receiver">The dynamic mock on which the expectation or stub is applied.</param>
+            <returns>Method syntax defining the method, property or event.</returns>
+        </member>
+        <member name="T:NMock2.Syntax.IMethodSyntax">
+            <summary>
+            Syntax defining a method, property or event (de)registration.
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.Method(System.String,System.Type[])">
+            <summary>
+            Defines a method.
+            </summary>
+            <param name="name">The name of the method.</param>
+            <param name="typeParams">The generic type params to match.</param>
+            <returns>
+            Argument syntax defining the arguments of the method.
+            </returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.Method(NMock2.Matcher,System.Type[])">
+            <summary>
+            Defines a method.
+            </summary>
+            <param name="nameMatcher">Matcher defining the method.</param>
+            <param name="typeParams">The generic type params to match.</param>
+            <returns>Argument syntax defining the arguments of the method.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.Method(System.Reflection.MethodInfo,System.Type[])">
+            <summary>
+            Defines a method.
+            </summary>
+            <param name="method">The method.</param>
+            <param name="typeParams">The generic type params to match.</param>
+            <returns>Argument syntax defining the arguments of the method.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.Method(NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Defines a method.
+            </summary>
+            <param name="methodMatcher">Matcher for matching the method on an invocation.</param>
+            <param name="typeParamsMatcher">Matchers for matching type parameters.</param>
+            <returns>Argument syntax defining the arguments of the method.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.SetProperty(System.String)">
+            <summary>
+            Defines a property setter.
+            </summary>
+            <param name="name">The name of the property.</param>
+            <returns>Value syntax defining the value of the property.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.GetProperty(System.String)">
+            <summary>
+            Defines a property getter.
+            </summary>
+            <param name="name">The name of the property.</param>
+            <returns>Match Syntax defining the property behavior.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.EventAdd(System.String)">
+            <summary>
+            Defines an event registration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <returns>Match syntax defining the behavior of the event adder.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.EventAdd(System.String,NMock2.Matcher)">
+            <summary>
+            Defines an event registration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="listenerMatcher">The listener matcher.</param>
+            <returns>Match syntax defining the behavior of the event adder.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.EventAdd(System.String,System.Delegate)">
+            <summary>
+            Defines an event registration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="equalListener">Delegate defining compatible listeners.</param>
+            <returns>Match syntax defining the behavior of the event adder.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.EventRemove(System.String)">
+            <summary>
+            Defines an event deregistration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <returns>Match syntax defining the behavior of the event remover.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.EventRemove(System.String,NMock2.Matcher)">
+            <summary>
+            Defines an event deregistration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="listenerMatcher">The listener matcher.</param>
+            <returns>Match syntax defining the behavior of the event remover.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMethodSyntax.EventRemove(System.String,System.Delegate)">
+            <summary>
+            Defines an event deregistration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="equalListener">Delegate defining compatible listeners.</param>
+            <returns> Match syntax defining the behavior of the event remover.</returns>
+        </member>
+        <member name="P:NMock2.Syntax.IMethodSyntax.Get">
+            <summary>
+            Gets an indexer (get operation).
+            </summary>
+            <value>Get indexer syntax defining the value returned by the indexer.</value>
+        </member>
+        <member name="P:NMock2.Syntax.IMethodSyntax.Set">
+            <summary>
+            Gets an indexer (set operation).
+            </summary>
+            <value>Set indexer syntax defining the value the indexer is set to.</value>
+        </member>
+        <member name="T:NMock2.Syntax.IArgumentSyntax">
+            <summary>
+            Syntax for defining expected arguments of a method call.
+            </summary>
+        </member>
+        <member name="T:NMock2.Syntax.IMatchSyntax">
+            <summary>
+            Syntax defining matching criterias.
+            </summary>
+        </member>
+        <member name="T:NMock2.Syntax.IActionSyntax">
+            <summary>
+            Syntax for defining actions.
+            </summary>
+        </member>
+        <member name="T:NMock2.Syntax.ICommentSyntax">
+            <summary>
+            Syntax for adding an explanation for the expectation.
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.ICommentSyntax.Comment(System.String)">
+            <summary>
+            Adds a comment for the expectation that is added to the error message if the expectation is not met.
+            </summary>
+            <param name="comment">The comment that is shown in the error message if this expectation is not met.
+            You can describe here why this expectation has to be met.</param>
+        </member>
+        <member name="M:NMock2.Syntax.IActionSyntax.Will(NMock2.IAction[])">
+            <summary>
+            Defines what will happen.
+            </summary>
+            <param name="actions">The actions to take.</param>
+            <returns>Returns the comment syntax defined after will.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IMatchSyntax.Matching(NMock2.Matcher)">
+            <summary>
+            Defines a matching criteria.
+            </summary>
+            <param name="matcher">The matcher.</param>
+            <returns>Action syntax defining the action to take.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IArgumentSyntax.With(System.Object[])">
+            <summary>
+            Defines the arguments that are expected on the method call.
+            </summary>
+            <param name="expectedArguments">The expected arguments.</param>
+            <returns>Matcher syntax.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IArgumentSyntax.WithNoArguments">
+            <summary>
+            Defines that no arguments are expected on the method call.
+            </summary>
+            <returns>Matcher syntax.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IArgumentSyntax.WithAnyArguments">
+            <summary>
+            Defines that all arguments are allowed on the method call.
+            </summary>
+            <returns>Matcher syntax.</returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.#ctor(System.String,NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.ExpectationBuilder"/> class.
+            </summary>
+            <param name="description">The description.</param>
+            <param name="requiredCountMatcher">The required count matcher.</param>
+            <param name="acceptedCountMatcher">The accepted count matcher.</param>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.On(System.Object)">
+            <summary>
+            Defines the receiver.
+            </summary>
+            <param name="receiver">The dynamic mock on which the expectation or stub is applied.</param>
+            <returns>Method syntax defining the method, property or event.</returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.Method(System.String,System.Type[])">
+            <summary>
+            Methods the specified method name.
+            </summary>
+            <param name="methodName">Name of the method.</param>
+            <param name="typeParams">The type params.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.Method(System.Reflection.MethodInfo,System.Type[])">
+            <summary>
+            Defines a method.
+            </summary>
+            <param name="method">The method.</param>
+            <param name="typeParams">The generic type params to match.</param>
+            <returns>
+            Argument syntax defining the arguments of the method.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.Method(NMock2.Matcher,System.Type[])">
+            <summary>
+            Methods the specified method matcher.
+            </summary>
+            <param name="methodMatcher">The method matcher.</param>
+            <param name="typeParams">The type params.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.Method(NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Defines a method.
+            </summary>
+            <param name="methodMatcher">Matcher for matching the method on an invocation.</param>
+            <param name="typeParamsMatcher">Matchers for matching type parameters.</param>
+            <returns>
+            Argument syntax defining the arguments of the method.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.GetProperty(System.String)">
+            <summary>
+            Gets the property.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.SetProperty(System.String)">
+            <summary>
+            Sets the property.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.EventAdd(System.String)">
+            <summary>
+            Defines an event registration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <returns>
+            Match syntax defining the behavior of the event adder.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.EventAdd(System.String,NMock2.Matcher)">
+            <summary>
+            Defines an event registration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="listenerMatcher">The listener matcher.</param>
+            <returns>
+            Match syntax defining the behavior of the event adder.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.EventAdd(System.String,System.Delegate)">
+            <summary>
+            Defines an event registration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="equalListener">Delegate defining compatible listeners.</param>
+            <returns>
+            Match syntax defining the behavior of the event adder.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.EventRemove(System.String,NMock2.Matcher)">
+            <summary>
+            Defines an event deregistration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="listenerMatcher">The listener matcher.</param>
+            <returns>
+            Match syntax defining the behavior of the event remover.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.EventRemove(System.String)">
+            <summary>
+            Defines an event deregistration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <returns>
+            Match syntax defining the behavior of the event remover.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.EventRemove(System.String,System.Delegate)">
+            <summary>
+            Defines an event deregistration.
+            </summary>
+            <param name="eventName">Name of the event.</param>
+            <param name="equalListener">Delegate defining compatible listeners.</param>
+            <returns>
+            Match syntax defining the behavior of the event remover.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.With(System.Object[])">
+            <summary>
+            Defines the arguments that are expected on the method call.
+            </summary>
+            <param name="expectedArguments">The expected arguments.</param>
+            <returns>Matcher syntax.</returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.WithNoArguments">
+            <summary>
+            Defines that no arguments are expected on the method call.
+            </summary>
+            <returns>Matcher syntax.</returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.WithAnyArguments">
+            <summary>
+            Defines that all arguments are allowed on the method call.
+            </summary>
+            <returns>Matcher syntax.</returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.Matching(NMock2.Matcher)">
+            <summary>
+            Defines a matching criteria.
+            </summary>
+            <param name="matcher">The matcher.</param>
+            <returns>
+            Action syntax defining the action to take.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.Will(NMock2.IAction[])">
+            <summary>
+            Defines what will happen.
+            </summary>
+            <param name="actions">The actions to take.</param>
+            <returns>
+            Returns the comment syntax defined after will.
+            </returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.Comment(System.String)">
+            <summary>
+            Adds a comment for the expectation that is added to the error message if the expectation is not met.
+            </summary>
+            <param name="comment">The comment that is shown in the error message if this expectation is not met.
+            You can describe here why this expectation has to be met.</param>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.ArgumentMatchers(System.Object[])">
+            <summary>
+            Arguments the matchers.
+            </summary>
+            <param name="expectedArguments">The expected arguments.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.NewMethodNameMatcher(System.String,System.String)">
+            <summary>
+            News the method name matcher.
+            </summary>
+            <param name="description">The description.</param>
+            <param name="methodName">Name of the method.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.EnsureMatchingMethodExistsOnMock(NMock2.Matcher,System.String)">
+            <summary>
+            Ensures the matching method exists on mock.
+            </summary>
+            <param name="methodMatcher">The method matcher.</param>
+            <param name="methodDescription">The method description.</param>
+        </member>
+        <member name="P:NMock2.Internal.ExpectationBuilder.Get">
+            <summary>
+            Gets an indexer (get operation).
+            </summary>
+            <value>Get indexer syntax defining the value returned by the indexer.</value>
+        </member>
+        <member name="P:NMock2.Internal.ExpectationBuilder.Set">
+            <summary>
+            Gets an indexer (set operation).
+            </summary>
+            <value>Set indexer syntax defining the value the indexer is set to.</value>
+        </member>
+        <member name="T:NMock2.Syntax.IValueSyntax">
+            <summary>
+            Syntax defining a value.
+            </summary>
+        </member>
+        <member name="M:NMock2.Syntax.IValueSyntax.To(NMock2.Matcher)">
+            <summary>
+            Defines a value.
+            </summary>
+            <param name="valueMatcher">The value matcher.</param>
+            <returns>Match syntax defining the behavior of the value.</returns>
+        </member>
+        <member name="M:NMock2.Syntax.IValueSyntax.To(System.Object)">
+            <summary>
+            Defines a value.
+            </summary>
+            <param name="equalValue">The value.</param>
+            <returns>Match syntax defining the behavior of the value.</returns>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.PropertyValueBuilder.#ctor(NMock2.Internal.ExpectationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.ExpectationBuilder.PropertyValueBuilder"/> class.
+            </summary>
+            <param name="builder">The builder.</param>
+        </member>
+        <member name="T:NMock2.Syntax.IGetIndexerSyntax">
+            <summary>
+            Syntax defining an indexer get operation.
+            </summary>
+        </member>
+        <member name="P:NMock2.Syntax.IGetIndexerSyntax.Item(System.Object[])">
+            <summary>
+            Defines the indexer.
+            </summary>
+            <value>
+            Match syntax to define a matcher for the object returned by the indexer.
+            </value>
+            <param name="args">The arguments of the matcher.</param>
+        </member>
+        <member name="F:NMock2.Internal.ExpectationBuilder.IndexGetterBuilder.builder">
+            <summary>
+            Holds the instance to the <see cref="T:NMock2.Internal.ExpectationBuilder"/>.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.IndexGetterBuilder.#ctor(NMock2.Internal.BuildableExpectation,NMock2.Internal.ExpectationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.ExpectationBuilder.IndexGetterBuilder"/> class.
+            </summary>
+            <param name="expectation">The expectation.</param>
+            <param name="builder">The builder.</param>
+        </member>
+        <member name="T:NMock2.Syntax.ISetIndexerSyntax">
+            <summary>
+            Syntax defining an indexer set operation.
+            </summary>
+        </member>
+        <member name="P:NMock2.Syntax.ISetIndexerSyntax.Item(System.Object[])">
+            <summary>
+            Defines the indexer.
+            </summary>
+            <value>Defines the value the indexer is set to.</value>
+            <param name="args">The argument list.</param>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationBuilder.IndexSetterBuilder.#ctor(NMock2.Internal.BuildableExpectation,NMock2.Internal.ExpectationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.ExpectationBuilder.IndexSetterBuilder"/> class.
+            </summary>
+            <param name="expectation">The expectation.</param>
+            <param name="builder">The builder.</param>
+        </member>
+        <member name="T:NMock2.Internal.ExpectationException">
+            <summary>
+            Exception representing an expectation exception.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.ExpectationException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.ExpectationException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:NMock2.Internal.ExpectationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.ExpectationException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">
+            The <paramref name="info"/> parameter is null.
+            </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+            The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
+            </exception>
+        </member>
+        <member name="T:NMock2.Internal.IExpectationOrdering">
+            <summary>
+            Represents expectations (order or unordered).
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.IExpectationOrdering.AddExpectation(NMock2.IExpectation)">
+            <summary>
+            Adds an expectation.
+            </summary>
+            <param name="expectation">The expectation to add.</param>
+        </member>
+        <member name="M:NMock2.Internal.IExpectationOrdering.RemoveExpectation(NMock2.IExpectation)">
+            <summary>
+            Removes the specified expectation.
+            </summary>
+            <param name="expectation">The expectation to remove.</param>
+        </member>
+        <member name="T:NMock2.Internal.IMockObject">
+            <summary>
+            Interface for mocks.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.IMockObject.HasMethodMatching(NMock2.Matcher)">
+            <summary>
+            Determines if this mock has a particular method.
+            </summary>
+            <param name="methodMatcher">A Matcher to use in identifying the method.</param>
+            <returns>True if a matching method exists, otherwise false.</returns>
+        </member>
+        <member name="M:NMock2.Internal.IMockObject.GetMethodsMatching(NMock2.Matcher)">
+            <summary>
+            Retrieves all matching methods on this mock. 
+            </summary>
+            <param name="methodMatcher">A Matcher to use in identifying the methods.</param>
+            <returns>A list of zero or more matching MethodInfo instances.</returns>
+        </member>
+        <member name="M:NMock2.Internal.IMockObject.AddExpectation(NMock2.IExpectation)">
+            <summary>
+            Adds an expectation to this mock.
+            </summary>
+            <param name="expectation">The expectation to add.</param>
+        </member>
+        <member name="M:NMock2.Internal.IMockObject.AddEventHandler(System.String,System.Delegate)">
+            <summary>
+            Adds an event handler on this mock.
+            </summary>
+            <param name="eventName">The name of the event.</param>
+            <param name="handler">The handler to add.</param>
+        </member>
+        <member name="M:NMock2.Internal.IMockObject.RemoveEventHandler(System.String,System.Delegate)">
+            <summary>
+            Removes an event handler from this mock.
+            </summary>
+            <param name="eventName">The name of the event.</param>
+            <param name="handler">The handler to remove.</param>
+        </member>
+        <member name="M:NMock2.Internal.IMockObject.RaiseEvent(System.String,System.Object[])">
+            <summary>
+            Raises an event on this mock.
+            </summary>
+            <param name="eventName">Name of the event to fire.</param>
+            <param name="args">The arguments passed to the event.</param>
+        </member>
+        <member name="P:NMock2.Internal.IMockObject.MockName">
+            <summary>
+            Gets the name of the mock instance. This is often used in error messages
+            to identify a specific mock instance.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockObject.mockery">
+            <summary>
+            Stores the backlink to the mockery which created this mock object.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockObject.mockedTypes">
+            <summary>
+            Stores the mocked type(s).
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockObject.name">
+            <summary>
+            Stores the name of the mock object.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockObject.eventHandlers">
+            <summary>
+            Stores the event handlers that could be added to the mock object.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockObject.assignedPropertyResults">
+            <summary>
+            Results that have been explicitly assigned via a call to a property setter.
+            These will be returned for all subsequent calls to the matching property getter.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.MockObject.rememberedMethodResults">
+            <summary>
+            Results that have been generated for methods or property getters.
+            These will be returned for all subsequent calls to the same member.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.MockObject.#ctor(NMock2.Mockery,System.Type,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.MockObject"/> class.
+            This constructor is needed by the <see cref="T:NMock2.Monitoring.InterfaceOnlyMockObjectFactory"/> (the IL generation has to be changed!)
+            </summary>
+            <param name="mockery">The mockery.</param>
+            <param name="mockedType">Type of the mocked.</param>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:NMock2.Internal.MockObject.#ctor(NMock2.Mockery,NMock2.Internal.CompositeType,System.String,NMock2.MockStyle)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.MockObject"/> class.
+            </summary>
+            <param name="mockery">The mockery.</param>
+            <param name="mockedType">Type of the mocked.</param>
+            <param name="name">The name.</param>
+            <param name="mockStyle">The mock style.</param>
+        </member>
+        <member name="M:NMock2.Internal.MockObject.GetStubResult(NMock2.Monitoring.Invocation)">
+            <summary>
+            Gets the default result for an invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+            <returns>The default value to return as result of the invocation. 
+            <see cref="F:System.Reflection.Missing.Value"/> if no default value was provided.</returns>
+        </member>
+        <member name="M:NMock2.Internal.MockObject.GetMemberName(NMock2.Monitoring.Invocation)">
+            <summary>
+            Gets the name of the member to be used as the name for a mock returned an a call to a stub.
+            </summary>
+            <param name="invocation">The invocation.</param>
+            <returns>Name of the mock created as a result value on a call to a stub.</returns>
+        </member>
+        <member name="P:NMock2.Internal.MockObject.MockStyle">
+            <summary>
+            Gets the mock style of this mock.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.OrderedExpectations.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.OrderedExpectations"/> class.
+            </summary>
+            <param name="depth">The depth.</param>
+        </member>
+        <member name="M:NMock2.Internal.OrderedExpectations.Matches(NMock2.Monitoring.Invocation)">
+            <summary>
+            Checks whether stored expectations matches the specified invocation.
+            </summary>
+            <param name="invocation">The invocation to check.</param>
+            <returns>Returns whether one of the stored expectations has met the specified invocation.</returns>
+        </member>
+        <member name="M:NMock2.Internal.OrderedExpectations.QueryExpectationsBelongingTo(NMock2.Internal.IMockObject,System.Collections.Generic.IList{NMock2.IExpectation})">
+            <summary>
+            Adds all expectations to <paramref name="result"/> that are associated to <paramref name="mock"/>.
+            </summary>
+            <param name="mock">The mock for which expectations are queried.</param>
+            <param name="result">The result to add matching expectations to.</param>
+        </member>
+        <member name="P:NMock2.Internal.OrderedExpectations.IsActive">
+            <summary>
+            Gets a value indicating whether this instance is active.
+            </summary>
+            <value><c>true</c> if this instance is active; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:NMock2.Internal.OrderedExpectations.HasBeenMet">
+            <summary>
+            Gets a value indicating whether this instance has been met.
+            </summary>
+            <value>
+            <c>true</c> if this instance has been met; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:NMock2.Internal.OrderedExpectations.CurrentExpectation">
+            <summary>
+            Gets the current expectation.
+            </summary>
+            <value>The current expectation.</value>
+        </member>
+        <member name="P:NMock2.Internal.OrderedExpectations.HasNextExpectation">
+            <summary>
+            Gets a value indicating whether this instance has next expectation.
+            </summary>
+            <value>
+                <c>true</c> if this instance has next expectation; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:NMock2.Internal.OrderedExpectations.NextExpectation">
+            <summary>
+            Gets the next expectation.
+            </summary>
+            <value>The next expectation.</value>
+        </member>
+        <member name="F:NMock2.Internal.UnorderedExpectations.expectations">
+            <summary>
+            Stores the expectations that could be added.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.UnorderedExpectations.depth">
+            <summary>
+            Stores the calling depth for the document writer output.
+            </summary>
+        </member>
+        <member name="F:NMock2.Internal.UnorderedExpectations.prompt">
+            <summary>
+            Stores the string to be presented whe describing the expectation.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.UnorderedExpectations.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.UnorderedExpectations"/> class.
+            </summary>
+        </member>
+        <member name="M:NMock2.Internal.UnorderedExpectations.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Internal.UnorderedExpectations"/> class.
+            </summary>
+            <param name="depth">The calling depth.</param>
+        </member>
+        <member name="M:NMock2.Internal.UnorderedExpectations.Matches(NMock2.Monitoring.Invocation)">
+            <summary>
+            Checks whether stored expectations matches the specified invocation.
+            </summary>
+            <param name="invocation">The invocation to check.</param>
+            <returns>Returns whether one of the stored expectations has met the specified invocation.</returns>
+        </member>
+        <member name="M:NMock2.Internal.UnorderedExpectations.Perform(NMock2.Monitoring.Invocation)">
+            <summary>
+            Performs the specified invocation on the corresponding expectation if a match was found.
+            </summary>
+            <param name="invocation">The invocation to match.</param>
+        </member>
+        <member name="M:NMock2.Internal.UnorderedExpectations.QueryExpectationsBelongingTo(NMock2.Internal.IMockObject,System.Collections.Generic.IList{NMock2.IExpectation})">
+            <summary>
+            Adds all expectations to <paramref name="result"/> that are associated to <paramref name="mock"/>.
+            </summary>
+            <param name="mock">The mock for which expectations are queried.</param>
+            <param name="result">The result to add matching expectations to.</param>
+        </member>
+        <member name="P:NMock2.Internal.UnorderedExpectations.IsActive">
+            <summary>
+            Gets a value indicating whether this instance is active.
+            </summary>
+            <value><c>true</c> if this instance is active; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:NMock2.Internal.UnorderedExpectations.HasBeenMet">
+            <summary>
+            Gets a value indicating whether this instance has been met.
+            </summary>
+            <value>
+                <c>true</c> if this instance has been met; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:NMock2.Is">
+            <summary>
+            Provides shortcuts to <see cref="T:NMock2.Matcher"/>s.
+            </summary>
+        </member>
+        <member name="F:NMock2.Is.Anything">
+            <summary>
+            Matches anything.
+            </summary>
+        </member>
+        <member name="F:NMock2.Is.Nothing">
+            <summary>
+            Matches nothing.
+            </summary>
+        </member>
+        <member name="F:NMock2.Is.Null">
+            <summary>
+            Matches if the value is null.
+            </summary>
+        </member>
+        <member name="F:NMock2.Is.NotNull">
+            <summary>
+            Matches if the value is not null.
+            </summary>
+        </member>
+        <member name="F:NMock2.Is.Out">
+            <summary>
+            Matches out parameters of methods.
+            </summary>
+        </member>
+        <member name="M:NMock2.Is.EqualTo(System.Object)">
+            <summary>
+            Matches objects the are equal to the expected object.
+            <seealso cref="M:NMock2.Is.Same(System.Object)"/>
+            </summary>
+            <param name="expected">The expected.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.EqualMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.Same(System.Object)">
+            <summary>
+            Matches an expected object.
+            <seealso cref="M:NMock2.Is.EqualTo(System.Object)"/>
+            </summary>
+            <param name="expected">The expected object.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.SameMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.StringContaining(System.String)">
+            <summary>
+            Matches strings containing the specified <paramref name="substring"/>.
+            </summary>
+            <param name="substring">The substring.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.StringContainsMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.GreaterThan(System.IComparable)">
+            <summary>
+            Matches objects that are greater than <paramref name="value"/>.
+            </summary>
+            <param name="value">The value to compare.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.ComparisonMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.AtLeast(System.IComparable)">
+            <summary>
+            Matches objects that are at least equal to <paramref name="value"/>.
+            </summary>
+            <param name="value">The value to compare.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.ComparisonMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.LessThan(System.IComparable)">
+            <summary>
+            Matches objects less than <paramref name="value"/>.
+            </summary>
+            <param name="value">The value to compare.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.ComparisonMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.AtMost(System.IComparable)">
+            <summary>
+            Matches objects that are less or equal to <paramref name="value"/>.
+            </summary>
+            <param name="value">The value to compare.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.ComparisonMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.In(System.Collections.ICollection)">
+            <summary>
+            Matches objects in the specified collection.
+            </summary>
+            <param name="collection">The collection with objects to match.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.ElementMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.OneOf(System.Object[])">
+            <summary>
+            Matches objects in the specified elements.
+            </summary>
+            <param name="elements">The elements to match.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.ElementMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.TypeOf(System.Type)">
+            <summary>
+            Matches objects of the specified type.
+            </summary>
+            <param name="type">The type to match.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Matchers.TypeMatcher"/> class.</returns>
+        </member>
+        <member name="M:NMock2.Is.TypeOf``1">
+            <summary>
+            Matches objects of the specified type.
+            </summary>
+            <typeparam name="T">The type to match.</typeparam>
+            <returns>
+            Returns a new instance of the <see cref="T:NMock2.Matchers.TypeMatcher"/> class.
+            </returns>
+        </member>
+        <member name="M:NMock2.Is.Match``1(NMock2.Matchers.GenericMatcher{``0}.MatchExpression)">
+            <summary>
+            Matches objects against the specified expression.
+            </summary>
+            <typeparam name="T">Type of the value to match.</typeparam>
+            <param name="expression">The match expression.</param>
+            <returns>returns a new instance of the <see cref="T:NMock2.Matchers.GenericMatcher`1"/>.</returns>
+        </member>
+        <member name="T:NMock2.Matcher">
+            <summary>
+            A matcher is used to match objects against it.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matcher.op_BitwiseAnd(NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Logical and of to matchers.
+            </summary>
+            <param name="m1">First matcher.</param>
+            <param name="m2">Second matcher.</param>
+            <returns>Matcher combining the two operands.</returns>
+        </member>
+        <member name="M:NMock2.Matcher.op_BitwiseOr(NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Logical or of to matchers.
+            </summary>
+            <param name="m1">First matcher.</param>
+            <param name="m2">Second matcher.</param>
+            <returns>Matcher combining the two operands.</returns>
+        </member>
+        <member name="M:NMock2.Matcher.op_LogicalNot(NMock2.Matcher)">
+            <summary>
+            Negation of a matcher.
+            </summary>
+            <param name="m">Matcher to negate.</param>
+            <returns>Negation of the specified matcher.</returns>
+        </member>
+        <member name="M:NMock2.Matcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object matches.</returns>
+        </member>
+        <member name="M:NMock2.Matcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="M:NMock2.Matcher.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:NMock2.Matchers.AlwaysMatcher">
+            <summary>
+            A matcher that will always or never match independent of the value matched but depending on how it is initialized.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.AlwaysMatcher.matches">
+            <summary>
+            Stores the matcher value which was given at initialization.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.AlwaysMatcher.description">
+            <summary>
+            Stores the description which was given at initialization.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.AlwaysMatcher.#ctor(System.Boolean,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.AlwaysMatcher"/> class.
+            </summary>
+            <param name="matches">if set to <c>true</c> the matcher will always match, otherwise it will never match.</param>
+            <param name="description">The description which will be printed out when calling <see cref="M:NMock2.Matchers.AlwaysMatcher.DescribeTo(System.IO.TextWriter)"/>.</param>
+        </member>
+        <member name="M:NMock2.Matchers.AlwaysMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Returns whether the object matches.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.AlwaysMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.AndMatcher">
+            <summary>
+            Matcher that is the logical and combination of two matchers.
+            </summary>
+        </member>
+        <member name="T:NMock2.Matchers.BinaryOperator">
+            <summary>
+            BinaryOperator is an abstract base class for matchers that combine two matchers into a single matcher. 
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.BinaryOperator.Right">
+            <summary>
+            The right hand side of the binary operator.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.BinaryOperator.Left">
+            <summary>
+            The left hand side of the binary operator.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.BinaryOperator.#ctor(NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.BinaryOperator"/> class.
+            </summary>
+            <param name="left">The left operand.</param>
+            <param name="right">The right operand.</param>
+        </member>
+        <member name="M:NMock2.Matchers.AndMatcher.#ctor(NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.AndMatcher"/> class.
+            </summary>
+            <param name="left">The left operand.</param>
+            <param name="right">The right operand.</param>
+        </member>
+        <member name="M:NMock2.Matchers.AndMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Returns whether the object matches.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.AndMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.ArgumentsMatcher">
+            <summary>
+            Matcher that checks whether parameters of a method match with the specified list of matchers.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.ArgumentsMatcher.OutParameter">
+            <summary>
+            Stores the out parameter.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.ArgumentsMatcher.valueMatchers">
+            <summary>
+            Stores the valuematchers given at initialization.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.#ctor(NMock2.Matcher[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.ArgumentsMatcher"/> class.
+            </summary>
+            <param name="valueMatchers">The value matchers. This is an ordered list of matchers, each matching a single method argument.</param>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object is an <see cref="T:NMock2.Monitoring.Invocation"/> and all method arguments match their corresponding matcher.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.MatcherCount">
+            <summary>
+            Number of argument matchers.
+            </summary>
+            <returns>Returns the number of argument matchers.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.LastMatcher">
+            <summary>
+            Returns the last argument matcher.
+            </summary>
+            <returns>Argument matcher</returns>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.WriteListOfMatchers(System.Int32,System.IO.TextWriter)">
+            <summary>
+            Writes the list of matchers to a <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+            <param name="listLength">Length of the list.</param>
+            <param name="writer">The writer.</param>
+        </member>
+        <member name="T:NMock2.Matchers.ArgumentsMatcher.OutMatcher">
+            <summary>
+            Matcher that matches method out parameters. 
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.OutMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object mached is an out parameter.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.ArgumentsMatcher.OutMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.ComparisonMatcher">
+            <summary>
+            Matcher that checks a value against upper and lower bounds.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.ComparisonMatcher.value">
+            <summary>
+            Stores the value to be compared.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.ComparisonMatcher.minComparisonResult">
+            <summary>
+            Stores the minimum comparison result for a successful match.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.ComparisonMatcher.maxComparisonResult">
+            <summary>
+            Stores the maximum comparison result for a successful match.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.ComparisonMatcher.#ctor(System.IComparable,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.ComparisonMatcher"/> class.
+            </summary>
+            <param name="value">The value to compare.</param>
+            <param name="comparisonResult1">The first allowed comparison result (result of value.CompareTo(other)).</param>
+            <param name="comparisonResult2">The second allowed comparison result (result of value.CompareTo(other)).</param>
+        </member>
+        <member name="M:NMock2.Matchers.ComparisonMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object compared to the value resulted in either of both specified comparison results.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.ComparisonMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.DescriptionOverride">
+            <summary>
+            Matcher that is used to change the description the wrapped matcher.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.DescriptionOverride.description">
+            <summary>
+            Stores the new description for the wrapped matcher.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.DescriptionOverride.otherMatcher">
+            <summary>
+            Stores the matcher to wrap.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.DescriptionOverride.#ctor(System.String,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.DescriptionOverride"/> class.
+            </summary>
+            <param name="description">The new description for the wrapped matcher.</param>
+            <param name="otherMatcher">The matcher to wrap.</param>
+        </member>
+        <member name="M:NMock2.Matchers.DescriptionOverride.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the wrapped matcher matches.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.DescriptionOverride.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.ElementMatcher">
+            <summary>
+            Matcher that checks whether a single object is in a collection of elements.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.ElementMatcher.#ctor(System.Collections.ICollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.ElementMatcher"/> class.
+            </summary>
+            <param name="collection">The collection to match against.</param>
+        </member>
+        <member name="M:NMock2.Matchers.ElementMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="actual">The object to match.</param>
+            <returns>Whether to object matches.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.ElementMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.EqualMatcher">
+            <summary>
+            Matcher that checks whether the expected and actual value are equal.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.EqualMatcher.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.EqualMatcher"/> class.
+            </summary>
+            <param name="expected">The expected value.</param>
+        </member>
+        <member name="M:NMock2.Matchers.EqualMatcher.Matches(System.Object)">
+            <summary>
+            Matcheses the specified actual.
+            </summary>
+            <param name="actual">The actual value.</param>
+            <returns>Whether the expected value is equal to the actual value.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.EqualMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.FieldMatcher">
+            <summary>
+            Matcher that checks whether the specified field of the actual object matches with the specified matcher. 
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.FieldMatcher.fieldName">
+            <summary>
+            Name of the field to match against the <seealso cref="F:NMock2.Matchers.FieldMatcher.valueMatcher"/>.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.FieldMatcher.valueMatcher">
+            <summary>
+            The value <see cref="T:NMock2.Matcher"/> used to match the field of the object under investigation.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.FieldMatcher.#ctor(System.String,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.FieldMatcher"/> class.
+            </summary>
+            <param name="fieldName">Name of the field to match against the <paramref name="valueMatcher"/>.</param>
+            <param name="valueMatcher">The value matcher.</param>
+        </member>
+        <member name="M:NMock2.Matchers.FieldMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object matches.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.FieldMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.GenericMatcher`1">
+            <summary>
+            Matcher that checks whether a value matches the check provided as a delegate.
+            the expectation.
+            </summary>
+            <typeparam name="T">The type of the expected value.</typeparam>
+        </member>
+        <member name="F:NMock2.Matchers.GenericMatcher`1.matchExpression">
+            <summary>
+            The test that is performed to see if the value matches the expectation.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMatcher`1.#ctor(NMock2.Matchers.GenericMatcher{`0}.MatchExpression)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.GenericMatcher`1"/> class.
+            </summary>
+            <param name="matchExpression">The test that is performed to check if the value matches expectation.</param>
+            <exception cref="T:System.ArgumentNullException"><c>matchExpression</c> is null.</exception>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMatcher`1.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object matches.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMatcher`1.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.GenericMatcher`1.MatchExpression">
+            <summary>
+            The test that is performed to check if the <paramref name="value"/> matches the expectation.
+            </summary>
+            <param name="value">The actually received value.</param>
+            <returns>True then value matches the expectation.</returns>
+        </member>
+        <member name="T:NMock2.Matchers.GenericMethodTypeParametersMatcher">
+            <summary>
+            Matcher that checks whether parameters of a method match with the specified list of matchers.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.GenericMethodTypeParametersMatcher.typeMatchers">
+            <summary>
+            An ordered list of type <see cref="T:NMock2.Matcher"/>'s each matching a single method argument.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.#ctor(NMock2.Matcher[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.GenericMethodTypeParametersMatcher"/> class.
+            </summary>
+            <param name="typeMatchers">The value matchers. This is an ordered list of matchers, each matching a single method argument.</param>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object is an <see cref="T:NMock2.Monitoring.Invocation"/> and all method arguments match their corresponding matcher.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.MatcherCount">
+            <summary>
+            Number of argument matchers.
+            </summary>
+            <returns>Returns the number of argument matchers.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.LastMatcher">
+            <summary>
+            Returns the last argument matcher.
+            </summary>
+            <returns>Argument matcher</returns>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.WriteListOfMatchers(System.Int32,System.IO.TextWriter)">
+            <summary>
+            Writes the list of matchers to a <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+            <param name="listLength">Length of the list.</param>
+            <param name="writer">The writer.</param>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.MatchesTypes(NMock2.Monitoring.Invocation)">
+            <summary>
+            Determines whether the arguments of the invocation matches the initial arguments.
+            </summary>
+            <param name="invocation">The invocation to match against the initial arguments.</param>
+            <returns>
+            Returns true if invocation matches the initial arguments; false otherwise.
+            </returns>
+        </member>
+        <member name="M:NMock2.Matchers.GenericMethodTypeParametersMatcher.MatchesTypeValues(NMock2.Monitoring.Invocation)">
+            <summary>
+            Determines whether all argument types of the generic method matches the invocation.
+            </summary>
+            <param name="invocation">The invocation to match against the initial argument types.</param>
+            <returns>
+            Returns true if invocation types matches the inital argument types; false otherwise.
+            </returns>
+        </member>
+        <member name="T:NMock2.Matchers.IndexGetterArgumentsMatcher">
+            <summary>
+            Matcher for indexer getters. Checks that the arguments passed to the indexer match.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.IndexGetterArgumentsMatcher.#ctor(NMock2.Matcher[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.IndexGetterArgumentsMatcher"/> class.
+            </summary>
+            <param name="valueMatchers">The value matchers. This is an ordered list of matchers, each matching a single method argument.</param>
+        </member>
+        <member name="M:NMock2.Matchers.IndexGetterArgumentsMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.IndexSetterArgumentsMatcher">
+            <summary>
+            Matcher for indexer setters. Checks that the arguments passed to the indexer match.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.IndexSetterArgumentsMatcher.#ctor(NMock2.Matcher[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.IndexSetterArgumentsMatcher"/> class.
+            </summary>
+            <param name="valueMatchers">The value matchers. This is an ordered list of matchers, each matching a single method argument.</param>
+        </member>
+        <member name="M:NMock2.Matchers.IndexSetterArgumentsMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.MethodNameMatcher">
+            <summary>
+            Matcher that checks whether the actual object is a <see cref="T:System.Reflection.MethodInfo"/> and its name is equal to the expected name.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.MethodNameMatcher.methodName">
+            <summary>
+            Holds the expected name of the mocked method.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.MethodNameMatcher.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.MethodNameMatcher"/> class.
+            </summary>
+            <param name="methodName">The expected name of the method.</param>
+        </member>
+        <member name="M:NMock2.Matchers.MethodNameMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The MethodInfo to match.</param>
+            <returns>Whether the object is a MethodInfo and its name matches the expected one.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.MethodNameMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.NotMatcher">
+            <summary>
+            Matcher that negates another matcher.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.NotMatcher.negated">
+            <summary>
+            Holds the matcher to negate.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.NotMatcher.#ctor(NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.NotMatcher"/> class.
+            </summary>
+            <param name="negated">The matcher to negate.</param>
+        </member>
+        <member name="M:NMock2.Matchers.NotMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object does not matche the wrapped matcher.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.NotMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.NullMatcher">
+            <summary>
+            Matcher that checks whether to actual value is equal to null.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.NullMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object is equal to null.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.NullMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.OrMatcher">
+            <summary>
+            Matcher that combines two matcher with a logically or.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.OrMatcher.#ctor(NMock2.Matcher,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.OrMatcher"/> class.
+            </summary>
+            <param name="left">The left operand.</param>
+            <param name="right">The right operand.</param>
+        </member>
+        <member name="M:NMock2.Matchers.OrMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object matches one of the two combined matchers.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.OrMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.PropertyMatcher">
+            <summary>
+            Matcher that checks whether the actual object has a property with the specified name 
+            and its value matches the specified matcher.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.PropertyMatcher.#ctor(System.String,NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.PropertyMatcher"/> class.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="valueMatcher">The value matcher.</param>
+        </member>
+        <member name="M:NMock2.Matchers.PropertyMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object has a property with the expected name and expected value.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.PropertyMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.SameMatcher">
+            <summary>
+            Matcher that checks whether the actual object is the same as the expected one (equality by reference).
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.SameMatcher.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.SameMatcher"/> class.
+            </summary>
+            <param name="expected">The expected object.</param>
+        </member>
+        <member name="M:NMock2.Matchers.SameMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object is the same as the expected one.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.SameMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.StringContainsMatcher">
+            <summary>
+            Matcher that checks whether the actual value contains the expected substring.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.StringContainsMatcher.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.StringContainsMatcher"/> class.
+            </summary>
+            <param name="substring">The substring that is expected.</param>
+        </member>
+        <member name="M:NMock2.Matchers.StringContainsMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object is a string and contains the expected substring.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.StringContainsMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.ToStringMatcher">
+            <summary>
+            Matcher that checks whether the actual value in string representation (actual.ToString())
+            matches with the wrapped matcher.
+            </summary>
+        </member>
+        <member name="F:NMock2.Matchers.ToStringMatcher.matcher">
+            <summary>
+            Holds the wrapped matcher.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.ToStringMatcher.#ctor(NMock2.Matcher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.ToStringMatcher"/> class.
+            </summary>
+            <param name="matcher">The wrapped matcher.</param>
+        </member>
+        <member name="M:NMock2.Matchers.ToStringMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object in string representation (o.ToString()) matches the wrapped matcher.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.ToStringMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.Matchers.TypeMatcher">
+            <summary>
+            Matcher that checks whether the actual object can be assigned to the expected type.
+            </summary>
+        </member>
+        <member name="M:NMock2.Matchers.TypeMatcher.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Matchers.TypeMatcher"/> class.
+            </summary>
+            <param name="type">The expected type.</param>
+        </member>
+        <member name="M:NMock2.Matchers.TypeMatcher.Matches(System.Object)">
+            <summary>
+            Matches the specified object to this matcher and returns whether it matches.
+            </summary>
+            <param name="o">The object to match.</param>
+            <returns>Whether the object castable to the expected type.</returns>
+        </member>
+        <member name="M:NMock2.Matchers.TypeMatcher.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="T:NMock2.ResolveTypeDelegate">
+            <summary>
+            Delegate used to override default type returned in stub behavior.
+            </summary>
+            <param name="mock">The mock that has to return a value.</param>
+            <param name="requestedType">Type of the return value.</param>
+            <returns>The object to return as return value for the requested type.</returns>
+        </member>
+        <member name="T:NMock2.Mockery">
+            <summary>
+            The mockery is used to create dynamic mocks and check that all expectations were met during a unit test.
+            </summary>
+            <remarks>Name inspired by Ivan Moore.</remarks>
+        </member>
+        <member name="F:NMock2.Mockery.availableMockObjectFactories">
+            <summary>
+            In the rare case where the default mock object factory is replaced, we hold on to the
+            previous factory (or factories) in case we need to switch back to them.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.currentMockObjectFactory">
+            <summary>
+            The mock object factory that is being used by this Mockery instance.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.stubMockStyleDictionary">
+            <summary>
+            Holds all mapping from mocks/types to mock styles.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.defaultMockObjectFactory">
+            <summary>
+            The mock object factory that will be used when a new Mockery instance is created
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.depth">
+            <summary>
+            Depth of cascaded ordered, unordered expectation blocks.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.expectations">
+            <summary>
+            All expectations.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.topOrdering">
+            <summary>
+            Expectations at current cascade level.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.thrownUnexpectedInvocationException">
+            <summary>
+            If an unexpected invocation exception is thrown then it is stored here to re-throw it in the 
+            <see cref="M:NMock2.Mockery.VerifyAllExpectationsHaveBeenMet"/> method - exception cannot be swallowed by tested code.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.resolveTypeDelegate">
+            <summary>
+            The delegate used to resolve the default type returned as return value in calls to mocks with stub behavior.
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:NMock2.Mockery"/> class.
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Mockery"/> class.
+            Clears all expectations.
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.ChangeDefaultMockObjectFactory(System.Type)">
+            <summary>
+            Allows the default <see cref="T:NMock2.Monitoring.IMockObjectFactory"/> to be replaced with a different implementation.
+            </summary>
+            <param name="factoryType">The System.Type of the <see cref="T:NMock2.Monitoring.IMockObjectFactory"/> implementation to use.
+            This is expected to implement <see cref="T:NMock2.Monitoring.IMockObjectFactory"/> and have a default constructor.</param>
+        </member>
+        <member name="M:NMock2.Mockery.NewMock(System.Type,NMock2.IMockDefinition)">
+            <summary>
+            Creates a new dynamic mock of the specified type using the supplied definition.
+            </summary>
+            <param name="mockedType">The type to mock.</param>
+            <param name="definition">An <see cref="T:NMock2.IMockDefinition"/> to create the mock from.</param>
+            <returns>A dynamic mock for the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewMock(System.Type,System.Object[])">
+            <summary>
+            Creates a new dynamic mock of the specified type.
+            </summary>
+            <param name="mockedType">The type to mock.</param>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A dynamic mock for the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewMock(System.Type,NMock2.MockStyle,System.Object[])">
+            <summary>
+            Creates a new dynamic mock of the specified type.
+            </summary>
+            <param name="mockedType">The type to mock.</param>
+            <param name="mockStyle">Specifies how the mock object should behave when first created.</param>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A named dynamic mock for the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewMock``1(NMock2.IMockDefinition)">
+            <summary>
+            Creates a new dynamic mock of the specified type using the supplied definition.
+            </summary>
+            <typeparam name="TMockedType">The type to mock.</typeparam>
+            <param name="definition">An <see cref="T:NMock2.IMockDefinition"/> to create the mock from.</param>
+            <returns>A dynamic mock for the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewMock``1(System.Object[])">
+            <summary>
+            Creates a new dynamic mock of the specified type.
+            </summary>
+            <typeparam name="TMockedType">The type to mock.</typeparam>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A dynamic mock for the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewMock``1(NMock2.MockStyle,System.Object[])">
+            <summary>
+            Creates a new dynamic mock of the specified type.
+            </summary>
+            <typeparam name="TMockedType">The type to mock.</typeparam>
+            <param name="mockStyle">Specifies how the mock object should behave when first created.</param>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A dynamic mock for the specified type.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewNamedMock(System.Type,System.String,System.Object[])">
+            <summary>
+            Creates a new named dynamic mock of the specified type.
+            </summary>
+            <param name="mockedType">The type to mock.</param>
+            <param name="name">A name for the mock that will be used in error messages.</param>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A named mock.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewNamedMock(System.Type,System.String,NMock2.MockStyle,System.Object[])">
+            <summary>
+            Creates a new named dynamic mock of the specified type and allows the style
+            of the mock to be specified.
+            </summary>
+            <param name="mockedType">The type to mock.</param>
+            <param name="name">A name for the mock that will be used in error messages.</param>
+            <param name="mockStyle">Specifies how the mock object should behave when first created.</param>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A named mock.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewNamedMock``1(System.String,System.Object[])">
+            <summary>
+            Creates a new named dynamic mock of the specified type.
+            </summary>
+            <typeparam name="TMockedType">The type to mock.</typeparam>
+            <param name="name">A name for the mock that will be used in error messages.</param>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A named mock.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.NewNamedMock``1(System.String,NMock2.MockStyle,System.Object[])">
+            <summary>
+            Creates a new named dynamic mock of the specified type and allows the style
+            of the mock to be specified.
+            </summary>
+            <typeparam name="TMockedType">The type to mock.</typeparam>
+            <param name="name">A name for the mock that will be used in error messages.</param>
+            <param name="mockStyle">Specifies how the mock object should behave when first created.</param>
+            <param name="constructorArgs">The arguments for the constructor of the class to be mocked.
+            Only applicable when mocking classes with non-default constructors.</param>
+            <returns>A named mock.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.VerifyAllExpectationsHaveBeenMet">
+            <summary>
+            Verifies that all expectations have been met.
+            Will be called in <see cref="M:NMock2.Mockery.Dispose"/>, too. 
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.Dispose">
+            <summary>
+            Disposes the mockery be verifying that all expectations were met.
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.SetResolveTypeHandler(NMock2.ResolveTypeDelegate)">
+            <summary>
+            Sets the resolve type handler used to override default values returned by stubs.
+            </summary>
+            <param name="resolveTypeHandler">The resolve type handler.</param>
+        </member>
+        <member name="M:NMock2.Mockery.SetStubMockStyle(System.Object,NMock2.MockStyle)">
+            <summary>
+            Sets the mock style used for all properties and methods returning a value of any type of the <paramref name="mock"/>.
+            Can be overridden with a type specific mock style with <see cref="M:NMock2.Mockery.SetStubMockStyle``1(System.Object,NMock2.MockStyle)"/>.
+            </summary>
+            <param name="mock">The mock (with mock style Stub).</param>
+            <param name="nestedMockStyle">The nested mock style.</param>
+        </member>
+        <member name="M:NMock2.Mockery.SetStubMockStyle``1(System.Object,NMock2.MockStyle)">
+            <summary>
+            Sets the mock style used for all properties and methods returning a value of type <typeparamref name="TStub"/>
+            of the <paramref name="mock"/>.
+            </summary>
+            <typeparam name="TStub">The type of the stub.</typeparam>
+            <param name="mock">The mock (with mock style Stub).</param>
+            <param name="nestedMockStyle">The nested mock style.</param>
+        </member>
+        <member name="M:NMock2.Mockery.SetStubMockStyle(System.Object,System.Type,NMock2.MockStyle)">
+            <summary>
+            Sets the mock style used for all properties and methods returning a value of type <paramref name="nestedMockType"/>
+            of the <paramref name="mock"/>.
+            </summary>
+            <param name="mock">The mock (with mock style Stub).</param>
+            <param name="nestedMockType">Type of the nested mock.</param>
+            <param name="nestedMockStyle">The nested mock style.</param>
+        </member>
+        <member name="M:NMock2.Mockery.ClearExpectation(System.Object)">
+            <summary>
+            Clears all expectation on the specified mock.
+            </summary>
+            <param name="mock">The mock for which all expectations are cleared.</param>
+        </member>
+        <member name="M:NMock2.Mockery.AddExpectation(NMock2.IExpectation)">
+            <summary>
+            Adds the expectation.
+            </summary>
+            <param name="expectation">The expectation.</param>
+        </member>
+        <member name="M:NMock2.Mockery.ResolveType(System.Object,System.Type)">
+            <summary>
+            Resolves the return value to be used in a call to a mock with stub behavior.
+            </summary>
+            <param name="mock">The mock on which the call is made.</param>
+            <param name="requestedType">The type of the return value.</param>
+            <returns>The object to be returned as return value; or <see cref="F:System.Reflection.Missing.Value"/>
+            if the default value should be used.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.GetDependencyMockStyle(System.Object,System.Type)">
+            <summary>
+            Gets the mock style to be used for a mock created for a return value of a call to mock with stub behavior.
+            </summary>
+            <param name="mock">The mock that wants to create a mock.</param>
+            <param name="requestedType">The type of the requested mock.</param>
+            <returns>The mock style to use on the created mock. Null if <see cref="F:NMock2.MockStyle.Default"/> has to be used.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.Dispatch(NMock2.Monitoring.Invocation)">
+            <summary>
+            Dispatches the specified invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Mockery.HasExpectationFor(NMock2.Monitoring.Invocation)">
+            <summary>
+            Determines whether there exist expectations for the specified invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+            <returns><c>true</c> if there exist expectations for the specified invocation; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:NMock2.Mockery.CastToMockObject(System.Object)">
+            <summary>
+            Casts the argument to <see cref="T:NMock2.Internal.IMockObject"/>.
+            </summary>
+            <param name="mock">The object to cast.</param>
+            <returns>The argument casted to <see cref="T:NMock2.Internal.IMockObject"/></returns>
+            <throws cref="T:System.ArgumentNullException">Thrown if <paramref name="mock"/> is null</throws>
+            <throws cref="T:System.ArgumentException">Thrown if <paramref name="mock"/> is not a <see cref="T:NMock2.Internal.IMockObject"/></throws>
+        </member>
+        <member name="M:NMock2.Mockery.ClearExpectations">
+            <summary>
+            Clears the expectations.
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.Push(NMock2.Internal.IExpectationOrdering)">
+            <summary>
+            Pushes the specified new ordering on the expectations stack.
+            </summary>
+            <param name="newOrdering">The new ordering.</param>
+            <returns>Disposable popper.</returns>
+        </member>
+        <member name="M:NMock2.Mockery.Pop(NMock2.Internal.IExpectationOrdering)">
+            <summary>
+            Pops the specified old ordering from the expectations stack.
+            </summary>
+            <param name="oldOrdering">The old ordering.</param>
+        </member>
+        <member name="M:NMock2.Mockery.FailUnmetExpectations">
+            <summary>
+            Throws an exception listing all unmet expectations.
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.FailUnexpectedInvocation(NMock2.Monitoring.Invocation)">
+            <summary>
+            Throws an exception indicating that the specified invocation is not expected.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="P:NMock2.Mockery.Ordered">
+            <summary>
+            Gets a disposable object and tells the mockery that the following expectations are ordered, i.e. they have to be met in the specified order.
+            Dispose the returned value to return to previous mode.
+            </summary>
+            <value>Disposable object. When this object is disposed then the ordered expectation mode is set back to the mode it was previously
+            to call to <see cref="P:NMock2.Mockery.Ordered"/>.</value>
+        </member>
+        <member name="P:NMock2.Mockery.Unordered">
+            <summary>
+            Gets a disposable object and tells the mockery that the following expectations are unordered, i.e. they can be met in any order.
+            Dispose the returned value to return to previous mode.
+            </summary>
+            <value>Disposable object. When this object is disposed then the unordered expectation mode is set back to the mode it was previously
+            to the call to <see cref="P:NMock2.Mockery.Unordered"/>.</value>
+        </member>
+        <member name="T:NMock2.Mockery.Popper">
+            <summary>
+            A popper pops an expectation ordering from the expectations stack on disposal.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.Popper.mockery">
+            <summary>
+            The mockery.
+            </summary>
+        </member>
+        <member name="F:NMock2.Mockery.Popper.previous">
+            <summary>
+            The previous expectation ordering.
+            </summary>
+        </member>
+        <member name="M:NMock2.Mockery.Popper.#ctor(NMock2.Mockery,NMock2.Internal.IExpectationOrdering)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Mockery.Popper"/> class.
+            </summary>
+            <param name="mockery">The mockery.</param>
+            <param name="previous">The previous.</param>
+        </member>
+        <member name="M:NMock2.Mockery.Popper.Dispose">
+            <summary>
+            Pops the expectation ordering from the stack.
+            </summary>
+        </member>
+        <member name="T:NMock2.MockStyle">
+            <summary>
+            Specifies how a mock object should behave when it is first created.
+            </summary>
+        </member>
+        <member name="F:NMock2.MockStyle.Default">
+            <summary>
+            Calls to members that do not have expectations set will
+            result in ExpectationExceptions.
+            </summary>
+        </member>
+        <member name="F:NMock2.MockStyle.Transparent">
+            <summary>
+            Calls to members that do not have expectations set will
+            pass through to the underlying implementation on the class
+            being mocked.
+            </summary>
+        </member>
+        <member name="F:NMock2.MockStyle.Stub">
+            <summary>
+            Calls to members that do not have expectations set will
+            be ignored. Default values are used for return values 
+            (default value of the return type, stub or empty enumerable)
+            and the same value is returned on every call to the same member.
+            </summary>
+        </member>
+        <member name="T:NMock2.Monitoring.CastleMockObjectFactory">
+            <summary>
+            Class that creates mocks for interfaces and classes (virtual members only) using the
+            Castle proxy generator.
+            </summary>
+        </member>
+        <member name="T:NMock2.Monitoring.IMockObjectFactory">
+            <summary>
+            Implementations of this interface are responsible for generating runtime
+            proxies of classes and interfaces for use as mock objects.
+            </summary>
+            <remarks>
+            Returned instances are expected to implement IMockObject and take care of
+            intercepting calls to their public members. Intercepted calls should be
+            forwarded on to the supplied Mockery for processing against expectations.
+            </remarks>
+        </member>
+        <member name="M:NMock2.Monitoring.IMockObjectFactory.CreateMock(NMock2.Mockery,NMock2.Internal.CompositeType,System.String,NMock2.MockStyle,System.Object[])">
+            <summary>
+            Creates a mock of the specified type(s).
+            </summary>
+            <param name="mockery">The mockery used to create this mock instance.</param>
+            <param name="typesToMock">The type(s) to include in the mock.</param>
+            <param name="name">The name to use for the mock instance.</param>
+            <param name="mockStyle">The behaviour of the mock instance when first created.</param>
+            <param name="constructorArgs">Constructor arguments for the class to be mocked. Only valid if mocking a class type.</param>
+            <returns>A mock instance of the specified type(s).</returns>
+        </member>
+        <member name="M:NMock2.Monitoring.CastleMockObjectFactory.CreateMock(NMock2.Mockery,NMock2.Internal.CompositeType,System.String,NMock2.MockStyle,System.Object[])">
+            <summary>
+            Creates a mock of the specified type(s).
+            </summary>
+            <param name="mockery">The mockery used to create this mock instance.</param>
+            <param name="typesToMock">The type(s) to include in the mock.</param>
+            <param name="name">The name to use for the mock instance.</param>
+            <param name="mockStyle">The behaviour of the mock instance when first created.</param>
+            <param name="constructorArgs">Constructor arguments for the class to be mocked. Only valid if mocking a class type.</param>
+            <returns>A mock instance of the specified type(s).</returns>
+        </member>
+        <member name="T:NMock2.Monitoring.CastleMockObjectFactory.InterfaceMockBase">
+            <summary>
+            Used as a base for interface mocks in order to provide a holder
+            for a meaningful ToString() value.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.CastleMockObjectFactory.InterfaceMockBase.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.CastleMockObjectFactory.InterfaceMockBase"/> class.
+            </summary>
+            <param name="stringValue">The string value.</param>
+        </member>
+        <member name="T:NMock2.Monitoring.InterfaceOnlyMockObjectFactory">
+            <summary>
+            Class that creates mocks for interfaces only. This was the original implementation
+            of NMock2 mocks used before the Castle proxies were introduced.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.InterfaceOnlyMockObjectFactory"/> class.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.GetGenericParameterNames(System.Type[])">
+            <summary>
+            Returns an array of <see langword="string"/>s that represent
+            the names of the generic type parameter.
+            </summary>
+            <param name="args">The parameter info array.</param>
+            <returns>An array containing parameter names.</returns>
+        </member>
+        <member name="M:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.GetParameterTypes(System.Reflection.ParameterInfo[])">
+            <summary>
+            Returns an array of parameter <see cref="T:System.Type"/>s for the
+            specified parameter info array.
+            </summary>
+            <param name="args">The parameter info array.</param>
+            <returns>
+            An array containing parameter <see cref="T:System.Type"/>s.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.CreateMock(NMock2.Mockery,NMock2.Internal.CompositeType,System.String,NMock2.MockStyle,System.Object[])">
+            <summary>
+            Creates a mock of the specified type(s).
+            </summary>
+            <param name="mockery">The mockery used to create this mock instance.</param>
+            <param name="typesToMock">The type(s) to include in the mock.</param>
+            <param name="name">The name to use for the mock instance.</param>
+            <param name="mockStyle">The behaviour of the mock instance when first created.</param>
+            <param name="constructorArgs">Constructor arguments for the class to be mocked. Only valid if mocking a class type.</param>
+            <returns>
+            A mock instance of the specified type(s).
+            </returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.DefineMethod(System.Reflection.Emit.TypeBuilder,System.Reflection.MethodInfo,System.Boolean)" -->
+        <member name="M:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.DefineParameters(System.Reflection.Emit.MethodBuilder,System.Reflection.MethodInfo)">
+            <summary>
+            Defines method parameters based on proxied method metadata.
+            </summary>
+            <param name="methodBuilder">The <see cref="T:System.Reflection.Emit.MethodBuilder"/> to use.</param>
+            <param name="method">The method to proxy.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.TypeId.#ctor(System.Type[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.InterfaceOnlyMockObjectFactory.TypeId"/> class.
+            </summary>
+            <param name="types">The types.</param>
+        </member>
+        <member name="T:NMock2.Monitoring.Invocation">
+            <summary>
+            Represents the invocation of a method on an object (receiver).
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invocation.Receiver">
+            <summary>
+            Holds the receiver providing the method.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invocation.Method">
+            <summary>
+            Holds the method that is being invoked.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invocation.Parameters">
+            <summary>
+            Holds the parameterlist of the invocation.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invocation.result">
+            <summary>
+            Holds the result of the invocation.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invocation.exception">
+            <summary>
+            Holds the exception to be thrown. When this field has been set, <see cref="F:NMock2.Monitoring.Invocation.isThrowing"/> will become true.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invocation.isThrowing">
+            <summary>
+            Holds a boolean value whether the method is throwing an exception or not.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.#ctor(System.Object,System.Reflection.MethodInfo,System.Object[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.Invocation"/> class.
+            </summary>
+            <param name="receiver">The receiver providing the method.</param>
+            <param name="method">The method.</param>
+            <param name="parameters">The parameters passed to the method..</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.InvokeOn(System.Object)">
+            <summary>
+            Invokes this invocation on the specified receiver and stores the result and exception
+            returns/thrown by the invocation.
+            </summary>
+            <param name="otherReceiver">The other receiver.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeTo(System.IO.TextWriter)">
+            <summary>
+            Describes this object to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The text writer the description is added to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.CheckReturnType(System.Object)">
+            <summary>
+            Checks the returnType of the initialized method if it is valid to be mocked.
+            </summary>
+            <param name="value">The return value to be checked.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.MethodIsProperty">
+            <summary>
+            Determines whether the initialized method is a property.
+            </summary>
+            <returns>
+            Returns true if initialized method is a property; false otherwise.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.MethodIsIndexerGetter">
+            <summary>
+            Determines whether the initialized method is an index getter.
+            </summary>
+            <returns>
+            Returns true if initialized method is an index getter; false otherwise.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.MethodIsIndexerSetter">
+            <summary>
+            Determines whether the initialized method is an index setter.
+            </summary>
+            <returns>
+            Returns true if initialized method is an index setter; false otherwise.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.MethodIsEventAdder">
+            <summary>
+            Determines whether the initialized method is an event adder.
+            </summary>
+            <returns>
+            Returns true if initialized method is an event adder; false otherwise.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.MethodIsEventRemover">
+            <summary>
+            Determines whether the initialized method is an event remover.
+            </summary>
+            <returns>
+            Returns true if initialized method is an event remover; false otherwise.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeAsProperty(System.IO.TextWriter)">
+            <summary>
+            Describes the property with parameters to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeAsIndexerGetter(System.IO.TextWriter)">
+            <summary>
+            Describes the index setter with parameters to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeAsIndexerSetter(System.IO.TextWriter)">
+            <summary>
+            Describes the index setter with parameters to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeNormalMethod(System.IO.TextWriter)">
+            <summary>
+            Describes the method with parameters to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.WriteTypeParams(System.IO.TextWriter)">
+            <summary>
+            Writes the generic parameters of the method to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.WriteParameterList(System.IO.TextWriter,System.Int32)">
+            <summary>
+            Writes the parameter list to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+            <param name="count">The count of parameters to describe.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeAsEventAdder(System.IO.TextWriter)">
+            <summary>
+            Describes the event adder to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeAsEventRemover(System.IO.TextWriter)">
+            <summary>
+            Describes the event remover to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The writer where the description is written to.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invocation.DescribeType(System.Object)">
+            <summary>
+            Describes the interfaces used for <see cref="M:NMock2.Monitoring.Invocation.DescribeTo(System.IO.TextWriter)"/>.
+            </summary>
+            <param name="obj">The object which interfaces to describe.</param>
+            <returns>
+            Returns a string containing the description of the given object's interfaces.
+            </returns>
+        </member>
+        <member name="P:NMock2.Monitoring.Invocation.Result">
+            <summary>
+            Gets or sets the result of the invocation.
+            </summary>
+            <value>The result.</value>
+        </member>
+        <member name="P:NMock2.Monitoring.Invocation.Exception">
+            <summary>
+            Gets or sets the exception that is thrown on the invocation.
+            </summary>
+            <value>The exception.</value>
+        </member>
+        <member name="P:NMock2.Monitoring.Invocation.IsThrowing">
+            <summary>
+            Gets a value indicating whether an exception is thrown an this invocation.
+            </summary>
+            <value>
+                <c>true</c> if this invocation is throwing an exception; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:NMock2.Monitoring.Invoker">
+            <summary>
+            An invoker invokes an <see cref="T:NMock2.Monitoring.Invocation"/> on a target if
+            it is responsible for the target type, otherwise the invocation is passed
+            to the next invoker in the 'next' chain.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invoker.targetType">
+            <summary>
+            Holds the type of the target. Can not be inferred from target because it could be a base type.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invoker.target">
+            <summary>
+            Holds the target.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.Invoker.next">
+            <summary>
+            Holds the next <see cref="T:NMock2.Monitoring.IInvokable"/> to pass the invocation to, 
+            if this instance is not responsible for the target type on an invocation.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.Invoker.#ctor(System.Type,System.Object,NMock2.Monitoring.IInvokable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.Invoker"/> class.
+            </summary>
+            <param name="targetType">Type of the target. Can not be inferred from <paramref name="target"/> 
+            because it could be a base type.</param>
+            <param name="target">The target.</param>
+            <param name="next">The next <see cref="T:NMock2.Monitoring.IInvokable"/> to pass the invocation to, 
+            if this instance is not responsible for the target type on an invocation.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.Invoker.Invoke(NMock2.Monitoring.Invocation)">
+            <summary>
+            Executes the <paramref name="invocation"/> on the target of this instance
+            if the targetType of this instance matches the invocation, otherwise the invocation
+            is passed to the next <see cref="T:NMock2.Monitoring.IInvokable"/> specified in the constructor.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.MockObjectInterceptor.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:NMock2.Monitoring.MockObjectInterceptor"/> class.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.MockObjectInterceptor.#ctor(NMock2.Mockery,NMock2.Internal.CompositeType,System.String,NMock2.MockStyle)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.MockObjectInterceptor"/> class.
+            </summary>
+            <param name="mockery">The mockery.</param>
+            <param name="mockedType">Type of the mocked.</param>
+            <param name="name">The name.</param>
+            <param name="mockStyle">The mock style.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.MultiInterfaceFactory.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.MultiInterfaceFactory"/> class.
+            </summary>
+            <param name="name">The name of the assembly to generate.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.MultiInterfaceFactory.TypeId.#ctor(System.Type[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.MultiInterfaceFactory.TypeId"/> class.
+            </summary>
+            <param name="types">The types.</param>
+        </member>
+        <member name="T:NMock2.Monitoring.ParameterList">
+            <summary>
+            Manages a list of parameters for a mocked method together with the parameter's values.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.ParameterList.method">
+            <summary>
+            Holds the method to be mocked.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.ParameterList.values">
+            <summary>
+            An array holding the values of the parameters.
+            </summary>
+        </member>
+        <member name="F:NMock2.Monitoring.ParameterList.isValueSet">
+            <summary>
+            Holds a boolean for each value if it was set or not.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.ParameterList.#ctor(System.Reflection.MethodInfo,System.Object[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.ParameterList"/> class.
+            </summary>
+            <param name="method">The method to be mocked.</param>
+            <param name="values">The values of the parameters.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.ParameterList.IsValueSet(System.Int32)">
+            <summary>
+            Determines whether the value specified by index was set.
+            </summary>
+            <param name="index">The index.</param>
+            <returns>
+            Returns <c>true</c> if value specified by index was set; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.ParameterList.MarkAllValuesAsSet">
+            <summary>
+            Marks all values as set.
+            </summary>
+        </member>
+        <member name="M:NMock2.Monitoring.ParameterList.CanValueBeSet(System.Int32)">
+            <summary>
+            Determines whether the parameter specified by index can be set.
+            </summary>
+            <param name="index">The index of the parameter.</param>
+            <returns>
+            Returns <c>true</c> if the parameter specified by index can be set; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:NMock2.Monitoring.ParameterList.GetParameterName(System.Int32)">
+            <summary>
+            Gets the parameter name by index.
+            </summary>
+            <param name="index">The index of the parameter name to get.</param>
+            <returns>
+            Returns the parameter name with the given index.
+            </returns>
+        </member>
+        <member name="P:NMock2.Monitoring.ParameterList.Count">
+            <summary>
+            Gets the number of values.
+            </summary>
+            <value>The number of values.</value>
+        </member>
+        <member name="P:NMock2.Monitoring.ParameterList.AsArray">
+            <summary>
+            Gets the values as array.
+            </summary>
+            <value>Values as array.</value>
+        </member>
+        <member name="P:NMock2.Monitoring.ParameterList.Item(System.Int32)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> with the specified index.
+            </summary>
+            <param name="index">The index of the value to be get or set.</param>
+            <value>
+            The value of a parameter specified by its <paramref name="index"/>.
+            </value>
+        </member>
+        <member name="M:NMock2.Monitoring.ProxiedObjectIdentity.#ctor(System.Object,NMock2.Monitoring.IInvokable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.ProxiedObjectIdentity"/> class.
+            </summary>
+            <param name="identityProvider">The identity provider.</param>
+            <param name="next">The next object to be invoked.</param>
+        </member>
+        <member name="M:NMock2.Monitoring.ProxyInvokableAdapter.#ctor(System.Type,NMock2.Monitoring.IInvokable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NMock2.Monitoring.ProxyInvokableAdapter"/> class.
+            </summary>
+            <param name="proxyType">Type of the proxy.</param>
+            <param name="invokable">The invokable.</param>
+        </member>
+        <member name="T:NMock2.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:NMock2.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:NMock2.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:NMock2.Return">
+            <summary>
+            Defines the return value of a mocked method call.
+            </summary>
+        </member>
+        <member name="M:NMock2.Return.Value(System.Object)">
+            <summary>
+            Returns a value as method return value.
+            </summary>
+            <param name="result">The result value.</param>
+            <returns>Action defining the return value of a method.</returns>
+        </member>
+        <member name="M:NMock2.Return.CloneOf(System.ICloneable)">
+            <summary>
+            Returns a clone as method return value.
+            </summary>
+            <param name="prototype">The prototype to clone.</param>
+            <returns>Action defining the return value of a method.</returns>
+        </member>
+        <member name="M:NMock2.Return.OutValue(System.String,System.Object)">
+            <summary>
+            Defines the value returned by an out parameter.
+            </summary>
+            <param name="parameterName">Name of the parameter.</param>
+            <param name="value">The value to return.</param>
+            <returns>Action defining the value of an out parameter.</returns>
+        </member>
+        <member name="M:NMock2.Return.OutValue(System.Int32,System.Object)">
+            <summary>
+            Defines the value returned by an out parameter.
+            </summary>
+            <param name="parameterIndex">Index of the parameter.</param>
+            <param name="value">The value to return.</param>
+            <returns>Action defining the value of an out parameter.</returns>
+        </member>
+        <member name="T:NMock2.Signal">
+            <summary>
+            Defines that an <see cref="M:NMock2.Signal.EventWaitHandle(System.Threading.EventWaitHandle)"/> should be signaled.
+            </summary>
+        </member>
+        <member name="M:NMock2.Signal.EventWaitHandle(System.Threading.EventWaitHandle)">
+            <summary>
+            Signals an <see cref="M:NMock2.Signal.EventWaitHandle(System.Threading.EventWaitHandle)"/> to synchronizes threads.
+            </summary>
+            <param name="signal">The signal to set.</param>
+            <returns>Action that signals an <see cref="M:NMock2.Signal.EventWaitHandle(System.Threading.EventWaitHandle)"/>.</returns>
+        </member>
+        <member name="T:NMock2.Stub">
+            <summary>
+            Defines stubs for interfaces. Stubs are used when it does not matter how many times (even 0) something is called.
+            A stub is the same as an "at least once" expecation.
+            Normally you use stubs on mocks that just provide information to your object under test.
+            </summary>
+        </member>
+        <member name="M:NMock2.Stub.On(System.Object)">
+            <summary>
+            Defines the mock that is stubbed.
+            </summary>
+            <param name="mock">The mock to stub.</param>
+            <returns>Method syntax defining the method, property or event to stub.</returns>
+        </member>
+        <member name="T:NMock2.Throw">
+            <summary>
+            Defines action for throwing actions.
+            </summary>
+        </member>
+        <member name="M:NMock2.Throw.Exception(System.Exception)">
+            <summary>
+            Throws an exeception when the action is invoked.
+            </summary>
+            <param name="exception">The exception to throw when invoked.</param>
+            <returns>Returns a new instance of the <see cref="T:NMock2.Actions.ThrowAction"/> class.</returns>
+        </member>
+        <member name="T:NMock2.Verify">
+            <summary>
+            Verify that a condition is met.
+            </summary>
+        </member>
+        <member name="M:NMock2.Verify.That(System.Object,NMock2.Matcher,System.String,System.Object[])">
+            <summary>
+            Verifies that the <paramref name="actualValue"/> is matched by the <paramref name="matcher"/>.
+            </summary>
+            <param name="actualValue">The actual value to match.</param>
+            <param name="matcher">The matcher.</param>
+            <param name="message">The error message.</param>
+            <param name="formatArgs">The format args for the error message.</param>
+            <exception cref="T:NMock2.Internal.ExpectationException">Thrown if value does not match.</exception>
+        </member>
+        <member name="M:NMock2.Verify.That(System.Object,NMock2.Matcher)">
+            <summary>
+            Verifies that the <paramref name="actualValue"/> is matched by the <paramref name="matcher"/>.
+            </summary>
+            <param name="actualValue">The actual value.</param>
+            <param name="matcher">The matcher.</param>
+            <exception cref="T:NMock2.Internal.ExpectationException">Thrown if value does not match.</exception>
+        </member>
+        <member name="M:NMock2.Verify.WriteDescriptionOfFailedMatch(System.IO.TextWriter,System.Object,NMock2.Matcher)">
+            <summary>
+            Writes the description of a failed match to the specified <paramref name="writer"/>.
+            </summary>
+            <param name="writer">The <see cref="T:System.IO.TextWriter"/> where the description is written to.</param>
+            <param name="actualValue">The actual value to be written.</param>
+            <param name="matcher">The matcher which is used for the expected value to be written.</param>
+        </member>
+    </members>
+</doc>

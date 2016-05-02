@@ -1,0 +1,120 @@
+Version 2.1 Release (20-DEC-2009)
+---------------------------------
+This will be the very last official future increased release of NMock2.
+
+The current development team of NMock2 will not actively continue to develop NMock2. 
+We’ll still provide basic support (bug fixes) but no new features. The reason why we 
+have lost interest is that Moq has gained a lot of momentum and has a much broader 
+community support. Furthermore, Moq provides some basic improvements that we cannot 
+simply add to NMock2: besides the type safe, refactoring friendlier syntax, it allows 
+very clean AAA (Arrange, Act, Assert) unit tests. On the other side, there exists the 
+NMock3 project on CodePlex that adds a type-safe syntax wrapper around NMock2. Check 
+it out, when you already use NMock2 in your project.
+quote from Urs' post on http://www.planetgeek.ch/2009/12/03/nmock2-release-with-mockstyle-stub/
+
+It was a great time and experience and we want to thank all participants for their feedback, 
+engagement and work.
+
+The NMock2 development team:
+Thomas Weingartner
+Urs Enzler
+Peter Wain
+Hanspeter Stalder
+
+
+Here's an excerpt of the new things we added since release 2.0:
+
+FIX: No wrap of Exception in VerifyAllExpectationsHaveBeenMet. -> Same error message in ReSharper Unit-Testing environment either with VerifyAllExpectationsHaveBeenMet or Dispose of the Mockery.
+NEW: added Mockery.ClearExpectation to allow removing expectations on a mock
+NEW: Implemented new mock definition syntax for use with Mockery.NewMock() methods.
+Resulted in moving a chunk of mock definition related code out of Mockery and into MockBuilder.
+NEW: added Is.TypeOf<T> for easier matching of types.
+NEW: Feature Request 2685001: Mix-ins
+Can now generate mocks that implement multiple interfaces that are specified at run-time. Additionally, a class type may be included in the mock instance.
+To help accommodate this, introduced CompositeType class that represents one or more types, and provides facilities for interacting with and querying the contained types. This class was also a more logical home for some reflection-based code that was previously living on the Mockery.
+FIX: Cleanup to bring down StyleCop warnings.
+NEW: added generic matcher
+NEW: new event fire syntax (Fire.On(mock).Event("eventName").With(arguments)) to support NMock2 ReSharper plug-in
+NEW: Stubs (default values for unexpected calls) are now supported (MockStyle.Stub).
+NEW: Added nice coverage report.
+FIX: Fixed issue where mocking a non-virtual method on a class that happened to be an implementation of an interface method would not raise an ArgumentException.
+
+Enjoy.
+
+
+Version 2.0 Release (04-MAY-2009)
+---------------------------------
+This is the official release containing the ability to mock classes.
+After a two month phase of testing the Release Candidate 1 in live projects,
+we're pretty sure the release will work well. Thanks to Peter we increased the
+unit test coverage up to 97% of LOC. And we've also fixed another few bugs.
+
+Enjoy.
+
+
+NEW: Integrated unit test coverage --> have a look at NMock2-coverage-report.html after you've ran integrate.cmd
+
+Do you wanna know where the coverage is missing: start \tools\PartCover.Browser.exe and open NMock2.coverage.xml file.
+
+
+Version 2.0 RC1 Update (04-MAR-2009)
+------------------------------------
+We only removed the unneeded Castle assemblies from the distribution.
+
+Version 2.0 RC1 (18-FEB-2009)
+-----------------------------
+
+NEW: Creation of mocks from classes
+Other new things and fixes will be updated later...
+
+
+Version 1.2.3262 (06-DEC-2008)
+------------------------------
+
+NEW: Added generic CollectAction, DelegateAction and LazyReturnAction
+NEW: Improved message of exception that is thrown on attempt to mock a class
+NEW: Added check that mocked interface does not contain a ToString() declaration. 
+     This would lead to an exception on the first Expect statement. 
+     Exception message is now much clearer.
+FIX: Fixed behavior if an exception is thrown within an event handler that was called by Fire.Event(...)
+     Exception was wrapped by TargetInvocationException.
+
+
+Version 1.1.3164 (30-AUG-2008)
+---------------------------
+
+NEW: Added default expectation (Expect.On instead of Expect.AtLeastOnce.On).
+FIX: fixed issue 1912662 of NMock
+NEW: added shortcut for defining out parameter values on Return class.
+NEW: added support for comments when Will is used on expectations.
+NEW: Unexpected registrations and unregistrations of events show now the event name in the error message.
+NEW: Error message that is shown if the result value of an expectation can not be casted to the return type of the 
+     method/property contains now the list of all interfaces that the type of the return value implements 
+     (class type was included already).
+
+
+Version 1.0.3050 (09-MAY-2008)
+------------------------------
+This is the first official release of NMock2.
+The base for this release was the CVS repository (20-Jan-2008) of the NMock project.
+This version is designed for .NET 2.0 only.
+
+
+The changes in detail:
+- NEW: updated cheat sheet as pdf (urs)
+- NEW: added support for thread synchronization on expectations (urs)
+- NEW: added overload for generic NewMock that takes the name as a parameter (used to mock ToString method) (urs)
+- NEW: added support for expectations on type params (expectations can distinguish methods only by their type params now) (urs)
+- BUG: fixed bug that prevented expectations that return null as method return value (changed initial result value to Missing.Value) (urs)
+- NEW: Firing an event that does not exist on the mock now results in an ArgumentException (urs)
+- NEW: added the possibility to add comments to expectations (urs)
+- NEW: if the return value on an expectation is missing then an InvalidOperationException with message "You have to set the return value for method '<methodname>' on '<type>' mock." is thrown now (urs)
+- NEW: NMock2.dll is signed now (thomas)
+- NEW: added AcceptanceTest showing how to mock IEnumerable.GetEnumerator() (urs)
+- NEW: added OutParamAcceptanceTest, additional ErrorCheckingAcceptanceTest (thomas)
+- NEW: added GenericOutParameterAcceptanceTest (thomas)
+- NEW: added Excpect.Once.On().EventAdd method overload without delegate matcher (urs)
+- NEW: added code documentation to user visible interfaces (urs)
+- NEW: added support for generic parameter and generic return values to MockObjectFactory (thomas)
+- NEW: created NAnt build file and added batch files for your and our convenience (thomas)
+- NEW: created Visual Studio 2005 Solution and Projects

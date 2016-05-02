@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09FE0BC2-3362-42A1-87E9-C7FB95D43518}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OffAmazonPaymentsServiceTest</RootNamespace>
+    <AssemblyName>OffAmazonPaymentsServiceTest</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.core">
+      <HintPath>..\lib\internal\NUnit-2.6.2\bin\lib\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\lib\internal\NUnit-2.6.2\bin\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks">
+      <HintPath>..\lib\internal\NUnit-2.6.2\bin\framework\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\AuthorizeOnBillingAgreementRequestTest.cs" />
+    <Compile Include="Test\AuthorizeOnBillingAgreementResponseTest.cs" />
+    <Compile Include="Test\AuthorizeRequestTest.cs" />
+    <Compile Include="Test\AuthorizeResponseTest.cs" />
+    <Compile Include="Test\CancelOrderReferenceRequestTest.cs" />
+    <Compile Include="Test\CancelOrderReferenceResponseTest.cs" />
+    <Compile Include="Test\CaptureRequestTest.cs" />
+    <Compile Include="Test\CaptureResponseTest.cs" />
+    <Compile Include="Test\ClientIdTest.cs" />
+    <Compile Include="Test\CloseAuthorizationRequestTest.cs" />
+    <Compile Include="Test\CloseAuthorizationResponseTest.cs" />
+    <Compile Include="Test\CloseBillingAgreementRequestTest.cs" />
+    <Compile Include="Test\CloseBillingAgreementResponseTest.cs" />
+    <Compile Include="Test\CloseOrderReferenceRequestTest.cs" />
+    <Compile Include="Test\CloseOrderReferenceResponseTest.cs" />
+    <Compile Include="Test\ConfirmBillingAgreementRequestTest.cs" />
+    <Compile Include="Test\ConfirmBillingAgreementResponseTest.cs" />
+    <Compile Include="Test\ConfirmOrderReferenceRequestTest.cs" />
+    <Compile Include="Test\ConfirmOrderReferenceResponseTest.cs" />
+    <Compile Include="Test\CertCNTest.cs" />
+    <Compile Include="Test\ReverseProviderCreditRequestTest.cs" />
+    <Compile Include="Test\ReverseProviderCreditResponseTest.cs" />
+    <Compile Include="Test\GetProviderCreditReversalDetailsRequestTest.cs" />
+    <Compile Include="Test\GetProviderCreditReversalDetailsResponseTest.cs" />
+    <Compile Include="Test\GetProviderCreditDetailsRequestTest.cs" />
+    <Compile Include="Test\GetProviderCreditDetailsResponseTest.cs" />
+    <Compile Include="Test\CreateOrderReferenceForIdRequestTest.cs" />
+    <Compile Include="Test\CreateOrderReferenceForIdResponseTest.cs" />
+    <Compile Include="Test\CurrencyCodeTest.cs" />
+    <Compile Include="Test\ErrorResponseTest.cs" />
+    <Compile Include="Test\GetAuthorizationDetailsRequestTest.cs" />
+    <Compile Include="Test\GetAuthorizationDetailsResponseTest.cs" />
+    <Compile Include="Test\GetBillingAgreementDetailsRequestTest.cs" />
+    <Compile Include="Test\GetBillingAgreementDetailsResponseTest.cs" />
+    <Compile Include="Test\GetCaptureDetailsRequestTest.cs" />
+    <Compile Include="Test\GetCaptureDetailsResponseTest.cs" />
+    <Compile Include="Test\GetOrderReferenceDetailsRequestTest.cs" />
+    <Compile Include="Test\GetOrderReferenceDetailsResponseTest.cs" />
+    <Compile Include="Test\GetRefundDetailsRequestTest.cs" />
+    <Compile Include="Test\GetRefundDetailsResponseTest.cs" />
+    <Compile Include="Test\ModelTest.cs" />
+    <Compile Include="Test\RefundRequestTest.cs" />
+    <Compile Include="Test\RefundResponseTest.cs" />
+    <Compile Include="Test\ServiceURLTest.cs" />
+    <Compile Include="Test\SetBillingAgreementDetailsRequestTest.cs" />
+    <Compile Include="Test\SetBillingAgreementDetailsResponseTest.cs" />
+    <Compile Include="Test\SetOrderReferenceDetailsRequestTest.cs" />
+    <Compile Include="Test\SetOrderReferenceDetailsResponseTest.cs" />
+    <Compile Include="Test\ValidateBillingAgreementRequestTest.cs" />
+    <Compile Include="Test\ValidateBillingAgreementResponseTest.cs" />
+    <Compile Include="Test\WidgetUrlTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="xml\AuthorizeOnBillingAgreementRequest.xml" />
+    <Content Include="xml\AuthorizeOnBillingAgreementResponse.xml" />
+    <Content Include="xml\AuthorizeRequest.xml" />
+    <Content Include="xml\AuthorizeResponse.xml" />
+    <Content Include="xml\CancelOrderReferenceRequest.xml" />
+    <Content Include="xml\CancelOrderReferenceResponse.xml" />
+    <Content Include="xml\CaptureRequest.xml" />
+    <Content Include="xml\CaptureResponse.xml" />
+    <Content Include="xml\CloseAuthorizationRequest.xml" />
+    <Content Include="xml\CloseAuthorizationResponse.xml" />
+    <Content Include="xml\CloseBillingAgreementRequest.xml" />
+    <Content Include="xml\CloseBillingAgreementResponse.xml" />
+    <Content Include="xml\CloseOrderReferenceRequest.xml" />
+    <Content Include="xml\CloseOrderReferenceResponse.xml" />
+    <Content Include="xml\ConfirmBillingAgreementRequest.xml" />
+    <Content Include="xml\ConfirmBillingAgreementResponse.xml" />
+    <Content Include="xml\ConfirmOrderReferenceRequest.xml" />
+    <Content Include="xml\ConfirmOrderReferenceResponse.xml" />
+    <Content Include="xml\ReverseProviderCreditRequest.xml" />
+    <Content Include="xml\ReverseProviderCreditResponse.xml" />
+    <Content Include="xml\GetProviderCreditReversalDetailsRequest.xml" />
+    <Content Include="xml\GetProviderCreditReversalDetailsResponse.xml" />
+    <Content Include="xml\GetProviderCreditDetailsRequest.xml" />
+    <Content Include="xml\GetProviderCreditDetailsResponse.xml" />
+    <Content Include="xml\CreateOrderReferenceForIdRequest.xml" />
+    <Content Include="xml\CreateOrderReferenceForIdResponse.xml" />
+    <Content Include="xml\ErrorResponse.xml" />
+    <Content Include="xml\GetAuthorizationDetailsRequest.xml" />
+    <Content Include="xml\GetAuthorizationDetailsResponse.xml" />
+    <Content Include="xml\GetBillingAgreementDetailsRequest.xml" />
+    <Content Include="xml\GetBillingAgreementDetailsResponse.xml" />
+    <Content Include="xml\GetCaptureDetailsRequest.xml" />
+    <Content Include="xml\GetCaptureDetailsResponse.xml" />
+    <Content Include="xml\GetOrderReferenceDetailsRequest.xml" />
+    <Content Include="xml\GetOrderReferenceDetailsResponse.xml" />
+    <Content Include="xml\GetRefundDetailsRequest.xml" />
+    <Content Include="xml\GetRefundDetailsResponse.xml" />
+    <Content Include="xml\RefundRequest.xml" />
+    <Content Include="xml\RefundResponse.xml" />
+    <Content Include="xml\SetBillingAgreementDetailsRequest.xml" />
+    <Content Include="xml\SetBillingAgreementDetailsResponse.xml" />
+    <Content Include="xml\SetOrderReferenceDetailsRequest.xml" />
+    <Content Include="xml\SetOrderReferenceDetailsResponse.xml" />
+    <Content Include="xml\ValidateBillingAgreementRequest.xml" />
+    <Content Include="xml\ValidateBillingAgreementResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OffAmazonPaymentsService\OffAmazonPaymentsService.csproj">
+      <Project>{580855e8-38f5-3eb3-9614-34707fbc5be6}</Project>
+      <Name>OffAmazonPaymentsService</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\OffAmazonPaymentsService.Sample\App.config">
+      <Link>App.config</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

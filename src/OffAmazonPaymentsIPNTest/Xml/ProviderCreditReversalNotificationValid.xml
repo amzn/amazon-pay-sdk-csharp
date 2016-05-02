@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <ProviderCreditReversalNotification xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ProviderCreditReversalDetails>
+      <AmazonProviderCreditReversalId>S01-1678873-0904884-Q066694</AmazonProviderCreditReversalId>
+      <SellerId>A0677458196RUTCRWHDJQ</SellerId>
+      <ProviderSellerId>A08593053M41F7TQ7YR7W</ProviderSellerId>
+      <CreditReversalReferenceId>S0116788730904884C093921r123</CreditReversalReferenceId>
+      <CreditReversalAmount>
+        <Amount>0.03</Amount>
+        <CurrencyCode>USD</CurrencyCode>
+      </CreditReversalAmount>
+      <CreationTimestamp>2014-04-26T03:04:04.133Z</CreationTimestamp>
+      <CreditReversalStatus>
+        <State>Completed</State>
+        <LastUpdateTimestamp>2014-04-26T03:04:37.073Z</LastUpdateTimestamp>
+      </CreditReversalStatus>
+      <CreditReversalNote>TestNote</CreditReversalNote>
+    </ProviderCreditReversalDetails>
+  </ProviderCreditReversalNotification>

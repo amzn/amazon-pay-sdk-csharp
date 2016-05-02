@@ -1,0 +1,1623 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.36" Name="NMock2 FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="True">c:\program files\microsoft fxcop 1.36\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/../bin/Debug/NMock2.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="1.36">
+  <Targets>
+   <Target Name="$(ProjectDir)/../bin/Debug/NMock2.dll">
+    <Modules>
+     <Module Name="nmock2.dll">
+      <Messages>
+       <Message TypeName="MarkAssembliesWithAssemblyVersion" Category="Microsoft.Design" CheckId="CA1016" Created="2008-10-18 11:54:21Z">
+        <Issue>
+         <Item>'NMock2.dll'</Item>
+        </Issue>
+       </Message>
+       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Created="2008-10-18 11:54:21Z">
+        <Issue>
+         <Item>'NMock2.dll'</Item>
+        </Issue>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="NMock2">
+        <Types>
+         <Type Name="Expect">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Expect'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Fire">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Fire'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Has">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Has'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Is">
+          <Messages>
+           <Message Id="Is" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>'Is'</Item>
+             <Item>Is</Item>
+            </Issue>
+           </Message>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Is'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Anything">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Is.Anything'</Item>
+               <Item>'Matcher'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Nothing">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Is.Nothing'</Item>
+               <Item>'Matcher'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#NotNull">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Is.NotNull'</Item>
+               <Item>'Matcher'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Null">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Is.Null'</Item>
+               <Item>'Matcher'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Out">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Is.Out'</Item>
+               <Item>'Matcher'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Matcher">
+          <Members>
+           <Member Name="#Matches(System.Object)">
+            <Messages>
+             <Message Id="o" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'Matcher.Matches(object)'</Item>
+               <Item>'o'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#op_BitwiseAnd(NMock2.Matcher,NMock2.Matcher)">
+            <Messages>
+             <Message Id="m" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameter">
+               <Item>'Matcher.operator &amp;(Matcher, Matcher)'</Item>
+               <Item>m</Item>
+               <Item>'m1'</Item>
+              </Issue>
+              <Issue Name="MemberParameter">
+               <Item>'Matcher.operator &amp;(Matcher, Matcher)'</Item>
+               <Item>m</Item>
+               <Item>'m2'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>BitwiseAnd</Item>
+               <Item>'Matcher.operator &amp;(Matcher, Matcher)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#op_BitwiseOr(NMock2.Matcher,NMock2.Matcher)">
+            <Messages>
+             <Message Id="m" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameter">
+               <Item>'Matcher.operator |(Matcher, Matcher)'</Item>
+               <Item>m</Item>
+               <Item>'m1'</Item>
+              </Issue>
+              <Issue Name="MemberParameter">
+               <Item>'Matcher.operator |(Matcher, Matcher)'</Item>
+               <Item>m</Item>
+               <Item>'m2'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>BitwiseOr</Item>
+               <Item>'Matcher.operator |(Matcher, Matcher)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#op_LogicalNot(NMock2.Matcher)">
+            <Messages>
+             <Message Id="m" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'Matcher.operator !(Matcher)'</Item>
+               <Item>'m'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>LogicalNot</Item>
+               <Item>'Matcher.operator !(Matcher)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Mockery">
+          <Messages>
+           <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-10-18 11:54:21Z">
+            <Issue Name="ProvideDisposeBool">
+             <Item>'Mockery'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#DefaultNameFor(System.Type)">
+            <Messages>
+             <Message Id="System.String.ToLower" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'string.ToLower()'</Item>
+               <Item>'Mockery.DefaultNameFor(Type)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.ToLower()'</Item>
+               <Item>'Mockery.DefaultNameFor(Type)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Dispose()">
+            <Messages>
+             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Created="2008-10-18 11:54:21Z">
+              <Issue Name="NotCalled">
+               <Item>'Mockery.Dispose()'</Item>
+               <Item>'GC.SuppressFinalize(object)'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-10-18 11:54:21Z">
+              <Issue Name="DisposeImplementation">
+               <Item>'Mockery.Dispose()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FirstLowerCaseChar(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'Mockery.FirstLowerCaseChar(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#NewMock`1()">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Mockery.NewMock&lt;InterfaceOfMock&gt;()'</Item>
+               <Item>'InterfaceOfMock'</Item>
+              </Issue>
+             </Message>
+             <Message Id="T" TypeName="IdentifiersShouldHaveCorrectPrefix" Category="Microsoft.Naming" CheckId="CA1715" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue Name="MethodTypeParameter">
+               <Item>'Mockery.NewMock&lt;InterfaceOfMock&gt;()'</Item>
+               <Item>'InterfaceOfMock'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#NewMock`1(System.String)">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Mockery.NewMock&lt;InterfaceOfMock&gt;(string)'</Item>
+               <Item>'InterfaceOfMock'</Item>
+              </Issue>
+             </Message>
+             <Message Id="T" TypeName="IdentifiersShouldHaveCorrectPrefix" Category="Microsoft.Naming" CheckId="CA1715" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue Name="MethodTypeParameter">
+               <Item>'Mockery.NewMock&lt;InterfaceOfMock&gt;(string)'</Item>
+               <Item>'InterfaceOfMock'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Mockery+Popper">
+          <Members>
+           <Member Name="#Dispose()">
+            <Messages>
+             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Created="2008-10-18 11:54:21Z">
+              <Issue Name="NotCalled">
+               <Item>'Mockery.Popper.Dispose()'</Item>
+               <Item>'GC.SuppressFinalize(object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Return">
+          <Messages>
+           <Message Id="Return" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>'Return'</Item>
+             <Item>Return</Item>
+            </Issue>
+           </Message>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Return'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Signal">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Signal'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Stub">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Stub'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Throw">
+          <Messages>
+           <Message Id="Throw" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>'Throw'</Item>
+             <Item>Throw</Item>
+            </Issue>
+           </Message>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Throw'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Exception(System.Exception)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Verify">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'Verify'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="NMock2.Actions">
+        <Types>
+         <Type Name="CollectAction">
+          <Members>
+           <Member Name="#.ctor(System.Int32)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'CollectAction.CollectAction(int)'</Item>
+               <Item>'CollectAction.collectedArgumentValue'</Item>
+               <Item>'object'</Item>
+               <Item>null</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ResultSynthesizer">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ResultSynthesizer'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetAction(System.Type,System.Collections.Hashtable)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'ResultSynthesizer.GetAction(Type, Hashtable)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="NMock2.Internal">
+        <Types>
+         <Type Name="BuildableExpectation">
+          <Messages>
+           <Message Id="Buildable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>Buildable</Item>
+             <Item>'BuildableExpectation'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#.ctor(System.String,NMock2.Matcher,NMock2.Matcher)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'BuildableExpectation.BuildableExpectation(string, Matcher, Matcher)'</Item>
+               <Item>'BuildableExpectation.callCount'</Item>
+               <Item>'int'</Item>
+               <Item>0</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsEventAccessorMethod(NMock2.Monitoring.Invocation)">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'BuildableExpectation.IsEventAccessorMethod(Invocation)'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'BuildableExpectation.IsEventAccessorMethod(Invocation)'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MockEventHandler(NMock2.Monitoring.Invocation,NMock2.Internal.IMockObject)">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'BuildableExpectation.MockEventHandler(Invocation, IMockObject)'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'BuildableExpectation.MockEventHandler(Invocation, IMockObject)'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DescriptionWriter">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message Id="System.IO.StringWriter.#ctor" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'StringWriter.StringWriter()'</Item>
+               <Item>'DescriptionWriter.DescriptionWriter()'</Item>
+               <Item>'StringWriter.StringWriter(IFormatProvider)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FormatString(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'DescriptionWriter.FormatString(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FormatValue(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'value'</Item>
+               <Item>'string'</Item>
+               <Item>'DescriptionWriter.FormatValue(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EventInvocationBuilder">
+          <Members>
+           <Member Name="#On(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'o'</Item>
+               <Item>'IMockObject'</Item>
+               <Item>'EventInvocationBuilder.On(object)'</Item>
+               <Item>isint</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ExpectationBuilder">
+          <Members>
+           <Member Name="#.ctor(System.String,NMock2.Matcher,NMock2.Matcher)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ExpectationBuilder.ExpectationBuilder(string, Matcher, Matcher)'</Item>
+               <Item>'ExpectationBuilder.mockObject'</Item>
+               <Item>'IMockObject'</Item>
+               <Item>null</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ArgumentMatchers(System.Object[])">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Local">
+               <Item>'o'</Item>
+               <Item>'Matcher'</Item>
+               <Item>'ExpectationBuilder.ArgumentMatchers(object[])'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Get">
+            <Accessors>
+             <Accessor Name="#get_Get()">
+              <Messages>
+               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2008-10-18 11:54:21Z" FixCategory="Breaking">
+                <Issue Name="PropertyGetter" Level="Warning">
+                 <Item>'ExpectationBuilder.Get.get()'</Item>
+                 <Item>'ArgumentException'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#GetProperty(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ExpectationBuilder.GetProperty(string)'</Item>
+               <Item>'propertyName'</Item>
+               <Item>'name'</Item>
+               <Item>'IMethodSyntax.GetProperty(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Method(NMock2.Matcher,System.Type[])">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ExpectationBuilder.Method(Matcher, params Type[])'</Item>
+               <Item>'methodMatcher'</Item>
+               <Item>'nameMatcher'</Item>
+               <Item>'IMethodSyntax.Method(Matcher, params Type[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Method(System.String,System.Type[])">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ExpectationBuilder.Method(string, params Type[])'</Item>
+               <Item>'methodName'</Item>
+               <Item>'name'</Item>
+               <Item>'IMethodSyntax.Method(string, params Type[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#On(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'receiver'</Item>
+               <Item>'IMockObject'</Item>
+               <Item>'ExpectationBuilder.On(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ExpectationBuilder.On(object)'</Item>
+               <Item>'receiver'</Item>
+               <Item>'o'</Item>
+               <Item>'IReceiverSyntax.On(object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Set">
+            <Accessors>
+             <Accessor Name="#get_Set()">
+              <Messages>
+               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2008-10-18 11:54:21Z" FixCategory="Breaking">
+                <Issue Name="PropertyGetter" Level="Warning">
+                 <Item>'ExpectationBuilder.Set.get()'</Item>
+                 <Item>'ArgumentException'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#SetProperty(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ExpectationBuilder.SetProperty(string)'</Item>
+               <Item>'propertyName'</Item>
+               <Item>'name'</Item>
+               <Item>'IMethodSyntax.SetProperty(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ExpectationException">
+          <Members>
+           <Member Name="#.ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <Messages>
+             <Message TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Accessibility">
+               <Item>'ExpectationException.ExpectationException(SerializationInfo, StreamingContext)'</Item>
+               <Item>protected</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IMockObject">
+          <Members>
+           <Member Name="#RaiseEvent(System.String,System.Object[])">
+            <Messages>
+             <Message Id="RaiseEvent" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IMockObject.RaiseEvent(string, params object[])'</Item>
+               <Item>RaiseEvent</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'IMockObject.RaiseEvent(string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MockObject">
+          <Members>
+           <Member Name="#RaiseEvent(System.String,System.Object[])">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'MockObject.RaiseEvent(string, params object[])'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="OrderedExpectations">
+          <Members>
+           <Member Name="#.ctor(System.Int32)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'OrderedExpectations.OrderedExpectations(int)'</Item>
+               <Item>'OrderedExpectations.current'</Item>
+               <Item>'int'</Item>
+               <Item>0</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Indent(System.IO.TextWriter,System.Int32)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'OrderedExpectations.Indent(TextWriter, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UnorderedExpectations">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'UnorderedExpectations.UnorderedExpectations()'</Item>
+               <Item>'UnorderedExpectations.depth'</Item>
+               <Item>'int'</Item>
+               <Item>0</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Indent(System.IO.TextWriter,System.Int32)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'UnorderedExpectations.Indent(TextWriter, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="NMock2.Matchers">
+        <Types>
+         <Type Name="ArgumentsMatcher">
+          <Members>
+           <Member Name="#Matches(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'o'</Item>
+               <Item>'Invocation'</Item>
+               <Item>'ArgumentsMatcher.Matches(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ArgumentsMatcher+OutMatcher">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-10-18 11:54:21Z">
+            <Issue>
+             <Item>'ArgumentsMatcher.OutMatcher'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="BinaryOperator">
+          <Members>
+           <Member Name="#left">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'BinaryOperator.left'</Item>
+               <Item>'Matcher'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'BinaryOperator.left'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#right">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'BinaryOperator.right'</Item>
+               <Item>'Matcher'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'BinaryOperator.right'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ComparisonMatcher">
+          <Members>
+           <Member Name="#.ctor(System.IComparable,System.Int32,System.Int32)">
+            <Messages>
+             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2008-10-18 11:54:21Z">
+              <Issue Name="IncorrectParameterName">
+               <Item>'ComparisonMatcher.ComparisonMatcher(IComparable, int, int)'</Item>
+               <Item>comparisonResult1, comparisonResult2</Item>
+               <Item>'paramName'</Item>
+               <Item>'ArgumentException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ElementMatcher">
+          <Members>
+           <Member Name="#Matches(System.Object)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ElementMatcher.Matches(object)'</Item>
+               <Item>'actual'</Item>
+               <Item>'o'</Item>
+               <Item>'Matcher.Matches(object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EqualMatcher">
+          <Members>
+           <Member Name="#AreEqual(System.Object,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'o1'</Item>
+               <Item>'Array'</Item>
+               <Item>'EqualMatcher.AreEqual(object, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'o1'</Item>
+               <Item>'IList'</Item>
+               <Item>'EqualMatcher.AreEqual(object, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'o2'</Item>
+               <Item>'Array'</Item>
+               <Item>'EqualMatcher.AreEqual(object, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'o2'</Item>
+               <Item>'IList'</Item>
+               <Item>'EqualMatcher.AreEqual(object, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ArrayDimensionsEqual(System.Array,System.Array)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'EqualMatcher.ArrayDimensionsEqual(Array, Array)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Matches(System.Object)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'EqualMatcher.Matches(object)'</Item>
+               <Item>'actual'</Item>
+               <Item>'o'</Item>
+               <Item>'Matcher.Matches(object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FieldMatcher">
+          <Members>
+           <Member Name="#DescribeTo(System.IO.TextWriter)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'FieldMatcher.DescribeTo(TextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="GenericMethodTypeParametersMatcher">
+          <Members>
+           <Member Name="#Matches(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'o'</Item>
+               <Item>'Invocation'</Item>
+               <Item>'GenericMethodTypeParametersMatcher.Matches(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OutParameter">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'GenericMethodTypeParametersMatcher.OutParameter'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MethodNameMatcher">
+          <Members>
+           <Member Name="#Matches(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'o'</Item>
+               <Item>'MethodInfo'</Item>
+               <Item>'MethodNameMatcher.Matches(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PropertyMatcher">
+          <Members>
+           <Member Name="#DescribeTo(System.IO.TextWriter)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'PropertyMatcher.DescribeTo(TextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="StringContainsMatcher">
+          <Members>
+           <Member Name="#Matches(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'o'</Item>
+               <Item>'string'</Item>
+               <Item>'StringContainsMatcher.Matches(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.IndexOf(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'StringContainsMatcher.Matches(object)'</Item>
+               <Item>'string.IndexOf(string)'</Item>
+               <Item>'string.IndexOf(string, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="NMock2.Monitoring">
+        <Types>
+         <Type Name="IInvokable">
+          <Messages>
+           <Message Id="Invokable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>Invokable</Item>
+             <Item>'IInvokable'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Invocation">
+          <Members>
+           <Member Name="#.ctor(System.Object,System.Reflection.MethodInfo,System.Object[])">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.Invocation(object, MethodInfo, object[])'</Item>
+               <Item>'Invocation.exception'</Item>
+               <Item>'Exception'</Item>
+               <Item>null</Item>
+              </Issue>
+              <Issue>
+               <Item>'Invocation.Invocation(object, MethodInfo, object[])'</Item>
+               <Item>'Invocation.isThrowing'</Item>
+               <Item>'bool'</Item>
+               <Item>false</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#DescribeType(System.Object)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'Invocation.DescribeType(object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Method">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.Method'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MethodIsEventAdder()">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.MethodIsEventAdder()'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MethodIsEventRemover()">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.MethodIsEventRemover()'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MethodIsProperty()">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.MethodIsProperty()'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'Invocation.MethodIsProperty()'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Parameters">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.Parameters'</Item>
+               <Item>'ParameterList'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.Parameters'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Receiver">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'Invocation.Receiver'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MockObjectFactory">
+          <Members>
+           <Member Name="#DefineMethod(System.Reflection.Emit.TypeBuilder,System.Reflection.MethodInfo,System.Boolean)">
+            <Messages>
+             <Message Id="explicitImplementation" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'explicitImplementation'</Item>
+               <Item>'MockObjectFactory.DefineMethod(TypeBuilder, MethodInfo, bool)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#DefineParameters(System.Reflection.Emit.MethodBuilder,System.Reflection.MethodInfo)">
+            <Messages>
+             <Message Id="pb" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'MockObjectFactory.DefineParameters(MethodBuilder, MethodInfo)'</Item>
+               <Item>'pb'</Item>
+               <Item>'ParameterBuilder'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MockObjectFactory+TypeId">
+          <Members>
+           <Member Name="#Equals(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'obj'</Item>
+               <Item>'MockObjectFactory.TypeId'</Item>
+               <Item>'MockObjectFactory.TypeId.Equals(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MultiInterfaceFactory">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>'MultiInterfaceFactory'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Id(System.Type[])">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-10-18 11:54:21Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'MultiInterfaceFactory.Id(params Type[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MultiInterfaceFactory+TypeId">
+          <Members>
+           <Member Name="#Equals(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Parameter">
+               <Item>'obj'</Item>
+               <Item>'MultiInterfaceFactory.TypeId'</Item>
+               <Item>'MultiInterfaceFactory.TypeId.Equals(object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ParameterList">
+          <Members>
+           <Member Name="#IsValueSet(System.Int32)">
+            <Messages>
+             <Message Id="i" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'ParameterList.IsValueSet(int)'</Item>
+               <Item>'i'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Item[System.Int32]">
+            <Messages>
+             <Message Id="i" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'ParameterList.this[int]'</Item>
+               <Item>'i'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+            <Accessors>
+             <Accessor Name="#get_Item(System.Int32)">
+              <Messages>
+               <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-10-18 11:54:21Z">
+                <Issue>
+                 <Item>'string.Format(string, object)'</Item>
+                 <Item>'ParameterList.this.get(int)'</Item>
+                 <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="#set_Item(System.Int32,System.Object)">
+              <Messages>
+               <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-10-18 11:54:21Z">
+                <Issue>
+                 <Item>'string.Format(string, object)'</Item>
+                 <Item>'ParameterList.this.set(int, object)'</Item>
+                 <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ProxiedObjectIdentity">
+          <Messages>
+           <Message Id="Proxied" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>Proxied</Item>
+             <Item>'ProxiedObjectIdentity'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ProxyInvokableAdapter">
+          <Messages>
+           <Message Id="Invokable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+            <Issue Name="Type">
+             <Item>Invokable</Item>
+             <Item>'ProxyInvokableAdapter'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#.ctor(System.Type,NMock2.Monitoring.IInvokable)">
+            <Messages>
+             <Message Id="invokable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameter">
+               <Item>'ProxyInvokableAdapter.ProxyInvokableAdapter(Type, IInvokable)'</Item>
+               <Item>invokable</Item>
+               <Item>'invokable'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Invoke(System.Runtime.Remoting.Messaging.IMessage)">
+            <Messages>
+             <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Created="2008-10-18 11:54:21Z">
+              <Issue Name="BaseOnly">
+               <Item>'ProxyInvokableAdapter.Invoke(IMessage)'</Item>
+               <Item>'RealProxy.Invoke(IMessage)'</Item>
+               <Item>[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'ProxyInvokableAdapter.Invoke(IMessage)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="NMock2.Syntax">
+        <Types>
+         <Type Name="IArgumentSyntax">
+          <Members>
+           <Member Name="#With(System.Object[])">
+            <Messages>
+             <Message Id="With" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IArgumentSyntax.With(params object[])'</Item>
+               <Item>With</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ICommentSyntax">
+          <Members>
+           <Member Name="#Comment(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'comment'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IEventArgumentSyntax">
+          <Members>
+           <Member Name="#With(System.Object[])">
+            <Messages>
+             <Message Id="With" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IEventArgumentSyntax.With(params object[])'</Item>
+               <Item>With</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IEventSyntax">
+          <Members>
+           <Member Name="#On(System.Object)">
+            <Messages>
+             <Message Id="o" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'IEventSyntax.On(object)'</Item>
+               <Item>'o'</Item>
+              </Issue>
+             </Message>
+             <Message Id="On" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IEventSyntax.On(object)'</Item>
+               <Item>On</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IGetIndexerSyntax">
+          <Members>
+           <Member Name="#Item[System.Object[]]">
+            <Messages>
+             <Message TypeName="UseIntegralOrStringArgumentForIndexers" Category="Microsoft.Design" CheckId="CA1043" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'IGetIndexerSyntax.this[params object[]]'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IMethodSyntax">
+          <Members>
+           <Member Name="#Get">
+            <Messages>
+             <Message Id="Get" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IMethodSyntax.Get'</Item>
+               <Item>Get</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Method(NMock2.Matcher,NMock2.Matcher)">
+            <Messages>
+             <Message Id="Params" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameter">
+               <Item>'IMethodSyntax.Method(Matcher, Matcher)'</Item>
+               <Item>Params</Item>
+               <Item>'typeParamsMatcher'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Method(NMock2.Matcher,System.Type[])">
+            <Messages>
+             <Message Id="Params" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameter">
+               <Item>'IMethodSyntax.Method(Matcher, params Type[])'</Item>
+               <Item>Params</Item>
+               <Item>'typeParams'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Method(System.Reflection.MethodInfo,System.Type[])">
+            <Messages>
+             <Message Id="Params" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameter">
+               <Item>'IMethodSyntax.Method(MethodInfo, params Type[])'</Item>
+               <Item>Params</Item>
+               <Item>'typeParams'</Item>
+              </Issue>
+             </Message>
+             <Message Id="0#" TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'method'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Method(System.String,System.Type[])">
+            <Messages>
+             <Message Id="Params" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameter">
+               <Item>'IMethodSyntax.Method(string, params Type[])'</Item>
+               <Item>Params</Item>
+               <Item>'typeParams'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Set">
+            <Messages>
+             <Message Id="Set" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IMethodSyntax.Set'</Item>
+               <Item>Set</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IReceiverSyntax">
+          <Members>
+           <Member Name="#On(System.Object)">
+            <Messages>
+             <Message Id="o" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-10-18 11:54:21Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'IReceiverSyntax.On(object)'</Item>
+               <Item>'o'</Item>
+              </Issue>
+             </Message>
+             <Message Id="On" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IReceiverSyntax.On(object)'</Item>
+               <Item>On</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ISetIndexerSyntax">
+          <Members>
+           <Member Name="#Item[System.Object[]]">
+            <Messages>
+             <Message TypeName="UseIntegralOrStringArgumentForIndexers" Category="Microsoft.Design" CheckId="CA1043" Created="2008-10-18 11:54:21Z">
+              <Issue>
+               <Item>'ISetIndexerSyntax.this[params object[]]'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IValueSyntax">
+          <Members>
+           <Member Name="#To(NMock2.Matcher)">
+            <Messages>
+             <Message Id="To" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IValueSyntax.To(Matcher)'</Item>
+               <Item>To</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#To(System.Object)">
+            <Messages>
+             <Message Id="To" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-10-18 11:54:21Z">
+              <Issue Name="Member">
+               <Item>'IValueSyntax.To(object)'</Item>
+               <Item>To</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Rules>
+   <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+    <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816">
+    <Resolution Name="NotCalled">Change {0} to call {1}. This will prevent unnecessary finalization of the object once it has been disposed and it has fallen out of scope.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
+    <Resolution Name="Local">{0}, a variable, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+    <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104">
+    <Resolution Name="Default">Remove the read-only designation from {0} or change the field to one that is an immutable reference type. If the reference type {1} is, in fact, immutable, exclude this message.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051">
+    <Resolution Name="Default">Because field {0} is visible outside of its declaring type, change its accessibility to private and add a property, with the same accessibility as the field has currently, to provide access to it.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805">
+    <Resolution Name="Default">{0} initializes field {1} of type {2} to {3}. Remove this initialization because it will be done automatically by the runtime.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065">
+    <Resolution Name="PropertyGetter">{0} creates an exception of type {1}, an exception type that should not be raised in a property. If this exception instance might be raised, use a different exception type, convert this property into a method, or change this property's logic so that it no longer raises an exception.</Resolution>
+   </Rule>
+   <Rule TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004">
+    <Resolution Name="Default">Consider a design where {0} doesn't require explicit type parameter {1} in any call to it.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="MemberParameter">In method {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="MemberParameterMoreMeaningfulName">In method {0}, consider providing a more meaningful name than parameter name {1}.</Resolution>
+    <Resolution Name="Type">Correct the spelling of '{0}' in type name {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldHaveCorrectPrefix" Category="Microsoft.Naming" CheckId="CA1715">
+    <Resolution Name="MethodTypeParameter">On method {0}, prefix generic type parameter name {1} with 'T'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
+    <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>
+    <Resolution Name="Type">Rename type {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a type makes it harder for consumers in other languages to use the type.</Resolution>
+   </Rule>
+   <Rule TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063">
+    <Resolution Name="DisposeImplementation">Modify {0} so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Resolution>
+    <Resolution Name="ProvideDisposeBool">Provide an overridable implementation of Dispose(bool) on {0} or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Resolution>
+   </Rule>
+   <Rule TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032">
+    <Resolution Name="Accessibility">Change the accessibility of {0} to {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
+    <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208">
+    <Resolution Name="IncorrectParameterName">Method {0} passes '{1}' as the {2} argument to a {3} constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkAssembliesWithAssemblyVersion" Category="Microsoft.Design" CheckId="CA1016">
+    <Resolution Name="Default">Add an AssemblyVersion attribute to {0}.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014">
+    <Resolution Name="Default">Mark {0} with CLSCompliant(true) because it exposes externally visible types.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   </Rule>
+   <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
+    <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
+   </Rule>
+   <Rule TypeName="OperatorOverloadsHaveNamedAlternates" Category="Microsoft.Usage" CheckId="CA2225">
+    <Resolution Name="Default">Provide a method named '{0}' as a friendly alternate for operator {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123">
+    <Resolution Name="BaseOnly">Add the following security attribute to {0} in order to match a LinkDemand on base method {1}:  {2}.</Resolution>
+   </Rule>
+   <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
+    <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
+   </Rule>
+   <Rule TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719">
+    <Resolution Name="Default">Change either member or parameter name {0} so that one differs from the other.</Resolution>
+   </Rule>
+   <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
+    <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
+    <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307">
+    <Resolution Name="Default">{0} makes a call to {1} that does not explicitly provide a StringComparison. This should be replaced with a call to {2}.</Resolution>
+   </Rule>
+   <Rule TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053">
+    <Resolution Name="Default">Remove the public constructors from {0}.</Resolution>
+   </Rule>
+   <Rule TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030">
+    <Resolution Name="Default">Consider making {0} an event.</Resolution>
+   </Rule>
+   <Rule TypeName="UseIntegralOrStringArgumentForIndexers" Category="Microsoft.Design" CheckId="CA1043">
+    <Resolution Name="Default">Use an integral value or string as the parameter to indexer {0}.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

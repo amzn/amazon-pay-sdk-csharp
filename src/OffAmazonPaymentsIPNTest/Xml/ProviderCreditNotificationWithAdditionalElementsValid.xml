@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProviderCreditNotification xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProviderCreditDetails>
+    <AmazonProviderCreditId>S01-1672273-0904884-P042709</AmazonProviderCreditId>
+    <SellerId>A0677458196RUTCRAAAAQ</SellerId>
+    <ProviderSellerId>A08593053M41F7AAAAA7W</ProviderSellerId>
+    <CreditAmount>
+      <Amount>10</Amount>
+      <CurrencyCode>USD</CurrencyCode>
+    </CreditAmount>
+    <CreditReversalAmount>
+      <Amount>0</Amount>
+      <CurrencyCode>USD</CurrencyCode>
+    </CreditReversalAmount>
+    <CreationTimestamp>2014-04-26T01:32:21.373Z</CreationTimestamp>
+    <CreditStatus>
+      <State>Completed</State>
+      <LastUpdateTimestamp>2014-04-26T01:32:28.842Z</LastUpdateTimestamp>
+    </CreditStatus>
+    <TestElement>
+      <NewElement>Test</NewElement>
+    </TestElement>
+    <CreditReversalIdList />
+  </ProviderCreditDetails>
+</ProviderCreditNotification>

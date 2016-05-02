@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetProviderCreditDetailsResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+  <GetProviderCreditDetailsResult>
+    <ProviderCreditDetails>
+        <AmazonProviderCreditId>sdfsdf</AmazonProviderCreditId>
+        <CreditReferenceId>32323-2323-2323</CreditReferenceId>
+        <SellerId>sellerid</SellerId>
+        <ProviderId>providerid</ProviderId>
+        <CreditAmount>
+            <CurrencyCode>USD</CurrencyCode>
+            <Amount>23.23</Amount>
+        </CreditAmount>
+        <CreditReversalAmount>
+            <CurrencyCode>USD</CurrencyCode>
+            <Amount>23.23</Amount>
+        </CreditReversalAmount>
+        <CreditReversalIdList>
+          <member>ReversalId</member>
+        </CreditReversalIdList>
+        <CreationTimestamp>2004-02-14T10:44:14</CreationTimestamp>
+        <CreditStatus>
+            <State>Completed</State>
+            <ReasonCode>FINISHED</ReasonCode>
+            <ReasonDescription>sfdsfdsf</ReasonDescription>
+            <LastUpdateTimestamp>2004-02-14T10:44:14</LastUpdateTimestamp>
+        </CreditStatus>
+    </ProviderCreditDetails>
+  </GetProviderCreditDetailsResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetProviderCreditDetailsResponse>

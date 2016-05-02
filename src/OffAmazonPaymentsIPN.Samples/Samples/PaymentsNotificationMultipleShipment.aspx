@@ -1,4 +1,4 @@
-<!-- /*******************************************************************************
+﻿<!-- /*******************************************************************************
  *  Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *  Licensed under the Apache License, Version 2.0 (the "License");	
  *
@@ -25,7 +25,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <h1>Login and Pay with Amazon Multiple Shipment Sample</h1>
+        <h1>@@ProductName@@ Multiple Shipment Sample</h1>
 
         <h3>This demonstrates a merchant use case where the order needs to be furfilled in multiple shipments, or where a single item is shipped 
         in multiple shipments over time.</h3>

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CECBC2F2-CD9A-467A-B595-0D85242997E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OffAmazonPaymentsNotifications</RootNamespace>
+    <AssemblyName>OffAmazonPaymentsNotifications</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\lib\distributed\Json.NET\Bin\Net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Certificate\CertificateFactory.cs" />
+    <Compile Include="Certificate\Certificate.cs" />
+    <Compile Include="Certificate\ICertificate.cs" />
+    <Compile Include="Certificate\ICertificateFactory.cs" />
+    <Compile Include="INotificationsParser.cs" />
+    <Compile Include="Model\Amount.cs" />
+    <Compile Include="Model\AuthorizationDetails.cs" />
+    <Compile Include="Model\AuthorizationNotification.cs" />
+    <Compile Include="Model\BillingAgreement.cs" />
+    <Compile Include="Model\BillingAgreementLimits.cs" />
+    <Compile Include="Model\BillingAgreementNotification.cs" />
+    <Compile Include="Model\BillingAgreementStatus.cs" />
+    <Compile Include="Model\CaptureDetails.cs" />
+    <Compile Include="Model\CaptureNotification.cs" />
+    <Compile Include="Model\SolutionProviderOption.cs" />
+    <Compile Include="Model\SolutionProviderOptions.cs" />
+    <Compile Include="Model\MerchantRegistrationDetails.cs" />
+    <Compile Include="Model\SolutionProviderMerchantNotification.cs" />
+    <Compile Include="Model\ProviderCreditReversalDetails.cs" />
+    <Compile Include="Model\ProviderCreditReversalNotification.cs" />
+    <Compile Include="Model\ProviderCreditDetails.cs" />
+    <Compile Include="Model\ProviderCreditNotification.cs" />
+    <Compile Include="Model\ProviderCreditReversalSummaryList.cs" />
+    <Compile Include="Model\ProviderCreditReversalSummary.cs" />
+    <Compile Include="Model\ProviderCreditSummaryList.cs" />
+    <Compile Include="Model\ProviderCreditSummary.cs" />
+    <Compile Include="Model\IdList.cs" />
+    <Compile Include="Model\OrderReference.cs" />
+    <Compile Include="Model\OrderReferenceNotification.cs" />
+    <Compile Include="Model\OrderReferenceStatus.cs" />
+    <Compile Include="Model\OrderTotal.cs" />
+    <Compile Include="Model\Price.cs" />
+    <Compile Include="Model\SellerBillingAgreementAttributes.cs" />
+    <Compile Include="NotificationMetadata\NotificationMetadataType.cs" />
+    <Compile Include="NotificationMetadata\INotificationMetadata.cs" />
+    <Compile Include="NotificationMetadata\IpnNotificationMetadata.cs" />
+    <Compile Include="NotificationMetadata\NotificationMetadata.cs" />
+    <Compile Include="NotificationMetadata\SnsNotificationMetadata.cs" />
+    <Compile Include="NotificationsException.cs" />
+    <Compile Include="NotificationsParser.cs" />
+    <Compile Include="Notification\INotification.cs" />
+    <Compile Include="Notification\Notification.cs" />
+    <Compile Include="Notification\NotificationType.cs" />
+    <Compile Include="Parsers\IpnNotificationParser.cs" />
+    <Compile Include="Parsers\Message.cs" />
+    <Compile Include="Parsers\SnsNotificationParser.cs" />
+    <Compile Include="Parsers\XmlNotificationParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\RefundDetails.cs" />
+    <Compile Include="Model\RefundNotification.cs" />
+    <Compile Include="Model\SellerOrderAttributes.cs" />
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="Validators\ISnsSignatureVerification.cs" />
+    <Compile Include="Validators\IVerifyData.cs" />
+    <Compile Include="Validators\SnsMessageValidator.cs" />
+    <Compile Include="Validators\SnsSignatureVerification.cs" />
+    <Compile Include="Validators\VerifyDataAspImpl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OffAmazonPaymentsService\OffAmazonPaymentsService.csproj">
+      <Project>{580855e8-38f5-3eb3-9614-34707fbc5be6}</Project>
+      <Name>OffAmazonPaymentsService</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+   <Target Name="BeforeBuild">
+   </Target>
+   <Target Name="AfterBuild">
+   </Target>
+   -->
+</Project>

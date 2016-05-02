@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ConfirmBillingAgreementRequest xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+  <SellerId>Test</SellerId>
+  <AmazonBillingAgreementId>Sample-ORO-With-32423</AmazonBillingAgreementId>
+  <MWSAuthToken>amzn.mws.22a5ab85-43b1-c0ee-7414-27f3e95f8324</MWSAuthToken>
+</ConfirmBillingAgreementRequest>

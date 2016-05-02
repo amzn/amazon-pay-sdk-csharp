@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA269B6A-1027-47C3-AE4D-DF3C6E4AB734}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OffAmazonPaymentsNotificationsTest</RootNamespace>
+    <AssemblyName>OffAmazonPaymentsNotificationsTest</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\lib\distributed\Json.NET\Bin\Net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NMock2">
+      <HintPath>..\lib\internal\NMock2\bin\Release\NMock2.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\internal\NUnit-2.6.2\bin\lib\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\internal\NUnit-2.6.2\bin\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks">
+      <HintPath>..\lib\internal\NUnit-2.6.2\bin\framework\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IntegrationTest.cs" />
+    <Compile Include="NotificationMetadata\IpnNotificationMetadataTest.cs" />
+    <Compile Include="NotificationMetadata\SnsNotificationMetadataTest.cs" />
+    <Compile Include="Parsers\IpnNotificationParserTest.cs" />
+    <Compile Include="Parsers\MessageTest.cs" />
+    <Compile Include="Parsers\SnsNotificationParserTest.cs" />
+    <Compile Include="Parsers\XmlNotificationParserTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\AuthorizationNotificationTest.cs" />
+    <Compile Include="Test\BillingAgreementNotificationTest.cs" />
+    <Compile Include="Test\CaptureNotificationTest.cs" />
+    <Compile Include="Test\SolutionProviderMerchantNotificationTest.cs" />
+    <Compile Include="Test\ProviderCreditReversalNotificationTest.cs" />
+    <Compile Include="Test\ProviderCreditNotificationTest.cs" />
+    <Compile Include="Test\NotificationTest.cs" />
+    <Compile Include="Test\OrderReferenceNotificationTest.cs" />
+    <Compile Include="Test\RefundNotificationTest.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="Validators\AspSignatureVerificationTest.cs" />
+    <Compile Include="Validators\SnsMessageValidatorTest.cs" />
+    <Compile Include="Validators\SnsSignatureVerificationTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OffAmazonPaymentsIPN\OffAmazonPaymentsNotifications.csproj">
+      <Project>{cecbc2f2-cd9a-467a-b595-0d85242997e2}</Project>
+      <Name>OffAmazonPaymentsNotifications</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Xml\AuthorizationNotificationValid.xml" />
+    <Content Include="Xml\AuthorizationNotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\AuthorizationNotificationWithMissingMandatoryFields.xml" />
+    <Content Include="Xml\BillingAgreementNotificationValid.xml" />
+    <Content Include="Xml\BillingAgreementNotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\BillingAgreementNotificationWithMissingMandatoryFields.xml" />
+    <Content Include="Xml\CaptureNotificationValid.xml" />
+    <Content Include="Xml\CaptureNotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\CaptureNotificationWithMissingMandatoryFields.xml" />
+    <Content Include="Xml\SolutionProviderMerchantNotificationValid.xml" />
+    <Content Include="Xml\SolutionProviderMerchantNotificationWithMissingMandatoryFields.xml" />
+    <Content Include="Xml\SolutionProviderMerchantNotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\ProviderCreditReversalNotificationValid.xml" />
+    <Content Include="Xml\ProviderCreditReversalNotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\ProviderCreditReversalNotificationWithMissingMandatoryFields.xml" />
+    <Content Include="Xml\ProviderCreditNotificationValid.xml" />
+    <Content Include="Xml\ProviderCreditNotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\ProviderCreditNotificationWithMissingMandatoryFields.xml" />
+    <Content Include="Xml\ORONotificationValid.xml" />
+    <Content Include="Xml\ORONotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\ORONotificationWithMissingMandatoryFields.xml" />
+    <Content Include="Xml\RefundNotificationValid.xml" />
+    <Content Include="Xml\RefundNotificationWithAdditionalElementsValid.xml" />
+    <Content Include="Xml\RefundNotificationWithMissingMandatoryFields.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Json\notificationSolutionProviderEvent.json" />
+    <None Include="Json\notificationProviderCreditReversal.json" />
+    <None Include="Json\notificationProviderCredit.json" />
+    <None Include="Json\notificationAuthorize.json" />
+    <None Include="Json\notificationBillingAgreement.json" />
+    <None Include="Json\notificationCapture.json" />
+    <None Include="Json\notificationOrderReference.json" />
+    <None Include="Json\notificationRefund.json" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
