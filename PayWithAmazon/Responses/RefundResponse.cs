@@ -117,11 +117,11 @@ namespace PayWithAmazon.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.RefundAmount.ToString()))
                                     {
-                                        refundAmount = decimal.Parse(obj.ToString());
+                                        refundAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.FeeRefunded.ToString()))
                                     {
-                                        feeRefunded = decimal.Parse(obj.ToString());
+                                        feeRefunded = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:

@@ -143,15 +143,15 @@ namespace PayWithAmazon.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.AuthorizationAmount.ToString()))
                                     {
-                                        authorizationAmount = decimal.Parse(obj.ToString());
+                                        authorizationAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.CapturedAmount.ToString()))
                                     {
-                                        capturedAmount = decimal.Parse(obj.ToString());
+                                        capturedAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.AuthorizationFee.ToString()))
                                     {
-                                        authorizationFee = decimal.Parse(obj.ToString());
+                                        authorizationFee = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:

@@ -172,7 +172,7 @@ namespace PayWithAmazon.Responses
                                     sellerNote = obj.ToString();
                                     break;
                                 case Operator.Amount:
-                                    amount = decimal.Parse(obj.ToString());
+                                    amount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     break;
                                 case Operator.CurrencyCode:
                                     currencyCode = obj.ToString();
