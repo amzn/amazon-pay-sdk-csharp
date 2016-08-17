@@ -84,7 +84,7 @@ namespace UnitTests
             }
             try
             {
-                string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"confi.json");
+                string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"config.json");
                 Client client = new Client(jsonfilepath);
             }
             catch (FileNotFoundException expected)
