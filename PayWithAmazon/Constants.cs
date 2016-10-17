@@ -6,7 +6,7 @@ namespace PayWithAmazon
 {
     public static class Constants
     {
-        public static readonly string MWSClientVersion = "1.0.0";
+        public static readonly string MWSClientVersion = "2.0.0";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
         
