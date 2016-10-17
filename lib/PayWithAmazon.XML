@@ -1,0 +1,3770 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PayWithAmazon</name>
+    </assembly>
+    <members>
+        <member name="T:PayWithAmazon.Client">
+            <summary>
+            Class Client
+            Takes configuration information
+            Makes API calls to MWS for Pay With Amazon
+            returns Request Object
+            </summary>
+        </member>
+        <member name="T:PayWithAmazon.IClient">
+            <summary>
+            Interface class for the PayWithAmazon Client class
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Client.#ctor(PayWithAmazon.CommonRequests.Configuration)">
+            <summary>
+            Takes the Configuration Object of the Configuration class
+            </summary>
+            <param name="clientConfig"></param>
+            <example>
+             <code>
+             Configuration clientConfig = new Configuration();
+             
+             // Required
+             clientConfig.WithMerchantId("merchant_id","MERCHANT_ID");
+             // Following keys can be found in your seller central account.
+             clientConfig.WithSecretKey("MWS_SECRET_KEY"); 
+             clientConfig.WithAccessKey("MWS_ACCESS_KEY");
+             clientConfig.WithRegion(Regions.supportedRegions.us);
+             
+             // Optional
+             clientConfig.WithCurrencyCode(Regions.currencyCode.USD);
+             clientConfig.WithSandbox(false); // true for sandbox , Defaults to false
+             clientConfig.WithPlatformId("PLATFORM_ID"); // Solution Provider ID
+             clientConfig.WithCABundleFile("CA_BUNDLE_PATH");
+             clientConfig.WithApplicationName("CUSTOM_APPLICATION_NAME");
+             clientConfig.WithApplicationVersion("CUSTOM_APPLICATION_VERSION");
+             clientConfig.WithProxyHost("PROXY_HOST");
+             clientConfig.WithProxyPort(1234);
+             clientConfig.WithProxyUserName("PROXY_USERNAME");
+             clientConfig.WithProxyPassword("PROXY_PASSWORD");
+             clientConfig.WithClientId("amzn.oa2.client.xxxx"); 
+             clientConfig.WithAutoRetryOnThrottle(true); // Defaults to true
+             </code>
+            </example>
+        </member>
+        <member name="M:PayWithAmazon.Client.#ctor(System.String)">
+            <summary>
+            Takes user configuration from the JSON file path provided and convert it to Hashtable config
+            Validates the user configuration Hashtable against existing config Hashtable
+            </summary>
+            <param name="jsonFilePath"></param>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetMwsTestUrl(System.String)">
+            <summary>
+            Setter for MWS Service URL for unit testing
+            </summary>
+            <param name="url"></param>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetParameters">
+            <summary>
+            Sets the value for the parameters string for unit testing
+            </summary>
+            <returns>IDictionary parameters</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetTimeStamp(System.String)">
+            <summary>
+            Setter for Timestamp
+            Set the Timestamp for unit testing
+            </summary>
+            <param name="timeStamp"></param>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetParametersAndPost(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IList{System.Collections.Generic.Dictionary{System.String,System.String}})">
+            <summary>
+            SetParametersAndPost - sets the parameters Dictionary that will be used to Post to MWS with non empty values from the requestParameters Dictionary sent to API calls.
+            If Provider Credit Details is present, values are set by setProviderCreditDetails
+            If Provider Credit Reversal Details is present, values are set by setProviderCreditDetails
+            </summary>
+            <param name="requestParameters"></param>
+            <returns>string XML response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.CalculateSignatureAndPost(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            CalculateSignatureAndPost - convert the Parameters Dictionary to string and POST the parameters to MWS
+            </summary>
+            <param name="parameters"></param>
+            <returns>string response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetDefaultValues(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            If Merchant ID is not set via the requestParameters Dictionary then it's taken from the configuration object
+            Set the Platform ID set in the configuration object and if value is null in the requestParameters
+            Set the Currency Code if set in the configuration object and if value is null in the requestParameters
+            </summary>
+            <param name="parameters"></param>
+            <param name="requestParameters"></param>
+            <returns>Dictionary parameters</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetProviderCreditDetails(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IList{System.Collections.Generic.Dictionary{System.String,System.String}})">
+            <summary>
+            SetProviderCreditDetails - sets the provider credit details sent via the Capture or Authorize API calls
+            </summary>
+            <param name="parameters"></param>
+            <param name="providerCreditInfo"></param>
+            <returns>Dictionary parameters</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetProviderCreditReversalDetails(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IList{System.Collections.Generic.Dictionary{System.String,System.String}})">
+            <summary>
+            SetProviderCreditReversalDetails - sets the reverse provider credit details sent via the Refund API call.
+            </summary>
+            <param name="parameters"></param>
+            <param name="providerCreditInfo"></param>
+            <returns>Dictionary parameters</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetUserInfo(System.String)">
+            <summary>
+            GetUserInfo convenience function - Returns user's profile information from Amazon using the access token returned by the Button widget.
+            </summary>
+            <param name="accessToken"></param>
+            <returns>string response - json output of profile information</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetOrderReferenceDetails(PayWithAmazon.StandardPaymentRequests.GetOrderReferenceDetailsRequest)">
+            <summary>
+            GetOrderReferenceDetails API call - Returns details about the order reference object and its current state.
+            </summary>
+            <example>
+             <code>
+              GetOrderReferenceDetailsRequest requestParameters = new GetOrderReferenceDetailsRequest();
+             
+              // Required params
+              requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+             
+              // Optional params
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithAddressConsentToken[("ACCESS_TOKEN");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetOrderReferenceDetails(PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest)">
+            <summary>
+            SetOrderReferenceDetails API call - Sets order reference details such as the order total and a description for the order.
+            https://payments.amazon.com/documentation/apireference/201751960
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              SetOrderReferenceDetailsRequest requestParameters = new SetOrderReferenceDetailsRequest();
+             
+              // Required Parameters
+              requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+              requestParameters.WithAmount("100");
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+            
+              // Optional 
+              requestParameters.WithPlatformId("SOLUTION_PROVIDER_ID");
+              requestParameters.WithSellerNote("CUSTOM_NOTE");
+              requestParameters.WithSellerOrderId("CUSTOM_ORDER_ID");
+              requestParameters.WithStoreName("CUSTOM_STORE_NAME");
+              requestParameters.WithCustomInformation("CUSTOM_INFO");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.ConfirmOrderReference(PayWithAmazon.StandardPaymentRequests.ConfirmOrderReferenceRequest)">
+            <summary>
+            ConfirmOrderReference API call - Confirms that the order reference is free of constraints and all required information has been set on the order reference.
+            https://payments.amazon.com/documentation/apireference/201751980
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+            <code>
+             ConfirmOrderReferenceRequest requestParameters = new ConfirmOrderReferenceRequest();
+             
+             // Required
+             requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+            
+             // Optional
+             requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+             requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+            </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.CancelOrderReference(PayWithAmazon.StandardPaymentRequests.CancelOrderReferenceRequest)">
+            <summary>
+            CancelOrderReferenceDetails API call - Cancels a previously confirmed order reference.
+            https://payments.amazon.com/documentation/apireference/201751990"
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              CancelOrderReferenceRequest requestParameters = new CancelOrderReferenceRequest();
+              
+              // Required
+              requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+             
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithCancelationReason("CUSTOM_CANCEL_REASON");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+            </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.CloseOrderReference(PayWithAmazon.StandardPaymentRequests.CloseOrderReferenceRequest)">
+            <summary>
+            CloseOrderReference API call - Confirms that an order reference has been fulfilled (fully or partially)
+            https://payments.amazon.com/documentation/apireference/201752000
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              CloseOrderReferenceRequest requestParameters = new CloseOrderReferenceRequest();
+              
+              // Required
+              requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+            
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithClosureReason("CLOSURE_REASON");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+            </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.CloseAuthorization(PayWithAmazon.StandardPaymentRequests.CloseAuthorizationRequest)">
+            <summary>
+            CloseAuthorization API call - Closes an authorization.
+            https://payments.amazon.com/documentation/apireference/201752070
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              CloseAuthorizationRequest requestParameters = new CloseAuthorizationRequest();
+              
+              // Required
+              requestParameters.WithAmazonAuthorizationId("S01/P01-XXXXX-XXXXX-AXXXXX");
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithClosureReason("CLOSURE_REASON");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.Authorize(PayWithAmazon.StandardPaymentRequests.AuthorizeRequest)">
+            <summary>
+            Authorize API call - Reserves a specified amount against the payment method(s) stored in the order reference.
+            https://payments.amazon.com/documentation/apireference/201752010
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              AuthorizeRequest requestParameters = new AuthorizeRequest();
+               
+              // Required
+              requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+              requestParameters.WithAmount("100");
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+              requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING");
+              requestParameters.WithCaptureNow(false); // Defaults to false
+              requestParameters.WithProviderCreditDetails("PROVIDER_ID",10,"USD"); // If there are multiple providers, call the WithProviderCreditDetails nultiple times for each
+              requestParameters.WithSellerAuthorizationNote("CUSTOM_NOTE");
+              requestParameters.WithTransactionTimeout(5); // Defaults to 1440 minutes
+              requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetAuthorizationDetails(PayWithAmazon.StandardPaymentRequests.GetAuthorizationDetailsRequest)">
+            <summary>
+            GetAuthorizationDetails API call - Returns the status of a particular authorization and the total amount captured on the authorization.
+            https://payments.amazon.com/documentation/apireference/201752030
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              GetAuthorizationDetailsRequest requestParameters = new GetAuthorizationDetailsRequest();
+              
+              // Required
+              requestParameters.WithAmazonAuthorizationId"("S01/P01-XXXXX-XXXXX-AXXXXX)";
+             
+              // Optional 
+              requestParameters.WithMerchantId("MERCHANT_ID");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.Capture(PayWithAmazon.StandardPaymentRequests.CaptureRequest)">
+            <summary>
+            Capture API call - Captures funds from an authorized payment instrument
+            https://payments.amazon.com/documentation/apireference/201752040
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              CaptureRequest requestParameters = new CaptureRequest();
+              // Required
+              requestParameters.WithAmazonAuthorizationId("S01/P01-XXXXX-XXXXX-AXXXX");
+              requestParameters.WithCaptureAmount("100");
+              requestParameters.WithCaptureReferenceId("UNIQUE_STRING");
+             
+              // Optional 
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+              requestParameters.WithProviderCreditDetails("PROVIDER_ID",10,"USD"); // If there are multiple providers, call the WithProviderCreditDetails nultiple times for each
+              requestParameters.WithSellerCaptureNote("CUSTOM_NOTE");
+              requestParameters.WithSetSoftDescriptor("AMZ*CUSTOM");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetCaptureDetails(PayWithAmazon.StandardPaymentRequests.GetCaptureDetailsRequest)">
+            <summary>
+            GetCaptureDetails API call - Returns the status of a particular capture and the total amount refunded on the capture.
+            https://payments.amazon.com/documentation/apireference/201752060
+            </summary>
+            <example>
+             <code>
+              GetCaptureDetailsRequest requestParameters = new GetCaptureDetailsRequest();
+              
+              // Required
+              requestParameters["amazon_capture_id"] = "S01/P01-XXXXX-XXXXX-CXXXXX" ;
+             
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.Refund(PayWithAmazon.StandardPaymentRequests.RefundRequest)">
+            <summary>
+            Refund API call - Refunds a previously captured amount.
+            https://payments.amazon.com/documentation/apireference/201752080
+            </summary>
+            <example>
+             <code>
+              RefundRequest requestParameters = new RefundRequest();
+              
+              // Required
+              requestParameters.WithAmazonCaptureId("S01/P01-XXXXX-XXXXX-CXXXX");
+              requestParameters.WithRefundReferenceId("UNIQUE_STRING");
+              requestParameters.WithAmount("100");
+              
+              //Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+              requestParameters.WithProviderCreditReversalDetails("PROVIDER_ID","10","USD"); // Provider Credit details
+              requestParameters.WithSellerRefundNote("CUSTOM_NOTE");
+              requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetRefundDetails(PayWithAmazon.StandardPaymentRequests.GetRefundDetailsRequest)">
+            <summary>
+            GetRefundDetails API call - Returns the status of a particular refund.
+            https://payments.amazon.com/documentation/apireference/201752100
+            </summary>
+            <example>
+             <code>
+              GetRefundDetailsRequest requestParameters = new GetRefundDetailsRequest();
+              
+              // Required
+              requestParameters.WithAmazonRefundId("S01/P01-XXXXX-XXXXX-RXXXXX");
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetServiceStatus(PayWithAmazon.CommonRequests.GetServiceStatusRequest)">
+            <summary>
+            GetServiceStatus API Call - Returns the operational status of the Off-Amazon Payments API section
+            section of Amazon Marketplace Web Service (Amazon MWS). Status values are GREEN, GREEN_I, YELLOW, and RED.
+            https://payments.amazon.com/documentation/apireference/201752110
+            </summary>
+            <example>
+             <code>
+             GetServiceStatusRequest requestParameters =  new GetServiceStatusRequest();
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.CreateOrderReferenceForId(PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest)">
+            <summary>
+            CreateOrderReferenceForId API Call - Creates an order reference for the given object
+            https://payments.amazon.com/documentation/apireference/201751670
+            </summary>
+            <example>
+             <code>
+               CreateOrderReferenceForIdRequest requestParameters = new CreateOrderReferenceForIdRequest();
+              
+              // Required
+              requestParameters.WithId("C01/B01-XXXXX-XXXXX"); // billing agreement ID
+              
+              // Optional
+              requestParameters.WithInheritShippingAddress(true); // Defaults to false
+              requestParameters.WithConfirmNow(true); // Defaults to false
+              requestParameters.WithAmount("100"); // Required when requestParameters["ConfirmNow"] is set to true
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+              requestParameters.WithSellerNote("CUSTOM_NOTE");
+              requestParameters.WithSellerOrderId("CUSTOM_ORDER_ID");
+              requestParameters.WithStoreName("CUSTOM_NAME");
+              requestParameters.WithCustomInformation("CUSTOM_INFO");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetBillingAgreementDetails(PayWithAmazon.RecurringPaymentRequests.GetBillingAgreementDetailsRequest)">
+            <summary>
+            GetBillingAgreementDetails API Call - Returns details about the billing agreement object and its current state.
+            https://payments.amazon.com/documentation/apireference/201751690
+            </summary>
+            <example>
+             <code>
+               GetBillingAgreementDetailsRequest requestParameters = new GetBillingAgreementDetailsRequest();
+               
+              // Required
+              requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.SetBillingAgreementDetails(PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest)">
+            <summary>
+            SetBillingAgreementDetails API call - Sets billing agreement details such as a description of the agreement and other information about the seller.
+            https://payments.amazon.com/documentation/apireference/201751700
+            </summary>
+            <example>
+             <code>
+              SetBillingAgreementDetailsRequest requestParameters = new SetBillingAgreementDetailsRequest();
+              
+              // Required
+              requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+              requestParameters.WithAmount("100");
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+              requestParameters.WithPlatformId("PLATFORM_ID"); // Solution Provider ID
+              requestParameters.WithSellerNote("CUSTOM_NOTE"):
+              requestParameters.WithSellerBillingAgreementId("CUSTOM_ID"); 
+              requestParameters.WithStoreName("CUSTOM_STORE_NAME");
+              requestParameters.WithCustomInformation("CUSTOM_INFO");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.ConfirmBillingAgreement(PayWithAmazon.RecurringPaymentRequests.ConfirmBillingAgreementRequest)">
+            <summary>
+            ConfirmBillingAgreement API Call - Confirms that the billing agreement is free of constraints and all required information has been set on the billing agreement.
+            https://payments.amazon.com/documentation/apireference/201751710
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+               ConfirmOrderReferenceRequest requestParameters = new ConfirmOrderReferenceRequest();
+               
+              // Required
+              requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.ValidateBillingAgreement(PayWithAmazon.RecurringPaymentRequests.ValidateBillingAgreementRequest)">
+            <summary>
+            ValidateBillignAgreement API Call - Validates the status of the billing agreement object and the payment method associated with it.
+            https://payments.amazon.com/documentation/apireference/201751720
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              ValidateBillingAgreementRequest requestParameters = new ValidateBillingAgreementRequest();
+               
+              // Required
+              requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.AuthorizeOnBillingAgreement(PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest)">
+            <summary>
+            AuthorizeOnBillingAgreement API call - Reserves a specified amount against the payment method(s) stored in the billing agreement.
+            https://payments.amazon.com/documentation/apireference/201751940
+            </summary>
+            <example>
+             <code>
+              AuthorizeOnBillingAgreementRequest requestParameters = new AuthorizeOnBillingAgreementRequest();
+               
+              // Required
+              requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+              requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING");
+              requestParameters.WithAmount("100");
+              
+              
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+              requestParameters.WithSellerAuthorizationNote("CUSTOM_NOTE");
+              requestParameters.WithTransactionTimeout(5); // Defaults to 1440 minutes
+              requestParameters.WithCaptureNow(false); // Defaults to false
+              requestParameters.WithSoftDescriptor("AMZ*CUSTOM");
+              requestParameters.WithSellerNote("CUSTOM_NOTE");
+              requestParameters.WithPlatformId("PLATFORM_ID") // Solution Provider ID
+              requestParameters.WithCustomInformation("CUSTOM_INFO");
+              requestParameters.WithSellerOrderId("CUSTOM_ID");
+              requestParameters.WithStoreName("CUSTOM_NAME");
+              requestParameters.WithInheritShippingAddress(true); // Defaults to true
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+             </code>
+            </example>
+            <param name="requestParameters"></param>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.CloseBillingAgreement(PayWithAmazon.RecurringPaymentRequests.CloseBillingAgreementRequest)">
+            <summary>
+            CloseBillingAgreement API Call - Returns details about the billing agreement object and its current state.
+            https://payments.amazon.com/documentation/apireference/201751950
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+            <code>
+             CloseBillingAgreementRequest requestParameters = new CloseBillingAgreementRequest();
+              
+             // Required
+             requestParameters.WithAmazonBillingAgreementId("C01/B01-XXXXX-XXXXX");
+              
+             // Optional
+             requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+             requestParameters.WithClosureReason("CLOSURE_REASON");
+             requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+            </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetProviderCreditDetails(PayWithAmazon.ProviderCreditRequests.GetProviderCreditDetailsRequest)">
+            <summary>
+            GetProviderCreditDetails API Call - Get the details of the Provider Credit.
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+            <code>
+             GetProviderCreditReversalDetailsRequest requestParameters = new GetProviderCreditReversalDetailsRequest();
+             
+             // Required
+             requestParameters.WithAmazonProviderCreditId("PROVIDER_CREDIT_ID");
+             
+             // Optional
+             requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+             requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+            </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetProviderCreditReversalDetails(PayWithAmazon.ProviderCreditRequests.GetProviderCreditReversalDetailsRequest)">
+            <summary>
+            GetProviderCreditReversalDetails API Call - Get details of the Provider Credit Reversal.
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+            <code>
+             GetProviderCreditReversalDetailsRequest requestParameters = new GetProviderCreditReversalDetailsRequest();
+             
+             // Requirednew Dictionary
+             requestParameters.WithAmazonProviderCreditReversalId("PROVIDER_CREDIT_REVERSAL_ID");
+             
+             // Optional
+             requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+             requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+            </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.ReverseProviderCredit(PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest)">
+            <summary>
+            ReverseProviderCredit API Call - Reverse the Provider Credit.
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+            <code>
+             ReverseProviderCreditRequest requestParameters = new ReverseProviderCreditRequest();
+             
+             // Required
+             requestParameters.WithAmazonProviderCreditId("PROVIDER_CREDIT_ID");
+             requestParameters.WithCreditReversalReferenceId("UNIQUE_STRING");
+             requestParameters.WithAmount("10");
+             
+             
+             // Optional
+             requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+             requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+             requestParameters.WithCreditReversalNote("CUSTOM_NOTE");
+             requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+            </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.Charge(PayWithAmazon.StandardPaymentRequests.ChargeRequest)">
+            <summary>
+            Charge convenience method
+            Performs the API calls
+            1. SetOrderReferenceDetails / SetBillingAgreementDetails
+            2. ConfirmOrderReference / ConfirmBillingAgreement
+            3. Authorize / AuthorizeOnBillingAgreeemnt
+            </summary>
+            <param name="requestParameters"></param>
+            <example>
+             <code>
+              ChargeRequest requestParameters = new ChargeRequest();
+              
+              // Required
+              requestParameters.WithAmazonReferenceId("(S01/P01-XXXXX-XXXXX) / (C01/B01-XXXXX-XXXXX)");// order reference ID / billing agreement ID
+              requestParameters.WithAuthorizationReferenceId("UNIQUE_STRING"); // Any unique string that needs to be passed
+              requestParameters.WithAmount = "100";
+               
+              // Optional
+              requestParameters.WithMerchantId("MERCHANT_ID");
+              requestParameters.WithCurrencyCode(Regions.currencyCode.USD);
+              requestParameters.WithPlatformId("SOLUTION_PROVIDER_MERCHANT_ID");
+              requestParameters.WithSoftDescriptor("amz");
+              requestParameters.WithStoreName("cool stuff store");
+              requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+              requestParameters.WithChargeNote("sample note");
+              requestParameters.WithChargeOrderId("1234-1234");
+              requestParameters.WithCaptureNow(false);
+              requestParameters.WithProviderCreditDetails("PROVIDER_MERCHANT_ID", "10", "USD"); // This is only for the Order Reference type
+              requestParameters.WithInheritShippingAddress(true);
+              requestParameters.WithTransactionTimeout(5);
+              requestParameters.WithCustomInformation("custom information");
+             </code>
+            </example>
+            <returns>Dictionary response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.CalculateSignatureAndParametersToString(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Create an Dictionary of required parameters, sort them
+            Calculate signature and invoke the POST to the MWS Service URL
+            </summary>
+            <param name="parameters"></param>
+            <returns>parametersToString</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.Invoke(System.String)">
+            <summary>
+            Invoke request and return response
+            </summary>
+            <param name="parameters"></param>
+            <returns>responseBody</returns>
+        </member>
+        <member name="M:PayWithAmazon.Client.PauseOnRetry(System.Int32,System.Int32)">
+            <summary>
+            Exponential sleep on failed request
+            </summary>
+            <param name="retries"></param>
+            <param name="status"></param>
+        </member>
+        <member name="M:PayWithAmazon.Client.GetProfileEndpointUrl">
+            <summary>
+            Create Profile Endpoint URL
+            </summary>
+            <param name="regionProperties"></param>
+        </member>
+        <member name="M:PayWithAmazon.Client.LogMessage(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+            Helper method to log data within Client
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="P:PayWithAmazon.Client.Logger">
+            <summary>
+             Common Looger Property
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Constants.SellerId">
+            <summary>
+            common parameters for all API calls
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Constants.Action">
+            <summary>
+            API call MWS Action name Definitions
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Constants.Open">
+            <summary>
+            OrderReference/BillingAgreement state
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Constants.CertCN">
+            <summary>
+            IPN Handler
+            </summary>
+        </member>
+        <member name="T:PayWithAmazon.HttpImpl">
+            <summary>
+            Class HttpImpl - Handles  POST and GET functionality for all requests
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.HttpImpl.setHttpHeader">
+            <summary>
+            Setter for boolean header to get the user info
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.HttpImpl.setAccessToken(System.String)">
+            <summary>
+            Setter for Access token to get the user info
+            </summary>
+            <param name="accesstoken"></param>
+        </member>
+        <member name="M:PayWithAmazon.HttpImpl.ConfigureWebRequest(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Add the common POST Parameters
+            </summary>
+            <param name="method"></param>
+            <param name="url"></param>
+            <param name="userAgent"></param>
+            <param name="contentLength"></param>
+            <returns>HttpWebRequest request</returns>
+        </member>
+        <member name="M:PayWithAmazon.HttpImpl.Get(System.String)">
+            <summary>
+            GET Method
+            </summary>
+            <param name="url"></param>
+            <returns>string response</returns>
+        </member>
+        <member name="M:PayWithAmazon.HttpImpl.Post(System.String,System.String,System.Byte[])">
+            <summary>
+            POST Method
+            </summary>
+            <param name="url"></param>
+            <param name="userAgent"></param>
+            <param name="requestData"></param>
+            <returns>Dictionary responseDict</returns>
+        </member>
+        <member name="M:PayWithAmazon.HttpImpl.execute(System.Net.HttpWebRequest)">
+            <summary>
+            Executes the request
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="T:PayWithAmazon.NotificationType">
+            <summary>
+            Notification types received
+            </summary>
+        </member>
+        <member name="T:PayWithAmazon.IpnHandler">
+            <summary>
+            Class IPN_Handler
+            Takes headers and body of the IPN message as input in the constructor
+            verifies that the IPN is from the right resource and has the valid data
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.#ctor(System.Collections.Specialized.NameValueCollection,System.String)">
+            <summary>
+            IpnHandler takes Ipn Headers and JSON data 
+            </summary>
+            <param name="headers"></param>
+            <param name="jsonMessage"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.#ctor(System.Collections.Specialized.NameValueCollection,System.String,Common.Logging.ILog)">
+            <summary>
+            IpnHandler takes Inp Header, JSON data and Logger Object
+            </summary>
+            <param name="headers"></param>
+            <param name="jsonMessage"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.IpnHandlerInit(System.Collections.Specialized.NameValueCollection,System.String)">
+            <summary>
+            IpnHander Initializer
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.LowerHeadersKeysCase(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Converting the key to lowercase in NameValueCollection headers as headers key can be uppercase in the request
+            </summary>
+            <param name="headers"></param>
+            <returns>Lower cased keys in NameValueCollection headers</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ParseRawMessage(System.Collections.Specialized.NameValueCollection,System.String)">
+            <summary>
+            Convert a raw http POST request that contains an IPN and
+            convert to an object
+            
+            Will throw a Exception if the content is not a valid IPN
+            
+            Callers are expected to return a 503 http code an exception is
+            thrown by this method, otherwise reply with a HTTP OK status
+            </summary>
+            <param name="headers"></param>
+            <param name="body"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ParseNotification(System.Collections.Specialized.NameValueCollection,System.String)">
+            <summary>
+            Parse a json string in an sns format and convert it into a message object that stores key/value pairs
+            </summary>
+            <param name="headers"></param>
+            <param name="snsJson"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ValidateHeader(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Check the sns headers to ensure that the notification is valid
+            </summary>
+            <param name="headers"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ValidateMessageType">
+            <summary>
+            Ensure that the sns message is the valid notificaton type
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.parseMessage(System.String)">
+            <summary>
+            Create a new message the acts as a wrapper around the json string
+            </summary>
+            <param name="json"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetMandatoryField(System.String)">
+            <summary>
+            Return the value associated with the field name, throws an exception if it cannot be found
+            </summary>
+            <param name="fieldName"></param>
+            <returns>string value for the fieldname</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetMandatoryFieldAsDateTime(System.String)">
+            <summary>
+            Return the value of the field as a timestamp
+            </summary>
+            <param name="fieldName"></param>
+            <returns>DateTime representation of the object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetValueAsToken(System.String)">
+            <summary>
+            Return the JToken associated with this field, otherwise throw an exception
+            </summary>
+            <param name="fieldName"></param>
+            <returns>JToken value</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetField(System.String)">
+            <summary>
+            Get the value associated with this field, or return null if not present
+            </summary>
+            <param name="fieldName"></param>
+            <returns>String or null if not defined</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ValidateCertUrl">
+            <summary>
+            Verifies that the signing certificate url is from a recognizable source. 
+            Returns the cert url if it cen be verified, otherwise throws an exception.
+            </summary>
+            <param name="signingCertURL"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ValidateMessageIsTrusted">
+            <summary>
+            Validates if the Signature version is correct , else throws an exception 
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.VerifySnsMessageWithVersion1SignatureAlgorithm">
+            <summary>
+            Invoke the version 1 signature algorithm and throw an exception if it fails
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.VerifyMsgMatchesSignatureV1WithCert">
+            <summary>
+            Perform the comparison of the message data with the signature,
+            as described on http://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.verify.signature.html,
+            for version 1 of the signature algorithm
+            </summary>
+            <returns>true if verified, otherwise false</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.IpnHandler.GetMessageToSign" -->
+        <member name="M:PayWithAmazon.IpnHandler.VerifyCertIsIssuedByAmazon">
+            <summary>
+            Verify that certificate is valid and issued by Amazon.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.VerifyCertificateSubject(System.String)">
+            <summary>
+            Verify the certificate subject, checks the "CN" attribute
+            </summary>
+            <param name="subject"></param>
+            <returns>value of the attribute or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.VerifyMsgMatchesSignatureWithPublicCert(System.Byte[],System.Byte[])">
+            <summary>
+            Perform the comparison of the message data with the signature
+            </summary>
+            <param name="data"></param>
+            <param name="signature"></param>
+            <returns>true if successful</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetCertificate(System.String)">
+            <summary>
+             Check the application cache for the certificate, and use this if still valid
+             If not found, request the cert and add to the cache with a timeout of 24 hours
+            </summary>
+            <param name="certPath"></param>
+            <returns>Instance of the x508 certificate</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetCertificateFromURI(System.String)">
+            <summary>
+            Request the certifcate from the given URI
+            </summary>
+            <param name="certPath"></param>
+            <returns>Instance of the x508 certificate</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.VerifyCertificateChain">
+            <summary>
+            Performs certificate chain validation using basic validation policy
+            </summary>
+            <returns>x509Cert.Verify() result</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetSubject">
+            <summary>
+            Gets certificate's subject information
+            </summary>
+            <returns>x509Cert.Subject</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetPublicKey">
+            <summary>
+            Gets AsymmetricAlgorithm representing the certificate's public key
+            </summary>
+            <returns>x509Cert.PublicKey.Key value</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetIpnResponseObjects">
+            <summary>
+            Parse the Notification into API Response objects.
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ToJson">
+            <summary>
+            Convert IPN message to JSON type
+            </summary>
+            <returns>IPN in JSON string format </returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ToXml">
+            <summary>
+            Convert IPN message to XML type
+            </summary>
+            <returns>IPN in XML string format</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.ToDict">
+            <summary>
+            Convert IPN message to Dictionary type
+            </summary>
+            <returns>IPN in Dictionary(string,object) format</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.parseRemainingIpnFields">
+            <summary>
+            parseRemainingIpnFields() - Parses the remaining fields of the IPN
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetSellerId">
+            <summary>
+            Getter for the type of notification received
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetNotificationReferenceId">
+            <summary>
+            Getter for the NotificationReferenceId
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetReleaseEnvironment">
+            <summary>
+            Getter for the type of ReleaseEnvironment
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetNotificationType">
+            <summary>
+            Getter for the type of notification received
+            The return type is a string and not an Enum for forward compatibility.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetOrderReferenceDetailsResponse">
+            <summary>
+            Getter for the OrderReferenceDetailsResponse object for OrderReferenceDetails IPN
+            </summary>
+            <returns>OrderReferenceDetailsResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetBillingAgreementDetailsResponse">
+            <summary>
+            Getter for the BillingAgreementDetailsResponse object for OrderReferenceDetails IPN
+            </summary>
+            <returns>BillingAgreementDetailsResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetAuthorizeResponse">
+            <summary>
+            Getter for the AuthorizeResponse object for Authorize IPN
+            </summary>
+            <returns>AuthorizeResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetCaptureResponse">
+            <summary>
+            Getter for the CaptureResponse object for Capture IPN
+            </summary>
+            <returns>CaptureResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetRefundResponse">
+            <summary>
+            Getter for the RefundResponse object for Capture IPN
+            </summary>
+            <returns>RefundResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetProviderCreditDetailsResponse">
+            <summary>
+            Getter for the ProviderCreditDetailsResponse object for Capture IPN
+            </summary>
+            <returns>GetProviderCreditDetailsResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.GetProviderCreditReversalDetailsResponse">
+            <summary>
+            Getter for the ProviderCreditReversalDetailsResponse object for Capture IPN
+            </summary>
+            <returns>GetProviderCreditReversalDetailsResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.LogMessage(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+            Helper method to log data within Client
+            </summary>
+            <param name="message"></param>
+            <param name="type"></param>
+        </member>
+        <member name="P:PayWithAmazon.IpnHandler.Logger">
+            <summary>
+             Common Looger Property
+            </summary>
+        </member>
+        <member name="T:PayWithAmazon.NestedJsonToDictionary">
+            <summary>
+            JsonParser class for recursive parsing of a Dictionary
+            </summary>
+            
+        </member>
+        <member name="T:PayWithAmazon.ProviderCreditRequests.GetProviderCreditReversalDetailsRequest">
+            <summary>
+            Request class to set the GetProviderCreditReversalDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.GetProviderCreditReversalDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetProviderCreditReversalDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.GetProviderCreditReversalDetailsRequest.WithAmazonProviderCreditReversalId(System.String)">
+            <summary>
+            Sets the Amazon Provider Credit Reversal ID
+            </summary>
+            <param name="amazon_provider_credit_reversal_id"></param>
+            <returns>GetProviderCreditReversalDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.GetProviderCreditReversalDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetProviderCreditReversalDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest">
+            <summary>
+            Request class to set the ReverseProviderCredit API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>ReverseProviderCreditRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest.WithAmazonProviderCreditId(System.String)">
+            <summary>
+            Sets the Amazon Provider Credit ID
+            </summary>
+            <param name="amazon_provider_credit_id"></param>
+            <returns>ReverseProviderCreditRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest.WithCreditReversalReferenceId(System.String)">
+            <summary>
+            Sets the Credit Reversal Reference ID -  Unique string
+            </summary>
+            <param name="credit_reversal_reference_id"></param>
+            <returns>ReverseProviderCreditRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest.WithAmount(System.Decimal)">
+            <summary>
+            Sets the Amount for the reversal
+            </summary>
+            <param name="credit_reversal_amount"></param>
+            <returns>ReverseProviderCreditRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+            sets the Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>ReverseProviderCreditRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest.WithCreditReversalNote(System.String)">
+            <summary>
+            Sets the Credit Reversal Note
+            </summary>
+            <param name="credit_reversal_note"></param>
+            <returns>ReverseProviderCreditRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.ReverseProviderCreditRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>ReverseProviderCreditRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest">
+            <summary>
+            Request class to set the AuthorizeOnBillingAgreement API call PARAMETERS
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithAmazonBillingAgreementId(System.String)">
+            <summary>
+            Sets the Amazon Billing Agreement ID
+            </summary>
+            <param name="amazon_billing_agreement_id"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithAuthorizationReferenceId(System.String)">
+            <summary>
+            Sets the Amazon Billing Agreement ID
+            </summary>
+            <param name="authorization_reference_id"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithAmount(System.Decimal)">
+            <summary>
+            Sets the Amount
+            </summary>
+            <param name="amount"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+            Sets the Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithSellerAuthorizationNote(System.String)">
+            <summary>
+            Sets the Seller Authorization Note
+            </summary>
+            <param name="seller_authorization_note"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithTransactionTimeout(System.Int32)">
+            <summary>
+            Sets the Transaction Timeout
+            </summary>
+            <param name="transaction_timeout"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithCaptureNow(System.Boolean)">
+            <summary>
+            Sets the Capture Now Boolean value
+            </summary>
+            <param name="capture_now"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithSoftDescriptor(System.String)">
+            <summary>
+            Sets the Soft Descriptor value
+            </summary>
+            <param name="soft_descriptor"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithPlatformId(System.String)">
+            <summary>
+            Sets the Platform ID
+            </summary>
+            <param name="platform_id"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithSellerNote(System.String)">
+            <summary>
+            Sets the Seller Note
+            </summary>
+            <param name="seller_note"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithStoreName(System.String)">
+            <summary>
+            Sets the Store Name
+            </summary>
+            <param name="store_name"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithSellerOrderId(System.String)">
+            <summary>
+            Sets the Seller Order ID
+            </summary>
+            <param name="seller_order_id"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithCustomInformation(System.String)">
+            <summary>
+            Sets the Custom Information
+            </summary>
+            <param name="custom_information"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithInheritShippingAddress(System.Boolean)">
+            <summary>
+            Sets the Inherit Shipping Address Boolean value
+            </summary>
+            <param name="inherit_shipping_address"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.RecurringPaymentRequests.CloseBillingAgreementRequest">
+            <summary>
+            Request class to set the CloseBillingAgreement API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CloseBillingAgreementRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>CloseBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CloseBillingAgreementRequest.WithAmazonBillingAgreementId(System.String)">
+            <summary>
+            Sets the Amazon Billing Agreement ID
+            </summary>
+            <param name="amazon_billing_agreement_id"></param>
+            <returns>CloseBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CloseBillingAgreementRequest.WithClosureReason(System.String)">
+            <summary>
+            Sets the Closure reason
+            </summary>
+            <param name="closure_reason"></param>
+            <returns>CloseBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CloseBillingAgreementRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>CloseBillingAgreementRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.RecurringPaymentRequests.ConfirmBillingAgreementRequest">
+            <summary>
+            Request class to set the ConfirmBillingAgreement API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.ConfirmBillingAgreementRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>ConfirmBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.ConfirmBillingAgreementRequest.WithAmazonBillingreementId(System.String)">
+            <summary>
+            Sets the Amazon Billing Agreement ID
+            </summary>
+            <param name="amazon_billing_agreement_id"></param>
+            <returns>ConfirmBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.ConfirmBillingAgreementRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>ConfirmBillingAgreementRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest">
+            <summary>
+            Request class to set the CreateOrderReferenceForId API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithId(System.String)">
+            <summary>
+            Sets the Amazon Billing Agreement ID
+            </summary>
+            <param name="id"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithIdType(System.String)">
+            <summary>
+            Sets the ID Type
+            </summary>
+            <param name="id_type"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithInheritShippingAddress(System.Boolean)">
+            <summary>
+            Sets the Inherit Shipping Address Boolean value
+            </summary>
+            <param name="inherit_shipping_address"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithConfirmNow(System.Boolean)">
+            <summary>
+            Sets the Confirm Now Boolean value
+            </summary>
+            <param name="confirm_now"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithAmount(System.Decimal)">
+            <summary>
+            Sets the Amount
+            </summary>
+            <param name="amount"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+            Sets the Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithPlatformId(System.String)">
+            <summary>
+            Sets the Platform ID
+            </summary>
+            <param name="platform_id"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithSellerNote(System.String)">
+            <summary>
+            Sets the Seller Note
+            </summary>
+            <param name="seller_note"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithSellerOrderId(System.String)">
+            <summary>
+            Sets the Seller Order ID
+            </summary>
+            <param name="seller_order_id"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithStoreName(System.String)">
+            <summary>
+            Sets the Store Name
+            </summary>
+            <param name="store_name"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithCustomInformation(System.String)">
+            <summary>
+            Sets the Custom Information
+            </summary>
+            <param name="custom_information"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.CreateOrderReferenceForIdRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>CreateOrderReferenceForIdRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.RecurringPaymentRequests.GetBillingAgreementDetailsRequest">
+            <summary>
+            Request class to set the GetBillingAgreementDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.GetBillingAgreementDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.GetBillingAgreementDetailsRequest.WithAmazonBillingAgreementId(System.String)">
+            <summary>
+            Sets the Amazon Billing Agreement ID
+            </summary>
+            <param name="amazon_billing_agreement_id"></param>
+            <returns>GetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.GetBillingAgreementDetailsRequest.WithaddressConsentToken(System.String)">
+            <summary>
+            Sets the Address Consent Token
+            </summary>
+            <param name="address_consent_token"></param>
+            <returns>GetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.GetBillingAgreementDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest">
+            <summary>
+            Request class to set the SetBillingAgreementDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithAmazonBillingAgreementId(System.String)">
+            <summary>
+            Sets the Amazon Order Reference ID
+            </summary>
+            <param name="amazon_billing_agreement_id"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithPlatformId(System.String)">
+            <summary>
+            Sets the Platform ID
+            </summary>
+            <param name="platform_id"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithSellerNote(System.String)">
+            <summary>
+            Sets the Seller Note
+            </summary>
+            <param name="seller_note"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithSellerBillingAgreementId(System.String)">
+            <summary>
+            Sets the Seller Billing Agreement ID
+            </summary>
+            <param name="seller_billing_agreement_id"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithStoreName(System.String)">
+            <summary>
+            Sets the Store Name
+            </summary>
+            <param name="store_name"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithCustomInformation(System.String)">
+            <summary>
+            Sets the Custom Information
+            </summary>
+            <param name="custom_information"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.SetBillingAgreementDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>SetBillingAgreementDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.RecurringPaymentRequests.ValidateBillingAgreementRequest">
+            <summary>
+            Request class to set the ValidateBillingAgreement API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.ValidateBillingAgreementRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>ValidateBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.ValidateBillingAgreementRequest.WithAmazonBillingAgreementId(System.String)">
+            <summary>
+            Sets the Amazon Billing Agreement ID
+            </summary>
+            <param name="amazon_billing_agreement_id"></param>
+            <returns>ValidateBillingAgreementRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.RecurringPaymentRequests.ValidateBillingAgreementRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>ValidateBillingAgreementRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.Regions">
+            <summary>
+            Define the regions supported
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Regions.mwsServiceUrls">
+            <summary>
+            MWS endpoint URL'S
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Regions.ProfileEndpoint">
+            <summary>
+            Production profile end points to get the user information
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Regions.regionMappings">
+            <summary>
+            Region Mappings to map the regions to the zones
+            </summary>
+        </member>
+        <member name="T:PayWithAmazon.Regions.supportedRegions">
+            <summary>
+            Enum for supported Region values
+            </summary>
+        </member>
+        <member name="T:PayWithAmazon.ResponseParser">
+            <summary>
+            ResponseParser - Methods provided to convert the Response from the POST to XML, Dictionary or JSON
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.ResponseParser.SetXml(System.String)">
+            <summary>
+            Convert API response to XML
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:PayWithAmazon.ResponseParser.ToJson">
+            <summary>
+            Convert API response to JSON
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:PayWithAmazon.ResponseParser.ToDict">
+            <summary>
+            Convert API response to Dictionary
+            </summary>
+            <returns>Dictionary(string,object)</returns>
+        </member>
+        <member name="T:PayWithAmazon.Responses.IResponse">
+            <summary>
+            Interface for common Response methods 
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.IResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.IResponse.GetJson">
+            <summary>
+            Response in Json format
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.IResponse.GetSuccess">
+            <summary>
+            Returns true or false if API call was a success/failure
+            </summary>
+            <returns>bool true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.IResponse.GetXml">
+            <summary>
+            Response in XML format
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.IResponse.GetErrorCode">
+            <summary>
+            Errorcode as string
+            </summary>
+            <returns>string Error code</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.IResponse.GetErrorMessage">
+            <summary>
+            Error Message 
+            </summary>
+            <returns>Error Message</returns>
+        </member>
+        <member name="F:PayWithAmazon.Responses.AuthorizeResponse.xml">
+            <summary>
+            Documentation source https://payments.amazon.com/documentation/apireference/201752450
+            AuthorizeResponse handles Response parsing for API calls
+            1. Authorize
+            2. GetAuthorizationDetails
+            3. AuthorizeOnBillingAgreement
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Responses.AuthorizeResponse.amazonOrderReferenceId">
+            <summary>
+            AmazonOrderReferenceId returned only for AuthorizeOnBillingAgreement API call
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAmazonOrderReferenceId">
+            <summary>
+            Get the Amazon Order Reference ID, Returned only for the AuthorizeOnBillingAgreement API call
+            </summary>
+            <returns>amazonOrderReferenceId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAuthorizationId">
+            <summary>
+            Get the Amazon Authorization ID
+            </summary>
+            <returns>authorizationId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetRequestId">
+            <summary>
+            Get the request ID for the API call
+            </summary>
+            <returns>requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAuthorizationReferenceId">
+            <summary>
+            Get the Authorization Reference ID
+            </summary>
+            <returns>authorizationReferenceId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetSellerAuthorizationNote">
+            <summary>
+            Get the Seller Authorization Note
+            </summary>
+            <returns>sellerAuthorizationNote</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAuthorizationAmount">
+            <summary>
+            Get the Amount Authorized for the order
+            </summary>
+            <returns>authorizationAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAuthorizationAmountCurrencyCode">
+            <summary>
+            Get the Currency Code of the Authorized Amount
+            </summary>
+            <returns>authorizationAmountCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetCapturedAmountCurrencyCode">
+            <summary>
+            Get the Captured Amount Currency Code
+            </summary>
+            <returns>capturedAmountCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetCapturedAmount">
+            <summary>
+            Get the Amount captured
+            </summary>
+            <returns>capturedAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAuthorizationFee">
+            <summary>
+            Get the Authorization Fee
+            </summary>
+            <returns>authorizationFee</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAuthorizationFeeCurrencyCode">
+            <summary>
+            Get the Authorization Fee Currency Code
+            </summary>
+            <returns>authorizationFeeCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetAuthorizationState">
+            <summary>
+            Get the State of the Authorization 
+            </summary>
+            <returns>authorizationState</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetCaptureIdList">
+            <summary>
+            Get the List of Captures made on this Authorization
+            </summary>
+            <returns>captureId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetLastUpdateTimestamp">
+            <summary>
+            Get the Last Updated Time Stamp of this Authorization
+            </summary>
+            <returns>lastUpdateTimestamp</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetExpirationTimestamp">
+            <summary>
+            Get the Expiration Timestamp of the Authorization
+            </summary>
+            <returns>expirationTimeStamp</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetCreationTimestamp">
+            <summary>
+            Get the Creation Time stamp of the Authorization
+            </summary>
+            <returns>creationTimestamp</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetReasonCode">
+            <summary>
+            Get the Reason Code for when the Authorization was closed or declined
+            </summary>
+            <returns>reasonCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetReasonDescription">
+            <summary>
+            Get the Description for when the Authorization was closed or declined
+            </summary>
+            <returns>reasonDescription</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetCaptureNow">
+            <summary>
+            Get the bool value if the captureNow was set to True or False
+            </summary>
+            <returns>captureNow</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetSoftDescriptor">
+            <summary>
+            Get the SoftDescriptor value
+            </summary>
+            <returns>softDescriptor</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetErrorCode">
+            <summary>
+            If the API call failed Get the Error Code
+            </summary>
+            <returns>errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetErrorMessage">
+            <summary>
+            If the API call failed Get the Error Message
+            </summary>
+            <returns>errorMessage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.AuthorizeResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.AuthorizeResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetAddressLine1">
+            <summary>
+            Get the Billing Address Line 1 of the buyer
+            </summary>
+            <returns>addressLine1</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetAddressLine2">
+            <summary>
+            Get the Billing Address Line 2 of the Buyer
+            </summary>
+            <returns>addressLine2</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetAddressLine3">
+            <summary>
+            Get the Billing Address Line 3 of the Buyer
+            </summary>
+            <returns>addressLine3</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetCity">
+            <summary>
+            Get the Billing Address City of the Buyer
+            </summary>
+            <returns>city</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetCountryCode">
+            <summary>
+            Get the Billing Address countryCode of the Buyer
+            </summary>
+            <returns>countryCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetCounty">
+            <summary>
+            Get the Billing Address county of the Buyer
+            </summary>
+            <returns>county</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetAddressType">
+            <summary>
+            Get the Billing Address addressType of the Buyer
+            </summary>
+            <returns>addressType</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetDistrict">
+            <summary>
+            Get the Billing Address district of the Buyer
+            </summary>
+            <returns>district</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetName">
+            <summary>
+            Get the Billing Address Buyers name
+            </summary>
+            <returns>name</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetPhone">
+            <summary>
+            Get the Billing Address Buyers phone number
+            </summary>
+            <returns>phone</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetPostalCode">
+            <summary>
+            Get the Billing Address Buyers postalCode
+            </summary>
+            <returns>postalCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAddressDetails.GetStateOrRegion">
+            <summary>
+            Get the Billing Address Buyers stateOrRegion
+            </summary>
+            <returns>stateOrRegion</returns>
+        </member>
+        <member name="F:PayWithAmazon.Responses.BillingAgreementDetailsResponse.xml">
+            <summary>
+            Documentation Source https://payments.amazon.com/documentation/apireference/201752500
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetAmazonBillingAgreementId">
+            <summary>
+            Get the Amazon Billing Agreement ID
+            </summary>
+            <returns>string amazonBillingAgreementId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetLastUpdatedTimestamp">
+            <summary>
+            Get the last Updated Timestamp
+            </summary>
+            <returns>DateTime lastUpdatedTimestamp</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetTimePeriodStartDate">
+            <summary>
+            Get the Time Period Start Date
+            </summary>
+            <returns>DateTime timePeriodStartDate</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetTimePeriodEndDate">
+            <summary>
+            Get the Time Period End Date
+            </summary>
+            <returns>DateTime timePeriodEndDate</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetSellerBillingAgreementId">
+            <summary>
+            Get the custom Seller Billing Agreement if set
+            </summary>
+            <returns>sellerBillingAgreementId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetReasonCode">
+            <summary>
+            If the Billing Agreement is not in the Open state and if closed/canceled get the Reason Code 
+            </summary>
+            <returns>string reasonCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetReasonDescription">
+            <summary>
+            If the Billing Agreement is not in the Open state and if closed/canceled get the Reason Description 
+            </summary>
+            <returns>string reasonDescription</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetBillingAgreementState">
+            <summary>
+            Get the state of the Billing Agreement
+            </summary>
+            <returns>string billingAgreementState</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetAddressLine1">
+            <summary>
+            Get the shipping Address Line 1 of the Buyer
+            </summary>
+            <returns>string addressLine1</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetBuyerShippingName">
+            <summary>
+            Get the Shipping Name as provided by the Buyer from the Wallet Widget
+            </summary>
+            <returns>string buyerShippingName</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetAddressLine2">
+            <summary>
+            Get the shipping Address Line 2 of the Buyer
+            </summary>
+            <returns>string addressLine2</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetAddressLine3">
+            <summary>
+            Get the shipping Address Line 3 of the Buyer
+            </summary>
+            <returns>string addressLine3</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetAmountLimitPerTimePeriod">
+            <summary>
+            Get the Limit Amount Per Time Period for the Amazon Billing Agreement ID
+            </summary>
+            <returns>string amountLimitPerTimePeriod</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetAmountLimitPerTimePeriodCurrencyCode">
+            <summary>
+            Get the Amount Limit Per Time Period Currency Code for the Amazon Billing Agreement ID
+            </summary>
+            <returns>string amountLimitPerTimePeriodCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetCurrentRemainingBalanceAmount">
+            <summary>
+            Get the Current Remaining Balance Amount for the Amazon Billing Agreement ID
+            </summary>
+            <returns>string currentRemainingBalanceAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetCurrentRemainingBalanceCurrencyCode">
+            <summary>
+            Get the Current Remaining Balance Amount Currency Code for the Amazon Billing Agreement ID
+            </summary>
+            <returns>string currentRemainingBalanceAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetCity">
+            <summary>
+            Get the  shipping address city of the Buyer
+            </summary>
+            <returns>string city</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetConstraintIdList">
+            <summary>
+            Get any List of constraints if exuists on the Amazon Billing Agreement ID
+            </summary>
+            <returns>IList constraintId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetDescriptionList">
+            <summary>
+            Get List of respective Descriptions for the constraints returned on the Amazon Billing Agreement ID
+            </summary>
+            <returns>IList description</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetCountryCode">
+            <summary>
+            Get the shipping address country Code of the Buyer
+            </summary>
+            <returns>string countryCode</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetCounty" -->
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetDestinationType" -->
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetDistrict">
+            <summary>
+            Get the shipping address district of the Buyer
+            </summary>
+            <returns>string district</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetEmail">
+            <summary>
+            Get the Email of the Buyer
+            </summary>
+            <returns>string email</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetHasConstraint">
+            <summary>
+            Get the boolean value to check if the Constaints exist
+            </summary>
+            <returns>true or false for hasConstraint</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetBuyerName">
+            <summary>
+            Get the Buyer name 
+            </summary>
+            <returns>string buyerName</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetPhone">
+            <summary>
+            Get the Buyer phone number
+            </summary>
+            <returns>string phone</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetPlatformId">
+            <summary>
+            Get the Platform ID
+            </summary>
+            <returns>string platformId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetPostalCode">
+            <summary>
+            Get the Shipping address Postal code 
+            </summary>
+            <returns>string postalCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetReleaseEnvironment">
+            <summary>
+            Get the Release environment , Sandbox or Live
+            </summary>
+            <returns>string releaseEnvironment</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetSellerNote">
+            <summary>
+            Get the Seller Note
+            </summary>
+            <returns>string sellerNote</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetSellerOrderId">
+            <summary>
+            Get the custom Seller Order ID
+            </summary>
+            <returns>string sellerOrderId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetStateOrRegion">
+            <summary>
+            Get the Shipping Address StateOrRegion
+            </summary>
+            <returns>string stateOrRegion</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetStoreName">
+            <summary>
+            Get the Merchant Store Name
+            </summary>
+            <returns>string storeName</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetBillingAddressDetails">
+            <summary>
+            Get the Billing Address class object. Applies to case where in the billing address is returned in the response
+            </summary>
+            <returns>BillingAddressDetails billingAddress</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.BillingAgreementDetailsResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CancelOrderReferenceResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CancelOrderReferenceResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CancelOrderReferenceResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CancelOrderReferenceResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CancelOrderReferenceResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CancelOrderReferenceResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CancelOrderReferenceResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.CancelOrderReferenceResponse.GetDictionary" -->
+        <member name="T:PayWithAmazon.Responses.CaptureResponse">
+            <summary>
+            Documentation Source https://payments.amazon.com/documentation/apireference/201752580
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCaptureId">
+            <summary>
+            Get the Amazon Capture ID
+            </summary>
+            <returns>string amazonCaptureId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetRequestId">
+            <summary>
+            Get the Request ID
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCaptureReferenceId">
+            <summary>
+            Get the unique Capture Reference Id
+            </summary>
+            <returns>string captureReferenceId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetLastUpdatedTimestamp">
+            <summary>
+            Get the last Update Timestamp of the Amazon Capture ID
+            </summary>
+            <returns>DateTime lastUpdateTimestamp</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetSellerCaptureNote">
+            <summary>
+            Get the Seller Capture Note provided 
+            </summary>
+            <returns>string sellerCaptureNote</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCaptureAmount">
+            <summary>
+            Get the Captured Amount
+            </summary>
+            <returns>decimal captureAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCaptureAmountCurrencyCode">
+            <summary>
+            Get the Currency Code of the amount Captured
+            </summary>
+            <returns>string captureCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCaptureFee">
+            <summary>
+            Get the Capture Fee
+            </summary>
+            <returns>decimal captureFeeAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCaptureFeeCurrencyCode">
+            <summary>
+            Get teh CaptureFee Currency Code
+            </summary>
+            <returns>string captureFeeCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCaptureState">
+            <summary>
+            Get the state of the Amazon Capture ID
+            </summary>
+            <returns>string captureState</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetRefundIdList">
+            <summary>
+            Get the IList of the Refund IDS 
+            </summary>
+            <returns>IList refundId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetProviderCreditIdList">
+            <summary>
+            Get the List of Provider Credit IDS
+            </summary>
+            <returns>IList providerCreditId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetProviderIdList">
+            <summary>
+            Get the List of the Provider ID(s)
+            </summary>
+            <returns>IList providerId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetCreationTimestamp">
+            <summary>
+            Get the Creation Timestamp of the Amazon Capture ID
+            </summary>
+            <returns>DateTime creationTimestamp</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetReasonCode">
+            <summary>
+            Get the Reason code when the Amazon Capture ID is in a different state than Open
+            </summary>
+            <returns>string reasonCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CaptureResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.CaptureResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.CloseAuthorizationResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseAuthorizationResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseAuthorizationResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseAuthorizationResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseAuthorizationResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseAuthorizationResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseAuthorizationResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.CloseAuthorizationResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.CloseBillingAgreementResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseBillingAgreementResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseBillingAgreementResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseBillingAgreementResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseBillingAgreementResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseBillingAgreementResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseBillingAgreementResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.CloseBillingAgreementResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.CloseOrderReferenceResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseOrderReferenceResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseOrderReferenceResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseOrderReferenceResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseOrderReferenceResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseOrderReferenceResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.CloseOrderReferenceResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.CloseOrderReferenceResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.ConfirmBillingAgreementResponse.GetDictionary" -->
+        <member name="T:PayWithAmazon.Responses.ErrorResponse">
+            <summary>
+            Documentation Source https://payments.amazon.com/documentation/apireference/201752580#201753060
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ErrorResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ErrorResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ErrorResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ErrorResponse.IsSetErrorCode">
+            <summary>
+            Return true or false if the ErrorCode is set 
+            </summary>
+            <returns>boolean errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ErrorResponse.IsSetErrorMessage">
+            <summary>
+            Return true or false if the ErrorMessage is set 
+            </summary>
+            <returns>boolean errorMessage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ErrorResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="T:PayWithAmazon.Responses.ConfirmOrderReferenceResponse">
+            <summary>
+            The output format of the API call response XML will contain the following details
+            <code>
+            xmlns="https://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+            <ResponseMetadata>
+             <RequestId>5f20169b-7ab2-11df-bcef-d35615e2b044</RequestId>
+            </ResponseMetadata>
+            </code>
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.ConfirmOrderReferenceResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetAmazonProviderCreditId">
+            <summary>
+            Get the Amazon Provider Credit ID
+            </summary>
+            <returns>string amazonProviderCreditId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetRequestId">
+            <summary>
+            Get the requestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreationTimestamp">
+            <summary>
+            Get the Creation timestamp of the Amazon Provider Credit ID
+            </summary>
+            <returns>DateTime creationTimestamp</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreditAmount">
+            <summary>
+            Get the Amount Credit
+            </summary>
+            <returns>decimal creditAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreditAmountCurrencyCode">
+            <summary>
+            Gret the Currency Code of Credit Amount
+            </summary>
+            <returns>string creditAmountCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreditReferenceId">
+            <summary>
+            Get the Credit Reference ID
+            </summary>
+            <returns>string creditReferenceId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreditReversalAmount">
+            <summary>
+            Get the reversed credit amount
+            </summary>
+            <returns>decimal creditReversalAmount</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreditReversalAmountCurrencyCode">
+            <summary>
+            Get the Currency code of the Credit Amount Reversed
+            </summary>
+            <returns>string creditReversalAmountCurrencyCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreditReversalIdList">
+            <summary>
+            Get the List of the Credit Reversal ID(s)
+            </summary>
+            <returns>IList creditReversalIdList</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetCreditStatus">
+            <summary>
+            Get the status of the Amazon Provider Credit ID
+            </summary>
+            <returns>string creditStatus</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetReasonCode">
+            <summary>
+            Get the Reason Code for the state of the Amazon Provider Credit ID
+            </summary>
+            <returns>string reasonCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetReasonDescription">
+            <summary>
+            Get the Reason Description for the state of the Amazon Provider Credit ID
+            </summary>
+            <returns>string reasonDescription</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetSoftDescriptor">
+            <summary>
+            Get the Soft desciptor
+            </summary>
+            <returns>string softDescriptor</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetSellerId">
+            <summary>
+            Get the Merchant ID of the seller associated with the Provider
+            </summary>
+            <returns>string sellerId</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode when te API call failed
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage when the API call failed
+            </summary>
+            <returns>string errorMesage</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetSuccess">
+            <summary>
+            Get the bool value to know if the API call was a success(true) or a failure(false)
+            </summary>
+            <returns>success can be true or false</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetXml">
+            <summary>
+            Response returned in XML format
+            </summary>
+            <returns>XML format Response</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetDictionary" -->
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditDetailsResponse.GetJson">
+            <summary>
+            Response returned in JSON format
+            </summary>
+            <returns>JSON format Response</returns>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetProviderCreditReversalDetailsResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="T:PayWithAmazon.Responses.GetServiceStatusResponse">
+            <summary>
+            Documentation Source https://payments.amazon.com/documentation/apireference/201752740#201752110
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.GetServiceStatusResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="T:PayWithAmazon.Responses.OrderReferenceDetailsResponse">
+            <summary>
+            Documentation Source https://payments.amazon.com/documentation/apireference/201752580
+            </summary>
+        </member>
+        <member name="F:PayWithAmazon.Responses.OrderReferenceDetailsResponse.id">
+            <summary>
+            Billing Agreement ID for CreateOrderReferenceForID API call
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.OrderReferenceDetailsResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="T:PayWithAmazon.Responses.RefundResponse">
+            <summary>
+            Documentation Source https://payments.amazon.com/documentation/apireference/201752740
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.RefundResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="T:PayWithAmazon.Responses.ValidateBillingAgreementResponse">
+            <summary>
+            Documentation Source https://payments.amazon.com/documentation/apireference/201752740#201751720
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.Responses.ValidateBillingAgreementResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="T:PayWithAmazon.SanitizeData">
+            <summary>
+            Static Class for Sanitizing data for request and Response
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.SanitizeData.SanitizeGivenData(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+             Function for sanitizing data
+            </summary>
+            <param name="data">String XML data</param>
+            <param name="type">Type of Data beeing provided</param>
+            <returns>Sanitized String of data</returns>
+        </member>
+        <member name="T:PayWithAmazon.SanitizeData.DataType">
+            <summary>
+            Enum datatype for Sanitazation
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Signature.SignParameters(System.Collections.Generic.IDictionary{System.String,System.String},System.String)" -->
+        <member name="M:PayWithAmazon.Signature.CalculateStringToSignV2(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            compute the string signature as per the V2 specifications
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.Sign(System.String,System.String,System.Security.Cryptography.KeyedHashAlgorithm)">
+            <summary>
+            Computes RFC 2104-compliant HMAC signature.
+            </summary>
+            <param name="data"></param>
+            <param name="key"></param>
+            <param name="algorithm"></param>
+            <returns>string signature</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.GetFormattedTimestamp">
+            <summary>
+            Formats date as ISO 8601 timestamp
+            </summary>
+            <returns>DateTime object</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.CreateServiceUrl(System.String)">
+            <summary>
+            Create MWS service URL and the Endpoint path
+            </summary>
+            <param name="regionProperties"></param>
+        </member>
+        <member name="M:PayWithAmazon.Signature.GetParametersAsString(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Convert Dictionary of parameters to Url encoded query string
+            </summary>
+            <param name="parameters"></param>
+            <returns>string</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.Clean(System.String)">
+            <summary>
+            Replace all whitespace characters by a single space
+            </summary>
+            <param name="s"></param>
+            <returns>string s</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.QuoteApplicationName(System.String)">
+            <summary>
+            Collapse whitespace,and escape the following characters are escaped
+            </summary>
+            <param name="s"></param>
+            <returns>string s</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.QuoteApplicationVersion(System.String)">
+            <summary>
+            Collapse whitespace,and escape the following characters are escaped
+            </summary>
+            <param name="s"></param>
+            <returns>string s</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.QuoteAttributeName(System.String)">
+            <summary>
+            Collapse whitespace,and escape the following characters are escaped
+            </summary>
+            <param name="s"></param>
+            <returns>string s</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.QuoteAttributeValue(System.String)">
+            <summary>
+            Collapse whitespace,and escape the following characters are escaped 
+            </summary>
+            <param name="s"></param>
+            <returns>string s</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.LogMessage(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+            Helper method to log data within Signature 
+            </summary>
+            <param name="message">Data to be sanitized</param>
+            <param name="type">Type of data</param>
+        </member>
+        <member name="P:PayWithAmazon.Signature.Logger">
+            <summary>
+             Common Looger Property
+            </summary>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest">
+            <summary>
+            Request class to set the Autorize API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>Merchant ID</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithAmazonOrderReferenceId(System.String)">
+            <summary>
+            Sets the Amazo Order Reference ID
+            </summary>
+            <param name="amazon_order_reference_id"></param>
+            <returns>Amazon Order Reference Id </returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithAmount(System.Decimal)">
+            <summary>
+            Sets the Amount for the order
+            </summary>
+            <param name="authorization_amount"></param>
+            <returns>Amount</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+            Sets the Currency Code for the Amount
+            </summary>
+            <param name="currency_code"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithAuthorizationReferenceId(System.String)">
+            <summary>
+            Sets the Authorization Reference ID - Unique string
+            </summary>
+            <param name="authorization_reference_id"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithCaptureNow(System.Boolean)">
+            <summary>
+            Sets the Boolean value for the Capture Now
+            </summary>
+            <param name="capture_now"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithProviderCreditDetails(System.String,System.Decimal,System.String)">
+            <summary>
+            Sets the Provider Credit Details
+            </summary>
+            <param name="provider_id"></param>
+            <param name="amount"></param>
+            <param name="currency_code"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithSellerAuthorizationNote(System.String)">
+            <summary>
+            Sets the Seller Authorization Note
+            </summary>
+            <param name="seller_authorization_note"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithTransactionTimeout(System.Int32)">
+            <summary>
+            Sets the Transaction Timeout value
+            </summary>
+            <param name="transaction_timeout"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithSoftDescriptor(System.String)">
+            <summary>
+            Sets the Soft Descriptor
+            </summary>
+            <param name="soft_descriptor"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS AuthToken
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>AuthorizeRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.CancelOrderReferenceRequest">
+            <summary>
+            Request class to set the CancelOrderReference API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CancelOrderReferenceRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>CancelOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CancelOrderReferenceRequest.WithAmazonOrderReferenceId(System.String)">
+            <summary>
+            Sets the Amazon Order Reference ID
+            </summary>
+            <param name="amazon_order_reference_id"></param>
+            <returns>CancelOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CancelOrderReferenceRequest.WithCancelationReason(System.String)">
+            <summary>
+            Sets the Cancelation reason for the order
+            </summary>
+            <param name="cancelation_reason"></param>
+            <returns>CancelOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CancelOrderReferenceRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>CancelOrderReferenceRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.CaptureRequest">
+            <summary>
+            Request class to set the Capture API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithAmazonAuthorizationId(System.String)">
+            <summary>
+            Sets the Amazon Authorization ID
+            </summary>
+            <param name="amazon_authorization_id"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithAmount(System.Decimal)">
+            <summary>
+             Sets the Capture amount
+            </summary>
+            <param name="capture_amount"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+             Sets the Capture Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithCaptureReferenceId(System.String)">
+            <summary>
+            Sets the Capture Reference ID  - Unique string
+            </summary>
+            <param name="capture_reference_id"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithProviderCreditDetails(System.String,System.Decimal,System.String)">
+            <summary>
+            Sets the Provider Credit Details
+            </summary>
+            <param name="provider_id"></param>
+            <param name="amount"></param>
+            <param name="currency_code"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithSellerCaptureNote(System.String)">
+            <summary>
+            Sets the Seller Capture Note
+            </summary>
+            <param name="seller_capture_note"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithSoftDescriptor(System.String)">
+            <summary>
+            Sets the Soft Descriptor
+            </summary>
+            <param name="soft_descriptor"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CaptureRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>CaptureRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.ChargeRequest">
+            <summary>
+            Request class to take the Charge convenience Method parameters and construct the appropriate API call request objects
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.#ctor">
+            <summary>
+            constructor initializes the required API request objects
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithAmazonReferenceId(System.String)">
+            <summary>
+            Sets the Amazon Order Reference ID / Amazon Billing Agreement ID
+            </summary>
+            <param name="amazon_reference_id"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithAmount(System.Decimal)">
+            <summary>
+            Sets the amount
+            </summary>
+            <param name="amount"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+            Sets the Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithChargeReferenceId(System.String)">
+            <summary>
+            Sets the Authorization Reference ID - Unique string
+            </summary>
+            <param name="charge_reference_id"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithChargeNote(System.String)">
+            <summary>
+            Sets the Seller Note, Seller Authorization Note for Amazon Order Reference ID / Amazon Billing Agreement ID
+            </summary>
+            <param name="charge_note"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithTransactionTimeout(System.Int32)">
+            <summary>
+            Sets th Transaction Timeout for the Authorize API call
+            </summary>
+            <param name="transaction_timeout"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithCaptureNow(System.Boolean)">
+            <summary>
+            Sets the Capture Now 
+            </summary>
+            <param name="capture_now"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithInheritShippingAddress(System.Boolean)">
+            <summary>
+            Sets the boolean value of the Inherit Shipping Address
+            </summary>
+            <param name="inherit_shipping_address"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithChargeOrderId(System.String)">
+            <summary>
+            Sets the Seller Order ID
+            </summary>
+            <param name="charge_order_id"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithStoreName(System.String)">
+            <summary>
+            Set the Store Name
+            </summary>
+            <param name="store_name"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithCustomInformation(System.String)">
+            <summary>
+            Sets the Custom Information
+            </summary>
+            <param name="custom_information"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithPlatformId(System.String)">
+            <summary>
+            Sets the Platform ID
+            </summary>
+            <param name="platform_id"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithSoftDescriptor(System.String)">
+            <summary>
+            Sets the Soft Descriptor
+            </summary>
+            <param name="soft_descriptor"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithProviderCreditDetails(System.String,System.Decimal,System.String)">
+            <summary>
+            Sets the Provider Credit Details
+            </summary>
+            <param name="provider_id"></param>
+            <param name="amount"></param>
+            <param name="currency_code"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ChargeRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token 
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>ChargeRequest</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.CloseAuthorizationRequest">
+            <summary>
+            Request class to set the CloseAuthorization API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseAuthorizationRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>CloseAuthorizationRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseAuthorizationRequest.WithAmazonAuthorizationId(System.String)">
+            <summary>
+            Sets the Amazon Authorization ID
+            </summary>
+            <param name="amazon_authorization_id"></param>
+            <returns>CloseAuthorizationRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseAuthorizationRequest.WithClosureReason(System.String)">
+            <summary>
+            Sets the Closure Reason
+            </summary>
+            <param name="closure_reason"></param>
+            <returns>CloseAuthorizationRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseAuthorizationRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>CloseAuthorizationRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.CloseOrderReferenceRequest">
+            <summary>
+            Request class to set the CloseOrderReference API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseOrderReferenceRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>CloseOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseOrderReferenceRequest.WithAmazonOrderReferenceId(System.String)">
+            <summary>
+            Sets the Amazon Order Reference ID
+            </summary>
+            <param name="amazon_order_reference_id"></param>
+            <returns>CloseOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseOrderReferenceRequest.WithClosureReason(System.String)">
+            <summary>
+            Sets the Closure reason
+            </summary>
+            <param name="closure_reason"></param>
+            <returns>CloseOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.CloseOrderReferenceRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>CloseOrderReferenceRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.CommonRequests.Configuration">
+            <summary>
+            Configuration setter - sets the configuration values
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithAccessKey(System.String)">
+            <summary>
+            Sets the Access Key
+            </summary>
+            <param name="access_key"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithSecretKey(System.String)">
+            <summary>
+            Sets the Secret Key
+            </summary>
+            <param name="secret_key"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithRegion(System.Enum)">
+            <summary>
+            Sets the Region
+            </summary>
+            <param name="region"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithCurrencyCode(System.Enum)">
+            <summary>
+            Sets the Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithSandbox(System.Boolean)">
+            <summary>
+            Sets the Sandbox Boolean value
+            </summary>
+            <param name="sandbox"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithPlatformId(System.String)">
+            <summary>
+            Sets the Platform ID
+            </summary>
+            <param name="platform_id"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithCABundleFile(System.String)">
+            <summary>
+            Sets the CA Bundle File 
+            </summary>
+            <param name="cabundle_file"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithApplicationName(System.String)">
+            <summary>
+            Sets the custom Application name
+            </summary>
+            <param name="application_name"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithApplicationVersion(System.String)">
+            <summary>
+            Sets the Application version
+            </summary>
+            <param name="application_version"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithProxyHost(System.String)">
+            <summary>
+            Sets the Hostname for the Proxy
+            </summary>
+            <param name="proxy_host"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithProxyPort(System.Int32)">
+            <summary>
+            Sets the port for the Proxy
+            </summary>
+            <param name="proxy_port"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithProxyUserName(System.String)">
+            <summary>
+            Sets the Username for the Proxy
+            </summary>
+            <param name="proxy_username"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithProxyUserPassword(System.String)">
+            <summary>
+            Sets the Password for the Proxy
+            </summary>
+            <param name="proxy_password"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithClientId(System.String)">
+            <summary>
+            Sets the Client ID 
+            </summary>
+            <param name="client_id"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.Configuration.WithAutoRetryOnThrottle(System.Boolean)">
+            <summary>
+            Sets the value for the handle throttling to be enabled/disabled 
+            </summary>
+            <param name="auto_retry_on_throttle"></param>
+            <returns>Configuration Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.ConfirmOrderReferenceRequest">
+            <summary>
+            Request class to set the ConfirmOrderReference API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ConfirmOrderReferenceRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>ConfirmOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ConfirmOrderReferenceRequest.WithAmazonOrderReferenceId(System.String)">
+            <summary>
+            Sets the Amazon Order Reference ID
+            </summary>
+            <param name="amazon_order_reference_id"></param>
+            <returns>ConfirmOrderReferenceRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.ConfirmOrderReferenceRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>ConfirmOrderReferenceRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.GetAuthorizationDetailsRequest">
+            <summary>
+            Request class to set the GetAuthorizationDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetAuthorizationDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetAuthorizationDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetAuthorizationDetailsRequest.WithAmazonAuthorizationId(System.String)">
+            <summary>
+            Sets the Amazon Authorization ID
+            </summary>
+            <param name="amazon_authorization_id"></param>
+            <returns>GetAuthorizationDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetAuthorizationDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetAuthorizationDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.GetCaptureDetailsRequest">
+            <summary>
+            Request class to set the GetCaptureDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetCaptureDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetCaptureDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetCaptureDetailsRequest.WithAmazonCaptureId(System.String)">
+            <summary>
+            Sets the Amazon Capture ID
+            </summary>
+            <param name="amazon_capture_id"></param>
+            <returns>GetCaptureDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetCaptureDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetCaptureDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.GetOrderReferenceDetailsRequest">
+            <summary>
+            Request class to set the GetOrderReferenceDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetOrderReferenceDetailsRequest.#ctor">
+            <summary>
+            Constructor sets the Action variable for the MWS request
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetOrderReferenceDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetOrderReferenceDetailsRequest.WithAmazonOrderReferenceId(System.String)">
+            <summary>
+            Sets the Amazon Order Reference ID
+            </summary>
+            <param name="amazon_order_reference_id"></param>
+            <returns>GetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetOrderReferenceDetailsRequest.WithaddressConsentToken(System.String)">
+            <summary>
+            Sets the Address Consent Token
+            </summary>
+            <param name="address_consent_token"></param>
+            <returns>GetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetOrderReferenceDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Tokenh
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.ProviderCreditRequests.GetProviderCreditDetailsRequest">
+            <summary>
+            Request class to set the  GetProviderCreditDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.GetProviderCreditDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetProviderCreditDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.GetProviderCreditDetailsRequest.WithAmazonProviderCreditId(System.String)">
+            <summary>
+            Sets the Amazon Provider Credit ID
+            </summary>
+            <param name="amazon_provider_credit_id"></param>
+            <returns>GetProviderCreditDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.ProviderCreditRequests.GetProviderCreditDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetProviderCreditDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.GetRefundDetailsRequest">
+            <summary>
+            Request class to set the GetRefundDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetRefundDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetRefundDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetRefundDetailsRequest.WithAmazonRefundId(System.String)">
+            <summary>
+            Sets the Amazon Refund ID
+            </summary>
+            <param name="amazon_refund_id"></param>
+            <returns>GetRefundDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.GetRefundDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetRefundDetailsRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.CommonRequests.GetServiceStatusRequest">
+            <summary>
+            Set the GetServiceStatus API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.GetServiceStatusRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>GetServiceStatusRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.CommonRequests.GetServiceStatusRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>GetServiceStatusRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.RefundRequest">
+            <summary>
+            Request class to set the Refund API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithAmazonCaptureId(System.String)">
+            <summary>
+            sets the Amazon Refund ID
+            </summary>
+            <param name="amazon_capture_id"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithAmount(System.Decimal)">
+            <summary>
+            Sets the Refund Amount
+            </summary>
+            <param name="refund_amount"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+            Sets the Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithRefundReferenceId(System.String)">
+            <summary>
+            Sets the Refund Refrence ID - Unique string
+            </summary>
+            <param name="refund_reference_id"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithProviderCreditReversalDetails(System.String,System.Decimal,System.String)">
+            <summary>
+            Sets the Provider Credit Reversal Details
+            </summary>
+            <param name="provider_id"></param>
+            <param name="amount"></param>
+            <param name="currency_code"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithSellerRefundNote(System.String)">
+            <summary>
+            Sets the Seller Refund Note
+            </summary>
+            <param name="seller_refund_note"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithSoftDescriptor(System.String)">
+            <summary>
+            Sets the Soft Descriptor
+            </summary>
+            <param name="soft_descriptor"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.RefundRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>RefundRequest Object</returns>
+        </member>
+        <member name="T:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest">
+            <summary>
+            Request class to set the SetOrderReferenceDetails API call parameters
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithMerchantId(System.String)">
+            <summary>
+            Sets the Merchant ID
+            </summary>
+            <param name="merchant_id"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithAmazonOrderReferenceId(System.String)">
+            <summary>
+            Sets the Amazon Order Reference ID
+            </summary>
+            <param name="amazon_order_reference_id"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithAmount(System.Decimal)">
+            <summary>
+            Sets the Amount for the order
+            </summary>
+            <param name="amount"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithCurrencyCode(System.Enum)">
+            <summary>
+            Sets the Currency Code
+            </summary>
+            <param name="currency_code"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithPlatformId(System.String)">
+            <summary>
+            Sets the Platform ID
+            </summary>
+            <param name="platform_id"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithSellerNote(System.String)">
+            <summary>
+            Sets the Seller Note
+            </summary>
+            <param name="seller_note"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithSellerOrderId(System.String)">
+            <summary>
+            Sets the Seller Order ID
+            </summary>
+            <param name="seller_order_id"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithStoreName(System.String)">
+            <summary>
+            Sets the Store Name
+            </summary>
+            <param name="store_name"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithCustomInformation(System.String)">
+            <summary>
+            Sets the Custom Information
+            </summary>
+            <param name="custom_information"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.StandardPaymentRequests.SetOrderReferenceDetailsRequest.WithMWSAuthToken(System.String)">
+            <summary>
+            Sets the MWS Auth Token
+            </summary>
+            <param name="mws_auth_token"></param>
+            <returns>SetOrderReferenceDetailsRequest Object</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8D8E745-6C1D-4A33-B2C5-4F7C1E4FD4DF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PayWithAmazon</RootNamespace>
+    <AssemblyName>PayWithAmazon</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\lib\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\lib\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\lib\PayWithAmazon.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Client.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="HttpImpl.cs" />
+    <Compile Include="IClient.cs" />
+    <Compile Include="IpnHandler.cs" />
+    <Compile Include="NestedJsonToDictionary.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderCreditRequests\GetProviderCreditReversalDetailsRequest.cs" />
+    <Compile Include="ProviderCreditRequests\ReverseProviderCreditRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\AuthorizeOnBillingAgreementRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\CloseBillingAgreementRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\ConfirmBillingAgreementRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\CreateOrderReferenceForIdRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\GetBillingAgreementDetailsRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\SetBillingAgreementDetailsRequest.cs" />
+    <Compile Include="RecurringPaymentRequests\ValidateBillingAgreementRequest.cs" />
+    <Compile Include="region.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>region.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Regions.cs" />
+    <Compile Include="ResponseParser.cs" />
+    <Compile Include="Responses\AuthorizeResponse.cs" />
+    <Compile Include="Responses\BillingAddressDetails.cs" />
+    <Compile Include="Responses\BillingAgreementDetailsResponse.cs" />
+    <Compile Include="Responses\CancelOrderReferenceResponse.cs" />
+    <Compile Include="Responses\CaptureResponse.cs" />
+    <Compile Include="Responses\CloseAuthorizationResponse.cs" />
+    <Compile Include="Responses\CloseBillingAgreementResponse.cs" />
+    <Compile Include="Responses\CloseOrderReferenceResponse.cs" />
+    <Compile Include="Responses\ConfirmBillingAgreementResponse.cs" />
+    <Compile Include="Responses\ErrorResponse.cs" />
+    <Compile Include="Responses\ConfirmOrderReferenceResponse.cs" />
+    <Compile Include="Responses\GetProviderCreditDetailsResponse.cs" />
+    <Compile Include="Responses\GetProviderCreditReversalDetailsResponse.cs" />
+    <Compile Include="Responses\GetServiceStatusResponse.cs" />
+    <Compile Include="Responses\IResponse.cs" />
+    <Compile Include="Responses\OrderReferenceDetailsResponse.cs" />
+    <Compile Include="Responses\RefundResponse.cs" />
+    <Compile Include="Responses\ValidateBillingAgreementResponse.cs" />
+    <Compile Include="SanitizeData.cs" />
+    <Compile Include="Signature.cs" />
+    <Compile Include="StandardPaymentRequests\AuthorizeRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CancelOrderReferenceRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CaptureRequest.cs" />
+    <Compile Include="StandardPaymentRequests\ChargeRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CloseAuthorizationRequest.cs" />
+    <Compile Include="StandardPaymentRequests\CloseOrderReferenceRequest.cs" />
+    <Compile Include="CommonRequests\Configuration.cs" />
+    <Compile Include="StandardPaymentRequests\ConfirmOrderReferenceRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetAuthorizationDetailsRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetCaptureDetailsRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetOrderReferenceDetailsRequest.cs" />
+    <Compile Include="ProviderCreditRequests\GetProviderCreditDetailsRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetRefundDetailsRequest.cs" />
+    <Compile Include="CommonRequests\GetServiceStatusRequest.cs" />
+    <Compile Include="StandardPaymentRequests\RefundRequest.cs" />
+    <Compile Include="StandardPaymentRequests\SetOrderReferenceDetailsRequest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
