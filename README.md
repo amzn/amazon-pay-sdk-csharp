@@ -34,6 +34,7 @@ Folder PATH listing
 |       Pay With Amazon Documentation.chm
 |       
 +---lib
+|       Common.Logging.dll
 |       config.json
 |       Json.txt
 |       Newtonsoft.Json.dll
@@ -52,7 +53,9 @@ Folder PATH listing
 |   |   region.Designer.cs
 |   |   Regions.cs
 |   |   ResponseParser.cs
-|   |   Signature.cs     
+|   |   packages.config
+|   |   Signature.cs
+|   |   SanitizeData.cs     
 |   +---ProviderCreditRequests
 |   |       GetProviderCreditDetailsRequest.cs
 |   |       GetProviderCreditReversalDetailsRequest.cs
@@ -105,6 +108,8 @@ Folder PATH listing
 |       PayWithAmazonPublic.snk
 |                 
 \---UnitTests
+    |   App.config
+    |   AuthorizeNotification.json
     |   config.json
     |   Json.txt
     |   packages.config
@@ -112,10 +117,10 @@ Folder PATH listing
     |   UnitTests.csproj
 ```
 
-##Parameters List
+## Parameters List
 
 
-####Mandatory Parameters
+#### Mandatory Parameters
 | Parameter    | Json file Key name | Values          								|
 |--------------|--------------------|-----------------------------------------------|
 | Merchant Id  | `merchant_id` 		| Default : `null`								|
@@ -123,7 +128,7 @@ Folder PATH listing
 | Secret Key   | `secret_key`  		| Default : `null`								|
 | Region       | `region`      		| Default : `null`<br>Other: `us`,`de`,`uk`,`jp`|
 
-####Optional Parameters
+#### Optional Parameters
 | Parameter           		| Json file Key name         	| Values                                      	   	|
 |---------------------------|-------------------------------|---------------------------------------------------|
 | Currency Code       		| `currency_code`       	   	| Default : `null`<br>Other: `USD`,`EUR`,`GBP`,`JPY`|
@@ -448,7 +453,7 @@ string amazonAuthorizationId = authResponse.GetAmazonAuthorizationId();
 
 ### Convenience Methods
 
-#####Charge Method
+##### Charge Method
 
 The charge method combines the following API calls:
 
@@ -528,7 +533,7 @@ catch (InvalidDataException ex)
  string exceptionMessage = ex.Message;
 }
 ```
-#####Obtain profile information (GetUserInfo method)
+##### Obtain profile information (GetUserInfo method)
 1. obtains the user's profile information from Amazon using the access token returned by the Button widget.
 2. An access token is granted by the authorization server when a user logs in to a site.
 3. An access token is specific to a client, a user, and an access scope. A client must use an access token to retrieve customer profile data.
@@ -568,3 +573,25 @@ string email = jsonObject.GetValue("email").ToString();
 // Buyer User Id
 string userId = jsonObject.GetValue("user_id").ToString();
 ```
+
+### Enable Logging in (Client, IpnHandler)
+
+##### Simple Common Logging Implementation
+1. Update "appSettings" within App.config or Web.config with Sanitize Data list with things you would like to be sanitize. See example bellow.
+    ```xml
+	<add key="sanitizeList" value="RequestID;Error;SellerId;SignatureMethod;CaptureNow"/>
+	```
+2. Create Simple Logger Adapter and Logger
+	```csharp
+	// Setting Simple Logger Adapter
+    Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+    // Create logger of type "Client"
+    Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<Client>();
+	```
+3.	Set Logger property for instance of Client.
+	```csharp
+	Client client = new Client(clientConfig);
+	// Set Logger for Client
+    client.Logger = logger;
+	```
+	

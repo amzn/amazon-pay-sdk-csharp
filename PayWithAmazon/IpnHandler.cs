@@ -13,9 +13,9 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using PayWithAmazon;
 using System.Xml;
-
 using PayWithAmazon.Responses;
 using System.Text.RegularExpressions;
+using Common.Logging;
 
 namespace PayWithAmazon
 {
@@ -37,7 +37,6 @@ namespace PayWithAmazon
         private JObject parsedMessage;
         private X509Certificate2 x509Cert;
 
-
         private string notificationReferenceId;
         private string notificationType;
         private string sellerId;
@@ -53,11 +52,36 @@ namespace PayWithAmazon
         private BillingAgreementDetailsResponse billingAgreementDetailsObject;
 
         /// <summary>
+        ///  Common Looger Property
+        /// </summary>
+        public ILog Logger { private get; set; }
+
+        /// <summary>
         /// IpnHandler takes Ipn Headers and JSON data 
         /// </summary>
         /// <param name="headers"></param>
         /// <param name="jsonMessage"></param>
         public IpnHandler(NameValueCollection headers, string jsonMessage)
+        {
+            IpnHandlerInit(headers, jsonMessage);
+        }
+
+        /// <summary>
+        /// IpnHandler takes Inp Header, JSON data and Logger Object
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="jsonMessage"></param>
+        /// <param name="logger"></param>
+        public IpnHandler(NameValueCollection headers, string jsonMessage, ILog logger)
+        {
+            this.Logger = logger;
+            IpnHandlerInit(headers, jsonMessage);
+        }
+
+        /// <summary>
+        /// IpnHander Initializer
+        /// </summary>
+        private void IpnHandlerInit(NameValueCollection headers, string jsonMessage)
         {
             try
             {
@@ -80,7 +104,7 @@ namespace PayWithAmazon
         /// </summary>
         /// <param name="headers"></param>
         /// <returns>Lower cased keys in NameValueCollection headers</returns>
-        private NameValueCollection LowerHeadersKeysCase(NameValueCollection headers)
+        private static NameValueCollection LowerHeadersKeysCase(NameValueCollection headers)
         {
             NameValueCollection lowerKeyHeaders = new NameValueCollection();
             foreach (string key in headers.AllKeys)
@@ -118,6 +142,22 @@ namespace PayWithAmazon
             parseMessage(snsJson);
             ValidateCertUrl();
             ValidateMessageType();
+            LogRequestDetails(headers, this.ToXml());
+        }
+
+        private void LogRequestDetails(NameValueCollection headers, string message)
+        {
+            // Build string for Logging headers
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < headers.Count; i++)
+            {
+                sb.AppendLine("[Key: " + headers.GetKey(i) + ", Value: " + headers.GetValues(headers.GetKey(i))[0] + "]");
+            }
+            // Logging headers
+            LogMessage(sb.ToString(), PayWithAmazon.SanitizeData.DataType.Text);
+            // Logging response
+            LogMessage(message, SanitizeData.DataType.Response);
         }
 
         /// <summary>
@@ -151,7 +191,7 @@ namespace PayWithAmazon
         /// <summary>
         /// Ensure that the sns message is the valid notificaton type
         /// </summary>
-        private void ValidateMessageType()
+        private  void ValidateMessageType()
         {
             string notificatonType = GetMandatoryField("Type");
             if (!notificatonType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
@@ -706,6 +746,19 @@ namespace PayWithAmazon
         public GetProviderCreditReversalDetailsResponse GetProviderCreditReversalDetailsResponse()
         {
             return this.providerCreditReversalResponseObject;
+        }
+
+        /// <summary>
+        /// Helper method to log data within Client
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="type"></param>
+        private void LogMessage(string message, SanitizeData.DataType type)
+        {
+            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            {
+                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+            }
         }
     }
 }

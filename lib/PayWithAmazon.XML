@@ -706,6 +706,17 @@
             </summary>
             <param name="regionProperties"></param>
         </member>
+        <member name="M:PayWithAmazon.Client.LogMessage(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+            Helper method to log data within Client
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="P:PayWithAmazon.Client.Logger">
+            <summary>
+             Common Looger Property
+            </summary>
+        </member>
         <member name="F:PayWithAmazon.Constants.SellerId">
             <summary>
             common parameters for all API calls
@@ -792,6 +803,19 @@
             </summary>
             <param name="headers"></param>
             <param name="jsonMessage"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.#ctor(System.Collections.Specialized.NameValueCollection,System.String,Common.Logging.ILog)">
+            <summary>
+            IpnHandler takes Inp Header, JSON data and Logger Object
+            </summary>
+            <param name="headers"></param>
+            <param name="jsonMessage"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.IpnHandlerInit(System.Collections.Specialized.NameValueCollection,System.String)">
+            <summary>
+            IpnHander Initializer
+            </summary>
         </member>
         <member name="M:PayWithAmazon.IpnHandler.LowerHeadersKeysCase(System.Collections.Specialized.NameValueCollection)">
             <summary>
@@ -1040,6 +1064,18 @@
             Getter for the ProviderCreditReversalDetailsResponse object for Capture IPN
             </summary>
             <returns>GetProviderCreditReversalDetailsResponse Object</returns>
+        </member>
+        <member name="M:PayWithAmazon.IpnHandler.LogMessage(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+            Helper method to log data within Client
+            </summary>
+            <param name="message"></param>
+            <param name="type"></param>
+        </member>
+        <member name="P:PayWithAmazon.IpnHandler.Logger">
+            <summary>
+             Common Looger Property
+            </summary>
         </member>
         <member name="T:PayWithAmazon.NestedJsonToDictionary">
             <summary>
@@ -2803,6 +2839,24 @@
             </summary>
             <param name="dictionary"></param>
         </member>
+        <member name="T:PayWithAmazon.SanitizeData">
+            <summary>
+            Static Class for Sanitizing data for request and Response
+            </summary>
+        </member>
+        <member name="M:PayWithAmazon.SanitizeData.SanitizeGivenData(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+             Function for sanitizing data
+            </summary>
+            <param name="data">String XML data</param>
+            <param name="type">Type of Data beeing provided</param>
+            <returns>Sanitized String of data</returns>
+        </member>
+        <member name="T:PayWithAmazon.SanitizeData.DataType">
+            <summary>
+            Enum datatype for Sanitazation
+            </summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "M:PayWithAmazon.Signature.SignParameters(System.Collections.Generic.IDictionary{System.String,System.String},System.String)" -->
         <member name="M:PayWithAmazon.Signature.CalculateStringToSignV2(System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
@@ -2873,6 +2927,18 @@
             </summary>
             <param name="s"></param>
             <returns>string s</returns>
+        </member>
+        <member name="M:PayWithAmazon.Signature.LogMessage(System.String,PayWithAmazon.SanitizeData.DataType)">
+            <summary>
+            Helper method to log data within Signature 
+            </summary>
+            <param name="message">Data to be sanitized</param>
+            <param name="type">Type of data</param>
+        </member>
+        <member name="P:PayWithAmazon.Signature.Logger">
+            <summary>
+             Common Looger Property
+            </summary>
         </member>
         <member name="T:PayWithAmazon.StandardPaymentRequests.AuthorizeRequest">
             <summary>

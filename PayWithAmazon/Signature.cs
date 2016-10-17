@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using PayWithAmazon.CommonRequests;
+using Common.Logging;
 
 namespace PayWithAmazon
 {
@@ -18,14 +19,19 @@ namespace PayWithAmazon
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
 
-        private string mwsEndpointUrl = "";
-        private string mwsEndpointPath = "";
+        private string mwsEndpointUrl = string.Empty;
+        private string mwsEndpointPath = string.Empty;
 
         // UserAgent to track the request and usage in the Logs
-        private string userAgent = "";
+        private string userAgent = string.Empty;
 
-        private string parametersAsString = "";
-        private string serviceVersion = "";
+        private string parametersAsString = string.Empty;
+        private string serviceVersion = string.Empty;
+
+        /// <summary>
+        ///  Common Looger Property
+        /// </summary>
+        public ILog Logger { private get; set; }
 
         public Signature(Configuration configuration, string serviceVersion)
         {
@@ -136,8 +142,11 @@ namespace PayWithAmazon
 
             }
 
-            String result = data.ToString();
-            return result.Remove(result.Length - 1);
+            String result = data.ToString().Remove(data.Length - 1);
+
+            LogMessage(result, SanitizeData.DataType.Request);
+
+            return result;
         }
 
         private String UrlEncode(String data, bool path)
@@ -219,7 +228,6 @@ namespace PayWithAmazon
                         mwsServiceUrl = "https://" + mwsEndpointUrl + "/" + mode + "/" + serviceVersion;
                         mwsEndpointPath = "/" + mode + "/" + serviceVersion;
                     }
-                    
                 }
                 else
                 {
@@ -375,5 +383,17 @@ namespace PayWithAmazon
             return this.parametersAsString;
         }
 
+        /// <summary>
+        /// Helper method to log data within Signature 
+        /// </summary>
+        /// <param name="message">Data to be sanitized</param>
+        /// <param name="type">Type of data</param>
+        private void LogMessage(string message, SanitizeData.DataType type)
+        {
+            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            {
+                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+            }
+        }
     }
 }

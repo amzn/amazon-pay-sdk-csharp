@@ -17,6 +17,7 @@ using PayWithAmazon.Responses;
 using PayWithAmazon.ProviderCreditRequests;
 using PayWithAmazon.RecurringPaymentRequests;
 using PayWithAmazon.CommonRequests;
+using Common.Logging;
 
 namespace PayWithAmazon
 {
@@ -28,12 +29,18 @@ namespace PayWithAmazon
     /// </summary>
     public class Client : PayWithAmazon.IClient
     {
+
         private Dictionary<string, string> parameters = new Dictionary<string, string>();
-        private string mwsTestUrl = "";
-        private string timeStamp = "";
+        private string mwsTestUrl = string.Empty;
+        private string timeStamp = string.Empty;
         private Signature signatureObject;
         private Configuration clientConfig = null;
         private readonly string aud = "aud";
+
+        /// <summary>
+        ///  Common Looger Property
+        /// </summary>
+        public ILog Logger { private get; set; }
 
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
@@ -1257,7 +1264,7 @@ namespace PayWithAmazon
         /// <returns>Dictionary response</returns>
         public AuthorizeResponse Charge(ChargeRequest requestParameters)
         {
-            string xml = "", baStatus = "", oroStatus = "";
+            string xml, baStatus, oroStatus = string.Empty;
             var chargeException = new InvalidDataException();
             AuthorizeResponse authorizeResponseObject = null;
             bool getSuccess = false, setSuccess = false, confirmSuccess = false, authorizeSuccess = false;
@@ -1409,6 +1416,7 @@ namespace PayWithAmazon
         private string CalculateSignatureAndParametersToString(Dictionary<string, string> parameters)
         {
             signatureObject = new Signature(this.clientConfig, Constants.PaymentsServiceVersion);
+            signatureObject.Logger = this.Logger;
             string parametersToString = signatureObject.CalculateSignatureAndReturnParametersAsString(parameters, this.timeStamp, this.mwsTestUrl);
             this.parameters = parameters;
 
@@ -1474,6 +1482,7 @@ namespace PayWithAmazon
 
             } while (shouldRetry);
 
+            LogMessage(responseBody, SanitizeData.DataType.Response);
             return responseBody;
         }
 
@@ -1501,9 +1510,9 @@ namespace PayWithAmazon
         /// <param name="regionProperties"></param>
         private string GetProfileEndpointUrl()
         {
-            string region = "";
+            string region = string.Empty;
             string profileEnvt = System.Convert.ToBoolean(this.clientConfig.GetSandbox()) ? "api.sandbox" : "api";
-            string profileEndpoint = "";
+            string profileEndpoint = string.Empty;
 
             if (!string.IsNullOrEmpty(this.clientConfig.GetRegion().ToString()))
             {
@@ -1531,6 +1540,18 @@ namespace PayWithAmazon
                 "Platform", Environment.OSVersion.Platform + "/" + Environment.OSVersion.Version,
                 "MWSClientVersion", Constants.MWSClientVersion,
                 "ApplicationLibraryVersion", Constants.MWSClientVersion);
+        }
+
+        /// <summary>
+        /// Helper method to log data within Client
+        /// </summary>
+        /// <param name="message"></param>
+        private void LogMessage(string message, PayWithAmazon.SanitizeData.DataType type)
+        {
+            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            {
+                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+            }
         }
     }
 }

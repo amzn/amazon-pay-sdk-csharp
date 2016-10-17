@@ -14,6 +14,8 @@ using PayWithAmazon.ProviderCreditRequests;
 using PayWithAmazon.RecurringPaymentRequests;
 using PayWithAmazon.StandardPaymentRequests;
 using PayWithAmazon.CommonRequests;
+using System.Collections.Specialized;
+using Newtonsoft.Json.Linq;
 
 namespace UnitTests
 {
@@ -137,6 +139,76 @@ namespace UnitTests
         }
 
         [Test]
+        public void TestLoggingMessageClient()
+        {
+            // Setting Simple Logger Adapter
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+
+            // Create logger
+            Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<Client>();
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            // Test call to the API GetOrderReferenceDetails
+            client = new Client(clientConfig);
+
+            // Set Logger for Client
+            client.Logger = logger;
+
+            client.SetTimeStamp("0000");
+
+            GetOrderReferenceDetailsRequest getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
+            getOrderReferenceDetails.WithAmazonOrderReferenceId("test")
+            .WithaddressConsentToken("test")
+            .WithMerchantId("test")
+            .WithMWSAuthToken("test");
+
+            var response = client.GetOrderReferenceDetails(getOrderReferenceDetails);
+            // Creating Request String
+            string requestString = @"POST
+                                mws.amazonservices.com
+                                /OffAmazonPayments_Sandbox/2013-01-01
+AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&AmazonOrderReferenceId=test&MWSAuthToken=test&SellerId=test&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=0000&Version=2013-01-01";
+
+            // Setting up Expected Request
+            string expectedRequest = @"POST
+                                mws.amazonservices.com
+                                /OffAmazonPayments_Sandbox/2013-01-01
+AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&AmazonOrderReferenceId=test&MWSAuthToken=test&SellerId=*REMOVED*&SignatureMethod=*REMOVED*&SignatureVersion=2&Timestamp=0000&Version=2013-01-01";
+
+            // Test SanitizeData functionality for response 
+            StringAssert.AreEqualIgnoringCase(expectedRequest, SanitizeData.SanitizeGivenData(requestString, SanitizeData.DataType.Request), "Actual Request after Sanitizing data is not was is Expected");
+
+            // Setting up Expected response 
+            string expectedresponse = @"<?xml version=""1.0""?><ErrorResponse xmlns=""http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01""><Error>*REMOVED*</Error><RequestID>*REMOVED*</RequestID></ErrorResponse>";
+
+            // Test SanitizeData functionality for response 
+            StringAssert.AreEqualIgnoringCase(expectedresponse, SanitizeData.SanitizeGivenData(response.GetXml(), SanitizeData.DataType.Response), "Actual Response after Sanitizing data is not was is Expected");
+
+        }
+        [Test]
+        public void TestLoggingMessage_IpnHandler()
+        {
+            // Setting Simple Logger Adapter
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+            // Create logger
+            Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<IpnHandler>();
+
+            // Extract AuthorizeNotification XML data from json
+            var json = JObject.Parse(File.ReadAllText("AuthorizeNotification.json"));
+
+            string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
+
+            NameValueCollection headers = new NameValueCollection();
+            headers.Add("x-amz-sns-message-type", "Notification");
+
+            IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText("AuthorizeNotification.json"), logger);
+            Assert.AreEqual(ipnHandler.GetAuthorizeResponse().authorizationId, new PayWithAmazon.Responses.AuthorizeResponse(xmlData).authorizationId);
+        }
+
+        [Test]
         public void TestSetOrderReferenceDetails()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
@@ -226,6 +298,7 @@ namespace UnitTests
                 {"CancelationReason","test"},
                 {"MWSAuthToken","test"}
             };
+
             // Test direct call to CalculateSignatureAndParametersToString
             Client client = new Client(clientConfig);
             client.SetTimeStamp("0000");
@@ -918,30 +991,82 @@ namespace UnitTests
         }
 
         [Test]
+        public void TestGetProviderCreditDetails()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetProviderCreditDetails"},
+                {"SellerId","test"},            
+                {"MWSAuthToken","test"},
+                {"AmazonProviderCreditId","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API GetProviderCreditDetails
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            GetProviderCreditDetailsRequest getProviderCreditDetails = new GetProviderCreditDetailsRequest();
+            getProviderCreditDetails
+                 .WithAmazonProviderCreditId("test")
+                 .WithMerchantId("test")
+                 .WithMWSAuthToken("test");
+            client.GetProviderCreditDetails(getProviderCreditDetails);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestGetProviderCreditReversalDetails()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetProviderCreditReversalDetails"},
+                {"SellerId","test"},            
+                {"MWSAuthToken","test"},
+                {"AmazonProviderCreditReversalId","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API GetProviderCreditReversalDetails
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            GetProviderCreditReversalDetailsRequest getProviderCreditReversalDetails = new GetProviderCreditReversalDetailsRequest();
+            getProviderCreditReversalDetails
+                 .WithAmazonProviderCreditReversalId("test")
+                 .WithMerchantId("test")
+                 .WithMWSAuthToken("test");
+            client.GetProviderCreditReversalDetails(getProviderCreditReversalDetails);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
         public void TestGetUserInfo()
         {
-            try
-            {
                 Enum emptyRegion = null;
-                clientConfig.WithRegion(emptyRegion);
                 Client client = new Client(clientConfig);
-                client.GetUserInfo("Atza");
-            }
-            catch (NullReferenceException expected)
-            {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "is a required parameter", RegexOptions.IgnoreCase));
-            }
-
-            try
-            {
-                clientConfig.WithRegion(Regions.supportedRegions.us);
-                Client client = new Client(clientConfig);
-                client.GetUserInfo(null);
-            }
-            catch (NullReferenceException expected)
-            {
-                Assert.IsTrue(Regex.IsMatch(expected.ToString(), "Access Token is a required parameter and is not set", RegexOptions.IgnoreCase));
-            }
+                // Exeption for Null "Region" value
+                Assert.Throws<NullReferenceException>(()=> clientConfig.WithRegion(emptyRegion));
+                // Exeption for Null value
+                Assert.Throws<NullReferenceException>(() => client.GetUserInfo(null));
+                // Check for invalid Access token
+                Assert.IsTrue(Regex.IsMatch(client.GetUserInfo("Atza"),"invalid_token",RegexOptions.IgnoreCase));          
         }
 
         [Test]

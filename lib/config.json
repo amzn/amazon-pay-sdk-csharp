@@ -4,7 +4,7 @@
    "secret_Key": "test",
    "currency_Code": "USD",
    "client_Id": "test",
-   "region": "us,
+   "region": "us",
    "sandbox": true,
    "application_Name": "sdk testing",
    "application_Version": "1.0",
