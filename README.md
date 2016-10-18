@@ -578,20 +578,20 @@ string userId = jsonObject.GetValue("user_id").ToString();
 
 ##### Simple Common Logging Implementation
 1. Update "appSettings" within App.config or Web.config with Sanitize Data list with things you would like to be sanitize. See example bellow.
-    ```xml
-	<add key="sanitizeList" value="RequestID;Error;SellerId;SignatureMethod;CaptureNow"/>
-	```
+```xml
+<add key="sanitizeList" value="SellerNote;SignatureMethod;SellerAuthorizationNote;SellerCaptureNote;SellerRefundNote;PhysicalDestination;Buyer;BillingAddress;AuthorizationBillingAddress"/>
+```
 2. Create Simple Logger Adapter and Logger
-	```csharp
-	// Setting Simple Logger Adapter
-    Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
-    // Create logger of type "Client"
-    Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<Client>();
-	```
-3.	Set Logger property for instance of Client.
-	```csharp
-	Client client = new Client(clientConfig);
-	// Set Logger for Client
-    client.Logger = logger;
-	```
+```csharp
+// Setting Simple Logger Adapter
+Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+// Create logger of type "Client"
+Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<Client>();
+```
+3. Set Logger property for instance of Client.
+```csharp
+Client client = new Client(clientConfig);
+// Set Logger for Client
+client.Logger = logger;
+```
 	
