@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Collections;
+using System.Threading;
 using System.Xml;
 using Newtonsoft.Json;
 using PayWithAmazon.StandardPaymentRequests;
@@ -45,6 +46,13 @@ namespace PayWithAmazon
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
 
+        private Client()
+        {
+            var ci = CultureInfo.GetCultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
+        }
+
         /// <summary>
         /// Takes the Configuration Object of the Configuration class
         /// </summary>
@@ -76,6 +84,7 @@ namespace PayWithAmazon
         ///  </code>
         /// </example>
         public Client(Configuration clientConfig)
+            : this()
         {
             if (clientConfig == null)
             {
@@ -91,6 +100,7 @@ namespace PayWithAmazon
         /// </summary>
         /// <param name="jsonFilePath"></param>
         public Client(string jsonFilePath)
+            : this()
         {
             string json;
             if (!string.IsNullOrEmpty(jsonFilePath))
