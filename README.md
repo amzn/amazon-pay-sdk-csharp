@@ -24,15 +24,14 @@ Client takes in parameters in the following format
 2. Path to the JSON file containing configuration information.
 
 ## Installing using nuget
-```
+```code
+Install-Package AmazonPay
+
 ```
 
 ## Directory Structure
 ```
-Folder PATH listing
-+---Helpdocs
-|       Amazon Pay Documentation.chm
-|       
+Folder PATH listing       
 +---lib
 |       Common.Logging.dll
 |       config.json

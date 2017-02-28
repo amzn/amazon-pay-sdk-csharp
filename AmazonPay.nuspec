@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>AmazonPay</id>
     <version>3.0.0</version>
-    <title>$title$</title>
-    <authors>AmazonPay</authors>
-    <owners>AmazonPay</owners>
+    <title>AmazonPay</title>
+    <authors>AmazonPaySDK</authors>
+    <owners>AmazonPaySDK</owners>
     <projectUrl>https://github.com/amzn/amazon-pay-sdk-csharp</projectUrl>
     <iconUrl>https://images-na.ssl-images-amazon.com/images/G/01/Iris3_US/en_US/inca/images/60x38-white-x1.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>AmazonPay service. This API section enables you to programmatically retrieve shipping and payment information provided by the buyer from their Amazon account. It allows you to authorize, capture, and refund payments, enabling a variety of payments scenarios.</description>
-    <releaseNotes>v2</releaseNotes>
+    <releaseNotes>v3</releaseNotes>
     <copyright>Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.</copyright>
     <tags>AmazonPay</tags>
     <dependencies>
@@ -18,4 +18,7 @@
       <dependency id="Common.Logging" version="2.0.0" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="lib/AmazonPay.dll" target="lib" />
+  </files>
 </package>
