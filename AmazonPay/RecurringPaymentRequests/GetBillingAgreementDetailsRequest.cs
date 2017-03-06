@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.RecurringPaymentRequests
+﻿namespace AmazonPay.RecurringPaymentRequests
 {
     /// <summary>
     /// Request class to set the GetBillingAgreementDetails API call parameters
     /// </summary>
     public class GetBillingAgreementDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_billing_agreement_id;
         private string mws_auth_token;
@@ -18,11 +13,11 @@ namespace AmazonPay.RecurringPaymentRequests
 
         public GetBillingAgreementDetailsRequest()
         {
-            this.action = Constants.GetBillingAgreementDetails;
+            action = Constants.GetBillingAgreementDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -37,7 +32,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -52,7 +47,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetAmazonBillingAgreementId()
         {
-            return this.amazon_billing_agreement_id;
+            return amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -67,7 +62,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetAddressConsentToken()
         {
-            return this.address_consent_token;
+            return address_consent_token;
         }
 
         /// <summary>
@@ -82,7 +77,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

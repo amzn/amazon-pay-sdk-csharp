@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -110,7 +108,7 @@ namespace AmazonPay.Responses
         /// <returns>addressLine1</returns>
         public string GetAddressLine1()
         {
-            return this.addressLine1;
+            return addressLine1;
         }
 
         /// <summary>
@@ -119,7 +117,7 @@ namespace AmazonPay.Responses
         /// <returns>addressLine2</returns>
         public string GetAddressLine2()
         {
-            return this.addressLine2;
+            return addressLine2;
         }
 
         /// <summary>
@@ -128,7 +126,7 @@ namespace AmazonPay.Responses
         /// <returns>addressLine3</returns>
         public string GetAddressLine3()
         {
-            return this.addressLine3;
+            return addressLine3;
         }
 
         /// <summary>
@@ -137,7 +135,7 @@ namespace AmazonPay.Responses
         /// <returns>city</returns>
         public string GetCity()
         {
-            return this.city;
+            return city;
         }
 
         /// <summary>
@@ -146,7 +144,7 @@ namespace AmazonPay.Responses
         /// <returns>countryCode</returns>
         public string GetCountryCode()
         {
-            return this.countryCode;
+            return countryCode;
         }
 
         /// <summary>
@@ -155,7 +153,7 @@ namespace AmazonPay.Responses
         /// <returns>county</returns>
         public string GetCounty()
         {
-            return this.county;
+            return county;
         }
 
         /// <summary>
@@ -164,7 +162,7 @@ namespace AmazonPay.Responses
         /// <returns>addressType</returns>
         public string GetAddressType()
         {
-            return this.addressType;
+            return addressType;
         }
 
         /// <summary>
@@ -173,7 +171,7 @@ namespace AmazonPay.Responses
         /// <returns>district</returns>
         public string GetDistrict()
         {
-            return this.district;
+            return district;
         }
 
         /// <summary>
@@ -182,7 +180,7 @@ namespace AmazonPay.Responses
         /// <returns>name</returns>
         public string GetName()
         {
-            return this.name;
+            return name;
         }
 
         /// <summary>
@@ -191,7 +189,7 @@ namespace AmazonPay.Responses
         /// <returns>phone</returns>
         public string GetPhone()
         {
-            return this.phone;
+            return phone;
         }
 
         /// <summary>
@@ -200,7 +198,7 @@ namespace AmazonPay.Responses
         /// <returns>postalCode</returns>
         public string GetPostalCode()
         {
-            return this.postalCode;
+            return postalCode;
         }
 
         /// <summary>
@@ -209,7 +207,7 @@ namespace AmazonPay.Responses
         /// <returns>stateOrRegion</returns>
         public string GetStateOrRegion()
         {
-            return this.stateOrRegion;
+            return stateOrRegion;
         }
     }
 }

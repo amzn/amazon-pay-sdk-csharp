@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -13,17 +11,17 @@ namespace AmazonPay.Responses
 
     public class OrderReferenceDetailsResponse : IResponse
     {
-        private string xml;
-        private string json;
+        private readonly string xml;
+        private readonly string json;
         private string amazonOrderReferenceId;
 
         private DateTime expirationTimeStamp;
         private DateTime creationTimestamp;
         private DateTime lastUpdateTimestamp;
-        private IDictionary dictionary;
-        private List<string> constraintID = new List<string>();
-        private List<string> description = new List<string>();
-        private bool hasConstraint = false;
+        private readonly IDictionary dictionary;
+        private readonly List<string> constraintID = new List<string>();
+        private readonly List<string> description = new List<string>();
+        private bool hasConstraint;
 
         private string requestId;
         private string reasonCode;
@@ -38,7 +36,7 @@ namespace AmazonPay.Responses
         private decimal amount;
         private string currencyCode;
 
-        private List<string> authorizationId = new List<string>();
+        private readonly List<string> authorizationId = new List<string>();
 
         private string phone;
         private string buyerName;
@@ -66,10 +64,10 @@ namespace AmazonPay.Responses
         private string id;
         private string type;
 
-        private string errorCode;
-        private string errorMessage;
+        private readonly string errorCode;
+        private readonly string errorMessage;
 
-        private bool success = false;
+        private readonly bool success;
         private string parentKey;
 
         BillingAddressDetails billingAddress;
@@ -79,21 +77,21 @@ namespace AmazonPay.Responses
         {
             this.xml = xml;
             ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson();
+            dictionary = ResponseParser.ToDict();
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() || errorResponse.IsSetErrorMessage())
             {
-                this.success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                success = false;
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
-                this.success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                success = true;
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -308,171 +306,171 @@ namespace AmazonPay.Responses
 
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazonOrderReferenceId;
+            return amazonOrderReferenceId;
         }
         public DateTime GetExpirationTimestamp()
         {
-            return this.expirationTimeStamp;
+            return expirationTimeStamp;
         }
         public DateTime GetCreationTimestamp()
         {
-            return this.creationTimestamp;
+            return creationTimestamp;
         }
         public DateTime GetLastUpdateTimestamp()
         {
-            return this.lastUpdateTimestamp;
+            return lastUpdateTimestamp;
         }
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
         public string GetReasonCode()
         {
-            return this.reasonCode;
+            return reasonCode;
         }
         public string GetReasonDescription()
         {
-            return this.reasonDescription;
+            return reasonDescription;
         }
         public string GetOrderReferenceState()
         {
-            return this.orderReferenceState;
+            return orderReferenceState;
         }
         public string GetOrderLanguage()
         {
-            return this.orderLanguage;
+            return orderLanguage;
         }
         public string GetAddressLine1()
         {
-            return this.addressLine1;
+            return addressLine1;
         }
         public string GetAddressLine2()
         {
-            return this.addressLine2;
+            return addressLine2;
         }
         public string GetAddressLine3()
         {
-            return this.addressLine3;
+            return addressLine3;
         }
         public decimal GetAmount()
         {
-            return this.amount;
+            return amount;
         }
         public string GetCurrencyCode()
         {
-            return this.currencyCode;
+            return currencyCode;
         }
         public IList<string> GetAuthorizationIdList()
         {
-            return this.authorizationId.AsReadOnly();
+            return authorizationId.AsReadOnly();
         }
         public string GetCity()
         {
-            return this.city;
+            return city;
         }
         public IList<string> GetConstraintIdList()
         {
-            return this.constraintID.AsReadOnly();
+            return constraintID.AsReadOnly();
         }
         public string GetBuyerShippingName()
         {
-            return this.buyerShippingName;
+            return buyerShippingName;
         }
         public string GetCountryCode()
         {
-            return this.countryCode;
+            return countryCode;
         }
         public string GetCounty()
         {
-            return this.county;
+            return county;
         }
         public string GetCustomInformation()
         {
-            return this.customInformation;
+            return customInformation;
         }
         public IList<string> GetDescriptionList()
         {
-            return this.description.AsReadOnly();
+            return description.AsReadOnly();
         }
         public string GetDestinationType()
         {
-            return this.destinationType;
+            return destinationType;
         }
         public string GetDistrict()
         {
-            return this.district;
+            return district;
         }
         public string GetEmail()
         {
-            return this.email;
+            return email;
         }
         public string GetErrorCode()
         {
-            return this.errorCode;
+            return errorCode;
         }
         public string GetErrorMessage()
         {
-            return this.errorMessage;
+            return errorMessage;
         }
         public bool GetHasConstraint()
         {
-            return this.hasConstraint;
+            return hasConstraint;
         }
         public string GetBuyerName()
         {
-            return this.buyerName;
+            return buyerName;
         }
         public string GetPhone()
         {
-            return this.phone;
+            return phone;
         }
         public string GetPlatformId()
         {
-            return this.platformId;
+            return platformId;
         }
         public string GetPostalCode()
         {
-            return this.postalCode;
+            return postalCode;
         }
         public string GetReleaseEnvironment()
         {
-            return this.releaseEnvironment;
+            return releaseEnvironment;
         }
         public string GetSellerNote()
         {
-            return this.sellerNote;
+            return sellerNote;
         }
         public string GetSellerOrderId()
         {
-            return this.sellerOrderId;
+            return sellerOrderId;
         }
         public string GetStateOrRegion()
         {
-            return this.stateOrRegion;
+            return stateOrRegion;
         }
         public string GetStoreName()
         {
-            return this.storeName;
+            return storeName;
         }
         public BillingAddressDetails GetBillingAddressDetails()
         {
-            return this.billingAddress;
+            return billingAddress;
         }
         public bool GetSuccess()
         {
-            return this.success;
+            return success;
         }
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
     }
 }

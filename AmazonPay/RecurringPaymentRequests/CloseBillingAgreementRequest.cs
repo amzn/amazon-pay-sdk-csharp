@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.RecurringPaymentRequests
+﻿namespace AmazonPay.RecurringPaymentRequests
 {
     /// <summary>
     /// Request class to set the CloseBillingAgreement API call parameters
@@ -14,15 +9,15 @@ namespace AmazonPay.RecurringPaymentRequests
         private string amazon_billing_agreement_id;
         private string closure_reason;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public CloseBillingAgreementRequest()
         {
-            this.action = Constants.CloseBillingAgreement;
+            action = Constants.CloseBillingAgreement;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -36,7 +31,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -51,7 +46,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetAmazonBillingAgreementId()
         {
-            return this.amazon_billing_agreement_id;
+            return amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -66,7 +61,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetClosureReason()
         {
-            return this.closure_reason;
+            return closure_reason;
         }
 
         /// <summary>
@@ -81,7 +76,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

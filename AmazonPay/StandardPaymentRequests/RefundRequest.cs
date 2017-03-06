@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.StandardPaymentRequests
 {
@@ -10,7 +8,7 @@ namespace AmazonPay.StandardPaymentRequests
     /// </summary>
     public class RefundRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_capture_id;
         private decimal amount;
@@ -19,15 +17,15 @@ namespace AmazonPay.StandardPaymentRequests
         private string refund_reference_id;
         private string soft_descriptor;
         private string mws_auth_token;
-        List<Dictionary<string, string>> providerReverseCredit = new List<Dictionary<string, string>>();
+        readonly List<Dictionary<string, string>> providerReverseCredit = new List<Dictionary<string, string>>();
 
         public RefundRequest()
         {
-            this.action = Constants.Refund;
+            action = Constants.Refund;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -41,7 +39,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -56,7 +54,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAmazonCaptureId()
         {
-            return this.amazon_capture_id;
+            return amazon_capture_id;
         }
 
         /// <summary>
@@ -66,12 +64,12 @@ namespace AmazonPay.StandardPaymentRequests
         /// <returns>RefundRequest Object</returns>
         public RefundRequest WithAmount(decimal refund_amount)
         {
-            this.amount = refund_amount;
+            amount = refund_amount;
             return this;
         }
         public decimal GetAmount()
         {
-            return this.amount;
+            return amount;
         }
 
         /// <summary>
@@ -86,7 +84,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetCurrencyCode()
         {
-            return this.currency_code;
+            return currency_code;
         }
 
         /// <summary>
@@ -101,7 +99,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetRefundReferenceId()
         {
-            return this.refund_reference_id;
+            return refund_reference_id;
         }
 
         /// <summary>
@@ -124,7 +122,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public IList<Dictionary<string, string>> GetProviderReverseCredit()
         {
-            return this.providerReverseCredit.AsReadOnly();
+            return providerReverseCredit.AsReadOnly();
         }
 
         /// <summary>
@@ -139,7 +137,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetSellerRefundNote()
         {
-            return this.seller_refund_note;
+            return seller_refund_note;
         }
 
         /// <summary>
@@ -154,7 +152,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetSoftDescriptor()
         {
-            return this.soft_descriptor;
+            return soft_descriptor;
         }
 
         /// <summary>
@@ -169,7 +167,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

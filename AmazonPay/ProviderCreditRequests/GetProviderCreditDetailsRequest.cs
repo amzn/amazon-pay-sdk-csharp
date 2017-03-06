@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.ProviderCreditRequests
+﻿namespace AmazonPay.ProviderCreditRequests
 {
     /// <summary>
     /// Request class to set the  GetProviderCreditDetails API call parameters
     /// </summary>
     public class GetProviderCreditDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_provider_credit_id;
         private string mws_auth_token;
 
         public GetProviderCreditDetailsRequest()
         {
-            this.action = Constants.GetProviderCreditDetails;
+            action = Constants.GetProviderCreditDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -35,7 +30,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetAmazonProviderCreditId()
         {
-            return this.amazon_provider_credit_id;
+            return amazon_provider_credit_id;
         }
 
         /// <summary>
@@ -65,7 +60,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

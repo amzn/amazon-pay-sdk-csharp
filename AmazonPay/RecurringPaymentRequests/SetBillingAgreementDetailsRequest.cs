@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.RecurringPaymentRequests
+﻿namespace AmazonPay.RecurringPaymentRequests
 {
     /// <summary>
     /// Request class to set the SetBillingAgreementDetails API call parameters
     /// </summary>
     public class SetBillingAgreementDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_billing_agreement_id;
         private string platform_id;
@@ -23,11 +18,11 @@ namespace AmazonPay.RecurringPaymentRequests
 
         public SetBillingAgreementDetailsRequest()
         {
-            this.action = Constants.SetBillingAgreementDetails;
+            action = Constants.SetBillingAgreementDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -41,7 +36,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -56,7 +51,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetAmazonBillingAgreementId()
         {
-            return this.amazon_billing_agreement_id;
+            return amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -71,7 +66,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetPlatformId()
         {
-            return this.platform_id;
+            return platform_id;
         }
 
         /// <summary>
@@ -86,7 +81,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetSellerNote()
         {
-            return this.seller_note;
+            return seller_note;
         }
 
         /// <summary>
@@ -101,7 +96,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetSellerBillingAgreementId()
         {
-            return this.seller_billing_agreement_id;
+            return seller_billing_agreement_id;
         }
 
         /// <summary>
@@ -116,7 +111,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetStoreName()
         {
-            return this.store_name;
+            return store_name;
         }
         /// <summary>
         /// Sets the Custom Information
@@ -130,7 +125,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetCustomInformation()
         {
-            return this.custom_information;
+            return custom_information;
         }
 
         /// <summary>
@@ -145,7 +140,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

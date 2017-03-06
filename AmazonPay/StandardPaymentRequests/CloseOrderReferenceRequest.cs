@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.StandardPaymentRequests
+﻿namespace AmazonPay.StandardPaymentRequests
 {
     /// <summary>
     /// Request class to set the CloseOrderReference API call parameters
@@ -14,15 +9,15 @@ namespace AmazonPay.StandardPaymentRequests
         private string amazon_order_reference_id;
         private string closure_reason;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public CloseOrderReferenceRequest()
         {
-            this.action = Constants.CloseOrderReference;
+            action = Constants.CloseOrderReference;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -36,7 +31,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
         /// <summary>
         /// Sets the Amazon Order Reference ID
@@ -50,7 +45,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazon_order_reference_id;
+            return amazon_order_reference_id;
         }
         /// <summary>
         /// Sets the Closure reason
@@ -64,7 +59,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetClosureReason()
         {
-            return this.closure_reason;
+            return closure_reason;
         }
         /// <summary>
         /// Sets the MWS Auth Token
@@ -78,7 +73,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

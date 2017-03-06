@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.CommonRequests
+﻿namespace AmazonPay.CommonRequests
 {
     /// <summary>
     /// Set the GetServiceStatus API call parameters
@@ -12,15 +7,15 @@ namespace AmazonPay.CommonRequests
     {
         private string merchant_id;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public GetServiceStatusRequest()
         {
-            this.action = Constants.GetServiceStatus;
+            action = Constants.GetServiceStatus;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -35,7 +30,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

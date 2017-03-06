@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.RecurringPaymentRequests
 {
@@ -23,15 +20,15 @@ namespace AmazonPay.RecurringPaymentRequests
         private string custom_information;
         private string amazon_billing_agreement_id;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public CreateOrderReferenceForIdRequest()
         {
-            this.action = Constants.CreateOrderReferenceForId;
+            action = Constants.CreateOrderReferenceForId;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -46,7 +43,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -56,12 +53,12 @@ namespace AmazonPay.RecurringPaymentRequests
         /// <returns>CreateOrderReferenceForIdRequest Object</returns>
         public CreateOrderReferenceForIdRequest WithId(string id)
         {
-            this.amazon_billing_agreement_id = id;
+            amazon_billing_agreement_id = id;
             return this;
         }
         public string GetId()
         {
-            return this.amazon_billing_agreement_id;
+            return amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetIdType()
         {
-            return this.id_type;
+            return id_type;
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetInheritShippingAddress()
         {
-            return this.inherit_shipping_address.ToString().ToLower();
+            return inherit_shipping_address.ToString().ToLower();
         }
 
         /// <summary>
@@ -106,7 +103,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetConfirmNow()
         {
-            return this.confirm_now.ToString().ToLower();
+            return confirm_now.ToString().ToLower();
         }
 
         /// <summary>
@@ -121,7 +118,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public decimal GetAmount()
         {
-            return this.amount;
+            return amount;
         }
 
         /// <summary>
@@ -136,7 +133,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetCurrencyCode()
         {
-            return this.currency_code;
+            return currency_code;
         }
 
         /// <summary>
@@ -151,7 +148,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetPlatformId()
         {
-            return this.platform_id;
+            return platform_id;
         }
 
         /// <summary>
@@ -166,7 +163,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetSellerNote()
         {
-            return this.seller_note;
+            return seller_note;
         }
 
         /// <summary>
@@ -181,7 +178,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetSellerOrderId()
         {
-            return this.seller_order_id;
+            return seller_order_id;
         }
 
         /// <summary>
@@ -196,7 +193,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetStoreName()
         {
-            return this.store_name;
+            return store_name;
         }
         /// <summary>
         /// Sets the Custom Information
@@ -210,7 +207,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetCustomInformation()
         {
-            return this.custom_information;
+            return custom_information;
         }
 
         /// <summary>
@@ -225,7 +222,7 @@ namespace AmazonPay.RecurringPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

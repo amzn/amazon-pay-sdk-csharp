@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.StandardPaymentRequests
+﻿namespace AmazonPay.StandardPaymentRequests
 {
     /// <summary>
     /// Request class to set the CloseAuthorization API call parameters
@@ -14,15 +9,15 @@ namespace AmazonPay.StandardPaymentRequests
         private string amazon_authorization_id;
         private string closure_reason;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public CloseAuthorizationRequest()
         {
-            this.action = Constants.CloseAuthorization;
+            action = Constants.CloseAuthorization;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -36,7 +31,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
         /// <summary>
         /// Sets the Amazon Authorization ID
@@ -50,7 +45,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAmazonAuthorizationId()
         {
-            return this.amazon_authorization_id;
+            return amazon_authorization_id;
         }
 
         /// <summary>
@@ -65,7 +60,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetClosureReason()
         {
-            return this.closure_reason;
+            return closure_reason;
         }
 
         /// <summary>
@@ -80,7 +75,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

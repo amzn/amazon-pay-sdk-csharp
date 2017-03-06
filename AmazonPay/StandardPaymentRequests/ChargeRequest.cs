@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using AmazonPay.RecurringPaymentRequests;
 using System.IO;
 
@@ -74,7 +71,7 @@ namespace AmazonPay.StandardPaymentRequests
         /// <returns>ChargeRequest</returns>
         public ChargeRequest WithAmazonReferenceId(string amazon_reference_id)
         {
-            if (amazon_reference_id != "" && amazon_reference_id != null)
+            if (!string.IsNullOrEmpty(amazon_reference_id))
             {
                 string switchChar = amazon_reference_id;
                 switch (switchChar[0])

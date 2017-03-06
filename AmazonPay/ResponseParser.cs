@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.XPath;
 
 namespace AmazonPay
 {
@@ -14,7 +9,7 @@ namespace AmazonPay
     /// </summary>
     public static class ResponseParser
     {
-        public static string xmlResponse = null;
+        public static string xmlResponse;
 
         /*public ResponseParser(string xml)
         {
@@ -36,7 +31,7 @@ namespace AmazonPay
         /// <returns>string json</returns>
         public static string ToJson()
         {
-            string json = "";
+            var json = "";
             var xml = new XmlDocument();
             xml.LoadXml(xmlResponse.Trim());
             json = JsonConvert.SerializeObject(xml, Newtonsoft.Json.Formatting.Indented);
@@ -50,7 +45,7 @@ namespace AmazonPay
         /// <returns>Dictionary(string,object)</returns>
         public static Dictionary<string, object> ToDict()
         {
-            string json = ToJson();
+            var json = ToJson();
             NestedJsonToDictionary jsonToDict = new NestedJsonToDictionary(json);
             return jsonToDict.GetDictionary();
         }

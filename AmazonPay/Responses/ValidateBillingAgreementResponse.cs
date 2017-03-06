@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -23,31 +21,31 @@ namespace AmazonPay.Responses
         private string requestId;
         private DateTime lastUpdatedTimestamp;
 
-        private string errorCode;
-        private string errorMessage;
+        private readonly string errorCode;
+        private readonly string errorMessage;
         public string parentKey;
-        private bool success = false;
+        private readonly bool success;
 
 
         public ValidateBillingAgreementResponse(string xml)
         {
             this.xml = xml;
             ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson();
+            dictionary = ResponseParser.ToDict();
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
                 success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -115,27 +113,27 @@ namespace AmazonPay.Responses
 
         public string GetValidationResult()
         {
-            return this.validationResult;
+            return validationResult;
         }
         public string GetFailureReasonCode()
         {
-            return this.failureReasonCode;
+            return failureReasonCode;
         }
         public string GetReasonCode()
         {
-            return this.reasonCode;
+            return reasonCode;
         }
         public string GetReasonDescription()
         {
-            return this.reasonDescription;
+            return reasonDescription;
         }
         public DateTime GetLastUpdatedTimestamp()
         {
-            return this.lastUpdatedTimestamp;
+            return lastUpdatedTimestamp;
         }
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
         public bool GetSuccess()
         {
@@ -151,15 +149,15 @@ namespace AmazonPay.Responses
         }
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
     }
 }

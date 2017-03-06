@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.StandardPaymentRequests
+﻿namespace AmazonPay.StandardPaymentRequests
 {
     /// <summary>
     /// Request class to set the GetAuthorizationDetails API call parameters
@@ -13,15 +8,15 @@ namespace AmazonPay.StandardPaymentRequests
         private string merchant_id;
         private string amazon_authorization_id;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public GetAuthorizationDetailsRequest()
         {
-            this.action = Constants.GetAuthorizationDetails;
+            action = Constants.GetAuthorizationDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -36,7 +31,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -51,7 +46,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAmazonAuthorizationId()
         {
-            return this.amazon_authorization_id;
+            return amazon_authorization_id;
         }
 
         /// <summary>
@@ -66,7 +61,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

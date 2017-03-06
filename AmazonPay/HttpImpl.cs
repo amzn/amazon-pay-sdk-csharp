@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -14,17 +13,17 @@ namespace AmazonPay
     class HttpImpl
     {
         private string response;
-        private bool header = false;
+        private bool header;
         private string accessToken = "";
-        public Dictionary<string,string> responseDict;
-        private Configuration clientConfig;
+        public Dictionary<string, string> responseDict;
+        private readonly Configuration clientConfig;
         private int statusCode;
-        
+
 
         public HttpImpl(Configuration config)
         {
-            responseDict = new Dictionary<string,string>();
-            this.clientConfig = config;
+            responseDict = new Dictionary<string, string>();
+            clientConfig = config;
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace AmazonPay
         /// <param name="accesstoken"></param>
         public void setAccessToken(string accesstoken)
         {
-            this.accessToken = accesstoken;
+            accessToken = accesstoken;
         }
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace AmazonPay
         /// <param name="userAgent"></param>
         /// <param name="requestData"></param>
         /// <returns>Dictionary responseDict</returns>
-        public Dictionary<string,string> Post(string url, string userAgent, byte[] requestData)
+        public Dictionary<string, string> Post(string url, string userAgent, byte[] requestData)
         {
             HttpWebRequest request = ConfigureWebRequest("POST", url, userAgent, requestData.Length);
             using (Stream requestStream = request.GetRequestStream())
@@ -128,13 +127,13 @@ namespace AmazonPay
                 {
                     statusCode = (int)httpResponse.StatusCode;
                     StreamReader reader = new StreamReader(httpResponse.GetResponseStream(), Encoding.UTF8);
-                    this.response = reader.ReadToEnd();
+                    response = reader.ReadToEnd();
                 }
 
             }
             catch (WebException we)
             {
-                using (HttpWebResponse httpErrorResponse = (HttpWebResponse)we.Response as HttpWebResponse)
+                using (HttpWebResponse httpErrorResponse = (HttpWebResponse)we.Response)
                 {
 
                     if (httpErrorResponse == null)
@@ -143,10 +142,10 @@ namespace AmazonPay
                     }
                     if (httpErrorResponse != null)
                     {
-                        this.statusCode = (int)httpErrorResponse.StatusCode;
+                        statusCode = (int)httpErrorResponse.StatusCode;
                         using (StreamReader reader = new StreamReader(httpErrorResponse.GetResponseStream(), Encoding.UTF8))
                         {
-                            this.response = reader.ReadToEnd();
+                            response = reader.ReadToEnd();
                         }
                     }
                 }

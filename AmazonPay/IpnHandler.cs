@@ -4,14 +4,11 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using AmazonPay;
 using System.Xml;
 using AmazonPay.Responses;
 using System.Text.RegularExpressions;
@@ -74,7 +71,7 @@ namespace AmazonPay
         /// <param name="logger"></param>
         public IpnHandler(NameValueCollection headers, string jsonMessage, ILog logger)
         {
-            this.Logger = logger;
+            Logger = logger;
             IpnHandlerInit(headers, jsonMessage);
         }
 
@@ -139,10 +136,10 @@ namespace AmazonPay
         private void ParseNotification(NameValueCollection headers, string snsJson)
         {
             ValidateHeader(headers);
-            parseMessage(snsJson);
+            ParseMessage(snsJson);
             ValidateCertUrl();
             ValidateMessageType();
-            LogRequestDetails(headers, this.ToXml());
+            LogRequestDetails(headers, ToXml());
         }
 
         private void LogRequestDetails(NameValueCollection headers, string message)
@@ -155,7 +152,7 @@ namespace AmazonPay
                 sb.AppendLine("[Key: " + headers.GetKey(i) + ", Value: " + headers.GetValues(headers.GetKey(i))[0] + "]");
             }
             // Logging headers
-            LogMessage(sb.ToString(), AmazonPay.SanitizeData.DataType.Text);
+            LogMessage(sb.ToString(), SanitizeData.DataType.Text);
             // Logging response
             LogMessage(message, SanitizeData.DataType.Response);
         }
@@ -166,7 +163,7 @@ namespace AmazonPay
         /// <param name="headers"></param>
         private static void ValidateHeader(NameValueCollection headers)
         {
-            string messageType = null;
+            string messageType;
 
             try
             {
@@ -184,19 +181,19 @@ namespace AmazonPay
 
             if (!messageType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new NullReferenceException(String.Format("Error with sns message - header x-amz-sns-message-type is invalid", messageType));
+                throw new NullReferenceException(string.Format("Error with sns message - header x-amz-sns-message-type is invalid", messageType));
             }
         }
 
         /// <summary>
         /// Ensure that the sns message is the valid notificaton type
         /// </summary>
-        private  void ValidateMessageType()
+        private void ValidateMessageType()
         {
             string notificatonType = GetMandatoryField("Type");
             if (!notificatonType.Equals("Notification", StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new Exception("METHOD__ValidateMessageType |" + String.Format("Error with sns notification - unexpected message with Type of ", notificatonType));
+                throw new Exception("METHOD__ValidateMessageType |" + string.Format("Error with sns notification - unexpected message with Type of ", notificatonType));
             }
         }
 
@@ -204,11 +201,11 @@ namespace AmazonPay
         /// Create a new message the acts as a wrapper around the json string
         /// </summary>
         /// <param name="json"></param>
-        private void parseMessage(string json)
+        private void ParseMessage(string json)
         {
             try
             {
-                this.parsedMessage = JObject.Parse(json);
+                parsedMessage = JObject.Parse(json);
             }
             catch (Exception ex)
             {
@@ -240,7 +237,7 @@ namespace AmazonPay
             }
             catch (FormatException fe)
             {
-                throw new FormatException(String.Format("Error with message - expected field should be of type DateTime object", fieldName), fe);
+                throw new FormatException(string.Format("Error with message - expected field should be of type DateTime object", fieldName), fe);
             }
         }
 
@@ -251,11 +248,11 @@ namespace AmazonPay
         /// <returns>JToken value</returns>
         private JToken GetValueAsToken(string fieldName)
         {
-            JToken value = this.parsedMessage.GetValue(fieldName);
+            JToken value = parsedMessage.GetValue(fieldName);
 
             if (value == null)
             {
-                throw new NullReferenceException(String.Format("Error with message - mandatory field cannot be found", fieldName));
+                throw new NullReferenceException(string.Format("Error with message - mandatory field cannot be found", fieldName));
             }
             return value;
         }
@@ -265,24 +262,16 @@ namespace AmazonPay
         /// </summary>
         /// <param name="fieldName"></param>
         /// <returns>String or null if not defined</returns>
-        private String GetField(string fieldName)
+        private string GetField(string fieldName)
         {
-            JToken value = this.parsedMessage.GetValue(fieldName);
-            if (value != null)
-            {
-                return value.ToString();
-            }
-            else
-            {
-                return null;
-            }
+            JToken value = parsedMessage.GetValue(fieldName);
+            return value?.ToString();
         }
 
         /// <summary>
         /// Verifies that the signing certificate url is from a recognizable source. 
         /// Returns the cert url if it cen be verified, otherwise throws an exception.
         /// </summary>
-        /// <param name="signingCertURL"></param>
         /// <returns></returns>
         private void ValidateCertUrl()
         {
@@ -294,14 +283,7 @@ namespace AmazonPay
             {
                 const string pattern = @"^sns\.[a-zA-Z0-9\-]{3,}\.amazonaws\.com(\.cn)?$";
                 var regex = new Regex(pattern);
-                if (!regex.IsMatch(uri.Host))
-                {
-                    isValidUrl = false;
-                }
-                else
-                {
-                    isValidUrl = true;
-                }
+                isValidUrl = regex.IsMatch(uri.Host);
             }
             if (!isValidUrl)
             {
@@ -322,7 +304,7 @@ namespace AmazonPay
                     VerifySnsMessageWithVersion1SignatureAlgorithm();
                     break;
                 default:
-                    throw new InvalidDataException(String.Format("Error with sns message verification - message is signed with unknown signature specification", signatureVersion));
+                    throw new InvalidDataException(string.Format("Error with sns message verification - message is signed with unknown signature specification", signatureVersion));
             }
         }
 
@@ -334,7 +316,7 @@ namespace AmazonPay
             bool isValid = VerifyMsgMatchesSignatureV1WithCert();
             if (!isValid)
             {
-                throw new InvalidDataException(String.Format("Error with sns message - signature verification failed", "1"));
+                throw new InvalidDataException(string.Format("Error with sns message - signature verification failed", "1"));
             }
         }
 
@@ -384,7 +366,7 @@ namespace AmazonPay
             builder.Append("MessageId\n");
             builder.Append(GetMandatoryField("MessageId"));
             builder.Append("\n");
-            String subject = GetField("Subject");
+            string subject = GetField("Subject");
             if (subject != null)
             {
                 builder.Append("Subject\n");
@@ -419,9 +401,9 @@ namespace AmazonPay
         /// </summary>
         /// <param name="subject"></param>
         /// <returns>value of the attribute or false</returns>
-        private bool VerifyCertificateSubject(String subject)
+        private bool VerifyCertificateSubject(string subject)
         {
-            string[] subjectAttributeDelimiters = new string[] { ", " };
+            string[] subjectAttributeDelimiters = { ", " };
             string[] subjectAttributesArr = subject.Split(subjectAttributeDelimiters, StringSplitOptions.None);
             List<string> subjectAttributesList = convertSubjectAttributesArr(subjectAttributesArr);
 
@@ -502,7 +484,7 @@ namespace AmazonPay
             X509Certificate2 cert = null;
             try
             {
-                cert = (X509Certificate2)HttpRuntime.Cache.Get(String.Format(Constants.CacheKey, certPath));
+                cert = (X509Certificate2)HttpRuntime.Cache.Get(string.Format(Constants.CacheKey, certPath));
             }
             catch (HttpException ex)
             {
@@ -512,7 +494,7 @@ namespace AmazonPay
             if (cert == null)
             {
                 cert = GetCertificateFromURI(certPath);
-                HttpRuntime.Cache.Insert(String.Format(Constants.CacheKey, certPath), cert, null, DateTime.UtcNow.AddDays(1.0), System.Web.Caching.Cache.NoSlidingExpiration);
+                HttpRuntime.Cache.Insert(string.Format(Constants.CacheKey, certPath), cert, null, DateTime.UtcNow.AddDays(1.0), System.Web.Caching.Cache.NoSlidingExpiration);
             }
 
             return cert;
@@ -543,7 +525,7 @@ namespace AmazonPay
         /// Gets certificate's subject information
         /// </summary>
         /// <returns>x509Cert.Subject</returns>
-        private String GetSubject()
+        private string GetSubject()
         {
             return x509Cert.Subject;
         }
@@ -563,12 +545,11 @@ namespace AmazonPay
         /// </summary>
         private void GetIpnResponseObjects()
         {
-            string xml;
-            xml = this.ToXml();
+            var xml = ToXml();
 
-            if (Enum.IsDefined(typeof(NotificationType), this.GetNotificationType()))
+            if (Enum.IsDefined(typeof(NotificationType), GetNotificationType()))
             {
-                switch ((NotificationType)Enum.Parse(typeof(NotificationType), this.GetNotificationType()))
+                switch ((NotificationType)Enum.Parse(typeof(NotificationType), GetNotificationType()))
                 {
                     case NotificationType.OrderReferenceNotification:
                         orderReferenceDetailsObject = new OrderReferenceDetailsResponse(xml);
@@ -601,13 +582,10 @@ namespace AmazonPay
         /// <returns>IPN in JSON string format </returns>
         public string ToJson()
         {
-            string xmlResponse;
-            string json;
-
-            xmlResponse = this.ToXml();
+            var xmlResponse = ToXml();
             var xml = new XmlDocument();
             xml.LoadXml(xmlResponse);
-            json = JsonConvert.SerializeObject(xml, Newtonsoft.Json.Formatting.Indented);
+            var json = JsonConvert.SerializeObject(xml, Newtonsoft.Json.Formatting.Indented);
             return json;
         }
 
@@ -617,7 +595,7 @@ namespace AmazonPay
         /// <returns>IPN in XML string format</returns>
         public string ToXml()
         {
-            JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());
+            JObject message = JObject.Parse(parsedMessage.GetValue("Message").ToString());
             string xmlResponse = message.GetValue("NotificationData").ToString().Trim();
             parseRemainingIpnFields();
             return xmlResponse;
@@ -631,7 +609,7 @@ namespace AmazonPay
         {
             string json = ToJson();
             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
-                json, new JsonConverter[] { new AmazonPay.JsonParser() });
+                json, new JsonParser());
             return dict;
         }
 
@@ -640,11 +618,11 @@ namespace AmazonPay
         /// </summary>
         private void parseRemainingIpnFields()
         {
-            JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());
-            this.notificationReferenceId = message.GetValue("NotificationReferenceId").ToString();
-            this.notificationType = message.GetValue("NotificationType").ToString();
-            this.sellerId = message.GetValue("SellerId").ToString();
-            this.releaseEnvironment = message.GetValue("ReleaseEnvironment").ToString();
+            JObject message = JObject.Parse(parsedMessage.GetValue("Message").ToString());
+            notificationReferenceId = message.GetValue("NotificationReferenceId").ToString();
+            notificationType = message.GetValue("NotificationType").ToString();
+            sellerId = message.GetValue("SellerId").ToString();
+            releaseEnvironment = message.GetValue("ReleaseEnvironment").ToString();
         }
 
 
@@ -654,7 +632,7 @@ namespace AmazonPay
         /// <returns></returns>
         public string GetSellerId()
         {
-            return this.sellerId;
+            return sellerId;
         }
 
         /// <summary>
@@ -663,7 +641,7 @@ namespace AmazonPay
         /// <returns></returns>
         public string GetNotificationReferenceId()
         {
-            return this.notificationReferenceId;
+            return notificationReferenceId;
         }
 
         /// <summary>
@@ -672,7 +650,7 @@ namespace AmazonPay
         /// <returns></returns>
         public string GetReleaseEnvironment()
         {
-            return this.releaseEnvironment;
+            return releaseEnvironment;
         }
 
         /// <summary>
@@ -682,7 +660,7 @@ namespace AmazonPay
         /// <returns></returns>
         public string GetNotificationType()
         {
-            return this.notificationType;
+            return notificationType;
         }
 
         /// <summary>
@@ -691,7 +669,7 @@ namespace AmazonPay
         /// <returns>OrderReferenceDetailsResponse Object</returns>
         public OrderReferenceDetailsResponse GetOrderReferenceDetailsResponse()
         {
-            return this.orderReferenceDetailsObject;
+            return orderReferenceDetailsObject;
         }
 
         /// <summary>
@@ -700,7 +678,7 @@ namespace AmazonPay
         /// <returns>BillingAgreementDetailsResponse Object</returns>
         public BillingAgreementDetailsResponse GetBillingAgreementDetailsResponse()
         {
-            return this.billingAgreementDetailsObject;
+            return billingAgreementDetailsObject;
         }
 
         /// <summary>
@@ -709,7 +687,7 @@ namespace AmazonPay
         /// <returns>AuthorizeResponse Object</returns>
         public AuthorizeResponse GetAuthorizeResponse()
         {
-            return this.authorizeResponseObject;
+            return authorizeResponseObject;
         }
 
         /// <summary>
@@ -718,7 +696,7 @@ namespace AmazonPay
         /// <returns>CaptureResponse Object</returns>
         public CaptureResponse GetCaptureResponse()
         {
-            return this.captureResponseObject;
+            return captureResponseObject;
         }
 
         /// <summary>
@@ -727,7 +705,7 @@ namespace AmazonPay
         /// <returns>RefundResponse Object</returns>
         public RefundResponse GetRefundResponse()
         {
-            return this.refundResponseObject;
+            return refundResponseObject;
         }
 
         /// <summary>
@@ -736,7 +714,7 @@ namespace AmazonPay
         /// <returns>GetProviderCreditDetailsResponse Object</returns>
         public GetProviderCreditDetailsResponse GetProviderCreditDetailsResponse()
         {
-            return this.providerCreditResponseObject;
+            return providerCreditResponseObject;
         }
 
         /// <summary>
@@ -745,7 +723,7 @@ namespace AmazonPay
         /// <returns>GetProviderCreditReversalDetailsResponse Object</returns>
         public GetProviderCreditReversalDetailsResponse GetProviderCreditReversalDetailsResponse()
         {
-            return this.providerCreditReversalResponseObject;
+            return providerCreditReversalResponseObject;
         }
 
         /// <summary>
@@ -755,9 +733,9 @@ namespace AmazonPay
         /// <param name="type"></param>
         private void LogMessage(string message, SanitizeData.DataType type)
         {
-            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            if (Logger != null && Logger.IsDebugEnabled)
             {
-                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+                Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
             }
         }
     }

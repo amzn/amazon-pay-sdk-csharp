@@ -1,5 +1,4 @@
-﻿using System;
-namespace AmazonPay.Responses
+﻿namespace AmazonPay.Responses
 {
     /// <summary>
     /// Interface for common Response methods 

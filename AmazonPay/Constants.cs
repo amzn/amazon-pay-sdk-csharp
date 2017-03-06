@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay
+﻿namespace AmazonPay
 {
     public static class Constants
     {
@@ -10,7 +6,7 @@ namespace AmazonPay
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
-        
+
         /// <summary>
         /// common parameters for all API calls
         /// </summary>

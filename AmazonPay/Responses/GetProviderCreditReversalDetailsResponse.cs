@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -29,29 +26,29 @@ namespace AmazonPay.Responses
 
         public string errorCode;
         public string errorMessage;
-        public bool success = false;
+        public bool success;
         public string parentKey;
-        
+
 
         public GetProviderCreditReversalDetailsResponse(string xml)
         {
             this.xml = xml;
             ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson();
+            dictionary = ResponseParser.ToDict();
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
                 success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -91,7 +88,7 @@ namespace AmazonPay.Responses
                             switch ((Operator)Enum.Parse(typeof(Operator), strKey))
                             {
                                 case Operator.AmazonProviderCreditReversalId:
-                                    this.amazonProviderCreditReversalId = obj.ToString();
+                                    amazonProviderCreditReversalId = obj.ToString();
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
@@ -129,47 +126,47 @@ namespace AmazonPay.Responses
 
         public string GetAmazonProviderCreditReversalId()
         {
-            return this.amazonProviderCreditReversalId;
+            return amazonProviderCreditReversalId;
         }
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
         public string GetCreditReversalReferenceId()
         {
-            return this.creditReversalReferenceId;
+            return creditReversalReferenceId;
         }
         public string GetCreditReversalNote()
         {
-            return this.creditReversalNote;
+            return creditReversalNote;
         }
         public decimal GetCreditReversalAmount()
         {
-            return this.creditReversalAmount;
+            return creditReversalAmount;
         }
         public string GetCreditReversalAmountCurrencyCode()
         {
-            return this.creditReversalAmountCurrencyCode;
+            return creditReversalAmountCurrencyCode;
         }
         public string GetCreditReversalStatus()
         {
-            return this.creditReversalStatus;
+            return creditReversalStatus;
         }
         public string GetLastUpdateTimestamp()
         {
-            return this.lastUpdateTimestamp;
+            return lastUpdateTimestamp;
         }
         public string GetCreationTimestamp()
         {
-            return this.creationTimestamp;
+            return creationTimestamp;
         }
         public string GetReasonCode()
         {
-            return this.reasonCode;
+            return reasonCode;
         }
         public string GetReasonDescription()
         {
-            return this.reasonDescription;
+            return reasonDescription;
         }
         public string GetErrorCode()
         {
@@ -185,15 +182,15 @@ namespace AmazonPay.Responses
         }
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
     }
 }

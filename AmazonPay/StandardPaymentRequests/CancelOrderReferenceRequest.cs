@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.StandardPaymentRequests
+﻿namespace AmazonPay.StandardPaymentRequests
 {
     /// <summary>
     /// Request class to set the CancelOrderReference API call parameters
@@ -14,15 +9,15 @@ namespace AmazonPay.StandardPaymentRequests
         private string amazon_order_reference_id;
         private string cancelation_reason;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public CancelOrderReferenceRequest()
         {
-            this.action = Constants.CancelOrderReference;
+            action = Constants.CancelOrderReference;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -37,7 +32,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -52,7 +47,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazon_order_reference_id;
+            return amazon_order_reference_id;
         }
 
         /// <summary>
@@ -67,7 +62,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetCancelationReason()
         {
-            return this.cancelation_reason;
+            return cancelation_reason;
         }
 
         /// <summary>
@@ -82,7 +77,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

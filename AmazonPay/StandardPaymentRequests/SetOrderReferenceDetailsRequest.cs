@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.StandardPaymentRequests
 {
@@ -10,7 +7,7 @@ namespace AmazonPay.StandardPaymentRequests
     /// </summary>
     public class SetOrderReferenceDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_order_reference_id;
         private decimal amount;
@@ -21,15 +18,15 @@ namespace AmazonPay.StandardPaymentRequests
         private string store_name;
         private string custom_information;
         private string mws_auth_token;
-        
+
 
         public SetOrderReferenceDetailsRequest()
         {
-            this.action = Constants.SetOrderReferenceDetails;
+            action = Constants.SetOrderReferenceDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -39,12 +36,12 @@ namespace AmazonPay.StandardPaymentRequests
         public SetOrderReferenceDetailsRequest WithMerchantId(string merchant_id)
         {
             this.merchant_id = merchant_id;
-            
+
             return this;
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -60,7 +57,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazon_order_reference_id;
+            return amazon_order_reference_id;
         }
         /// <summary>
         /// Sets the Amount for the order
@@ -75,7 +72,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public decimal GetAmount()
         {
-            return this.amount;
+            return amount;
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public string GetCurrencyCode()
         {
-            return this.currency_code;
+            return currency_code;
         }
 
         /// <summary>
@@ -106,7 +103,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetPlatformId()
         {
-            return this.platform_id;
+            return platform_id;
         }
 
         /// <summary>
@@ -121,7 +118,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetSellerNote()
         {
-            return this.seller_note;
+            return seller_note;
         }
         /// <summary>
         /// Sets the Seller Order ID
@@ -135,7 +132,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetSellerOrderId()
         {
-            return this.seller_order_id;
+            return seller_order_id;
         }
 
         /// <summary>
@@ -150,7 +147,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetStoreName()
         {
-            return this.store_name;
+            return store_name;
         }
 
         /// <summary>
@@ -165,7 +162,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetCustomInformation()
         {
-            return this.custom_information;
+            return custom_information;
         }
 
         /// <summary>
@@ -180,7 +177,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

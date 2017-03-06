@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.StandardPaymentRequests
+﻿namespace AmazonPay.StandardPaymentRequests
 {
     /// <summary>
     /// Request class to set the ConfirmOrderReference API call parameters
     /// </summary>
     public class ConfirmOrderReferenceRequest
     {
-        private string action;
+        private readonly string action;
         private string amazon_order_reference_id;
         private string merchant_id;
         private string mws_auth_token;
 
         public ConfirmOrderReferenceRequest()
         {
-            this.action = Constants.ConfirmOrderReference;
+            action = Constants.ConfirmOrderReference;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -36,7 +31,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
         /// <summary>
         /// Sets the Amazon Order Reference ID
@@ -50,7 +45,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazon_order_reference_id;
+            return amazon_order_reference_id;
         }
         /// <summary>
         /// Sets the MWS Auth Token
@@ -65,7 +60,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -19,27 +17,27 @@ namespace AmazonPay.Responses
         public DateTime timestamp;
         public string errorCode;
         public string errorMessage;
-        public bool success = false;
+        public bool success;
 
         public GetServiceStatusResponse(string xml)
         {
             this.xml = xml;
             ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson();
+            dictionary = ResponseParser.ToDict();
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
                 success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -94,7 +92,7 @@ namespace AmazonPay.Responses
 
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
         public string GetStatus()
         {
@@ -118,15 +116,15 @@ namespace AmazonPay.Responses
         }
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
 
     }

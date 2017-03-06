@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -42,28 +41,28 @@ namespace AmazonPay.Responses
         public string errorCode;
         public string errorMessage;
         public string parentKey;
-        public bool success = false;
+        public bool success;
 
 
         public RefundResponse(string xml)
         {
             this.xml = xml;
             ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson();
+            dictionary = ResponseParser.ToDict();
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
                 success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -197,71 +196,71 @@ namespace AmazonPay.Responses
 
         public string GetRefundId()
         {
-            return this.amazonRefundId;
+            return amazonRefundId;
         }
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
         public string GetRefundReferenceId()
         {
-            return this.refundReferenceId;
+            return refundReferenceId;
         }
         public string GetSellerRefundNote()
         {
-            return this.sellerRefundNote;
+            return sellerRefundNote;
         }
         public decimal GetRefundAmount()
         {
-            return this.refundAmount;
+            return refundAmount;
         }
         public string GetRefundAmountCurrencyCode()
         {
-            return this.refundCurrencyCode;
+            return refundCurrencyCode;
         }
         public decimal GetRefundFee()
         {
-            return this.feeRefunded;
+            return feeRefunded;
         }
         public string GetRefundFeeCurrencyCode()
         {
-            return this.feeRefundedCurrencyCode;
+            return feeRefundedCurrencyCode;
         }
         public string GetRefundType()
         {
-            return this.refundType;
+            return refundType;
         }
         public string GetRefundState()
         {
-            return this.refundState;
+            return refundState;
         }
         public IList<string> GetProviderCreditReversalIdList()
         {
-            return this.providerCreditReversalId.AsReadOnly();
+            return providerCreditReversalId.AsReadOnly();
         }
         public IList<string> GetProviderIdList()
         {
-            return this.providerId.AsReadOnly();
+            return providerId.AsReadOnly();
         }
         public DateTime GetLastUpdateTimestamp()
         {
-            return this.lastUpdateTimestamp;
+            return lastUpdateTimestamp;
         }
         public DateTime GetCreationTimestamp()
         {
-            return this.creationTimestamp;
+            return creationTimestamp;
         }
         public string GetReasonCode()
         {
-            return this.reasonCode;
+            return reasonCode;
         }
         public string GetReasonDescription()
         {
-            return this.reasonDescription;
+            return reasonDescription;
         }
         public string GetSoftDescriptor()
         {
-            return this.softDescriptor;
+            return softDescriptor;
         }
         public string GetErrorCode()
         {
@@ -277,15 +276,15 @@ namespace AmazonPay.Responses
         }
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
 
     }

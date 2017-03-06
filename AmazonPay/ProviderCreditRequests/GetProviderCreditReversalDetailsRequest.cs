@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.ProviderCreditRequests
+﻿namespace AmazonPay.ProviderCreditRequests
 {
     /// <summary>
     /// Request class to set the GetProviderCreditReversalDetails API call parameters
     /// </summary>
     public class GetProviderCreditReversalDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_provider_credit_reversal_id;
         private string mws_auth_token;
 
         public GetProviderCreditReversalDetailsRequest()
         {
-            this.action = Constants.GetProviderCreditReversalDetails;
+            action = Constants.GetProviderCreditReversalDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -36,7 +31,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -51,7 +46,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetAmazonProviderCreditReversalId()
         {
-            return this.amazon_provider_credit_reversal_id;
+            return amazon_provider_credit_reversal_id;
         }
 
         /// <summary>
@@ -66,7 +61,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

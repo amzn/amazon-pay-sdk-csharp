@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -23,27 +21,27 @@ namespace AmazonPay.Responses
         public string requestId;
         public string errorCode;
         public string errorMessage;
-        public bool success = false;
+        public bool success;
 
         public ConfirmOrderReferenceResponse(string xml)
         {
             this.xml = xml;
             ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson();
+            dictionary = ResponseParser.ToDict();
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
                 success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -82,7 +80,7 @@ namespace AmazonPay.Responses
                             {
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
-                                    this.success = true;
+                                    success = true;
                                     break;
                             }
                         }
@@ -97,7 +95,7 @@ namespace AmazonPay.Responses
         /// <returns>string requestId</returns>
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
 
         /// <summary>
@@ -133,7 +131,7 @@ namespace AmazonPay.Responses
         /// <returns>JSON format Response</returns>
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
 
         /// <summary>
@@ -142,7 +140,7 @@ namespace AmazonPay.Responses
         /// <returns>XML format Response</returns>
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
 
         /// <summary>
@@ -151,7 +149,7 @@ namespace AmazonPay.Responses
         /// <returns>Dictionary<string,object> type Response</returns>
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
     }
 }
