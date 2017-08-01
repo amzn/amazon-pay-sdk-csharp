@@ -171,11 +171,11 @@ namespace PayWithAmazon.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.AmountLimitPerTimePeriod.ToString()))
                                     {
-                                        amountLimitPerTimePeriod = decimal.Parse(obj.ToString());
+                                        amountLimitPerTimePeriod = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.CurrentRemainingBalance.ToString()))
                                     {
-                                        currentRemainingBalanceAmount = decimal.Parse(obj.ToString());
+                                        currentRemainingBalanceAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:

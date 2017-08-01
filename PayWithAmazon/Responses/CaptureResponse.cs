@@ -122,15 +122,15 @@ namespace PayWithAmazon.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.CaptureAmount.ToString()))
                                     {
-                                        captureAmount = decimal.Parse(obj.ToString());
+                                        captureAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.RefundedAmount.ToString()))
                                     {
-                                        refundedAmount = decimal.Parse(obj.ToString());
+                                        refundedAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.CaptureFee.ToString()))
                                     {
-                                        captureFeeAmount = decimal.Parse(obj.ToString());
+                                        captureFeeAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:

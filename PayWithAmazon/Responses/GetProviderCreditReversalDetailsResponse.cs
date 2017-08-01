@@ -103,7 +103,7 @@ namespace PayWithAmazon.Responses
                                     creditReversalReferenceId = obj.ToString();
                                     break;
                                 case Operator.Amount:
-                                    creditReversalAmount = decimal.Parse(obj.ToString());
+                                    creditReversalAmount = decimal.Parse(obj.ToString(), Client.IFNumberFormat);
                                     break;
                                 case Operator.CurrencyCode:
                                     creditReversalAmountCurrencyCode = obj.ToString();

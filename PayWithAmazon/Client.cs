@@ -45,6 +45,8 @@ namespace PayWithAmazon
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
 
+        public static NumberFormatInfo IFNumberFormat = System.Globalization.CultureInfo.GetCultureInfo("en-US").NumberFormat;
+
         /// <summary>
         /// Takes the Configuration Object of the Configuration class
         /// </summary>
@@ -424,7 +426,7 @@ namespace PayWithAmazon
                 {Constants.Action,requestParameters.GetAction()},
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().ToString()},
+                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().ToString(Client.IFNumberFormat)},
                 {Constants.OrderReferenceAttributes_OrderTotal_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.OrderReferenceAttributes_PlatformId,requestParameters.GetPlatformId()},
                 {Constants.OrderReferenceAttributes_SellerNote,requestParameters.GetSellerNote()},
@@ -605,7 +607,7 @@ namespace PayWithAmazon
                 {Constants.Action,requestParameters.GetAction()},
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.AuthorizationAmount_Amount,requestParameters.GetAmount().ToString()},
+                {Constants.AuthorizationAmount_Amount,requestParameters.GetAmount().ToString(Client.IFNumberFormat)},
                 {Constants.AuthorizationAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.AuthorizationReferenceId,requestParameters.GetAuthorizationReferenceId()},
                 {Constants.SellerAuthorizationNote,requestParameters.GetSellerAuthorizationNote()},
@@ -686,7 +688,7 @@ namespace PayWithAmazon
                 {Constants.Action,requestParameters.GetAction()},
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonAuthorizationId,requestParameters.GetAmazonAuthorizationId()},
-                {Constants.CaptureAmount_Amount,requestParameters.GetAmount().ToString()},
+                {Constants.CaptureAmount_Amount,requestParameters.GetAmount().ToString(Client.IFNumberFormat)},
                 {Constants.CaptureAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.CaptureReferenceId,requestParameters.GetCaptureReferenceId()},
                 {Constants.SellerCaptureNote,requestParameters.GetSellerCaptureNote()},
@@ -766,7 +768,7 @@ namespace PayWithAmazon
                 {Constants.Action,requestParameters.GetAction()},
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonCaptureId,requestParameters.GetAmazonCaptureId()},
-                {Constants.RefundAmount_Amount,requestParameters.GetAmount().ToString()},
+                {Constants.RefundAmount_Amount,requestParameters.GetAmount().ToString(Client.IFNumberFormat)},
                 {Constants.RefundAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.RefundReferenceId,requestParameters.GetRefundReferenceId()},
                 {Constants.SellerRefundNote,requestParameters.GetSellerRefundNote()},
@@ -878,7 +880,7 @@ namespace PayWithAmazon
                 {Constants.Id,requestParameters.GetId()},
                 {Constants.IdType,requestParameters.GetIdType()},
                 {Constants.ConfirmNow,requestParameters.GetConfirmNow()},
-                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().ToString()},
+                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().ToString(Client.IFNumberFormat)},
                 {Constants.OrderReferenceAttributes_OrderTotal_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.OrderReferenceAttributes_PlatformId,requestParameters.GetPlatformId()},
                 {Constants.OrderReferenceAttributes_SellerNote,requestParameters.GetSellerNote()},
@@ -1073,7 +1075,7 @@ namespace PayWithAmazon
                 {Constants.Action,requestParameters.GetAction()},
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonBillingAgreementId,requestParameters.GetAmazonBillingAgreementId()},
-                {Constants.AuthorizationAmount_Amount,requestParameters.GetAmount().ToString()},
+                {Constants.AuthorizationAmount_Amount,requestParameters.GetAmount().ToString(Client.IFNumberFormat)},
                 {Constants.AuthorizationAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.PlatformId,requestParameters.GetPlatformId()},
                 {Constants.SellerNote,requestParameters.GetSellerNote()},
@@ -1219,7 +1221,7 @@ namespace PayWithAmazon
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonProviderCreditId,requestParameters.GetAmazonProviderCreditId()},
                 {Constants.CreditReversalReferenceId,requestParameters.GetCreditReversalReferenceId()},
-                {Constants.CreditReversalAmount_Amount,requestParameters.GetAmount().ToString()},
+                {Constants.CreditReversalAmount_Amount,requestParameters.GetAmount().ToString(Client.IFNumberFormat)},
                 {Constants.CreditReversalAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
             };
