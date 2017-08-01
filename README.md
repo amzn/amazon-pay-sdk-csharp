@@ -85,7 +85,7 @@ Folder PATH listing
 |   |       GetProviderCreditReversalDetailsResponse.cs
 |   |       GetServiceStatusResponse.cs
 |   |       OrderReferenceDetailsResponse.cs
-|	|		PaymentDetailsResponse.cs
+|   |       PaymentDetailsResponse.cs
 |   |       RefundResponse.cs
 |   |       ValidateBillingAgreementResponse.cs
 |   |       
@@ -598,19 +598,19 @@ string userId = jsonObject.GetValue("user_id").ToString();
 ##### This API allows you to make one API call 'GetPaymentDetails' to retrieve OrderReference, Authorize, Capture and Refund Details Response.
 
 ```
-	//GetPaymentDetails takes two parameters - AmazonOrderReferenID(required) and MWSAuthToken(optional)
-	PaymentDetailsResponse payDetailsResponse = client.GetPaymentDetails("S01-9111020-6707923", null); 
+    //GetPaymentDetails takes two parameters - AmazonOrderReferenID(required) and MWSAuthToken(optional)
+    PaymentDetailsResponse payDetailsResponse = client.GetPaymentDetails("S01-9111020-6707923", null); 
     System.Diagnostics.Debug.WriteLine(payDetailsResponse.GetOrderReferenceDetails().GetXml());
         
-	foreach (var group in payDetailsResponse.GetAuthorizationDetails())
+    foreach (var group in payDetailsResponse.GetAuthorizationDetails())
         {
             System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", group.Key, group.Value.GetXml());
         }
-	foreach (var group in payDetailsResponse.GetCaptureDetails())
+    foreach (var group in payDetailsResponse.GetCaptureDetails())
         {
             System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", group.Key, group.Value.GetXml());
         }
-	foreach (var group in payDetailsResponse.GetRefundDetails())
+    foreach (var group in payDetailsResponse.GetRefundDetails())
         {
             System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", group.Key, group.Value.GetXml());
         }
@@ -624,13 +624,13 @@ string userId = jsonObject.GetValue("user_id").ToString();
 3. Pass the obtained “access_token” and Order Reference ID’s to the GetOrderReferenceDetails request.
 
 ```
-	GetOrderReferenceDetailsRequest getOrderReferenceDetailsRequest = new GetOrderReferenceDetailsRequest();
+    GetOrderReferenceDetailsRequest getOrderReferenceDetailsRequest = new GetOrderReferenceDetailsRequest();
     getOrderReferenceDetailsRequest.WithAmazonOrderReferenceId("AMAZON_ORDER_REFERENCE_ID");
     getOrderReferenceDetailsRequest.WithaccessToken(ACCESS_TOKEN);
           
-	OrderReferenceDetailsResponse getOrderReferenceDetailsResponse = client.GetOrderReferenceDetails(getOrderReferenceDetailsRequest);
+    OrderReferenceDetailsResponse getOrderReferenceDetailsResponse = client.GetOrderReferenceDetails(getOrderReferenceDetailsRequest);
 	
-	System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetFullDescriptor());
+    System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetFullDescriptor());
     System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetAmazonBalanceFirst());
     System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetXml());
 ```
