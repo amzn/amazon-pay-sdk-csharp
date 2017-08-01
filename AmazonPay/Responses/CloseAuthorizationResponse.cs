@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -15,6 +13,9 @@ namespace AmazonPay.Responses
         public string errorMessage;
         public bool success = false;
 
+        /// <summary>
+        /// CloseAuthorizationResponse 
+        /// </summary>
         public CloseAuthorizationResponse(string xml)
         {
             this.xml = xml;

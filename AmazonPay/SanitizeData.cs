@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 using System.Configuration;
-using System.Collections.Specialized;
 using System.Web;
 using Newtonsoft.Json.Linq;
 
@@ -79,7 +77,7 @@ namespace AmazonPay
             {
                 string[] separatedURLQueryString = data.Split('\n');
 
-                var queryString = System.Web.HttpUtility.ParseQueryString(separatedURLQueryString[separatedURLQueryString.Length - 1].TrimStart());
+                var queryString = HttpUtility.ParseQueryString(separatedURLQueryString[separatedURLQueryString.Length - 1].TrimStart());
 
                 // Load SanitizeDataList
                 foreach (var item in sanitizeList)
@@ -90,7 +88,7 @@ namespace AmazonPay
 
                 separatedURLQueryString[separatedURLQueryString.Length - 1] = queryString.ToString();
 
-                Array.ForEach<String>(separatedURLQueryString, value => returnString += value + '\n');
+                Array.ForEach(separatedURLQueryString, value => returnString += value + '\n');
 
                 returnString = returnString.Remove(returnString.Length - 1);
             }

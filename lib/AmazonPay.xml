@@ -144,6 +144,22 @@
             <param name="requestParameters"></param>
             <returns>ResponseParser responseObject</returns>
         </member>
+        <member name="M:AmazonPay.Client.GetPaymentDetails(System.String,System.String)">
+            <summary>
+            GetPaymentDetails API call - is a utility function that returns Order Reference, Authorize, Capture and Refund details.
+            </summary>
+            <example>
+             <code>
+             PaymentDetailsResponse pay = client.GetPaymentDetails("S01-1894586-0483625", null);   
+              // Required params
+              amazonOrderReferenceID
+             
+              // Optional params
+              mwsAuthToken
+             </code>
+            </example>
+            <returns>ResponseParser responseObject</returns>
+        </member>
         <member name="M:AmazonPay.Client.SetOrderReferenceDetails(AmazonPay.StandardPaymentRequests.SetOrderReferenceDetailsRequest)">
             <summary>
             SetOrderReferenceDetails API call - Sets order reference details such as the order total and a description for the order.
@@ -717,7 +733,7 @@
              Common Looger Property
             </summary>
         </member>
-        <member name="F:AmazonPay.Constants.SellerId">
+        <member name="F:AmazonPay.Constants.USNumberFormat">
             <summary>
             common parameters for all API calls
             </summary>
@@ -736,6 +752,16 @@
             <summary>
             IPN Handler
             </summary>
+        </member>
+        <member name="F:AmazonPay.Constants.CacheKey">
+            <summary>
+             Cache key format string to avoid conflicts with other items in the application cache
+             </summary>
+        </member>
+        <member name="F:AmazonPay.Constants.Iso8601UTCDateWithMillisecondsFormatString">
+            <summary>
+             Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
+             </summary>
         </member>
         <member name="T:AmazonPay.HttpImpl">
             <summary>
@@ -1760,6 +1786,12 @@
             </summary>
             <returns>creationTimestamp</returns>
         </member>
+        <member name="M:AmazonPay.Responses.AuthorizeResponse.GetSoftDecline">
+            <summary>
+            Get the soft decline value for the Authorization
+            </summary>
+            <returns>softDelcine</returns>
+        </member>
         <member name="M:AmazonPay.Responses.AuthorizeResponse.GetReasonCode">
             <summary>
             Get the Reason Code for when the Authorization was closed or declined
@@ -1926,6 +1958,12 @@
             </summary>
             <returns>string requestId</returns>
         </member>
+        <member name="M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetCreationTimestamp">
+            <summary>
+            Get the creationTimestamp
+            </summary>
+            <returns>DateTime creationTimestamp</returns>
+        </member>
         <member name="M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetLastUpdatedTimestamp">
             <summary>
             Get the last Updated Timestamp
@@ -2040,8 +2078,18 @@
             </summary>
             <returns>string countryCode</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetCounty" -->
-        <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetDestinationType" -->
+        <member name="M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetCounty">
+            <summary>
+            Get the shipping address county of the Buyer
+            </summary>
+            <returns>string county</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetDestinationType">
+            <summary>
+            Get the destinationType whether if it's a physical desitination or a Billing address
+            </summary>
+            <returns>string destinationType</returns>
+        </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetDictionary" -->
         <member name="M:AmazonPay.Responses.BillingAgreementDetailsResponse.GetDistrict">
             <summary>
@@ -2263,6 +2311,24 @@
             </summary>
             <returns>decimal captureFeeAmount</returns>
         </member>
+        <member name="M:AmazonPay.Responses.CaptureResponse.GetConvertedAmount">
+            <summary>
+            Get the Converted Amount
+            </summary>
+            <returns>decimal convertedAmount</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.CaptureResponse.GetConvertedAmountCurrencyCode">
+            <summary>
+            Get teh ConvertedAmount Currency Code
+            </summary>
+            <returns>string convertedAmountCurrencyCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.CaptureResponse.GetConversionRate">
+            <summary>
+            Get the Conversion Rate
+            </summary>
+            <returns>decimal captureFeeAmount</returns>
+        </member>
         <member name="M:AmazonPay.Responses.CaptureResponse.GetCaptureFeeCurrencyCode">
             <summary>
             Get teh CaptureFee Currency Code
@@ -2305,6 +2371,18 @@
             </summary>
             <returns>string reasonCode</returns>
         </member>
+        <member name="M:AmazonPay.Responses.CaptureResponse.GetReasonDescription">
+            <summary>
+            Get the Reason Description when the Amazon Capture ID is in a different state than Open
+            </summary>
+            
+        </member>
+        <member name="M:AmazonPay.Responses.CaptureResponse.GetSoftDescriptor">
+             <summary>
+             Get the SoftDescriptor that appears on the buyer's payment instrument statement
+             </summary>
+            
+        </member>
         <member name="M:AmazonPay.Responses.CaptureResponse.GetErrorCode">
             <summary>
             Get the ErrorCode when te API call failed
@@ -2336,6 +2414,11 @@
             <returns>XML format Response</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.CaptureResponse.GetDictionary" -->
+        <member name="M:AmazonPay.Responses.CloseAuthorizationResponse.#ctor(System.String)">
+            <summary>
+            CloseAuthorizationResponse 
+            </summary>
+        </member>
         <member name="M:AmazonPay.Responses.CloseAuthorizationResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
             <summary>
             Flattening the Dictionary
@@ -2384,6 +2467,11 @@
             <returns>XML format Response</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.CloseAuthorizationResponse.GetDictionary" -->
+        <member name="M:AmazonPay.Responses.CloseBillingAgreementResponse.#ctor(System.String)">
+            <summary>
+            CloseBillingAgreementResponse
+            </summary>
+        </member>
         <member name="M:AmazonPay.Responses.CloseBillingAgreementResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
             <summary>
             Flattening the Dictionary
@@ -2432,6 +2520,11 @@
             <returns>XML format Response</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.CloseBillingAgreementResponse.GetDictionary" -->
+        <member name="M:AmazonPay.Responses.CloseOrderReferenceResponse.#ctor(System.String)">
+            <summary>
+            CloseOrderReferenceResponse
+            </summary>
+        </member>
         <member name="M:AmazonPay.Responses.CloseOrderReferenceResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
             <summary>
             Flattening the Dictionary
@@ -2480,6 +2573,11 @@
             <returns>XML format Response</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.CloseOrderReferenceResponse.GetDictionary" -->
+        <member name="M:AmazonPay.Responses.ConfirmBillingAgreementResponse.#ctor(System.String)">
+            <summary>
+            ConfirmBillingAgreementResponse
+            </summary>
+        </member>
         <member name="M:AmazonPay.Responses.ConfirmBillingAgreementResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
             <summary>
             Flattening the Dictionary
@@ -2585,6 +2683,11 @@
             </code>
             </summary>
         </member>
+        <member name="M:AmazonPay.Responses.ConfirmOrderReferenceResponse.#ctor(System.String)">
+            <summary>
+            ConfirmOrderReferenceResponse 
+            </summary>
+        </member>
         <member name="M:AmazonPay.Responses.ConfirmOrderReferenceResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
             <summary>
             Flattening the Dictionary
@@ -2633,6 +2736,46 @@
             <returns>XML format Response</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.ConfirmOrderReferenceResponse.GetDictionary" -->
+        <member name="T:AmazonPay.Responses.PaymentDetailsResponse">
+            <summary>
+            PaymentDetailsResponse is a helper method which returns OrderReference, Authorization, Capture and 
+            Refund response
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.PaymentDetailsResponse.PutOrderReferenceDetails(System.String,AmazonPay.Responses.OrderReferenceDetailsResponse)">
+            <summary>
+            Add OrderReferenceID and OrderReferenceDetails
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.PaymentDetailsResponse.PutAuthorizationDetails(System.String,AmazonPay.Responses.AuthorizeResponse)">
+            <summary>
+            Add AmazonAuthorizationReferenceID and AuthrizationDetails
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.PaymentDetailsResponse.PutCaptureDetails(System.String,AmazonPay.Responses.CaptureResponse)">
+            <summary>
+            Add AmazonCaptureID and CaptureDetails
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.PaymentDetailsResponse.PutRefundDetails(System.String,AmazonPay.Responses.RefundResponse)">
+            <summary>
+            Add AmazonRefundID and RefundDetails
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.PaymentDetailsResponse.GetOrderReferenceDetails">
+            <summary>
+            Get the OrderReferenceDetails
+            </summary>
+            <returns>OrderReferenceDetailsResponse orderReferenceDetails</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.PaymentDetailsResponse.GetAuthorizationDetails" -->
+        <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.PaymentDetailsResponse.GetCaptureDetails" -->
+        <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.PaymentDetailsResponse.GetRefundDetails" -->
+        <member name="M:AmazonPay.Responses.GetProviderCreditDetailsResponse.#ctor(System.String)">
+            <summary>
+            ProviderCreditDetailsResponse 
+            </summary>
+        </member>
         <member name="M:AmazonPay.Responses.GetProviderCreditDetailsResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
             <summary>
             Flattening the Dictionary
@@ -2759,6 +2902,11 @@
             </summary>
             <returns>JSON format Response</returns>
         </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.#ctor(System.String)">
+            <summary>
+            ProviderCreditReversalDetailsResponse 
+            </summary>
+        </member>
         <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
             <summary>
             Flattening the Dictionary
@@ -2770,9 +2918,116 @@
             </summary>
             <param name="dictionary"></param>
         </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetAmazonProviderCreditReversalId">
+            <summary>
+            Get the Amazon ProviderCreditReversalId 
+            </summary>
+            <returns>string amazonProviderCreditReversalId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetRequestId">
+            <summary>
+            Get the Amazon RequestId 
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetCreditReversalReferenceId">
+            <summary>
+            Get the CreditReversalReferenceId 
+            </summary>
+            <returns>string creditReversalReferenceId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetCreditReversalNote">
+            <summary>
+            Get the CreditReversalNote 
+            </summary>
+            <returns>string creditReversalNote</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetCreditReversalAmount">
+            <summary>
+            Get the CreditReversalAmount
+            </summary>
+            <returns>string creditReversalAmount</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetCreditReversalAmountCurrencyCode">
+            <summary>
+            Get the CreditReversalAmountCurrencyCode 
+            </summary>
+            <returns>string creditReversalAmountCurrencyCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetCreditReversalStatus">
+            <summary>
+            Get the CreditReversalStatus 
+            </summary>
+            <returns>string creditReversalStatus</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetLastUpdateTimestamp">
+            <summary>
+            Get the LastUpdateTimestamp 
+            </summary>
+            <returns>string lastUpdatetimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetCreationTimestamp">
+            <summary>
+            Get the Creationtimestamp 
+            </summary>
+            <returns>string creationtimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetReasonCode">
+            <summary>
+            Get the ReasonCode 
+            </summary>
+            <returns>string reasonCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetReasonDescription">
+            <summary>
+            Get the ReasonDescription 
+            </summary>
+            <returns>string reasonDescription</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode 
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage 
+            </summary>
+            <returns>string errorMessage</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetSuccess">
+            <summary>
+            Get the Success 
+            </summary>
+            <returns>bool success</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetJson">
+            <summary>
+            Get the Json 
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetXml">
+            <summary>
+            Get the XML 
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetProviderCreditReversalDetailsResponse.GetDictionary">
+            <summary>
+            Get the Dictionary 
+            </summary>
+            <returns>IDictionary dictionary</returns>
+        </member>
         <member name="T:AmazonPay.Responses.GetServiceStatusResponse">
             <summary>
             Documentation Source https://pay.amazon.com/documentation/apireference/201752740#201752110
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.#ctor(System.String)">
+            <summary>
+            ServiceStatusResponse 
             </summary>
         </member>
         <member name="M:AmazonPay.Responses.GetServiceStatusResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
@@ -2786,6 +3041,60 @@
             </summary>
             <param name="dictionary"></param>
         </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetRequestId">
+            <summary>
+            Get the RequestId 
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetStatus">
+            <summary>
+            Get the Status 
+            </summary>
+            <returns>string status</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetTimestamp">
+            <summary>
+            Get the timestamp 
+            </summary>
+            <returns>DateTime timestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode 
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage 
+            </summary>
+            <returns>string errorMessage</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetSuccess">
+            <summary>
+            Get the Success 
+            </summary>
+            <returns>bool success</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetJson">
+            <summary>
+            Get the Json 
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetXml">
+            <summary>
+            Get the XML 
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.GetServiceStatusResponse.GetDictionary">
+            <summary>
+            Get the Dictionary 
+            </summary>
+            <returns>IDictionary dictionary</returns>
+        </member>
         <member name="T:AmazonPay.Responses.OrderReferenceDetailsResponse">
             <summary>
             Documentation Source https://pay.amazon.com/documentation/apireference/201752580
@@ -2794,6 +3103,11 @@
         <member name="F:AmazonPay.Responses.OrderReferenceDetailsResponse.id">
             <summary>
             Billing Agreement ID for CreateOrderReferenceForID API call
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.#ctor(System.String)">
+            <summary>
+            Get the OrderReferenceDetailsResponse
             </summary>
         </member>
         <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
@@ -2807,9 +3121,278 @@
             </summary>
             <param name="dictionary"></param>
         </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetAmazonOrderReferenceId">
+            <summary>
+            Get the Amazon OrderReferenceID 
+            </summary>
+            <returns>string amazonOrderReferenceId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetExpirationTimestamp">
+            <summary>
+            Get the ExpirationTimestamp
+            </summary>
+            <returns>DateTime expirationTimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetCreationTimestamp">
+            <summary>
+            Get the CreationTimestamp 
+            </summary>
+            <returns>Datetime creationTimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetLastUpdateTimestamp">
+            <summary>
+            Get the LastUpdateTimestamp 
+            </summary>
+            <returns>Datetime lastUpdateTimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetRequestId">
+            <summary>
+            Get the RequestId 
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetReasonCode">
+            <summary>
+            Get the ReasonCode 
+            </summary>
+            <returns>string reasonCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetReasonDescription">
+            <summary>
+            Get the ReasonDescription 
+            </summary>
+            <returns>string reasonDescription</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetOrderReferenceState">
+            <summary>
+            Get the OrderReferenceState 
+            </summary>
+            <returns>string orderReferenceState</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetOrderLanguage">
+            <summary>
+            Get the OrderLanguage 
+            </summary>
+            <returns>string orderLanguage</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetAddressLine1">
+            <summary>
+            Get the AddressLine1 
+            </summary>
+            <returns>string addressLine1</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetAddressLine2">
+            <summary>
+            Get the AddressLine2
+            </summary>
+            <returns>string addressLine2</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetAddressLine3">
+            <summary>
+            Get the AddressLine3 
+            </summary>
+            <returns>string addressLine3</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetAmount">
+            <summary>
+            Get the Amount 
+            </summary>
+            <returns>decimal amount</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetCurrencyCode">
+            <summary>
+            Get the CurrencyCode 
+            </summary>
+            <returns>string currencyCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetAuthorizationIdList">
+            <summary>
+            Get the AuthorizationIdList
+            </summary>
+            <returns>IList authorizationId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetCity">
+            <summary>
+            Get the City 
+            </summary>
+            <returns>string city</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetConstraintIdList">
+            <summary>
+            Get the ConstraintIdList 
+            </summary>
+            <returns>IList constraintID</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetBuyerShippingName">
+            <summary>
+            Get the BuyerShippingName 
+            </summary>
+            <returns>string buyerShippingName</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetCountryCode">
+            <summary>
+            Get the CountryCode 
+            </summary>
+            <returns>string countryCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetCounty">
+            <summary>
+            Get the County 
+            </summary>
+            <returns>string county</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetCustomInformation">
+            <summary>
+            Get the CustomInformation 
+            </summary>
+            <returns>string customInformation</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetDescriptionList">
+            <summary>
+            Get the DescriptionList 
+            </summary>
+            <returns>IList description</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetDestinationType">
+            <summary>
+            Get the DestinationType 
+            </summary>
+            <returns>string destinationType</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetDistrict">
+            <summary>
+            Get the District 
+            </summary>
+            <returns>string district</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetEmail">
+            <summary>
+            Get the Email 
+            </summary>
+            <returns>string email</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode 
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage 
+            </summary>
+            <returns>string errorMessage</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetHasConstraint">
+            <summary>
+            Get the HasConstraint 
+            </summary>
+            <returns>bool hasConstraint</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetBuyerName">
+            <summary>
+            Get the BuyerName 
+            </summary>
+            <returns>string buyerName</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetPhone">
+            <summary>
+            Get the Phone 
+            </summary>
+            <returns>string phone</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetFullDescriptor">
+            <summary>
+            Get the FullDescriptor 
+            </summary>
+            <returns>string fullDescriptor</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetAmazonBalanceFirst">
+            <summary>
+            Get the AmazonBalanceFirst 
+            </summary>
+            <returns>Boolean useAmazonBalanceFirst</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetPlatformId">
+            <summary>
+            Get the PlatformId 
+            </summary>
+            <returns>string platformId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetPostalCode">
+            <summary>
+            Get the PostalCode 
+            </summary>
+            <returns>string postalCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetReleaseEnvironment">
+            <summary>
+            Get the ReleaseEnvironment 
+            </summary>
+            <returns>string releaseEnvironment</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetSellerNote">
+            <summary>
+            Get the SellerNote 
+            </summary>
+            <returns>string sellerNote</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetSellerOrderId">
+            <summary>
+            Get the Amazon SellerOrderId 
+            </summary>
+            <returns>string sellerOrderId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetStateOrRegion">
+            <summary>
+            Get the StateOrRegion 
+            </summary>
+            <returns>string stateOrRegion</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetStoreName">
+            <summary>
+            Get the StoreName 
+            </summary>
+            <returns>string storeName</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetBillingAddressDetails">
+            <summary>
+            Get the BillingAddressDetails 
+            </summary>
+            <returns>BillingAddressDetails billingAddress</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetSuccess">
+            <summary>
+            Get the Success 
+            </summary>
+            <returns>bool success</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetJson">
+            <summary>
+            Get the Json 
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetXml">
+            <summary>
+            Get the XML 
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.OrderReferenceDetailsResponse.GetDictionary">
+            <summary>
+            Get the Dictionary 
+            </summary>
+            <returns>IDictionary dictionary</returns>
+        </member>
         <member name="T:AmazonPay.Responses.RefundResponse">
             <summary>
             Documentation Source https://pay.amazon.com/documentation/apireference/201752740
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.#ctor(System.String)">
+            <summary>
+            Get the RefundResponse
             </summary>
         </member>
         <member name="M:AmazonPay.Responses.RefundResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
@@ -2823,9 +3406,160 @@
             </summary>
             <param name="dictionary"></param>
         </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetAmazonRefundId">
+            <summary>
+            Get the Amazon RefundID 
+            </summary>
+            <returns>string amazonRefundId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRequestId">
+            <summary>
+            Get the RequestID
+            </summary>
+            <returns>string requestID</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRefundReferenceId">
+            <summary>
+            Get the RefundReferenceId 
+            </summary>
+            <returns>string RefundReferenceId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetSellerRefundNote">
+            <summary>
+            Get the Seller Refund Note
+            </summary>
+            <returns>string SellerRefundNote</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRefundAmount">
+            <summary>
+            Get the Refund Amount
+            </summary>
+            <returns>decimal refundAmount</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRefundAmountCurrencyCode">
+            <summary>
+            Get the Refund Amount Currency Code
+            </summary>
+            <returns>string refundCurrencyCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRefundFee">
+            <summary>
+            Get the Refund Fee
+            </summary>
+            <returns>decimal feeRefunded</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRefundFeeCurrencyCode">
+            <summary>
+            Get the Refund Fee CurrencyCode Amount
+            </summary>
+            <returns>string feeRefundCurrencyCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetConvertedAmount">
+            <summary>
+            Get the Converted Amount
+            </summary>
+            <returns>decimal convertedAmount</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetConvertedAmountCurrencyCode">
+            <summary>
+            Get the ConvertedAmount Currency Code
+            </summary>
+            <returns>string convertedAmountCurrencyCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetConversionRate">
+            <summary>
+            Get the Conversion Rate
+            </summary>
+            <returns>decimal captureFeeAmount</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRefundType">
+            <summary>
+            Get the Refund Type 
+            </summary>
+            <returns>string refundType</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetRefundState">
+            <summary>
+            Get the Refund State
+            </summary>
+            <returns>string refundState</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.RefundResponse.GetProviderCreditReversalIdList" -->
+        <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.RefundResponse.GetProviderIdList" -->
+        <member name="M:AmazonPay.Responses.RefundResponse.GetLastUpdateTimestamp">
+            <summary>
+            Get the LastUpdateTimestamp
+            </summary>
+            <returns>DateTime lastUpdateTimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetCreationTimestamp">
+            <summary>
+            Get the CreationTimestamp
+            </summary>
+            <returns>DateTime creationTimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetReasonCode">
+            <summary>
+            Get the ReasonCode
+            </summary>
+            <returns>string reasonCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetReasonDescription">
+            <summary>
+            Get the ReasonDescription
+            </summary>
+            <returns>string reasonDescription</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetSoftDescriptor">
+            <summary>
+            Get the SoftDescriptor
+            </summary>
+            <returns>string softDescriptor</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage
+            </summary>
+            <returns>string errorMessage</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetSuccess">
+            <summary>
+            Get the Success
+            </summary>
+            <returns>bool success</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetXml">
+            <summary>
+            Get the XML
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetJson">
+            <summary>
+            Get the Json
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.RefundResponse.GetDictionary">
+            <summary>
+            Get the Dictionary
+            </summary>
+            <returns>IDictionary dictionary</returns>
+        </member>
         <member name="T:AmazonPay.Responses.ValidateBillingAgreementResponse">
             <summary>
             Documentation Source https://pay.amazon.com/documentation/apireference/201752740#201751720
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.#ctor(System.String)">
+            <summary>
+            Get the ValidateBillingAgreementResponse
             </summary>
         </member>
         <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
@@ -2838,6 +3572,84 @@
             else it will recursively parse the inner dictionary for Type 2
             </summary>
             <param name="dictionary"></param>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetValidationResult">
+            <summary>
+            Get the ValidationResult
+            </summary>
+            <returns>string validationResult</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetFailureReasonCode">
+            <summary>
+            Get the FailureReasonCode
+            </summary>
+            <returns>string failureReasonCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetBillingAgreementState">
+            <summary>
+            Get the BillingAgreementState
+            </summary>
+            <returns>string billingAgreementState</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetReasonCode">
+            <summary>
+            Get the ReasonCode
+            </summary>
+            <returns>string reasonCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetReasonDescription">
+            <summary>
+            Get the ReasonDescription
+            </summary>
+            <returns>string reasonDescription</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetLastUpdatedTimestamp">
+            <summary>
+            Get the LastUpdatedTimestamp
+            </summary>
+            <returns>DateTime lastUpdatedTimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetRequestId">
+            <summary>
+            Get the RequestId
+            </summary>
+            <returns>string requestId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetSuccess">
+            <summary>
+            Get the Success
+            </summary>
+            <returns>bool success</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage
+            </summary>
+            <returns>string errorMessage</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetJson">
+            <summary>
+            Get the Json
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetXml">
+            <summary>
+            Get the XML
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ValidateBillingAgreementResponse.GetDictionary">
+            <summary>
+            Get the Dictionary
+            </summary>
+            <returns>IDictionary dictionary</returns>
         </member>
         <member name="T:AmazonPay.SanitizeData">
             <summary>
@@ -2856,6 +3668,15 @@
             <summary>
             Enum datatype for Sanitazation
             </summary>
+        </member>
+        <member name="M:AmazonPay.Signature.CalculateSignatureAndReturnParametersAsString(System.Collections.Generic.IDictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="parameters"></param>
+            <param name="timeStamp"></param>
+            <param name="mwsDevoUrl"></param>
+            <returns></returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Signature.SignParameters(System.Collections.Generic.IDictionary{System.String,System.String},System.String)" -->
         <member name="M:AmazonPay.Signature.CalculateStringToSignV2(System.Collections.Generic.IDictionary{System.String,System.String})">
@@ -2884,7 +3705,13 @@
             <summary>
             Create MWS service URL and the Endpoint path
             </summary>
-            <param name="regionProperties"></param>
+            <param name="mwsTestUrl"></param>
+        </member>
+        <member name="M:AmazonPay.Signature.SetUserAgentHeader(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="additionalNameValuePairs"></param>
         </member>
         <member name="M:AmazonPay.Signature.GetParametersAsString(System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
@@ -3541,6 +4368,13 @@
             Sets the Address Consent Token
             </summary>
             <param name="address_consent_token"></param>
+            <returns>GetOrderReferenceDetailsRequest Object</returns>
+        </member>
+        <member name="M:AmazonPay.StandardPaymentRequests.GetOrderReferenceDetailsRequest.WithAccessToken(System.String)">
+            <summary>
+            Sets the Access Token
+            </summary>
+            <param name="access_token"></param>
             <returns>GetOrderReferenceDetailsRequest Object</returns>
         </member>
         <member name="M:AmazonPay.StandardPaymentRequests.GetOrderReferenceDetailsRequest.WithMWSAuthToken(System.String)">

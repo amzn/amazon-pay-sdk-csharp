@@ -85,6 +85,7 @@ Folder PATH listing
 |   |       GetProviderCreditReversalDetailsResponse.cs
 |   |       GetServiceStatusResponse.cs
 |   |       OrderReferenceDetailsResponse.cs
+|	|		PaymentDetailsResponse.cs
 |   |       RefundResponse.cs
 |   |       ValidateBillingAgreementResponse.cs
 |   |       
@@ -248,7 +249,7 @@ GetOrderReferenceDetailsRequest requestParameters = new GetOrderReferenceDetails
 requestParameters.WithAmazonOrderReferenceId("AMAZON_ORDER_REFERENCE_ID");
 
 // Optional Parameters
-requestParameters.WithAddressConsentToken("ACCESS_TOKEN");
+requestParameters.WithAccessToken("ACCESS_TOKEN");
 requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
 
 /* STEP 2 : Making the API call by passing in the GetOrderReferenceDetailsRequest object i.e requestParameters from step 1.
@@ -591,4 +592,45 @@ string userId = jsonObject.GetValue("user_id").ToString();
 	// Set Logger for Client
     client.Logger = logger;
 	```
+
+###	Convenience Method Workflow
+
+##### This API allows you to make one API call 'GetPaymentDetails' to retrieve OrderReference, Authorize, Capture and Refund Details Response.
+
+```
+	//GetPaymentDetails takes two parameters - AmazonOrderReferenID(required) and MWSAuthToken(optional)
+	PaymentDetailsResponse payDetailsResponse = client.GetPaymentDetails("S01-9111020-6707923", null); 
+    System.Diagnostics.Debug.WriteLine(payDetailsResponse.GetOrderReferenceDetails().GetXml());
+        
+	foreach (var group in payDetailsResponse.GetAuthorizationDetails())
+        {
+            System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", group.Key, group.Value.GetXml());
+        }
+	foreach (var group in payDetailsResponse.GetCaptureDetails())
+        {
+            System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", group.Key, group.Value.GetXml());
+        }
+	foreach (var group in payDetailsResponse.GetRefundDetails())
+        {
+            System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", group.Key, group.Value.GetXml());
+        }
+```
+
+### Retrieving Payment Descriptor in GetOrderReferenceDetails call
+
+##### This feature allows you to retrieve Payment Descriptor in the GetOrderReferenceDetails call. Steps to follow to retrieve payment Descriptor as are below -
+1. Your Amazon Pay Client ID (amzn1.xxxxxxx) needs to be whitelisted with the “payments:instrument_descriptor” scope. Please contact Amazon Pay Support for whitelisting your Client ID.
+2. Add the “payments:instrument_descriptor” scope to your (test) site button.
+3. Pass the obtained “access_token” and Order Reference ID’s to the GetOrderReferenceDetails request.
+
+```
+	GetOrderReferenceDetailsRequest getOrderReferenceDetailsRequest = new GetOrderReferenceDetailsRequest();
+    getOrderReferenceDetailsRequest.WithAmazonOrderReferenceId("AMAZON_ORDER_REFERENCE_ID");
+    getOrderReferenceDetailsRequest.WithaccessToken(ACCESS_TOKEN);
+          
+	OrderReferenceDetailsResponse getOrderReferenceDetailsResponse = client.GetOrderReferenceDetails(getOrderReferenceDetailsRequest);
 	
+	System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetFullDescriptor());
+    System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetAmazonBalanceFirst());
+    System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetXml());
+```

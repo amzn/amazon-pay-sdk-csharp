@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.0.0";
+        public static readonly string SDKClientVersion = "3.1.0";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -14,10 +15,16 @@ namespace AmazonPay
         /// <summary>
         /// common parameters for all API calls
         /// </summary>
+        
+        //PLEASE DO NOT CHANGE THE USNumberFormat VALUE.
+        public static readonly NumberFormatInfo USNumberFormat = CultureInfo.GetCultureInfo("en-US").NumberFormat;
+        
         public static readonly string SellerId = "SellerId";
         public static readonly string MWSAuthToken = "MWSAuthToken";
         public static readonly string AmazonOrderReferenceId = "AmazonOrderReferenceId";
+        [Obsolete("use AccessToken instead")]
         public static readonly string AddressConsentToken = "AddressConsentToken";
+        public static readonly string AccessToken = "AccessToken";
         public static readonly string OrderReferenceAttributes_OrderTotal_Amount = "OrderReferenceAttributes.OrderTotal.Amount";
         public static readonly string OrderReferenceAttributes_OrderTotal_CurrencyCode = "OrderReferenceAttributes.OrderTotal.CurrencyCode";
 
@@ -121,10 +128,14 @@ namespace AmazonPay
         /// </summary>
         public static readonly string CertCN = "sns.amazonaws.com";
 
-        // Cache key format string to avoid conflicts with other items in the application cache
-        public static readonly string CacheKey = "PayWithAmazonNotification";
+        ///<summary>
+        /// Cache key format string to avoid conflicts with other items in the application cache
+        /// </summary>
+        public static readonly string CacheKey = "AmazonPayNotification";
 
-        // Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
+        ///<summary>
+        /// Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
+        /// </summary>
         public static readonly string Iso8601UTCDateWithMillisecondsFormatString = @"yyyy-MM-ddTHH:mm:ss.fffZ";
 
     }

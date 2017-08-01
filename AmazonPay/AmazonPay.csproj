@@ -89,6 +89,7 @@
     <Compile Include="Responses\ConfirmBillingAgreementResponse.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="Responses\ConfirmOrderReferenceResponse.cs" />
+    <Compile Include="Responses\PaymentDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditReversalDetailsResponse.cs" />
     <Compile Include="Responses\GetServiceStatusResponse.cs" />
@@ -117,7 +118,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="AmazonPay.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

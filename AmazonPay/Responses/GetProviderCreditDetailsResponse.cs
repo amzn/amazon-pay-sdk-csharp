@@ -2,43 +2,44 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
     public class GetProviderCreditDetailsResponse : IResponse
     {
-        public string xml;
-        public string json;
-        public IDictionary dictionary;
-        public string amazonProviderCreditId;
-        public string providerId;
-        public string sellerId;
-        public string creditReferenceId;
-        public string requestId;
+        private string xml;
+        private string json;
+        private IDictionary dictionary;
+        private string amazonProviderCreditId;
+        private string providerId;
+        private string sellerId;
+        private string creditReferenceId;
+        private string requestId;
 
-        public decimal creditAmount;
-        public string creditAmountCurrencyCode;
+        private decimal creditAmount;
+        private string creditAmountCurrencyCode;
 
-        public decimal creditReversalAmount;
-        public string creditReversalAmountCurrencyCode;
+        private decimal creditReversalAmount;
+        private string creditReversalAmountCurrencyCode;
 
-        public string creditStatus;
-        public List<string> creditReversalIdList = new List<string>();
+        private string creditStatus;
+        private List<string> creditReversalIdList = new List<string>();
 
-        public DateTime lastUpdateTimestamp;
-        public DateTime creationTimestamp;
+        private DateTime lastUpdateTimestamp;
+        private DateTime creationTimestamp;
 
-        public string reasonCode;
-        public string reasonDescription;
-        public string softDescriptor;
+        private string reasonCode;
+        private string reasonDescription;
+        private string softDescriptor;
 
-        public string errorCode;
-        public string errorMessage;
-        public bool success = false;
-        public string parentKey;
+        private string errorCode;
+        private string errorMessage;
+        private bool success = false;
+        private string parentKey;
 
-
+        /// <summary>
+        /// ProviderCreditDetailsResponse 
+        /// </summary>
         public GetProviderCreditDetailsResponse(string xml)
         {
             this.xml = xml;
@@ -117,11 +118,11 @@ namespace AmazonPay.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.CreditAmount.ToString()))
                                     {
-                                        creditAmount = decimal.Parse(obj.ToString());
+                                        creditAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.CreditReversalAmount.ToString()))
                                     {
-                                        creditReversalAmount = decimal.Parse(obj.ToString());
+                                        creditReversalAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:

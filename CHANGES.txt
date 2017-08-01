@@ -1,0 +1,16 @@
+Version 3.1.0 - July 2017
+- Missing getters in C# SDK: BillingAgreementState, SoftDecline, CreationTimestamp
+- Extend C# SDK with convenience functions for getting payment details 
+- SDK changes for Multi-Currency Payments 
+- Update SDK with ability to retrieve payment instrument information 
+- I18N aware SDK - amount field 
+- Code Cleanup - During this, some of the class fields access modifiers have been changed from 'public' to 'private'. 
+  If you were using class fields to get and set the values, please use the getters and setters available for those classes.
+- Cleanup to make the project compatible with Debug and Release mode by adding 'xml comments' for getters in class files and fixing the UnitTests class-paths.
+- Added unit-tests for GetOrderReferenceDetails, GetAuthorizationDetails, GetCaptureDetails, GetRefundDetails responses. 
+
+Version 3.0.0 - Feb 2017
+- Amazon Pay Rebrand Change
+
+Version 2.0.0 - Oct 2016
+- Initial Pay With Amazon Release 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.RecurringPaymentRequests
+﻿namespace AmazonPay.RecurringPaymentRequests
 {
     /// <summary>
     /// Request class to set the CloseBillingAgreement API call parameters

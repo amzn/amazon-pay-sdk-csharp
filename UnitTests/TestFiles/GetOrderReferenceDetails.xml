@@ -1,0 +1,60 @@
+﻿<GetOrderReferenceDetailsResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+  <GetOrderReferenceDetailsResult>
+    <OrderReferenceDetails>
+      <OrderReferenceStatus>
+        <LastUpdateTimestamp>2017-07-23T22:01:49.694Z</LastUpdateTimestamp>
+        <State>Open</State>
+      </OrderReferenceStatus>
+      <Destination>
+        <DestinationType>Physical</DestinationType>
+        <PhysicalDestination>
+          <City>New York</City>
+          <StateOrRegion>NY</StateOrRegion>
+          <PostalCode>10101-9876</PostalCode>
+          <CountryCode>US</CountryCode>
+        </PhysicalDestination>
+      </Destination>
+      <ExpirationTimestamp>2018-01-19T21:58:56.816Z</ExpirationTimestamp>
+      <IdList>
+        <member>S01-9111020-6707923-A077760</member>
+      </IdList>
+      <SellerOrderAttributes>
+        <StoreName>Java Cosmos Store</StoreName>
+        <CustomInformation>Java SDK OneTime Checkout Sample</CustomInformation>
+      </SellerOrderAttributes>
+      <PaymentDescriptor>
+        <Name>Visa</Name>
+        <AccountNumberTail>11</AccountNumberTail>
+        <FullDescriptor>Amazon Pay (Visa **11)</FullDescriptor>
+        <UseAmazonBalanceFirst>false</UseAmazonBalanceFirst>
+      </PaymentDescriptor>
+      <OrderTotal>
+        <CurrencyCode>USD</CurrencyCode>
+        <Amount>1.29</Amount>
+      </OrderTotal>
+      <Buyer>
+        <Name>John Green</Name>
+        <Email>test@gmail.com</Email>
+      </Buyer>
+      <ReleaseEnvironment>Sandbox</ReleaseEnvironment>
+      <SellerNote>1st Amazon Pay OneTime Checkout Order</SellerNote>
+      <AmazonOrderReferenceId>S01-9111020-6707923</AmazonOrderReferenceId>
+      <CreationTimestamp>2017-07-23T21:58:56.816Z</CreationTimestamp>
+      <BillingAddress>
+        <PhysicalAddress>
+          <StateOrRegion>WI</StateOrRegion>
+          <City>Appleton</City>
+          <CountryCode>US</CountryCode>
+          <PostalCode>54911</PostalCode>
+          <Name>Christopher C. Conn</Name>
+          <AddressLine1>4996 Rockford Mountain Lane</AddressLine1>
+        </PhysicalAddress>
+        <AddressType>Physical</AddressType>
+      </BillingAddress>
+      <RequestPaymentAuthorization>false</RequestPaymentAuthorization>
+    </OrderReferenceDetails>
+  </GetOrderReferenceDetailsResult>
+  <ResponseMetadata>
+    <RequestId>373eb307-5f37-468c-b6ba-1ef578ac2f51</RequestId>
+  </ResponseMetadata>
+</GetOrderReferenceDetailsResponse>

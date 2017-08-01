@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AmazonPay.Responses
 {
@@ -12,39 +11,46 @@ namespace AmazonPay.Responses
 
     public class RefundResponse : IResponse
     {
-        public string xml;
-        public string json;
-        public IDictionary dictionary;
-        public string amazonRefundId;
-        public string requestId;
-        public string refundReferenceId;
-        public string sellerNote;
-        public string sellerRefundNote;
+        private string xml;
+        private string json;
+        private IDictionary dictionary;
+        private string amazonRefundId;
+        private string requestId;
+        private string refundReferenceId;
+        private string sellerNote;
+        private string sellerRefundNote;
 
-        public decimal refundAmount;
-        public string refundCurrencyCode;
-        public string refundType;
-        public decimal feeRefunded;
-        public string feeRefundedCurrencyCode;
+        private decimal refundAmount;
+        private string refundCurrencyCode;
+        private string refundType;
+        private decimal feeRefunded;
+        private string feeRefundedCurrencyCode;
 
-        public string refundState;
+        private decimal convertedAmount;
+        private string convertedAmountCurrencyCode;
+        private decimal conversionRate;
 
-        public DateTime lastUpdateTimestamp;
-        public DateTime creationTimestamp;
+        private string refundState;
 
-        public string reasonCode;
-        public string reasonDescription;
-        public string softDescriptor;
+        private DateTime lastUpdateTimestamp;
+        private DateTime creationTimestamp;
 
-        public List<string> providerCreditReversalId = new List<string>();
-        public List<string> providerId = new List<string>();
+        private string reasonCode;
+        private string reasonDescription;
+        private string softDescriptor;
 
-        public string errorCode;
-        public string errorMessage;
-        public string parentKey;
-        public bool success = false;
+        private List<string> providerCreditReversalId = new List<string>();
+        private List<string> providerId = new List<string>();
+
+        private string errorCode;
+        private string errorMessage;
+        private string parentKey;
+        private bool success = false;
 
 
+        /// <summary>
+        /// Get the RefundResponse
+        /// </summary>
         public RefundResponse(string xml)
         {
             this.xml = xml;
@@ -69,7 +75,7 @@ namespace AmazonPay.Responses
 
         private enum Operator
         {
-            AmazonRefundId, RequestId, SellerRefundNote, RefundReferenceId, Amount, CurrencyCode, RefundAmount, FeeRefunded, ReasonCode, ReasonDescription, RefundType,
+            AmazonRefundId, RequestId, SellerRefundNote, RefundReferenceId, Amount, CurrencyCode, RefundAmount, FeeRefunded, ReasonCode, ReasonDescription, RefundType, ConvertedAmount, ConversionRate, 
             SoftDescriptor, State, ProviderCreditReversalSummaryList, LastUpdateTimestamp, CreationTimestamp, member, ProviderId, ProviderSellerId, ProviderCreditReversalId
         }
 
@@ -117,11 +123,15 @@ namespace AmazonPay.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.RefundAmount.ToString()))
                                     {
-                                        refundAmount = decimal.Parse(obj.ToString());
+                                        refundAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.FeeRefunded.ToString()))
                                     {
-                                        feeRefunded = decimal.Parse(obj.ToString());
+                                        feeRefunded = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
+                                    }
+                                    else if (parentKey.Equals(Operator.ConvertedAmount.ToString()))
+                                    {
+                                        convertedAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
@@ -133,12 +143,19 @@ namespace AmazonPay.Responses
                                     {
                                         feeRefundedCurrencyCode = obj.ToString();
                                     }
+                                    else if (parentKey.Equals(Operator.ConvertedAmount.ToString()))
+                                    {
+                                        convertedAmountCurrencyCode = obj.ToString();
+                                    }
                                     break;
                                 case Operator.RefundType:
                                     refundType = obj.ToString();
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = obj.ToString();
+                                    break;
+                                case Operator.ConversionRate:
+                                    conversionRate = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     break;
                                 case Operator.ReasonDescription:
                                     reasonDescription = obj.ToString();
@@ -195,94 +212,235 @@ namespace AmazonPay.Responses
             }
         }
 
-        public string GetRefundId()
+        /// <summary>
+        /// Get the Amazon RefundID 
+        /// </summary>
+        /// <returns>string amazonRefundId</returns>
+        public string GetAmazonRefundId()
         {
             return this.amazonRefundId;
         }
+
+        /// <summary>
+        /// Get the RequestID
+        /// </summary>
+        /// <returns>string requestID</returns>
         public string GetRequestId()
         {
             return this.requestId;
         }
+
+        /// <summary>
+        /// Get the RefundReferenceId 
+        /// </summary>
+        /// <returns>string RefundReferenceId</returns>
         public string GetRefundReferenceId()
         {
             return this.refundReferenceId;
         }
+
+        /// <summary>
+        /// Get the Seller Refund Note
+        /// </summary>
+        /// <returns>string SellerRefundNote</returns>
         public string GetSellerRefundNote()
         {
             return this.sellerRefundNote;
         }
+
+        /// <summary>
+        /// Get the Refund Amount
+        /// </summary>
+        /// <returns>decimal refundAmount</returns>
         public decimal GetRefundAmount()
         {
             return this.refundAmount;
         }
+
+        /// <summary>
+        /// Get the Refund Amount Currency Code
+        /// </summary>
+        /// <returns>string refundCurrencyCode</returns>
         public string GetRefundAmountCurrencyCode()
         {
             return this.refundCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the Refund Fee
+        /// </summary>
+        /// <returns>decimal feeRefunded</returns>
         public decimal GetRefundFee()
         {
             return this.feeRefunded;
         }
+
+        /// <summary>
+        /// Get the Refund Fee CurrencyCode Amount
+        /// </summary>
+        /// <returns>string feeRefundCurrencyCode</returns>
         public string GetRefundFeeCurrencyCode()
         {
             return this.feeRefundedCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the Converted Amount
+        /// </summary>
+        /// <returns>decimal convertedAmount</returns>
+        public decimal GetConvertedAmount()
+        {
+            return this.convertedAmount;
+        }
+
+        /// <summary>
+        /// Get the ConvertedAmount Currency Code
+        /// </summary>
+        /// <returns>string convertedAmountCurrencyCode</returns>
+        public string GetConvertedAmountCurrencyCode()
+        {
+            return this.convertedAmountCurrencyCode;
+        }
+
+        /// <summary>
+        /// Get the Conversion Rate
+        /// </summary>
+        /// <returns>decimal captureFeeAmount</returns>
+        public decimal GetConversionRate()
+        {
+            return this.conversionRate;
+        }
+
+        /// <summary>
+        /// Get the Refund Type 
+        /// </summary>
+        /// <returns>string refundType</returns>
         public string GetRefundType()
         {
             return this.refundType;
         }
+
+        /// <summary>
+        /// Get the Refund State
+        /// </summary>
+        /// <returns>string refundState</returns>
         public string GetRefundState()
         {
             return this.refundState;
         }
+
+        /// <summary>
+        /// Get the ProviderCreditReversalIdList
+        /// </summary>
+        /// <returns>IList<String> providerCreditReversalId</returns>
         public IList<string> GetProviderCreditReversalIdList()
         {
             return this.providerCreditReversalId.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get the ProviderIDList
+        /// </summary>
+        /// <returns>IList<String> providerId</returns>
         public IList<string> GetProviderIdList()
         {
             return this.providerId.AsReadOnly();
         }
+
+        /// <summary>
+        /// Get the LastUpdateTimestamp
+        /// </summary>
+        /// <returns>DateTime lastUpdateTimestamp</returns>
         public DateTime GetLastUpdateTimestamp()
         {
             return this.lastUpdateTimestamp;
         }
+
+        /// <summary>
+        /// Get the CreationTimestamp
+        /// </summary>
+        /// <returns>DateTime creationTimestamp</returns>
         public DateTime GetCreationTimestamp()
         {
             return this.creationTimestamp;
         }
+
+        /// <summary>
+        /// Get the ReasonCode
+        /// </summary>
+        /// <returns>string reasonCode</returns>
         public string GetReasonCode()
         {
             return this.reasonCode;
         }
+
+        /// <summary>
+        /// Get the ReasonDescription
+        /// </summary>
+        /// <returns>string reasonDescription</returns>
         public string GetReasonDescription()
         {
             return this.reasonDescription;
         }
+
+        /// <summary>
+        /// Get the SoftDescriptor
+        /// </summary>
+        /// <returns>string softDescriptor</returns>
         public string GetSoftDescriptor()
         {
             return this.softDescriptor;
         }
+
+        /// <summary>
+        /// Get the ErrorCode
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage
+        /// </summary>
+        /// <returns>string errorMessage</returns>
         public string GetErrorMessage()
         {
             return errorMessage;
         }
+
+        /// <summary>
+        /// Get the Success
+        /// </summary>
+        /// <returns>bool success</returns>
         public bool GetSuccess()
         {
             return success;
         }
+
+        /// <summary>
+        /// Get the XML
+        /// </summary>
+        /// <returns>string xml</returns>
         public string GetXml()
         {
             return this.xml;
         }
+
+        /// <summary>
+        /// Get the Json
+        /// </summary>
+        /// <returns>string json</returns>
         public string GetJson()
         {
             return this.json;
         }
+        /// <summary>
+        /// Get the Dictionary
+        /// </summary>
+        /// <returns>IDictionary dictionary</returns>
+
         public IDictionary GetDictionary()
         {
             return this.dictionary;

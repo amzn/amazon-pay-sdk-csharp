@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -39,6 +38,13 @@ namespace AmazonPay
             this.serviceVersion = serviceVersion;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="timeStamp"></param>
+        /// <param name="mwsDevoUrl"></param>
+        /// <returns></returns>
         public string CalculateSignatureAndReturnParametersAsString(IDictionary<String, String> parameters, string timeStamp = "", string mwsDevoUrl = "")
         {
             parameters.Add("AWSAccessKeyId", this.clientConfig.GetAccessKey());
@@ -155,7 +161,7 @@ namespace AmazonPay
             StringBuilder encoded = new StringBuilder();
             String unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~" + (path ? "/" : "");
 
-            foreach (char symbol in System.Text.Encoding.UTF8.GetBytes(data))
+            foreach (char symbol in Encoding.UTF8.GetBytes(data))
             {
                 if (unreservedChars.IndexOf(symbol) != -1)
                 {
@@ -204,13 +210,13 @@ namespace AmazonPay
         /// <summary>
         /// Create MWS service URL and the Endpoint path
         /// </summary>
-        /// <param name="regionProperties"></param>
+        /// <param name="mwsTestUrl"></param>
         private void CreateServiceUrl(string mwsTestUrl)
         {
             string region = "";
             string mode = "";
 
-            mode = System.Convert.ToBoolean(this.clientConfig.GetSandbox()) ? "OffAmazonPayments_Sandbox" : "OffAmazonPayments";
+            mode = Convert.ToBoolean(this.clientConfig.GetSandbox()) ? "OffAmazonPayments_Sandbox" : "OffAmazonPayments";
 
             if (!string.IsNullOrEmpty(this.clientConfig.GetRegion()))
             {
@@ -225,7 +231,7 @@ namespace AmazonPay
                     }
                     else
                     {
-                        mwsEndpointUrl = Regions.mwsServiceUrls[Regions.regionMappings[region]].ToString();
+                        mwsEndpointUrl = Regions.mwsServiceUrls[Regions.regionMappings[region]];
                         mwsServiceUrl = "https://" + mwsEndpointUrl + "/" + mode + "/" + serviceVersion;
                         mwsEndpointPath = "/" + mode + "/" + serviceVersion;
                     }
@@ -241,6 +247,10 @@ namespace AmazonPay
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="additionalNameValuePairs"></param>
         public void SetUserAgentHeader(params string[] additionalNameValuePairs)
         {
             StringBuilder sb = new StringBuilder();

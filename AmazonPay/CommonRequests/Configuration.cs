@@ -86,7 +86,7 @@ namespace AmazonPay.CommonRequests
                                 {
                                     throw new InvalidDataException("Currency Code :" + pair.Value + " is not supported");
                                 }
-                                break;
+                                break; 
                             case configurationKeys.platform_id: WithPlatformId(pair.Value);
                                 break;
                             case configurationKeys.cabundle_file: WithCABundleFile(pair.Value);
@@ -118,6 +118,7 @@ namespace AmazonPay.CommonRequests
 
 
         }
+
         /// <summary>
         /// Sets the Merchant ID
         /// </summary>

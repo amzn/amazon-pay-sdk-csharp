@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AmazonPay.ProviderCreditRequests
+﻿namespace AmazonPay.ProviderCreditRequests
 {
     /// <summary>
     /// Request class to set the GetProviderCreditReversalDetails API call parameters
