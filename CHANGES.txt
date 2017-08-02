@@ -1,3 +1,6 @@
+Version 3.1.1 August 2017
+- Amazon Pay C# SDK Strong Named Assembly release
+
 Version 3.1.0 - July 2017
 - Missing getters in C# SDK: BillingAgreementState, SoftDecline, CreationTimestamp
 - Extend C# SDK with convenience functions for getting payment details 
