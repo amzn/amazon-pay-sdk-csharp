@@ -82,6 +82,7 @@
     <Compile Include="Responses\BillingAgreementDetailsResponse.cs" />
     <Compile Include="Responses\CancelOrderReferenceResponse.cs" />
     <Compile Include="Responses\CaptureResponse.cs" />
+    <Compile Include="Responses\ChargebackResponse.cs" />
     <Compile Include="Responses\CloseAuthorizationResponse.cs" />
     <Compile Include="Responses\CloseBillingAgreementResponse.cs" />
     <Compile Include="Responses\CloseOrderReferenceResponse.cs" />

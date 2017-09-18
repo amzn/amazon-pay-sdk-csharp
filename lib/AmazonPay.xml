@@ -825,14 +825,14 @@
         </member>
         <member name="M:AmazonPay.IpnHandler.#ctor(System.Collections.Specialized.NameValueCollection,System.String)">
             <summary>
-            IpnHandler takes Ipn Headers and JSON data 
+            IpnHandler takes Ipn Headers and JSON data
             </summary>
             <param name="headers"></param>
             <param name="jsonMessage"></param>
         </member>
         <member name="M:AmazonPay.IpnHandler.#ctor(System.Collections.Specialized.NameValueCollection,System.String,Common.Logging.ILog)">
             <summary>
-            IpnHandler takes Inp Header, JSON data and Logger Object
+            IpnHandler takes Ipn Header, JSON data and Logger Object
             </summary>
             <param name="headers"></param>
             <param name="jsonMessage"></param>
@@ -840,7 +840,7 @@
         </member>
         <member name="M:AmazonPay.IpnHandler.IpnHandlerInit(System.Collections.Specialized.NameValueCollection,System.String)">
             <summary>
-            IpnHander Initializer
+            IpnHandler Initializer
             </summary>
         </member>
         <member name="M:AmazonPay.IpnHandler.LowerHeadersKeysCase(System.Collections.Specialized.NameValueCollection)">
@@ -851,17 +851,17 @@
             <returns>Lower cased keys in NameValueCollection headers</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.ParseRawMessage(System.Collections.Specialized.NameValueCollection,System.String)">
-            <summary>
-            Convert a raw http POST request that contains an IPN and
-            convert to an object
+             <summary>
+             Convert a raw http POST request that contains an IPN and
+             convert to an object
             
-            Will throw a Exception if the content is not a valid IPN
+             Will throw a Exception if the content is not a valid IPN
             
-            Callers are expected to return a 503 http code an exception is
-            thrown by this method, otherwise reply with a HTTP OK status
-            </summary>
-            <param name="headers"></param>
-            <param name="body"></param>
+             Callers are expected to return a 503 http code an exception is
+             thrown by this method, otherwise reply with a HTTP OK status
+             </summary>
+             <param name="headers"></param>
+             <param name="body"></param>
         </member>
         <member name="M:AmazonPay.IpnHandler.ParseNotification(System.Collections.Specialized.NameValueCollection,System.String)">
             <summary>
@@ -917,7 +917,7 @@
         </member>
         <member name="M:AmazonPay.IpnHandler.ValidateCertUrl">
             <summary>
-            Verifies that the signing certificate url is from a recognizable source. 
+            Verifies that the signing certificate url is from a recognizable source.
             Returns the cert url if it cen be verified, otherwise throws an exception.
             </summary>
             <param name="signingCertURL"></param>
@@ -925,7 +925,7 @@
         </member>
         <member name="M:AmazonPay.IpnHandler.ValidateMessageIsTrusted">
             <summary>
-            Validates if the Signature version is correct , else throws an exception 
+            Validates if the Signature version is correct , else throws an exception
             </summary>
         </member>
         <member name="M:AmazonPay.IpnHandler.VerifySnsMessageWithVersion1SignatureAlgorithm">
@@ -1026,28 +1026,46 @@
         </member>
         <member name="M:AmazonPay.IpnHandler.GetSellerId">
             <summary>
-            Getter for the type of notification received
+            Getter for the sellerId from the IPN Message
             </summary>
-            <returns></returns>
+            <returns>sellerId</returns>
+        </member>
+        <member name="M:AmazonPay.IpnHandler.GetTimeStamp">
+            <summary>
+            Getter for the timeStamp in the IPN Message
+            </summary>
+            <returns>timeStamp</returns>
+        </member>
+        <member name="M:AmazonPay.IpnHandler.GetMarketplaceId">
+            <summary>
+            Getter for the marketplaceId in the IPN Message
+            </summary>
+            <returns>marketplaceId</returns>
+        </member>
+        <member name="M:AmazonPay.IpnHandler.GetVersion">
+            <summary>
+            Getter for the version in the IPN Message
+            </summary>
+            <returns>version</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.GetNotificationReferenceId">
             <summary>
-            Getter for the NotificationReferenceId
+            Getter for the NotificationReferenceId in the IPN Message
             </summary>
-            <returns></returns>
+            <returns>notificationReferenceId</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.GetReleaseEnvironment">
             <summary>
-            Getter for the type of ReleaseEnvironment
+            Getter for the type of ReleaseEnvironment in the IPN Message
             </summary>
-            <returns></returns>
+            <returns>releaseEnvironment</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.GetNotificationType">
             <summary>
             Getter for the type of notification received
             The return type is a string and not an Enum for forward compatibility.
             </summary>
-            <returns></returns>
+            <returns>notificationType</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.GetOrderReferenceDetailsResponse">
             <summary>
@@ -1057,7 +1075,7 @@
         </member>
         <member name="M:AmazonPay.IpnHandler.GetBillingAgreementDetailsResponse">
             <summary>
-            Getter for the BillingAgreementDetailsResponse object for OrderReferenceDetails IPN
+            Getter for the BillingAgreementDetailsResponse object for BillingAgreementDetails IPN
             </summary>
             <returns>BillingAgreementDetailsResponse Object</returns>
         </member>
@@ -1075,21 +1093,27 @@
         </member>
         <member name="M:AmazonPay.IpnHandler.GetRefundResponse">
             <summary>
-            Getter for the RefundResponse object for Capture IPN
+            Getter for the RefundResponse object for Refund IPN
             </summary>
             <returns>RefundResponse Object</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.GetProviderCreditDetailsResponse">
             <summary>
-            Getter for the ProviderCreditDetailsResponse object for Capture IPN
+            Getter for the ProviderCreditDetailsResponse object for ProviderCredit IPN
             </summary>
             <returns>GetProviderCreditDetailsResponse Object</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.GetProviderCreditReversalDetailsResponse">
             <summary>
-            Getter for the ProviderCreditReversalDetailsResponse object for Capture IPN
+            Getter for the ProviderCreditReversalDetailsResponse object for ProviderCreditReversal IPN
             </summary>
             <returns>GetProviderCreditReversalDetailsResponse Object</returns>
+        </member>
+        <member name="M:AmazonPay.IpnHandler.GetChargebackIpnResponse">
+            <summary>
+            Getter for the ChargebackResponse object for ChargebackDetailed IPN
+            </summary>
+            <returns>ChargebackIpnResponse Object</returns>
         </member>
         <member name="M:AmazonPay.IpnHandler.LogMessage(System.String,AmazonPay.SanitizeData.DataType)">
             <summary>
@@ -1100,7 +1124,7 @@
         </member>
         <member name="P:AmazonPay.IpnHandler.Logger">
             <summary>
-             Common Looger Property
+             Common Logger Property
             </summary>
         </member>
         <member name="T:AmazonPay.NestedJsonToDictionary">
@@ -1292,7 +1316,7 @@
             <param name="custom_information"></param>
             <returns>AuthorizeOnBillingAgreementRequest Object</returns>
         </member>
-        <member name="M:AmazonPay.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithInheritShippingAddress(System.Boolean)">
+        <member name="M:AmazonPay.RecurringPaymentRequests.AuthorizeOnBillingAgreementRequest.WithInheritShippingAddress(System.Nullable{System.Boolean})">
             <summary>
             Sets the Inherit Shipping Address Boolean value
             </summary>
@@ -2414,6 +2438,112 @@
             <returns>XML format Response</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:AmazonPay.Responses.CaptureResponse.GetDictionary" -->
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.#ctor(System.String)">
+            <summary>
+            Get the ChargebackIpnResponse
+            </summary>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.ParseDictionaryToVariables(System.Collections.IDictionary)">
+            <summary>
+            Flattening the Dictionary
+            The input dictionary contains key value pairs in the below format
+            Type 1. Key (string) , Value (string)
+            Type 2. Key (string) , Value (Dictionary)
+            The function will parse the dictionary values into respective class variables by directly jumping to to the switch case for Type 1 
+            else it will recursively parse the inner dictionary for Type 2
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetAmazonChargebackId">
+            <summary>
+            Get the Amazon ChargebackId 
+            </summary>
+            <returns>string amazonChargebackId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetRequestId">
+            <summary>
+            Get the RequestID
+            </summary>
+            <returns>string requestID</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetAmazonCaptureId">
+            <summary>
+            Get the AmazonCaptureId 
+            </summary>
+            <returns>string AmazonCaptureId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetOrderReferenceId">
+            <summary>
+            Get the AmazonOrderReferenceId
+            </summary>
+            <returns>string AmazonOrderReferenceId</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetChargebackAmount">
+            <summary>
+            Get the Chargeback Amount
+            </summary>
+            <returns>decimal chargebackAmount</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetChargebackAmountCurrencyCode">
+            <summary>
+            Get the Chargeback Amount Currency Code
+            </summary>
+            <returns>string chargebackAmountCurrencyCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetChargebackState">
+            <summary>
+            Get the Chargeback State
+            </summary>
+            <returns>string chargebackState</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetChargebackReason">
+            <summary>
+            Get the chargeback Reason
+            </summary>
+            <returns>string chargebackReason</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetCreationTimestamp">
+            <summary>
+            Get the CreationTimestamp
+            </summary>
+            <returns>DateTime creationTimestamp</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetErrorCode">
+            <summary>
+            Get the ErrorCode
+            </summary>
+            <returns>string errorCode</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetErrorMessage">
+            <summary>
+            Get the ErrorMessage
+            </summary>
+            <returns>string errorMessage</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetSuccess">
+            <summary>
+            Get the Success
+            </summary>
+            <returns>bool success</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetXml">
+            <summary>
+            Get the XML
+            </summary>
+            <returns>string xml</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetJson">
+            <summary>
+            Get the Json
+            </summary>
+            <returns>string json</returns>
+        </member>
+        <member name="M:AmazonPay.Responses.ChargebackIpnResponse.GetDictionary">
+            <summary>
+            Get the Dictionary
+            </summary>
+            <returns>IDictionary dictionary</returns>
+        </member>
         <member name="M:AmazonPay.Responses.CloseAuthorizationResponse.#ctor(System.String)">
             <summary>
             CloseAuthorizationResponse 

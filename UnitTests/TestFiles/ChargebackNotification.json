@@ -1,0 +1,12 @@
+﻿{
+  "Type" : "Notification",
+  "MessageId" : "57c2f5c5-91f4-5632-8954-a7e61987d56a",
+  "TopicArn" : "arn:aws:sns:us-east-1:598607868003:A35A4JO734ER04A08593053M41F7TQ7YR7W",
+  "Message" : "{\"ReleaseEnvironment\":\"Live\",\"MarketplaceID\":\"165570\",\"Version\":\"2013-01-01\",\"NotificationType\":\"ChargebackDetailedNotification\",\"SellerId\":\"A08593053M41F7TQ7YR7W\",\"NotificationReferenceId\":\"5724eb31-5cb9-45a8-a0f4-d82ba12e4d3d\",\"Timestamp\":\"2017-09-01T16:09:23.410Z\",\"NotificationData\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><ChargebackNotification xmlns=\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\">\\n    <ChargebackDetails>\\n        <AmazonChargebackId>C9KORZRXQ655G<\\/AmazonChargebackId>\\n        <AmazonOrderReferenceId>P01-7128087-7259534<\\/AmazonOrderReferenceId>\\n        <AmazonCaptureReferenceId>CaptureReference6282176<\\/AmazonCaptureReferenceId>\\n        <CreationTimestamp>2017-08-23T12:20:56.061Z<\\/CreationTimestamp>\\n        <ChargebackAmount>\\n            <Amount>100.0<\\/Amount>\\n            <CurrencyCode>USD<\\/CurrencyCode>\\n        <\\/ChargebackAmount>\\n        <ChargebackState>RECEIVED<\\/ChargebackState>\\n        <ChargebackReason>Generic Service Chargeback<\\/ChargebackReason>\\n    <\\/ChargebackDetails>\\n<\\/ChargebackNotification>\"}",
+  "Timestamp" : "2017-09-01T16:09:23.458Z",
+  "SignatureVersion" : "1",
+  "Signature" : "Ta0eLVaskygRpVNZIWpqdVTREW+ipAX6KZAHMIxdMHBYNTwSn4b3dRuPQvkKCZpmfeIrk5Up6vnXOBqIvdQJx0PGFV9MMrBGjtiBUZMkKSZFuWouP9a/xF8uLwJBOVLM1Bu/++IGaTj9fS02gnLyvn39J6EskTKn4GMMN+wFYLl3i9MfXMFg+iwREmsAl/4vhjOZtuE/Ca5qL+AwS+BNbyf8ctaS/J7+GoHw637vH/d7l5sHqFJsgmhbC4Uzyo15/WOk1AwX2X6oc/9yXLxho1riK60qnSAwktupLr91Lly1OV1obeBpgmI0tVeFN3gnYJl68mynrTKBWu1tN0cbQg==",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-433026a4050d206028891664da859041.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:598607868003:A35A4JO734ER04A08593053M41F7TQ7YR7W:413d945a-6cc4-4c6f-a45a-c5c0918b03b9"
+}
+
