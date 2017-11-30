@@ -55,9 +55,8 @@ namespace AmazonPay.Responses
         {
 
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            this.json = ResponseParser.ToJson(xml);
+            this.dictionary = ResponseParser.ToDict(xml);
 
             ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())

@@ -73,8 +73,15 @@ namespace AmazonPay.Responses
         private bool success = false;
         private string parentKey;
 
-        BillingAddressDetails billingAddress;
+        /// <summary>
+        /// Attributes for SetOrderAttributes API call
+        /// </summary>
+        private bool requestPaymentAuthorization;
+        private string paymentServiceProviderId;
+        private string paymentServiceProviderOrderId;
+        private List<string> orderItemCategories = new List<string>();
 
+        BillingAddressDetails billingAddress;
 
         /// <summary>
         /// Get the OrderReferenceDetailsResponse
@@ -82,9 +89,8 @@ namespace AmazonPay.Responses
         public OrderReferenceDetailsResponse(string xml)
         {
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            this.json = ResponseParser.ToJson();
-            this.dictionary = ResponseParser.ToDict();
+            this.json = ResponseParser.ToJson(xml);
+            this.dictionary = ResponseParser.ToDict(xml);
 
             ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
             if (errorResponse.IsSetErrorCode() || errorResponse.IsSetErrorMessage())
@@ -106,7 +112,7 @@ namespace AmazonPay.Responses
             AmazonOrderReferenceId, ExpirationTimestamp, RequestId, CreationTimestamp, LastUpdateTimestamp, ReasonCode, ReasonDescription, State, SellerNote, Amount,
             CurrencyCode, PlatformId, PostalCode, Name, Type, Id, Email, Phone, FullDescriptor, isAmazonBalanceFirst, CountryCode, StateOrRegion, AddressLine1, AddressLine2, AddressLine3,
             City, County, District, DestinationType, ReleaseEnvironment, SellerOrderId, CustomInformation,
-            StoreName, Constraint, ConstraintID, Description, OrderLanguage, member, BillingAddress, Buyer
+            StoreName, Constraint, ConstraintID, Description, OrderLanguage, member, BillingAddress, Buyer, RequestPaymentAuthorization, PaymentServiceProviderId, PaymentServiceProviderOrderId, OrderItemCategory
         }
 
         /// <summary>
@@ -308,6 +314,32 @@ namespace AmazonPay.Responses
                                     break;
                                 case Operator.OrderLanguage:
                                     orderLanguage = obj.ToString();
+                                    break;
+                                case Operator.RequestPaymentAuthorization:
+                                    requestPaymentAuthorization = Boolean.Parse(obj.ToString());
+                                    break;
+                                case Operator.PaymentServiceProviderId:
+                                    paymentServiceProviderId = obj.ToString();
+                                    break;
+                                case Operator.PaymentServiceProviderOrderId:
+                                    paymentServiceProviderOrderId = obj.ToString();
+                                    break;
+                                /* The below case parses the order item categories. When the nested Dictionary is flattened
+                                  it contains JArray. JArray contains the order item categories. This is added to the List
+                                */
+                                case Operator.OrderItemCategory:
+                                    if (obj.GetType() == typeof(JArray))
+                                    {
+                                        JArray orderCategoryArray = JArray.Parse(obj.ToString());
+                                        foreach (string orderCategory in orderCategoryArray)
+                                        {
+                                            orderItemCategories.Add(orderCategory);
+                                        }
+                                    }
+                                    else
+                                    {
+                                       orderItemCategories.Add(obj.ToString());
+                                    }
                                     break;
                             }
                         }
@@ -674,6 +706,42 @@ namespace AmazonPay.Responses
         public BillingAddressDetails GetBillingAddressDetails()
         {
             return this.billingAddress;
+        }
+
+        /// <summary>
+        /// Get the RequestPaymentAuthorization 
+        /// </summary>
+        /// <returns>bool requestPaymentAuthorization</returns>
+        public bool GetRequestPaymentAuthorization()
+        {
+            return this.requestPaymentAuthorization;
+        }
+
+        /// <summary>
+        /// Get the PaymentServiceProviderId 
+        /// </summary>
+        /// <returns>string paymentServiceProviderId</returns>
+        public string GetPaymentServiceProviderId()
+        {
+            return this.paymentServiceProviderId;
+        }
+
+        /// <summary>
+        /// Get the PaymentServiceProviderOrderId 
+        /// </summary>
+        /// <returns>string paymentServiceProviderOrderId</returns>
+        public string GetPaymentServiceProviderOrderId()
+        {
+            return this.paymentServiceProviderOrderId;
+        }
+
+        /// <summary>
+        /// Get the OrderItemCategories 
+        /// </summary>
+        /// <returns>string orderItemCategories</returns>
+        public List<string> GetOrderItemCategories()
+        {
+            return this.orderItemCategories;
         }
 
         /// <summary>

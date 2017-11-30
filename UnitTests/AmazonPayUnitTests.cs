@@ -397,6 +397,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
                 {"MWSAuthToken","test"}
             };
 
@@ -422,6 +423,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerOrderId("test")
                 .WithStoreName("test")
                 .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
             
             client.SetOrderReferenceDetails(setOrderReferenceDetails);
@@ -448,6 +450,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
                 {"MWSAuthToken","test"}
             };
 
@@ -473,6 +476,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerOrderId("test")
                 .WithStoreName("test")
                 .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
 
             client.SetOrderReferenceDetails(setOrderReferenceDetails);
@@ -499,6 +503,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
                 {"MWSAuthToken","test"}
             };
 
@@ -524,11 +529,83 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerOrderId("test")
                 .WithStoreName("test")
                 .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
 
             client.SetOrderReferenceDetails(setOrderReferenceDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestSetOrderAttributes()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","SetOrderAttributes"},
+                {"AmazonOrderReferenceId","Order #12345"},
+                {"SellerId","test"},
+                {"OrderAttributes.OrderTotal.Amount","100.05"},
+                {"OrderAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderAttributes.PlatformId","A2STY9B5HPCDII"},
+                {"OrderAttributes.SellerNote","testNote #12345"},
+                {"OrderAttributes.SellerOrderAttributes.SellerOrderId","test-12345"},
+                {"OrderAttributes.SellerOrderAttributes.StoreName","testStore #12345"},
+                {"OrderAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderAttributes.RequestPaymentAuthorization", "true"},
+                {"OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderId", "A2STY9B5HPCDII"},
+                {"OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderOrderId", "PSP-Order-Id"},
+                {"OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory.1", "Antiques"},
+                {"OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory.2", "Apparel"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetOrderReferenceDetails
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            List<string> orderItemCategories = new List<string>();
+            orderItemCategories.Add("Antiques");
+            orderItemCategories.Add("Apparel");
+            SetOrderAttributesRequest setOrderAttributes = new SetOrderAttributesRequest();
+            setOrderAttributes.WithPaymentServiceProviderId("A2STY9B5HPCDII")
+                .WithPaymentServiceProviderOrderId("PSP-Order-Id")
+                .WithOrderItemCategories(orderItemCategories)
+                .WithAmazonOrderReferenceId("Order #12345")
+                .WithMerchantId("test")
+                .WithAmount(100.05m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("A2STY9B5HPCDII")
+                .WithSellerNote("testNote #12345")
+                .WithSellerOrderId("test-12345")
+                .WithStoreName("testStore #12345")
+                .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true);
+
+            client.SetOrderAttributes(setOrderAttributes);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing SetOrderAttributes Response
+            String rawResponse = loadTestFile("GetOrderReferenceDetails.xml");
+            OrderReferenceDetailsResponse oroResponseObject = new OrderReferenceDetailsResponse(rawResponse);
+            Assert.AreEqual(oroResponseObject.GetAmazonOrderReferenceId(), "S01-9111020-6707923");
+            Assert.AreEqual(oroResponseObject.GetSellerNote(), "1st Amazon Pay OneTime Checkout Order");
+            Assert.AreEqual(oroResponseObject.GetSellerOrderId(), "test-12345");
+            Assert.AreEqual(oroResponseObject.GetStoreName(), "Java Cosmos Store");
+            Assert.AreEqual(oroResponseObject.GetRequestPaymentAuthorization(), false);
+            Assert.AreEqual(oroResponseObject.GetPaymentServiceProviderId(), "A2STY9B5HPCDII");
+            Assert.AreEqual(oroResponseObject.GetPaymentServiceProviderOrderId(), "PSP-Order-Id");
+            Assert.AreEqual(oroResponseObject.GetOrderItemCategories().Count, 2);
+
+            Assert.AreEqual(oroResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1432,8 +1509,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
 
             string json = File.ReadAllText("json.txt");
 
-            ResponseParser.SetXml(response["ResponseBody"].ToString());
-            string jsonResponse = ResponseParser.ToJson();
+            string jsonResponse = ResponseParser.ToJson(response["ResponseBody"].ToString());
             Assert.AreEqual(json, jsonResponse);
         }
 
@@ -1457,8 +1533,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                   {"SellerNote","This is testing API call"}
               };
 
-            ResponseParser.SetXml(response["ResponseBody"].ToString());
-            Dictionary<string, object> returnDictResponse = ResponseParser.ToDict();
+            Dictionary<string, object> returnDictResponse = ResponseParser.ToDict(response["ResponseBody"].ToString());
 
             foreach (KeyValuePair<string, object> item in returnDictResponse)
             {

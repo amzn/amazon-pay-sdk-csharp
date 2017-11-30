@@ -7,17 +7,18 @@ namespace AmazonPay.StandardPaymentRequests
     /// </summary>
     public class SetOrderReferenceDetailsRequest
     {
-        private string action;
-        private string merchant_id;
-        private string amazon_order_reference_id;
-        private decimal amount;
-        private string currency_code;
-        private string platform_id;
-        private string seller_note;
-        private string seller_order_id;
-        private string store_name;
-        private string custom_information;
-        private string mws_auth_token;
+        protected string action;
+        protected string merchant_id;
+        protected string amazon_order_reference_id;
+        protected decimal? amount;
+        protected string currency_code;
+        protected string platform_id;
+        protected string seller_note;
+        protected string seller_order_id;
+        protected string store_name;
+        protected string custom_information;
+        protected bool request_payment_authorization;
+        protected string mws_auth_token;
         
 
         public SetOrderReferenceDetailsRequest()
@@ -64,13 +65,13 @@ namespace AmazonPay.StandardPaymentRequests
         /// </summary>
         /// <param name="amount"></param>
         /// <returns>SetOrderReferenceDetailsRequest Object</returns>
-        public SetOrderReferenceDetailsRequest WithAmount(decimal amount)
+        public SetOrderReferenceDetailsRequest WithAmount(decimal? amount)
         {
             this.amount = amount;
             return this;
         }
 
-        public decimal GetAmount()
+        public decimal? GetAmount()
         {
             return this.amount;
         }
@@ -178,6 +179,22 @@ namespace AmazonPay.StandardPaymentRequests
         public string GetMWSAuthToken()
         {
             return this.mws_auth_token;
+        }
+
+        /// <summary>
+        /// Specifies if the merchants wants their buyers to go through
+        /// multi-factor authentication
+        /// </summary>
+        /// <param name="request_payment_authorization"></param>
+        /// <returns>SetOrderAttributesRequest Object</returns>
+        public SetOrderReferenceDetailsRequest WithRequestPaymentAuthorization(bool request_payment_authorization)
+        {
+            this.request_payment_authorization = request_payment_authorization;
+            return this;
+        }
+        public bool GetRequestPaymentAuthorization()
+        {
+            return this.request_payment_authorization;
         }
     }
 }

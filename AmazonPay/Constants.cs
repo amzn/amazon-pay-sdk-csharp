@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.2.0";
+        public static readonly string SDKClientVersion = "3.3.0";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -32,7 +32,7 @@ namespace AmazonPay
         public static readonly string OrderReferenceAttributes_SellerNote = "OrderReferenceAttributes.SellerNote";
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId = "OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId";
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_StoreName = "OrderReferenceAttributes.SellerOrderAttributes.StoreName";
-
+        public static readonly string OrderReferenceAttributes_RequestPaymentAuthorization = "OrderReferenceAttributes.RequestPaymentAuthorization";
 
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_CustomInformation = "OrderReferenceAttributes.SellerOrderAttributes.CustomInformation";
         public static readonly string AuthorizationAmount_Amount = "AuthorizationAmount.Amount";
@@ -88,6 +88,18 @@ namespace AmazonPay
         public static readonly string CreditReversalReferenceId = "CreditReversalReferenceId";
         public static readonly string CreditReversalNote = "CreditReversalNote";
 
+        public static readonly string OrderAttributes_OrderTotal_Amount = "OrderAttributes.OrderTotal.Amount";
+        public static readonly string OrderAttributes_OrderTotal_CurrencyCode = "OrderAttributes.OrderTotal.CurrencyCode";
+        public static readonly string OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderId = "OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderId";
+        public static readonly string OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId = "OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderOrderId";
+        public static readonly string OrderAttributes_PlatformId = "OrderAttributes.PlatformId";
+        public static readonly string OrderAttributes_RequestPaymentAuthorization = "OrderAttributes.RequestPaymentAuthorization";
+        public static readonly string OrderAttributes_SellerNote = "OrderAttributes.SellerNote";
+        public static readonly string OrderAttributes_SellerOrderAttributes_CustomInformation = "OrderAttributes.SellerOrderAttributes.CustomInformation";
+        public static readonly string OrderAttributes_SellerOrderAttributes_OrderItemCategories = "OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory";
+        public static readonly string OrderAttributes_SellerOrderAttributes_SellerOrderId = "OrderAttributes.SellerOrderAttributes.SellerOrderId";
+        public static readonly string OrderAttributes_SellerOrderAttributes_StoreName = "OrderAttributes.SellerOrderAttributes.StoreName";
+
 
         /// <summary>
         /// API call MWS Action name Definitions
@@ -116,6 +128,7 @@ namespace AmazonPay
         public static readonly string GetProviderCreditDetails = "GetProviderCreditDetails";
         public static readonly string GetProviderCreditReversalDetails = "GetProviderCreditReversalDetails";
         public static readonly string ReverseProviderCredit = "ReverseProviderCredit";
+        public static readonly string SetOrderAttributes = "SetOrderAttributes";
 
         /// <summary>
         /// OrderReference/BillingAgreement state

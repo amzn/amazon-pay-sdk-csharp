@@ -1,6 +1,10 @@
 ﻿<GetOrderReferenceDetailsResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
   <GetOrderReferenceDetailsResult>
     <OrderReferenceDetails>
+      <PaymentServiceProviderAttributes>
+        <PaymentServiceProviderId>A2STY9B5HPCDII</PaymentServiceProviderId>
+        <PaymentServiceProviderOrderId>PSP-Order-Id</PaymentServiceProviderOrderId>
+      </PaymentServiceProviderAttributes>
       <OrderReferenceStatus>
         <LastUpdateTimestamp>2017-07-23T22:01:49.694Z</LastUpdateTimestamp>
         <State>Open</State>
@@ -21,6 +25,11 @@
       <SellerOrderAttributes>
         <StoreName>Java Cosmos Store</StoreName>
         <CustomInformation>Java SDK OneTime Checkout Sample</CustomInformation>
+        <OrderItemCategories>
+          <OrderItemCategory>Antiques</OrderItemCategory>
+          <OrderItemCategory>Apparel</OrderItemCategory>
+        </OrderItemCategories>
+        <SellerOrderId>test-12345</SellerOrderId>
       </SellerOrderAttributes>
       <PaymentDescriptor>
         <Name>Visa</Name>

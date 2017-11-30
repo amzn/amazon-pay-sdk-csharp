@@ -217,31 +217,34 @@ namespace AmazonPay
                 }
             }
 
-            foreach (KeyValuePair<string, string> param in requestParameters)
+            if (!requestParameters[Constants.Action].Equals("SetOrderAttributes"))
             {
-                if (param.Key.Contains("CurrencyCode"))
+                foreach (KeyValuePair<string, string> param in requestParameters)
                 {
-                    if (string.IsNullOrEmpty(param.Value))
+                    if (param.Key.Contains("CurrencyCode"))
                     {
-                        if (this.clientConfig.GetCurrencyCode() != null && this.clientConfig.GetCurrencyCode().Trim() != "")
+                        if (string.IsNullOrEmpty(param.Value))
                         {
-                            parameters[param.Key] = this.clientConfig.GetCurrencyCode();
+                            if (this.clientConfig.GetCurrencyCode() != null && this.clientConfig.GetCurrencyCode().Trim() != "")
+                            {
+                                parameters[param.Key] = this.clientConfig.GetCurrencyCode();
+                            }
                         }
                     }
-                }
 
-                if (param.Key.Contains("PlatformId"))
-                {
-                    if (string.IsNullOrEmpty(param.Value))
+                    if (param.Key.Contains("PlatformId"))
                     {
-                        if (this.clientConfig.GetPlatformId() != null && this.clientConfig.GetPlatformId().Trim() != "")
+                        if (string.IsNullOrEmpty(param.Value))
                         {
-                            parameters[param.Key] = this.clientConfig.GetPlatformId();
+                            if (this.clientConfig.GetPlatformId() != null && this.clientConfig.GetPlatformId().Trim() != "")
+                            {
+                                parameters[param.Key] = this.clientConfig.GetPlatformId();
+                            }
                         }
                     }
                 }
             }
-
+            
             return parameters;
         }
 
@@ -485,6 +488,7 @@ namespace AmazonPay
         ///   requestParameters.WithStoreName("CUSTOM_STORE_NAME");
         ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///   requestParameters.WithRequestPaymentAuthorization("REQUEST_PAYMENT_AUTHORIZATION");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
@@ -495,14 +499,15 @@ namespace AmazonPay
                 {Constants.Action,requestParameters.GetAction()},
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().ToString(Constants.USNumberFormat)},
+                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().Value.ToString(Constants.USNumberFormat)},
                 {Constants.OrderReferenceAttributes_OrderTotal_CurrencyCode,requestParameters.GetCurrencyCode()},
                 {Constants.OrderReferenceAttributes_PlatformId,requestParameters.GetPlatformId()},
                 {Constants.OrderReferenceAttributes_SellerNote,requestParameters.GetSellerNote()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId,requestParameters.GetSellerOrderId()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_StoreName,requestParameters.GetStoreName()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_CustomInformation,requestParameters.GetCustomInformation()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                {Constants.OrderReferenceAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower()}
             };
             string response = SetParametersAndPost(setOrderReferenceDetailsDictionary);
             OrderReferenceDetailsResponse responseObject = new OrderReferenceDetailsResponse(response);
@@ -1476,6 +1481,73 @@ namespace AmazonPay
             }
 
             return authorizeResponseObject;
+        }
+
+        /// <summary>
+        /// SetOrderAttributes API call - Sets order attributes such as the seller order id and a description for the order after the order has been confirmed.
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        ///  <code>
+        ///   SetOrderAttributesRequest requestParameters = new SetOrderAttributesRequest();
+        ///  
+        ///   // Required Parameters
+        ///   requestParameters.WithAmazonOrderReferenceId("S01/P01-XXXXX-XXXXX");
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   
+        ///   // Conditionally required (before the order has been confirmed)
+        ///   requestParameters.WithAmount("100");
+        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
+        /// 
+        ///   // Optional 
+        ///   requestParameters.WithPlatformId("SOLUTION_PROVIDER_ID");
+        ///   requestParameters.WithSellerNote("CUSTOM_NOTE");
+        ///   requestParameters.WithSellerOrderId("CUSTOM_ORDER_ID");
+        ///   requestParameters.WithStoreName("CUSTOM_STORE_NAME");
+        ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
+        ///   requestParameters.WithRequestPaymentAuthorization("REQUEST_PAYMENT_AUTHORIZATION");
+        ///   requestParameters.WithPaymentServiceProviderId("PAYMENT_SERVICE_PROVIDER_ID");
+        ///   requestParameters.WithPaymentServiceProviderOrderId("PAYMENT_SERVICE_PROVIDER_ORDER_ID");
+        ///  </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
+        public OrderReferenceDetailsResponse SetOrderAttributes(SetOrderAttributesRequest requestParameters)
+        {
+            Dictionary<string, string> setOrderAttributesDictionary = new Dictionary<string, string>() 
+            { 
+                {Constants.Action, requestParameters.GetAction()},
+                {Constants.SellerId, requestParameters.GetMerchantId()},            
+                {Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId()},
+                {Constants.OrderAttributes_OrderTotal_CurrencyCode, requestParameters.GetCurrencyCode()},            
+                {Constants.OrderAttributes_PlatformId, requestParameters.GetPlatformId()},           
+                {Constants.OrderAttributes_SellerNote, requestParameters.GetSellerNote()},            
+                {Constants.OrderAttributes_SellerOrderAttributes_SellerOrderId, requestParameters.GetSellerOrderId()},            
+                {Constants.OrderAttributes_SellerOrderAttributes_StoreName, requestParameters.GetStoreName()},            
+                {Constants.OrderAttributes_SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation()},            
+                {Constants.OrderAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower()},           
+                {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderId, requestParameters.GetPaymentServiceProviderId()},            
+                {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId, requestParameters.GetPaymentServiceProviderOrderId()}
+            };
+           
+            if (requestParameters.GetAmount() != null)
+            {
+                setOrderAttributesDictionary.Add(Constants.OrderAttributes_OrderTotal_Amount, requestParameters.GetAmount().Value.ToString(Constants.USNumberFormat));
+            }
+            
+            int count = 1;
+
+            if (requestParameters.GetOrderItemCategories() != null && requestParameters.GetOrderItemCategories().Count != 0)
+            {
+                foreach (string orderCategory in requestParameters.GetOrderItemCategories())
+                {
+                    setOrderAttributesDictionary.Add(Constants.OrderAttributes_SellerOrderAttributes_OrderItemCategories + "." + count++, orderCategory);
+
+                }
+            }
+            
+            string response = SetParametersAndPost(setOrderAttributesDictionary);
+            OrderReferenceDetailsResponse responseObject = new OrderReferenceDetailsResponse(response);
+            return responseObject;
         }
 
         /// <summary>

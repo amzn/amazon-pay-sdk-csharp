@@ -34,7 +34,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>AP_keypair.snk</AssemblyOriginatorKeyFile>
@@ -114,6 +114,7 @@
     <Compile Include="StandardPaymentRequests\GetRefundDetailsRequest.cs" />
     <Compile Include="CommonRequests\GetServiceStatusRequest.cs" />
     <Compile Include="StandardPaymentRequests\RefundRequest.cs" />
+    <Compile Include="StandardPaymentRequests\SetOrderAttributesRequest.cs" />
     <Compile Include="StandardPaymentRequests\SetOrderReferenceDetailsRequest.cs" />
   </ItemGroup>
   <ItemGroup>
