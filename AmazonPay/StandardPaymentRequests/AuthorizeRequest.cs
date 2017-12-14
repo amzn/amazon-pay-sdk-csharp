@@ -13,7 +13,7 @@ namespace AmazonPay.StandardPaymentRequests
         private string amazon_order_reference_id;
         private decimal amount;
         private string currency_code;
-        private bool capture_now;
+        private bool? capture_now;
         private string seller_authorization_note;
         private string authorization_reference_id;
         private string soft_descriptor;
@@ -105,11 +105,12 @@ namespace AmazonPay.StandardPaymentRequests
             return this.authorization_reference_id;
         }
         /// <summary>
-        /// Sets the Boolean value for the Capture Now
+        /// Sets the Boolean value for the Capture Now.
+        /// The accepted values are true, false and null.
         /// </summary>
         /// <param name="capture_now"></param>
         /// <returns>AuthorizeRequest Object</returns>
-        public AuthorizeRequest WithCaptureNow(bool capture_now = false)
+        public AuthorizeRequest WithCaptureNow(bool? capture_now)
         {
             this.capture_now = capture_now;
             return this;

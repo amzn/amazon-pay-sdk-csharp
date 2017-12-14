@@ -46,7 +46,7 @@ namespace AmazonPay.Responses
         private string reasonCode;
         private string reasonDescription;
 
-        private bool captureNow;
+        private bool? captureNow;
         private string softDescriptor;
 
         private string errorCode;
@@ -374,10 +374,10 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Get the bool value if the captureNow was set to True or False
+        /// Get the bool value if the captureNow was set to True or False or Null
         /// </summary>
         /// <returns>captureNow</returns>
-        public bool GetCaptureNow()
+        public bool? GetCaptureNow()
         {
             return captureNow;
         }

@@ -932,7 +932,7 @@ namespace AmazonPay
         ///   requestParameters.WithId("C01/B01-XXXXX-XXXXX"); // billing agreement ID
         ///   
         ///   // Optional
-        ///   requestParameters.WithInheritShippingAddress(true); // Defaults to false
+        ///   requestParameters.WithInheritShippingAddress(true); // Defaults to true
         ///   requestParameters.WithConfirmNow(true); // Defaults to false
         ///   requestParameters.WithAmount("100"); // Required when requestParameters["ConfirmNow"] is set to true
         ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null

@@ -1,3 +1,7 @@
+Version 3.3.1 December 2017
+- Fix default values of inherit_shipping_address, capture_now and confirm_now flags in all APIs
+- Amazon Pay C# SDK Strong Named Assembly release
+
 Version 3.3.0 November 2017
 - Add support for new SetOrderAttributes API call. 
 - Fix ResponseParser.cs to avoid race condition in setting xml.

@@ -744,7 +744,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
-        public void TestAuthorize()
+        public void TestAuthorizeWithCaptureNowTrue()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
@@ -784,6 +784,96 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithTransactionTimeout(5)
                 .WithSoftDescriptor("test");
             
+            client.Authorize(authorize);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestAuthorizeWithCaptureNowFalse()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","Authorize"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.00"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"AuthorizationReferenceId","test"},
+                {"CaptureNow","false"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"SoftDescriptor","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API Authorize
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeRequest authorize = new AuthorizeRequest();
+            authorize.WithAmazonOrderReferenceId("test")
+                .WithAmount(100.00m)
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(false)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test");
+
+            client.Authorize(authorize);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestAuthorizeWithNoCaptureNow()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","Authorize"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.00"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"AuthorizationReferenceId","test"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"SoftDescriptor","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API Authorize
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeRequest authorize = new AuthorizeRequest();
+            authorize.WithAmazonOrderReferenceId("test")
+                .WithAmount(100.00m)
+                .WithAuthorizationReferenceId("test")
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test");
+
             client.Authorize(authorize);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -1053,7 +1143,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
-        public void TestCreateOrderReferenceForId()
+        public void TestCreateOrderReferenceForIdWithConfirmNowTrue()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
@@ -1087,6 +1177,108 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
             createOrderReferenceForId.WithConfirmNow(true)
                 .WithAmount(100.05m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithCustomInformation("test")
+                .WithId("test")
+                .WithIdType("test")
+                .WithInheritShippingAddress(true)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test");
+            client.CreateOrderReferenceForId(createOrderReferenceForId);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestCreateOrderReferenceForIdWithConfirmNowFalse()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","CreateOrderReferenceForId"},
+                {"SellerId","test"},
+                {"Id","test"},
+                {"IdType","test"},
+                {"InheritShippingAddress","true"},
+                {"ConfirmNow","false"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100.05"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API CreateOrderReferenceForId
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
+            createOrderReferenceForId.WithConfirmNow(false)
+                .WithAmount(100.05m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithCustomInformation("test")
+                .WithId("test")
+                .WithIdType("test")
+                .WithInheritShippingAddress(true)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test");
+            client.CreateOrderReferenceForId(createOrderReferenceForId);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestCreateOrderReferenceForIdWithNoConfirmNow()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","CreateOrderReferenceForId"},
+                {"SellerId","test"},
+                {"Id","test"},
+                {"IdType","test"},
+                {"InheritShippingAddress","true"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100.05"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API CreateOrderReferenceForId
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
+            createOrderReferenceForId.WithAmount(100.05m)
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithCustomInformation("test")
                 .WithId("test")
@@ -1246,7 +1438,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
-        public void TestAuthorizeOnBillingAgreement()
+        public void TestAuthorizeOnBillingAgreementWithDefaultInheritShippingAddress()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
@@ -1297,6 +1489,124 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithStoreName("test")
                 .WithSellerOrderId("test")
                 .WithTransactionTimeout(5);
+            client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestAuthorizeOnBillingAgreementWithInheritShippingAddressTrue()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","AuthorizeOnBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"AuthorizationReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.05"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"CaptureNow","true"},
+                {"SoftDescriptor","test"},
+                {"SellerNote","test"},
+                {"PlatformId","test"},
+                {"SellerOrderAttributes.CustomInformation","test"},
+                {"SellerOrderAttributes.SellerOrderId","test"},
+                {"SellerOrderAttributes.StoreName","test"},
+                {"InheritShippingAddress","true"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API AuthorizeOnBillingAgreement
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
+            authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
+                .WithAmount(100.05m)
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(true)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("test")
+                .WithCustomInformation("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithSellerNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test")
+                .WithStoreName("test")
+                .WithSellerOrderId("test")
+                .WithTransactionTimeout(5)
+                .WithInheritShippingAddress(true);
+            client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestAuthorizeOnBillingAgreementWithInheritShippingAddressFalse()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","AuthorizeOnBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"AuthorizationReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.05"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"CaptureNow","true"},
+                {"SoftDescriptor","test"},
+                {"SellerNote","test"},
+                {"PlatformId","test"},
+                {"SellerOrderAttributes.CustomInformation","test"},
+                {"SellerOrderAttributes.SellerOrderId","test"},
+                {"SellerOrderAttributes.StoreName","test"},
+                {"InheritShippingAddress","false"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API AuthorizeOnBillingAgreement
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
+            authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
+                .WithAmount(100.05m)
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(true)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("test")
+                .WithCustomInformation("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithSellerNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test")
+                .WithStoreName("test")
+                .WithSellerOrderId("test")
+                .WithTransactionTimeout(5)
+                .WithInheritShippingAddress(false);
             client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
