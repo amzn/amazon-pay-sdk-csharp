@@ -1288,7 +1288,6 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithPlatformId("test")
                 .WithCustomInformation("test")
-                .WithInheritShippingAddress(true)
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test")
                 .WithSellerAuthorizationNote("test")
