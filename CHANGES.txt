@@ -1,3 +1,6 @@
+Version 3.3.2 February 2018
+- Update version number in all relevant files
+
 Version 3.3.1 December 2017
 - Fix default values of inherit_shipping_address, capture_now and confirm_now flags in all APIs
 - Amazon Pay C# SDK Strong Named Assembly release
