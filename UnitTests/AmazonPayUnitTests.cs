@@ -26,7 +26,7 @@ namespace UnitTests
     [TestFixture]
     public class AmazonPayUnitTests
     {
-        Configuration clientConfig = new Configuration();
+        readonly Configuration clientConfig = new Configuration();
 
         public AmazonPayUnitTests()
         {
@@ -264,10 +264,9 @@ namespace UnitTests
             client.SetTimeStamp("0000");
 
             // Test call to the API GetOrderReferenceDetails
-            client = new Client(clientConfig);
+            client = new Client(clientConfig) { Logger = logger };
 
             // Set Logger for Client
-            client.Logger = logger;
 
             client.SetTimeStamp("0000");
 
@@ -336,7 +335,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
 
             NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
-
+          
             IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath_chargeback));
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonChargebackId(), new ChargebackResponse(xmlData).GetAmazonChargebackId());
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmount(), new ChargebackResponse(xmlData).GetChargebackAmount());
@@ -1706,7 +1705,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","GetProviderCreditDetails"},
-                {"SellerId","test"},            
+                {"SellerId","test"},
                 {"MWSAuthToken","test"},
                 {"AmazonProviderCreditId","test"}
             };
@@ -1739,7 +1738,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","GetProviderCreditReversalDetails"},
-                {"SellerId","test"},            
+                {"SellerId","test"},
                 {"MWSAuthToken","test"},
                 {"AmazonProviderCreditReversalId","test"}
             };
@@ -1769,14 +1768,14 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         [Test]
         public void TestGetUserInfo()
         {
-                Enum emptyRegion = null;
-                Client client = new Client(clientConfig);
-                // Exeption for Null "Region" value
-                Assert.Throws<NullReferenceException>(()=> clientConfig.WithRegion(emptyRegion));
-                // Exeption for Null value
-                Assert.Throws<NullReferenceException>(() => client.GetUserInfo(null));
-                // Check for invalid Access token
-                Assert.IsTrue(Regex.IsMatch(client.GetUserInfo("Atza"),"invalid_token",RegexOptions.IgnoreCase));          
+            Enum emptyRegion = null;
+            Client client = new Client(clientConfig);
+            // Exeption for Null "Region" value
+            Assert.Throws<NullReferenceException>(() => clientConfig.WithRegion(emptyRegion));
+            // Exeption for Null value
+            Assert.Throws<NullReferenceException>(() => client.GetUserInfo(null));
+            // Check for invalid Access token
+            Assert.IsTrue(Regex.IsMatch(client.GetUserInfo("Atza"), "invalid_token", RegexOptions.IgnoreCase));
         }
 
         [Test]
@@ -1808,13 +1807,15 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         [Test]
         public void TestJsonResponse()
         {
-            Hashtable response = new Hashtable();
-            response["ResponseBody"] =
-            "<GetOrderReferenceDetailsResponse xmlns='http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01'>"
-            + "<AmazonOrderReferenceId>S01-5806490-2147504</AmazonOrderReferenceId>"
-            + "<ExpirationTimestamp>2015-09-27T02:18:33.408Z</ExpirationTimestamp>"
-            + "<SellerNote>This is testing API call</SellerNote>"
-            + "</GetOrderReferenceDetailsResponse>";
+            Hashtable response = new Hashtable
+            {
+                ["ResponseBody"] =
+                "<GetOrderReferenceDetailsResponse xmlns='http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01'>"
+                + "<AmazonOrderReferenceId>S01-5806490-2147504</AmazonOrderReferenceId>"
+                + "<ExpirationTimestamp>2015-09-27T02:18:33.408Z</ExpirationTimestamp>"
+                + "<SellerNote>This is testing API call</SellerNote>"
+                + "</GetOrderReferenceDetailsResponse>"
+            };
 
             string json = File.ReadAllText("json.txt");
 
@@ -1879,7 +1880,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (method == null)
-                Assert.Fail(string.Format("{0} method not found", methodName));
+                Assert.Fail("{0} method not found", methodName);
 
             return method;
         }

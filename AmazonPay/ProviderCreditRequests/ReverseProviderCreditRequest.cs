@@ -7,7 +7,7 @@ namespace AmazonPay.ProviderCreditRequests
     /// </summary>
     public class ReverseProviderCreditRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_provider_credit_id;
         private string credit_reversal_reference_id;
@@ -18,11 +18,11 @@ namespace AmazonPay.ProviderCreditRequests
 
         public ReverseProviderCreditRequest()
         {
-            this.action = Constants.ReverseProviderCredit;
+            action = Constants.ReverseProviderCredit;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetAmazonProviderCreditId()
         {
-            return this.amazon_provider_credit_id;
+            return amazon_provider_credit_id;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetCreditReversalReferenceId()
         {
-            return this.credit_reversal_reference_id;
+            return credit_reversal_reference_id;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public decimal GetAmount()
         {
-            return this.amount;
+            return amount;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetCurrencyCode()
         {
-            return this.currency_code;
+            return currency_code;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetCreditReversalNote()
         {
-            return this.credit_reversal_note;
+            return credit_reversal_note;
         }
         /// <summary>
         /// Sets the MWS Auth Token
@@ -126,7 +126,7 @@ namespace AmazonPay.ProviderCreditRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

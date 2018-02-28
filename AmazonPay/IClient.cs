@@ -1,5 +1,4 @@
-﻿using System;
-namespace AmazonPay
+﻿namespace AmazonPay
 {
     /// <summary>
     /// Interface class for the AmazonPay Client class

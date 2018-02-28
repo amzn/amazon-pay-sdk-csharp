@@ -8,7 +8,7 @@ namespace AmazonPay.StandardPaymentRequests
     /// </summary>
     public class AuthorizeRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_order_reference_id;
         private decimal amount;
@@ -19,16 +19,16 @@ namespace AmazonPay.StandardPaymentRequests
         private string soft_descriptor;
         private int? transaction_timeout;
         private string mws_auth_token;
-        List<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
+        readonly List<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
 
 
         public AuthorizeRequest()
         {
-            this.action = Constants.Authorize;
+            action = Constants.Authorize;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -42,7 +42,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazon_order_reference_id;
+            return amazon_order_reference_id;
         }
 
         /// <summary>
@@ -67,12 +67,12 @@ namespace AmazonPay.StandardPaymentRequests
         /// <returns>Amount</returns>
         public AuthorizeRequest WithAmount(decimal authorization_amount)
         {
-            this.amount = authorization_amount;
+            amount = authorization_amount;
             return this;
         }
         public decimal GetAmount()
         {
-            return this.amount;
+            return amount;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetCurrencyCode()
         {
-            return this.currency_code;
+            return currency_code;
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetAuthorizationReferenceId()
         {
-            return this.authorization_reference_id;
+            return authorization_reference_id;
         }
         /// <summary>
         /// Sets the Boolean value for the Capture Now.
@@ -117,7 +117,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetCaptureNow()
         {
-            return this.capture_now.ToString().ToLower();
+            return capture_now.ToString().ToLower();
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public IList<Dictionary<string, string>> GetProviderCreditDetails()
         {
-            return this.providerCredit;
+            return providerCredit;
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetSellerAuthorizationNote()
         {
-            return this.seller_authorization_note;
+            return seller_authorization_note;
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public int? GetTransactionTimeout()
         {
-            return this.transaction_timeout;
+            return transaction_timeout;
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetSoftDescriptor()
         {
-            return this.soft_descriptor;
+            return soft_descriptor;
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace AmazonPay.StandardPaymentRequests
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

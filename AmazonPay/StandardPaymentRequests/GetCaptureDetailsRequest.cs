@@ -8,15 +8,15 @@
         private string merchant_id;
         private string amazon_capture_id;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public GetCaptureDetailsRequest()
         {
-            this.action = Constants.GetCaptureDetails;
+            action = Constants.GetCaptureDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -30,7 +30,7 @@
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
         /// <summary>
         /// Sets the Amazon Capture ID
@@ -44,7 +44,7 @@
         }
         public string GetAmazonCaptureId()
         {
-            return this.amazon_capture_id;
+            return amazon_capture_id;
         }
         /// <summary>
         /// Sets the MWS Auth Token
@@ -58,7 +58,7 @@
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

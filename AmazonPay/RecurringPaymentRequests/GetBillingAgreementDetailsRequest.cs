@@ -5,7 +5,7 @@
     /// </summary>
     public class GetBillingAgreementDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_billing_agreement_id;
         private string mws_auth_token;
@@ -13,11 +13,11 @@
 
         public GetBillingAgreementDetailsRequest()
         {
-            this.action = Constants.GetBillingAgreementDetails;
+            action = Constants.GetBillingAgreementDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@
         }
         public string GetAmazonBillingAgreementId()
         {
-            return this.amazon_billing_agreement_id;
+            return amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@
         }
         public string GetAddressConsentToken()
         {
-            return this.address_consent_token;
+            return address_consent_token;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

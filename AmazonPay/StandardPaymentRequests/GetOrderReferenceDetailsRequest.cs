@@ -11,19 +11,19 @@ namespace AmazonPay.StandardPaymentRequests
         private string address_consent_token;
         private string access_token;
         private string mws_auth_token;
-        private string action;
-        
+        private readonly string action;
+
         /// <summary>
         /// Constructor sets the Action variable for the MWS request
         /// </summary>
         public GetOrderReferenceDetailsRequest()
         {
-            this.action = Constants.GetOrderReferenceDetails;
+            action = Constants.GetOrderReferenceDetails;
         }
 
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -38,7 +38,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazon_order_reference_id;
+            return amazon_order_reference_id;
         }
         /// <summary>
         /// Sets the Address Consent Token
@@ -71,7 +71,7 @@ namespace AmazonPay.StandardPaymentRequests
         [Obsolete("use GetAccessToken instead")]
         public string GetAddressConsentToken()
         {
-            return this.address_consent_token;
+            return address_consent_token;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace AmazonPay.StandardPaymentRequests
 
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
 
     }

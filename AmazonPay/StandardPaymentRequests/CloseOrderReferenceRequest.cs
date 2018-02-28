@@ -9,15 +9,15 @@
         private string amazon_order_reference_id;
         private string closure_reason;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public CloseOrderReferenceRequest()
         {
-            this.action = Constants.CloseOrderReference;
+            action = Constants.CloseOrderReference;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -31,7 +31,7 @@
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
         /// <summary>
         /// Sets the Amazon Order Reference ID
@@ -45,7 +45,7 @@
         }
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazon_order_reference_id;
+            return amazon_order_reference_id;
         }
         /// <summary>
         /// Sets the Closure reason
@@ -59,7 +59,7 @@
         }
         public string GetClosureReason()
         {
-            return this.closure_reason;
+            return closure_reason;
         }
         /// <summary>
         /// Sets the MWS Auth Token
@@ -73,7 +73,7 @@
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

@@ -11,17 +11,17 @@ namespace AmazonPay.Responses
 
     public class OrderReferenceDetailsResponse : IResponse
     {
-        private string xml;
-        private string json;
+        private readonly string xml;
+        private readonly string json;
         private string amazonOrderReferenceId;
 
         private DateTime expirationTimeStamp;
         private DateTime creationTimestamp;
         private DateTime lastUpdateTimestamp;
-        private IDictionary dictionary;
-        private List<string> constraintID = new List<string>();
-        private List<string> description = new List<string>();
-        private bool hasConstraint = false;
+        private readonly IDictionary dictionary;
+        private readonly List<string> constraintID = new List<string>();
+        private readonly List<string> description = new List<string>();
+        private bool hasConstraint;
 
         private string requestId;
         private string reasonCode;
@@ -36,7 +36,7 @@ namespace AmazonPay.Responses
         private decimal amount;
         private string currencyCode;
 
-        private List<string> authorizationId = new List<string>();
+        private readonly List<string> authorizationId = new List<string>();
 
         private string phone;
         private string buyerName;
@@ -67,10 +67,10 @@ namespace AmazonPay.Responses
         private string id;
         private string type;
 
-        private string errorCode;
-        private string errorMessage;
+        private readonly string errorCode;
+        private readonly string errorMessage;
 
-        private bool success = false;
+        private readonly bool success;
         private string parentKey;
 
         /// <summary>
@@ -89,21 +89,22 @@ namespace AmazonPay.Responses
         public OrderReferenceDetailsResponse(string xml)
         {
             this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() || errorResponse.IsSetErrorMessage())
             {
-                this.success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                success = false;
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
-                this.success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                success = true;
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -354,7 +355,7 @@ namespace AmazonPay.Responses
         /// <returns>string amazonOrderReferenceId</returns>
         public string GetAmazonOrderReferenceId()
         {
-            return this.amazonOrderReferenceId;
+            return amazonOrderReferenceId;
         }
 
         /// <summary>
@@ -363,7 +364,7 @@ namespace AmazonPay.Responses
         /// <returns>DateTime expirationTimestamp</returns>
         public DateTime GetExpirationTimestamp()
         {
-            return this.expirationTimeStamp;
+            return expirationTimeStamp;
         }
 
         /// <summary>
@@ -372,7 +373,7 @@ namespace AmazonPay.Responses
         /// <returns>Datetime creationTimestamp</returns>
         public DateTime GetCreationTimestamp()
         {
-            return this.creationTimestamp;
+            return creationTimestamp;
         }
 
         /// <summary>
@@ -381,7 +382,7 @@ namespace AmazonPay.Responses
         /// <returns>Datetime lastUpdateTimestamp</returns>
         public DateTime GetLastUpdateTimestamp()
         {
-            return this.lastUpdateTimestamp;
+            return lastUpdateTimestamp;
         }
 
         /// <summary>
@@ -390,7 +391,7 @@ namespace AmazonPay.Responses
         /// <returns>string requestId</returns>
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
 
         /// <summary>
@@ -399,7 +400,7 @@ namespace AmazonPay.Responses
         /// <returns>string reasonCode</returns>
         public string GetReasonCode()
         {
-            return this.reasonCode;
+            return reasonCode;
         }
 
         /// <summary>
@@ -408,7 +409,7 @@ namespace AmazonPay.Responses
         /// <returns>string reasonDescription</returns>
         public string GetReasonDescription()
         {
-            return this.reasonDescription;
+            return reasonDescription;
         }
 
         /// <summary>
@@ -417,7 +418,7 @@ namespace AmazonPay.Responses
         /// <returns>string orderReferenceState</returns>
         public string GetOrderReferenceState()
         {
-            return this.orderReferenceState;
+            return orderReferenceState;
         }
 
         /// <summary>
@@ -426,7 +427,7 @@ namespace AmazonPay.Responses
         /// <returns>string orderLanguage</returns>
         public string GetOrderLanguage()
         {
-            return this.orderLanguage;
+            return orderLanguage;
         }
 
         /// <summary>
@@ -435,7 +436,7 @@ namespace AmazonPay.Responses
         /// <returns>string addressLine1</returns>
         public string GetAddressLine1()
         {
-            return this.addressLine1;
+            return addressLine1;
         }
 
         /// <summary>
@@ -444,7 +445,7 @@ namespace AmazonPay.Responses
         /// <returns>string addressLine2</returns>
         public string GetAddressLine2()
         {
-            return this.addressLine2;
+            return addressLine2;
         }
 
         /// <summary>
@@ -453,7 +454,7 @@ namespace AmazonPay.Responses
         /// <returns>string addressLine3</returns>
         public string GetAddressLine3()
         {
-            return this.addressLine3;
+            return addressLine3;
         }
 
         /// <summary>
@@ -462,7 +463,7 @@ namespace AmazonPay.Responses
         /// <returns>decimal amount</returns>
         public decimal GetAmount()
         {
-            return this.amount;
+            return amount;
         }
 
         /// <summary>
@@ -471,7 +472,7 @@ namespace AmazonPay.Responses
         /// <returns>string currencyCode</returns>
         public string GetCurrencyCode()
         {
-            return this.currencyCode;
+            return currencyCode;
         }
 
         /// <summary>
@@ -480,7 +481,7 @@ namespace AmazonPay.Responses
         /// <returns>IList authorizationId</returns>
         public IList<string> GetAuthorizationIdList()
         {
-            return this.authorizationId.AsReadOnly();
+            return authorizationId.AsReadOnly();
         }
 
         /// <summary>
@@ -489,7 +490,7 @@ namespace AmazonPay.Responses
         /// <returns>string city</returns>
         public string GetCity()
         {
-            return this.city;
+            return city;
         }
 
         /// <summary>
@@ -498,7 +499,7 @@ namespace AmazonPay.Responses
         /// <returns>IList constraintID</returns>
         public IList<string> GetConstraintIdList()
         {
-            return this.constraintID.AsReadOnly();
+            return constraintID.AsReadOnly();
         }
 
         /// <summary>
@@ -507,7 +508,7 @@ namespace AmazonPay.Responses
         /// <returns>string buyerShippingName</returns>
         public string GetBuyerShippingName()
         {
-            return this.buyerShippingName;
+            return buyerShippingName;
         }
 
         /// <summary>
@@ -516,7 +517,7 @@ namespace AmazonPay.Responses
         /// <returns>string countryCode</returns>
         public string GetCountryCode()
         {
-            return this.countryCode;
+            return countryCode;
         }
 
         /// <summary>
@@ -525,7 +526,7 @@ namespace AmazonPay.Responses
         /// <returns>string county</returns>
         public string GetCounty()
         {
-            return this.county;
+            return county;
         }
 
         /// <summary>
@@ -534,7 +535,7 @@ namespace AmazonPay.Responses
         /// <returns>string customInformation</returns>
         public string GetCustomInformation()
         {
-            return this.customInformation;
+            return customInformation;
         }
 
         /// <summary>
@@ -543,7 +544,7 @@ namespace AmazonPay.Responses
         /// <returns>IList description</returns>
         public IList<string> GetDescriptionList()
         {
-            return this.description.AsReadOnly();
+            return description.AsReadOnly();
         }
 
         /// <summary>
@@ -552,7 +553,7 @@ namespace AmazonPay.Responses
         /// <returns>string destinationType</returns>
         public string GetDestinationType()
         {
-            return this.destinationType;
+            return destinationType;
         }
 
         /// <summary>
@@ -561,7 +562,7 @@ namespace AmazonPay.Responses
         /// <returns>string district</returns>
         public string GetDistrict()
         {
-            return this.district;
+            return district;
         }
 
         /// <summary>
@@ -570,7 +571,7 @@ namespace AmazonPay.Responses
         /// <returns>string email</returns>
         public string GetEmail()
         {
-            return this.email;
+            return email;
         }
 
         /// <summary>
@@ -579,7 +580,7 @@ namespace AmazonPay.Responses
         /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
-            return this.errorCode;
+            return errorCode;
         }
 
         /// <summary>
@@ -588,7 +589,7 @@ namespace AmazonPay.Responses
         /// <returns>string errorMessage</returns>
         public string GetErrorMessage()
         {
-            return this.errorMessage;
+            return errorMessage;
         }
 
         /// <summary>
@@ -597,7 +598,7 @@ namespace AmazonPay.Responses
         /// <returns>bool hasConstraint</returns>
         public bool GetHasConstraint()
         {
-            return this.hasConstraint;
+            return hasConstraint;
         }
 
         /// <summary>
@@ -606,7 +607,7 @@ namespace AmazonPay.Responses
         /// <returns>string buyerName</returns>
         public string GetBuyerName()
         {
-            return this.buyerName;
+            return buyerName;
         }
 
         /// <summary>
@@ -615,7 +616,7 @@ namespace AmazonPay.Responses
         /// <returns>string phone</returns>
         public string GetPhone()
         {
-            return this.phone;
+            return phone;
         }
 
         /// <summary>
@@ -642,7 +643,7 @@ namespace AmazonPay.Responses
         /// <returns>string platformId</returns>
         public string GetPlatformId()
         {
-            return this.platformId;
+            return platformId;
         }
 
         /// <summary>
@@ -651,7 +652,7 @@ namespace AmazonPay.Responses
         /// <returns>string postalCode</returns>
         public string GetPostalCode()
         {
-            return this.postalCode;
+            return postalCode;
         }
 
         /// <summary>
@@ -660,7 +661,7 @@ namespace AmazonPay.Responses
         /// <returns>string releaseEnvironment</returns>
         public string GetReleaseEnvironment()
         {
-            return this.releaseEnvironment;
+            return releaseEnvironment;
         }
 
         /// <summary>
@@ -669,7 +670,7 @@ namespace AmazonPay.Responses
         /// <returns>string sellerNote</returns>
         public string GetSellerNote()
         {
-            return this.sellerNote;
+            return sellerNote;
         }
 
         /// <summary>
@@ -678,7 +679,7 @@ namespace AmazonPay.Responses
         /// <returns>string sellerOrderId</returns>
         public string GetSellerOrderId()
         {
-            return this.sellerOrderId;
+            return sellerOrderId;
         }
 
         /// <summary>
@@ -687,7 +688,7 @@ namespace AmazonPay.Responses
         /// <returns>string stateOrRegion</returns>
         public string GetStateOrRegion()
         {
-            return this.stateOrRegion;
+            return stateOrRegion;
         }
 
         /// <summary>
@@ -696,7 +697,7 @@ namespace AmazonPay.Responses
         /// <returns>string storeName</returns>
         public string GetStoreName()
         {
-            return this.storeName;
+            return storeName;
         }
 
         /// <summary>
@@ -705,7 +706,7 @@ namespace AmazonPay.Responses
         /// <returns>BillingAddressDetails billingAddress</returns>
         public BillingAddressDetails GetBillingAddressDetails()
         {
-            return this.billingAddress;
+            return billingAddress;
         }
 
         /// <summary>
@@ -750,7 +751,7 @@ namespace AmazonPay.Responses
         /// <returns>bool success</returns>
         public bool GetSuccess()
         {
-            return this.success;
+            return success;
         }
 
         /// <summary>
@@ -759,7 +760,7 @@ namespace AmazonPay.Responses
         /// <returns>string json</returns>
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
 
         /// <summary>
@@ -768,7 +769,7 @@ namespace AmazonPay.Responses
         /// <returns>string xml</returns>
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
 
         /// <summary>
@@ -777,7 +778,7 @@ namespace AmazonPay.Responses
         /// <returns>IDictionary dictionary</returns>
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
     }
 }

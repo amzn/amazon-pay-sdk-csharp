@@ -9,9 +9,9 @@ namespace AmazonPay.Responses
 
     public class ErrorResponse
     {
-        private string errorCode = null;
-        private string errorMessage = null;
-        private string requestId = null;
+        private string errorCode;
+        private string errorMessage;
+        private string requestId;
 
         public ErrorResponse(IDictionary dictionary)
         {
@@ -73,7 +73,7 @@ namespace AmazonPay.Responses
         /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
-            return this.errorCode;
+            return errorCode;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace AmazonPay.Responses
         /// <returns>string errorMesage</returns>
         public string GetErrorMessage()
         {
-            return this.errorMessage;
+            return errorMessage;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace AmazonPay.Responses
         /// <returns>string requestId</returns>
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace AmazonPay.CommonRequests
 {
@@ -17,7 +15,7 @@ namespace AmazonPay.CommonRequests
         private string secret_key;
         private string region;
         private string currency_code;
-        private bool sandbox = false;
+        private bool sandbox;
         private string platform_id;
         private string cabundle_file;
         private string application_name;
@@ -39,7 +37,7 @@ namespace AmazonPay.CommonRequests
 
         public Configuration()
         {
-            this.proxy_port = -1;
+            proxy_port = -1;
         }
 
         public Configuration(string json)
@@ -65,7 +63,7 @@ namespace AmazonPay.CommonRequests
                                 {
                                     // If the region is present convert it to an enum type and pass it to the WithRegion method
                                     var region = (Regions.supportedRegions)Enum.Parse(typeof(Regions.supportedRegions), pair.Value.ToLower());
-                                    WithRegion((Enum)region);
+                                    WithRegion(region);
                                 }
                                 else
                                 {
@@ -80,7 +78,7 @@ namespace AmazonPay.CommonRequests
                                 {
                                     // If the Currency Code is present convert it to an enum type and pass it to the WithRegion method
                                     var currencyCode = (Regions.currencyCode)Enum.Parse(typeof(Regions.currencyCode), pair.Value.ToUpper());
-                                    WithCurrencyCode((Enum)currencyCode);
+                                    WithCurrencyCode(currencyCode);
                                 }
                                 else
                                 {
@@ -132,7 +130,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -147,7 +145,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetAccessKey()
         {
-            return this.access_key;
+            return access_key;
         }
 
         /// <summary>
@@ -162,7 +160,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetSecretKey()
         {
-            return this.secret_key;
+            return secret_key;
         }
 
         /// <summary>
@@ -177,7 +175,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetRegion()
         {
-            return this.region;
+            return region;
         }
 
         /// <summary>
@@ -192,7 +190,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetCurrencyCode()
         {
-            return this.currency_code;
+            return currency_code;
         }
 
         /// <summary>
@@ -207,7 +205,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetSandbox()
         {
-            return this.sandbox.ToString().ToLower();
+            return sandbox.ToString().ToLower();
         }
 
         /// <summary>
@@ -222,7 +220,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetPlatformId()
         {
-            return this.platform_id;
+            return platform_id;
         }
 
         /// <summary>
@@ -237,7 +235,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetCABundleFile()
         {
-            return this.cabundle_file;
+            return cabundle_file;
         }
 
         /// <summary>
@@ -252,7 +250,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetApplicationName()
         {
-            return this.application_name;
+            return application_name;
         }
 
         /// <summary>
@@ -267,7 +265,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetApplicationVersion()
         {
-            return this.application_version;
+            return application_version;
         }
 
         /// <summary>
@@ -282,7 +280,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetProxyHost()
         {
-            return this.proxy_host;
+            return proxy_host;
         }
 
         /// <summary>
@@ -297,7 +295,7 @@ namespace AmazonPay.CommonRequests
         }
         public int GetProxyPort()
         {
-            return this.proxy_port;
+            return proxy_port;
         }
 
         /// <summary>
@@ -312,7 +310,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetProxyUserName()
         {
-            return this.proxy_username;
+            return proxy_username;
         }
 
         /// <summary>
@@ -327,7 +325,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetProxyUserPassword()
         {
-            return this.proxy_password;
+            return proxy_password;
         }
 
         /// <summary>
@@ -342,7 +340,7 @@ namespace AmazonPay.CommonRequests
         }
         public string GetClientId()
         {
-            return this.client_id;
+            return client_id;
         }
 
         /// <summary>
@@ -357,7 +355,7 @@ namespace AmazonPay.CommonRequests
         }
         public bool GetAutoRetryOnThrottle()
         {
-            return this.auto_retry_on_throttle;
+            return auto_retry_on_throttle;
         }
     }
 }

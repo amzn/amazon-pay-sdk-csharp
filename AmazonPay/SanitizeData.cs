@@ -43,7 +43,7 @@ namespace AmazonPay
                                     "</appSettings>");
 
             // Load list of sanitized tags in to array
-            string[] listArray = ConfigurationManager.AppSettings["sanitizeList"].Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] listArray = ConfigurationManager.AppSettings["sanitizeList"].Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             // Load SanitizeDataList
             foreach (var item in listArray)
             {

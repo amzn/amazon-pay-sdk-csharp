@@ -43,21 +43,21 @@ namespace AmazonPay.Responses
         public GetProviderCreditDetailsResponse(string xml)
         {
             this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
                 success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -97,7 +97,7 @@ namespace AmazonPay.Responses
                             switch ((Operator)Enum.Parse(typeof(Operator), strKey))
                             {
                                 case Operator.AmazonProviderCreditId:
-                                    this.amazonProviderCreditId = obj.ToString();
+                                    amazonProviderCreditId = obj.ToString();
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
@@ -197,7 +197,7 @@ namespace AmazonPay.Responses
         /// <returns>string amazonProviderCreditId</returns>
         public string GetAmazonProviderCreditId()
         {
-            return this.amazonProviderCreditId;
+            return amazonProviderCreditId;
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace AmazonPay.Responses
         /// <returns>string requestId</returns>
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace AmazonPay.Responses
         /// <returns>DateTime creationTimestamp</returns>
         public DateTime GetCreationTimestamp()
         {
-            return this.creationTimestamp;
+            return creationTimestamp;
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace AmazonPay.Responses
         /// <returns>decimal creditAmount</returns>
         public decimal GetCreditAmount()
         {
-            return this.creditAmount;
+            return creditAmount;
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace AmazonPay.Responses
         /// <returns>string creditAmountCurrencyCode</returns>
         public string GetCreditAmountCurrencyCode()
         {
-            return this.creditAmountCurrencyCode;
+            return creditAmountCurrencyCode;
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace AmazonPay.Responses
         /// <returns>string creditReferenceId</returns>
         public string GetCreditReferenceId()
         {
-            return this.creditReferenceId;
+            return creditReferenceId;
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace AmazonPay.Responses
         /// <returns>decimal creditReversalAmount</returns>
         public decimal GetCreditReversalAmount()
         {
-            return this.creditReversalAmount;
+            return creditReversalAmount;
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace AmazonPay.Responses
         /// <returns>string creditReversalAmountCurrencyCode</returns>
         public string GetCreditReversalAmountCurrencyCode()
         {
-            return this.creditReversalAmountCurrencyCode;
+            return creditReversalAmountCurrencyCode;
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace AmazonPay.Responses
         /// <returns>IList creditReversalIdList</returns>
         public IList<string> GetCreditReversalIdList()
         {
-            return this.creditReversalIdList.AsReadOnly();
+            return creditReversalIdList.AsReadOnly();
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace AmazonPay.Responses
         /// <returns>string creditStatus</returns>
         public string GetCreditStatus()
         {
-            return this.creditStatus;
+            return creditStatus;
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace AmazonPay.Responses
         /// <returns>string reasonCode</returns>
         public string GetReasonCode()
         {
-            return this.reasonCode;
+            return reasonCode;
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace AmazonPay.Responses
         /// <returns>string reasonDescription</returns>
         public string GetReasonDescription()
         {
-            return this.reasonDescription;
+            return reasonDescription;
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace AmazonPay.Responses
         /// <returns>string softDescriptor</returns>
         public string GetSoftDescriptor()
         {
-            return this.softDescriptor;
+            return softDescriptor;
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace AmazonPay.Responses
         /// <returns>string sellerId</returns>
         public string GetSellerId()
         {
-            return this.sellerId;
+            return sellerId;
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace AmazonPay.Responses
         /// <returns>success can be true or false</returns>
         public bool GetSuccess()
         {
-            return this.success;
+            return success;
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace AmazonPay.Responses
         /// <returns>XML format Response</returns>
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
 
         /// <summary>
@@ -359,7 +359,7 @@ namespace AmazonPay.Responses
         /// <returns>Dictionary<string,object> type Response</returns>
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace AmazonPay.Responses
         /// <returns>JSON format Response</returns>
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
     }
 }

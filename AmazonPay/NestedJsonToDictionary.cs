@@ -11,16 +11,16 @@ namespace AmazonPay
     /// 
     public class NestedJsonToDictionary
     {
-        private Dictionary<string, object> dictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
         public NestedJsonToDictionary(string json)
         {
-            this.dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(
-            json, new JsonConverter[] { new JsonParser() });
+            dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(
+            json, new JsonParser());
         }
         public Dictionary<string, object> GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
     }
     public class JsonParser : CustomCreationConverter<IDictionary<string, object>>

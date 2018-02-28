@@ -5,7 +5,7 @@
     /// </summary>
     public class SetBillingAgreementDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_billing_agreement_id;
         private string platform_id;
@@ -18,11 +18,11 @@
 
         public SetBillingAgreementDetailsRequest()
         {
-            this.action = Constants.SetBillingAgreementDetails;
+            action = Constants.SetBillingAgreementDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -36,7 +36,7 @@
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@
         }
         public string GetAmazonBillingAgreementId()
         {
-            return this.amazon_billing_agreement_id;
+            return amazon_billing_agreement_id;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@
         }
         public string GetPlatformId()
         {
-            return this.platform_id;
+            return platform_id;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@
         }
         public string GetSellerNote()
         {
-            return this.seller_note;
+            return seller_note;
         }
 
         /// <summary>
@@ -96,7 +96,7 @@
         }
         public string GetSellerBillingAgreementId()
         {
-            return this.seller_billing_agreement_id;
+            return seller_billing_agreement_id;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@
         }
         public string GetStoreName()
         {
-            return this.store_name;
+            return store_name;
         }
         /// <summary>
         /// Sets the Custom Information
@@ -125,7 +125,7 @@
         }
         public string GetCustomInformation()
         {
-            return this.custom_information;
+            return custom_information;
         }
 
         /// <summary>
@@ -140,7 +140,7 @@
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

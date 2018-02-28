@@ -8,15 +8,15 @@
         private string merchant_id;
         private string amazon_billing_agreement_id;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public ConfirmBillingAgreementRequest()
         {
-            this.action = Constants.ConfirmBillingAgreement;
+            action = Constants.ConfirmBillingAgreement;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@
         }
         public string GetAmazonBillingAgreementId()
         {
-            return this.amazon_billing_agreement_id;
+            return amazon_billing_agreement_id;
         }
         /// <summary>
         /// Sets the MWS Auth Token
@@ -60,7 +60,7 @@
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Reflection;
-using System.Web;
 using System.Net;
 using System.Text;
 using System.IO;
-using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-using System.Globalization;
-using System.Xml.Serialization;
 using System.Collections.Generic;
-using System.Collections;
-using System.Xml;
 using Newtonsoft.Json;
 using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
@@ -34,7 +26,7 @@ namespace AmazonPay
         private string mwsTestUrl = string.Empty;
         private string timeStamp = string.Empty;
         private Signature signatureObject;
-        private Configuration clientConfig = null;
+        private readonly Configuration clientConfig;
         private readonly string aud = "aud";
 
         /// <summary>
@@ -92,7 +84,6 @@ namespace AmazonPay
         /// <param name="jsonFilePath"></param>
         public Client(string jsonFilePath)
         {
-            string json;
             if (!string.IsNullOrEmpty(jsonFilePath))
             {
                 if (!File.Exists(@jsonFilePath))
@@ -101,11 +92,12 @@ namespace AmazonPay
                 }
                 else
                 {
+                    string json;
                     using (StreamReader r = new StreamReader(@jsonFilePath))
                     {
                         json = r.ReadToEnd();
                     }
-                    this.clientConfig = new Configuration(json);
+                    clientConfig = new Configuration(json);
                 }
             }
             else
@@ -120,7 +112,7 @@ namespace AmazonPay
         /// <param name="url"></param>
         public void SetMwsTestUrl(string url)
         {
-            this.mwsTestUrl = url;
+            mwsTestUrl = url;
         }
 
         /// <summary>
@@ -129,7 +121,7 @@ namespace AmazonPay
         /// <returns>IDictionary parameters</returns>
         public Dictionary<string, string> GetParameters()
         {
-            return this.parameters;
+            return parameters;
 
         }
 
@@ -149,6 +141,7 @@ namespace AmazonPay
         /// If Provider Credit Reversal Details is present, values are set by setProviderCreditDetails
         /// </summary>
         /// <param name="requestParameters"></param>
+        /// <param name="providerDetails"></param>
         /// <returns>string XML response</returns>
         private string SetParametersAndPost(Dictionary<string, string> requestParameters, IList<Dictionary<string, string>> providerDetails = null)
         {
@@ -210,9 +203,9 @@ namespace AmazonPay
             {
                 if (requestParameters[Constants.SellerId] == null || requestParameters[Constants.SellerId].Trim() == "")
                 {
-                    if (this.clientConfig.GetMerchantId() != null && this.clientConfig.GetMerchantId().Trim() != "")
+                    if (clientConfig.GetMerchantId() != null && clientConfig.GetMerchantId().Trim() != "")
                     {
-                        parameters[Constants.SellerId] = this.clientConfig.GetMerchantId();
+                        parameters[Constants.SellerId] = clientConfig.GetMerchantId();
                     }
                 }
             }
@@ -225,23 +218,23 @@ namespace AmazonPay
                     {
                         if (string.IsNullOrEmpty(param.Value))
                         {
-                            if (this.clientConfig.GetCurrencyCode() != null && this.clientConfig.GetCurrencyCode().Trim() != "")
+                            if (clientConfig.GetCurrencyCode() != null && this.clientConfig.GetCurrencyCode().Trim() != "")
                             {
-                                parameters[param.Key] = this.clientConfig.GetCurrencyCode();
+                                parameters[param.Key] = clientConfig.GetCurrencyCode();
                             }
                         }
                     }
-
+                    
                     if (param.Key.Contains("PlatformId"))
                     {
                         if (string.IsNullOrEmpty(param.Value))
                         {
-                            if (this.clientConfig.GetPlatformId() != null && this.clientConfig.GetPlatformId().Trim() != "")
+                            if (clientConfig.GetPlatformId() != null && clientConfig.GetPlatformId().Trim() != "")
                             {
                                 parameters[param.Key] = this.clientConfig.GetPlatformId();
                             }
                         }
-                    }
+                    }                    
                 }
             }
             
@@ -274,7 +267,7 @@ namespace AmazonPay
                 // If currency code is not entered take it from the configuration object
                 if (string.IsNullOrEmpty(parameters[providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode]))
                 {
-                    parameters[providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode] = this.clientConfig.GetCurrencyCode();
+                    parameters[providerString + providerIndex + "." + Constants.CreditAmount_CurrencyCode] = clientConfig.GetCurrencyCode();
                 }
             }
             return parameters;
@@ -306,7 +299,7 @@ namespace AmazonPay
                 // If currency code is not entered take it from the configuration object
                 if (string.IsNullOrEmpty(parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode]))
                 {
-                    parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode] = this.clientConfig.GetCurrencyCode();
+                    parameters[providerString + providerIndex + "." + Constants.CreditReversalAmount_CurrencyCode] = clientConfig.GetCurrencyCode();
                 }
             }
             return parameters;
@@ -319,14 +312,13 @@ namespace AmazonPay
         /// <returns>string response - json output of profile information</returns>
         public string GetUserInfo(string accessToken)
         {
-            string response;
             string profileEndpoint = GetProfileEndpointUrl();
 
             if (string.IsNullOrEmpty(accessToken))
             {
                 throw new NullReferenceException("Access Token is a required parameter and is not set");
             }
-            if (string.IsNullOrEmpty(this.clientConfig.GetClientId().ToString()))
+            if (string.IsNullOrEmpty(clientConfig.GetClientId()))
             {
                 throw new NullReferenceException("client ID is a required parameter and is not set");
             }
@@ -335,21 +327,21 @@ namespace AmazonPay
             string url = profileEndpoint + "/auth/o2/tokeninfo?access_token=" + System.Web.HttpUtility.UrlEncode(accessToken);
 
             HttpImpl httpRequest = new HttpImpl(clientConfig);
-            response = httpRequest.Get(url);
+            var response = httpRequest.Get(url);
 
             Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
 
             // aud - The client identifier used to request the access token. The value for aud should math the LWA Client ID - this.clientConfig.GetClientId()
             if (data.ContainsKey(aud))
             {
-                if (!(data[aud].Equals(this.clientConfig.GetClientId()))) // describe the aud variable nd add value into a final string
+                if (!(data[aud].Equals(clientConfig.GetClientId()))) // describe the aud variable nd add value into a final string
                 {
                     throw new InvalidDataException("The Access token entered is incorrect");
                 }
                 else
                 {
                     url = profileEndpoint + "/user/profile";
-                    httpRequest = new HttpImpl(this.clientConfig);
+                    httpRequest = new HttpImpl(clientConfig);
                     httpRequest.setAccessToken(accessToken);
                     httpRequest.setHttpHeader();
 
@@ -1340,10 +1332,10 @@ namespace AmazonPay
         /// <returns>Dictionary response</returns>
         public AuthorizeResponse Charge(ChargeRequest requestParameters)
         {
-            string xml, baStatus, oroStatus = string.Empty;
+            string xml, baStatus, oroStatus;
             var chargeException = new InvalidDataException();
             AuthorizeResponse authorizeResponseObject = null;
-            bool getSuccess = false, setSuccess = false, confirmSuccess = false, authorizeSuccess = false;
+            bool getSuccess, setSuccess, confirmSuccess, authorizeSuccess = false;
 
             switch (requestParameters.chargeType)
             {
@@ -1558,9 +1550,8 @@ namespace AmazonPay
         /// <returns>parametersToString</returns>
         private string CalculateSignatureAndParametersToString(Dictionary<string, string> parameters)
         {
-            signatureObject = new Signature(this.clientConfig, Constants.PaymentsServiceVersion);
-            signatureObject.Logger = this.Logger;
-            string parametersToString = signatureObject.CalculateSignatureAndReturnParametersAsString(parameters, this.timeStamp, this.mwsTestUrl);
+            signatureObject = new Signature(clientConfig, Constants.PaymentsServiceVersion) { Logger = Logger };
+            string parametersToString = signatureObject.CalculateSignatureAndReturnParametersAsString(parameters, timeStamp, mwsTestUrl);
             this.parameters = parameters;
 
             return parametersToString;
@@ -1575,9 +1566,7 @@ namespace AmazonPay
         {
             String responseBody = null;
 
-            /// <summary>
-            /// Boolean variable to check if the API call was a success
-            /// </summary> 
+            //Boolean variable to check if the API call was a success 
             bool success = false;
 
             Dictionary<string, string> responseDict = new Dictionary<string, string>();
@@ -1586,7 +1575,7 @@ namespace AmazonPay
             byte[] requestData = new UTF8Encoding().GetBytes(parameters);
 
             ConfigureUserAgentHeader();
-            HttpImpl httpRequest = new HttpImpl(this.clientConfig);
+            HttpImpl httpRequest = new HttpImpl(clientConfig);
 
             // Submit the request and read response body 
             bool shouldRetry;
@@ -1605,7 +1594,7 @@ namespace AmazonPay
                     shouldRetry = false;
                     success = true;
                 }
-                else if (Convert.ToBoolean(this.clientConfig.GetAutoRetryOnThrottle()) && (statusCode == 500 || statusCode == 503))
+                else if (Convert.ToBoolean(clientConfig.GetAutoRetryOnThrottle()) && (statusCode == 500 || statusCode == 503))
                 {
                     ++retries;
                     if (shouldRetry)
@@ -1657,9 +1646,9 @@ namespace AmazonPay
             string profileEnvt = Convert.ToBoolean(this.clientConfig.GetSandbox()) ? "api.sandbox" : "api";
             string profileEndpoint = string.Empty;
 
-            if (!string.IsNullOrEmpty(this.clientConfig.GetRegion().ToString()))
+            if (!string.IsNullOrEmpty(clientConfig.GetRegion()))
             {
-                region = this.clientConfig.GetRegion();
+                region = clientConfig.GetRegion();
                 if (Regions.regionMappings.ContainsKey(region))
                 {
                     profileEndpoint = "https://" + profileEnvt + "." + Regions.ProfileEndpoint[region];
@@ -1681,7 +1670,7 @@ namespace AmazonPay
         {
             signatureObject.SetUserAgentHeader(
                 Environment.OSVersion.Platform + "/" + Environment.OSVersion.Version,
-                ".NET/" + Environment.Version.ToString());
+                ".NET/" + Environment.Version);
         }
 
         /// <summary>
@@ -1690,9 +1679,9 @@ namespace AmazonPay
         /// <param name="message"></param>
         private void LogMessage(string message, SanitizeData.DataType type)
         {
-            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            if (Logger != null && Logger.IsDebugEnabled)
             {
-                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+                Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
             }
         }
     }

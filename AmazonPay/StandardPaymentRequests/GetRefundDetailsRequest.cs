@@ -5,18 +5,18 @@
     /// </summary>
     public class GetRefundDetailsRequest
     {
-        private string action;
+        private readonly string action;
         private string merchant_id;
         private string amazon_refund_id;
         private string mws_auth_token;
 
         public GetRefundDetailsRequest()
         {
-            this.action = Constants.GetRefundDetails;
+            action = Constants.GetRefundDetails;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -25,12 +25,12 @@
         /// <returns>GetRefundDetailsRequest Object</returns>
         public GetRefundDetailsRequest WithMerchantId(string merchant_id)
         {
-           this.merchant_id = merchant_id;
-           return this;
+            this.merchant_id = merchant_id;
+            return this;
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
         /// <summary>
         /// Sets the Amazon Refund ID
@@ -44,7 +44,7 @@
         }
         public string GetAmazonRefundId()
         {
-            return this.amazon_refund_id;
+            return amazon_refund_id;
         }
         /// <summary>
         /// Sets the MWS Auth Token
@@ -58,7 +58,7 @@
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }

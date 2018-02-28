@@ -13,10 +13,10 @@ namespace AmazonPay
     public class Signature
     {
         //pass only the required accesskey,secret key
-        private Configuration clientConfig = null;
+        private readonly Configuration clientConfig;
 
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
-        private string mwsServiceUrl = null;
+        private string mwsServiceUrl;
 
         private string mwsEndpointUrl = string.Empty;
         private string mwsEndpointPath = string.Empty;
@@ -24,8 +24,8 @@ namespace AmazonPay
         // UserAgent to track the request and usage in the Logs
         private string userAgent = string.Empty;
 
-        private string parametersAsString = string.Empty;
-        private string serviceVersion = string.Empty;
+        private readonly string parametersAsString = string.Empty;
+        private readonly string serviceVersion = string.Empty;
 
         /// <summary>
         ///  Common Looger Property
@@ -34,7 +34,7 @@ namespace AmazonPay
 
         public Signature(Configuration configuration, string serviceVersion)
         {
-            this.clientConfig = configuration;
+            clientConfig = configuration;
             this.serviceVersion = serviceVersion;
         }
 
@@ -47,21 +47,14 @@ namespace AmazonPay
         /// <returns></returns>
         public string CalculateSignatureAndReturnParametersAsString(IDictionary<String, String> parameters, string timeStamp = "", string mwsDevoUrl = "")
         {
-            parameters.Add("AWSAccessKeyId", this.clientConfig.GetAccessKey());
-            if (string.IsNullOrEmpty(timeStamp))
-            {
-                parameters.Add("Timestamp", GetFormattedTimestamp());
-            }
-            else
-            {
-                parameters.Add("Timestamp", timeStamp);
-            }
+            parameters.Add("AWSAccessKeyId", clientConfig.GetAccessKey());
+            parameters.Add("Timestamp", string.IsNullOrEmpty(timeStamp) ? GetFormattedTimestamp() : timeStamp);
             parameters.Add("Version", serviceVersion);
             parameters.Add("SignatureVersion", "2");
 
-            this.CreateServiceUrl(mwsDevoUrl);
+            CreateServiceUrl(mwsDevoUrl);
 
-            parameters.Add("Signature", SignParameters(parameters, this.clientConfig.GetSecretKey()));
+            parameters.Add("Signature", SignParameters(parameters, clientConfig.GetSecretKey()));
 
             return GetParametersAsString(parameters);
         }
@@ -98,17 +91,17 @@ namespace AmazonPay
         /// <param name="parameters"></param>
         /// <param name="key"></param>
         /// <returns>signature string</returns>
-        private String SignParameters(IDictionary<String, String> parameters, String key)
+        private string SignParameters(IDictionary<string, string> parameters, string key)
         {
-            String signatureVersion = parameters["SignatureVersion"];
+            string signatureVersion = parameters["SignatureVersion"];
 
             KeyedHashAlgorithm algorithm = new HMACSHA1();
 
-            String stringToSign = null;
+            string stringToSign = null;
 
             if ("2".Equals(signatureVersion))
             {
-                String signatureMethod = "HmacSHA256";
+                string signatureMethod = "HmacSHA256";
                 algorithm = KeyedHashAlgorithm.Create(signatureMethod.ToUpper());
                 parameters.Add("SignatureMethod", signatureMethod);
                 stringToSign = CalculateStringToSignV2(parameters);
@@ -126,18 +119,18 @@ namespace AmazonPay
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private String CalculateStringToSignV2(IDictionary<String, String> parameters)
+        private string CalculateStringToSignV2(IDictionary<string, string> parameters)
         {
             StringBuilder data = new StringBuilder();
-            IDictionary<String, String> sorted =
-                  new SortedDictionary<String, String>(parameters, StringComparer.Ordinal);
+            IDictionary<string, string> sorted =
+                  new SortedDictionary<string, string>(parameters, StringComparer.Ordinal);
             data.Append("POST");
             data.Append("\n");
             data.Append(mwsEndpointUrl);
             data.Append("\n");
             data.Append(mwsEndpointPath);
             data.Append("\n");
-            foreach (KeyValuePair<String, String> pair in sorted)
+            foreach (KeyValuePair<string, string> pair in sorted)
             {
                 if (pair.Value != null)
                 {
@@ -149,17 +142,17 @@ namespace AmazonPay
 
             }
 
-            String result = data.ToString().Remove(data.Length - 1);
+            string result = data.ToString().Remove(data.Length - 1);
 
             LogMessage(result, SanitizeData.DataType.Request);
 
             return result;
         }
 
-        private String UrlEncode(String data, bool path)
+        private string UrlEncode(string data, bool path)
         {
             StringBuilder encoded = new StringBuilder();
-            String unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~" + (path ? "/" : "");
+            string unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~" + (path ? "/" : "");
 
             foreach (char symbol in Encoding.UTF8.GetBytes(data))
             {
@@ -169,7 +162,7 @@ namespace AmazonPay
                 }
                 else
                 {
-                    encoded.Append("%" + String.Format("{0:X2}", (int)symbol));
+                    encoded.Append("%" + string.Format("{0:X2}", (int)symbol));
                 }
             }
 
@@ -184,7 +177,7 @@ namespace AmazonPay
         /// <param name="key"></param>
         /// <param name="algorithm"></param>
         /// <returns>string signature</returns>
-        private String Sign(String data, String key, KeyedHashAlgorithm algorithm)
+        private string Sign(string data, string key, KeyedHashAlgorithm algorithm)
         {
             Encoding encoding = new UTF8Encoding();
             algorithm.Key = encoding.GetBytes(key);
@@ -196,7 +189,7 @@ namespace AmazonPay
         /// Formats date as ISO 8601 timestamp
         /// </summary>
         /// <returns>DateTime object</returns>
-        private String GetFormattedTimestamp()
+        private string GetFormattedTimestamp()
         {
             DateTime dateTime = DateTime.Now;
             return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day,
@@ -216,17 +209,17 @@ namespace AmazonPay
             string region = "";
             string mode = "";
 
-            mode = Convert.ToBoolean(this.clientConfig.GetSandbox()) ? "OffAmazonPayments_Sandbox" : "OffAmazonPayments";
+            mode = Convert.ToBoolean(clientConfig.GetSandbox()) ? "OffAmazonPayments_Sandbox" : "OffAmazonPayments";
 
-            if (!string.IsNullOrEmpty(this.clientConfig.GetRegion()))
+            if (!string.IsNullOrEmpty(clientConfig.GetRegion()))
             {
-                region = this.clientConfig.GetRegion();
+                region = clientConfig.GetRegion();
                 if (Regions.regionMappings.ContainsKey(region))
                 {
                     // Set the Endpoint for the internal development else get the value from the 
                     if (mwsTestUrl != null && mwsTestUrl.Trim() != "")
                     {
-                        this.mwsServiceUrl = mwsTestUrl;
+                        mwsServiceUrl = mwsTestUrl;
                         mwsEndpointPath = "";
                     }
                     else
@@ -256,24 +249,24 @@ namespace AmazonPay
             StringBuilder sb = new StringBuilder();
 
             sb.Append(Constants.SDKName + "/" + Constants.SDKClientVersion);
-   
+
             sb.Append(" ( ");
-            if (!String.IsNullOrEmpty(this.clientConfig.GetApplicationName()) && !String.IsNullOrEmpty(this.clientConfig.GetApplicationVersion()))
+            if (!string.IsNullOrEmpty(clientConfig.GetApplicationName()) && !string.IsNullOrEmpty(clientConfig.GetApplicationVersion()))
             {
-                sb.Append(QuoteApplicationName(this.clientConfig.GetApplicationName()));
+                sb.Append(QuoteApplicationName(clientConfig.GetApplicationName()));
                 sb.Append("/");
-                sb.Append(QuoteApplicationVersion(this.clientConfig.GetApplicationVersion()));
+                sb.Append(QuoteApplicationVersion(clientConfig.GetApplicationVersion()));
                 sb.Append("; ");
             }
-            else if (!String.IsNullOrEmpty(this.clientConfig.GetApplicationName()))
+            else if (!string.IsNullOrEmpty(clientConfig.GetApplicationName()))
             {
-                sb.Append(QuoteApplicationName(this.clientConfig.GetApplicationName()));
+                sb.Append(QuoteApplicationName(clientConfig.GetApplicationName()));
                 sb.Append("; ");
             }
-           
-            else if (!String.IsNullOrEmpty(this.clientConfig.GetApplicationVersion()))
+
+            else if (!string.IsNullOrEmpty(clientConfig.GetApplicationVersion()))
             {
-                sb.Append(QuoteApplicationVersion(this.clientConfig.GetApplicationVersion()));
+                sb.Append(QuoteApplicationVersion(clientConfig.GetApplicationVersion()));
                 sb.Append("; ");
             }
 
@@ -297,12 +290,12 @@ namespace AmazonPay
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns>string</returns>
-        private string GetParametersAsString(IDictionary<String, String> parameters)
+        private string GetParametersAsString(IDictionary<string, string> parameters)
         {
             StringBuilder data = new StringBuilder();
-            foreach (String key in (IEnumerable<String>)parameters.Keys)
+            foreach (string key in parameters.Keys)
             {
-                String input = parameters[key];
+                string input = parameters[key];
                 if (input != null)
                 {
                     data.Append(key);
@@ -311,7 +304,7 @@ namespace AmazonPay
                     data.Append("&");
                 }
             }
-            String result = data.ToString();
+            string result = data.ToString();
             return result.Remove(result.Length - 1);
         }
 
@@ -325,10 +318,7 @@ namespace AmazonPay
             // matched character sequences are passed to a MatchEvaluator
             // delegate. The returned string from the delegate replaces
             // the matched sequence.
-            return Regex.Replace(s, @" {2,}|\s", delegate(Match m)
-            {
-                return " ";
-            });
+            return Regex.Replace(s, @" {2,}|\s", m => " ");
         }
 
         /// <summary>
@@ -373,27 +363,27 @@ namespace AmazonPay
 
         public string GetMwsServiceUrl()
         {
-            return this.mwsServiceUrl;
+            return mwsServiceUrl;
         }
 
         public string GetMwsEndpointUrl()
         {
-            return this.mwsEndpointUrl;
+            return mwsEndpointUrl;
         }
 
         public string GetMwsEndpointPath()
         {
-            return this.mwsEndpointPath;
+            return mwsEndpointPath;
         }
 
         public string GetUserAgent()
         {
-            return this.userAgent;
+            return userAgent;
         }
 
         public string GetParametersAsString()
         {
-            return this.parametersAsString;
+            return parametersAsString;
         }
 
         /// <summary>
@@ -403,9 +393,9 @@ namespace AmazonPay
         /// <param name="type">Type of data</param>
         private void LogMessage(string message, SanitizeData.DataType type)
         {
-            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            if (Logger != null && Logger.IsDebugEnabled)
             {
-                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+                Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
             }
         }
     }

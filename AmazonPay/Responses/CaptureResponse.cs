@@ -55,21 +55,21 @@ namespace AmazonPay.Responses
         {
 
             this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
 
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
+            ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
             {
                 success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                errorCode = errorResponse.GetErrorCode();
+                errorMessage = errorResponse.GetErrorMessage();
+                requestId = errorResponse.GetRequestId();
             }
             else
             {
                 success = true;
-                ParseDictionaryToVariables(this.dictionary);
+                ParseDictionaryToVariables(dictionary);
             }
         }
 
@@ -110,7 +110,7 @@ namespace AmazonPay.Responses
                             switch ((Operator)Enum.Parse(typeof(Operator), strKey))
                             {
                                 case Operator.AmazonCaptureId:
-                                    this.amazonCaptureId = obj.ToString();
+                                    amazonCaptureId = obj.ToString();
                                     break;
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
@@ -240,7 +240,7 @@ namespace AmazonPay.Responses
         /// <returns>string amazonCaptureId</returns>
         public string GetCaptureId()
         {
-            return this.amazonCaptureId;
+            return amazonCaptureId;
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace AmazonPay.Responses
         /// <returns>string requestId</returns>
         public string GetRequestId()
         {
-            return this.requestId;
+            return requestId;
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace AmazonPay.Responses
         /// <returns>string captureReferenceId</returns>
         public string GetCaptureReferenceId()
         {
-            return this.captureReferenceId;
+            return captureReferenceId;
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace AmazonPay.Responses
         /// <returns>DateTime lastUpdateTimestamp</returns>
         public DateTime GetLastUpdatedTimestamp()
         {
-            return this.lastUpdateTimestamp;
+            return lastUpdateTimestamp;
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace AmazonPay.Responses
         /// <returns>string sellerCaptureNote</returns>
         public string GetSellerCaptureNote()
         {
-            return this.sellerCaptureNote;
+            return sellerCaptureNote;
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace AmazonPay.Responses
         /// <returns>decimal captureAmount</returns>
         public decimal GetCaptureAmount()
         {
-            return this.captureAmount;
+            return captureAmount;
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace AmazonPay.Responses
         /// <returns>string captureCurrencyCode</returns>
         public string GetCaptureAmountCurrencyCode()
         {
-            return this.captureCurrencyCode;
+            return captureCurrencyCode;
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace AmazonPay.Responses
         /// <returns>decimal captureFeeAmount</returns>
         public decimal GetCaptureFee()
         {
-            return this.captureFeeAmount;
+            return captureFeeAmount;
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace AmazonPay.Responses
         /// <returns>string captureFeeCurrencyCode</returns>
         public string GetCaptureFeeCurrencyCode()
         {
-            return this.captureFeeCurrencyCode;
+            return captureFeeCurrencyCode;
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace AmazonPay.Responses
         /// <returns>string captureState</returns>
         public string GetCaptureState()
         {
-            return this.captureState;
+            return captureState;
         }
 
         /// <summary>
@@ -357,7 +357,7 @@ namespace AmazonPay.Responses
         /// <returns>IList refundId</returns>
         public IList<string> GetRefundIdList()
         {
-            return this.refundId.AsReadOnly();
+            return refundId.AsReadOnly();
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace AmazonPay.Responses
         /// <returns>IList providerCreditId</returns>
         public IList<string> GetProviderCreditIdList()
         {
-            return this.providerCreditId.AsReadOnly();
+            return providerCreditId.AsReadOnly();
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace AmazonPay.Responses
         /// <returns>IList providerId</returns>
         public IList<string> GetProviderIdList()
         {
-            return this.providerId.AsReadOnly();
+            return providerId.AsReadOnly();
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace AmazonPay.Responses
         /// <returns>DateTime creationTimestamp</returns>
         public DateTime GetCreationTimestamp()
         {
-            return this.creationTimestamp;
+            return creationTimestamp;
         }
 
         /// <summary>
@@ -393,7 +393,7 @@ namespace AmazonPay.Responses
         /// <returns>string reasonCode</returns>
         public string GetReasonCode()
         {
-            return this.reasonCode;
+            return reasonCode;
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace AmazonPay.Responses
         /// 
         public string GetReasonDescription()
         {
-            return this.reasonDescription;
+            return reasonDescription;
         }
 
         /// <summary>
@@ -411,7 +411,7 @@ namespace AmazonPay.Responses
         ///
         public string GetSoftDescriptor()
         {
-            return this.softDescriptor;
+            return softDescriptor;
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace AmazonPay.Responses
         /// <returns>JSON format Response</returns>
         public string GetJson()
         {
-            return this.json;
+            return json;
         }
 
         /// <summary>
@@ -456,7 +456,7 @@ namespace AmazonPay.Responses
         /// <returns>XML format Response</returns>
         public string GetXml()
         {
-            return this.xml;
+            return xml;
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace AmazonPay.Responses
         /// <returns>Dictionary<string,object> type Response</returns>
         public IDictionary GetDictionary()
         {
-            return this.dictionary;
+            return dictionary;
         }
     }
 }

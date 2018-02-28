@@ -9,15 +9,15 @@
         private string amazon_authorization_id;
         private string closure_reason;
         private string mws_auth_token;
-        private string action;
+        private readonly string action;
 
         public CloseAuthorizationRequest()
         {
-            this.action = Constants.CloseAuthorization;
+            action = Constants.CloseAuthorization;
         }
         public string GetAction()
         {
-            return this.action;
+            return action;
         }
         /// <summary>
         /// Sets the Merchant ID
@@ -31,7 +31,7 @@
         }
         public string GetMerchantId()
         {
-            return this.merchant_id;
+            return merchant_id;
         }
         /// <summary>
         /// Sets the Amazon Authorization ID
@@ -45,7 +45,7 @@
         }
         public string GetAmazonAuthorizationId()
         {
-            return this.amazon_authorization_id;
+            return amazon_authorization_id;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@
         }
         public string GetClosureReason()
         {
-            return this.closure_reason;
+            return closure_reason;
         }
 
         /// <summary>
@@ -75,7 +75,7 @@
         }
         public string GetMWSAuthToken()
         {
-            return this.mws_auth_token;
+            return mws_auth_token;
         }
     }
 }
