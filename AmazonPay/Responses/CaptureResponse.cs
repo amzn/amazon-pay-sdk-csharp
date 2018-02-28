@@ -11,49 +11,52 @@ namespace AmazonPay.Responses
 
     public class CaptureResponse : IResponse
     {
-        public string xml;
-        public string json;
-        public IDictionary dictionary;
-        public string amazonCaptureId;
-        public string requestId;
-        public string captureReferenceId;
-        public string sellerCaptureNote;
+        private string xml;
+        private string json;
+        private IDictionary dictionary;
+        private string amazonCaptureId;
+        private string requestId;
+        private string captureReferenceId;
+        private string sellerCaptureNote;
 
-        public decimal captureAmount;
-        public string captureCurrencyCode;
+        private decimal captureAmount;
+        private string captureCurrencyCode;
 
-        public decimal refundedAmount;
-        public string refundedAmountCurrencyCode;
+        private decimal refundedAmount;
+        private string refundedAmountCurrencyCode;
 
-        public decimal captureFeeAmount;
-        public string captureFeeCurrencyCode;
+        private decimal captureFeeAmount;
+        private string captureFeeCurrencyCode;
 
-        public string captureState;
-        public List<string> refundId = new List<string>();
+        private decimal convertedAmount;
+        private string convertedAmountCurrencyCode;
+        private decimal conversionRate;
 
-        public DateTime lastUpdateTimestamp;
-        public DateTime creationTimestamp;
+        private string captureState;
+        private List<string> refundId = new List<string>();
 
-        public string reasonCode;
-        public string reasonDescription;
-        public string softDescriptor;
+        private DateTime lastUpdateTimestamp;
+        private DateTime creationTimestamp;
 
-        public List<string> providerId = new List<string>();
-        public List<string> providerCreditId = new List<string>();
+        private string reasonCode;
+        private string reasonDescription;
+        private string softDescriptor;
 
-        public string errorCode;
-        public string errorMessage;
-        public bool success;
-        public string parentKey;
+        private List<string> providerId = new List<string>();
+        private List<string> providerCreditId = new List<string>();
+
+        private string errorCode;
+        private string errorMessage;
+        private bool success = false;
+        private string parentKey;
 
 
         public CaptureResponse(string xml)
         {
 
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            json = ResponseParser.ToJson();
-            dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
 
             ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
@@ -72,7 +75,7 @@ namespace AmazonPay.Responses
 
         private enum Operator
         {
-            AmazonCaptureId, RequestId, SellerCaptureNote, CaptureReferenceId, Amount, CaptureAmount, RefundedAmount, CaptureFee, CurrencyCode, ReasonCode,
+            AmazonCaptureId, RequestId, SellerCaptureNote, CaptureReferenceId, Amount, CaptureAmount, RefundedAmount, CaptureFee, CurrencyCode, ConvertedAmount, ConversionRate, ReasonCode,
             ReasonDescription, State, SoftDescriptor, LastUpdateTimestamp, CreationTimestamp, member, IdList,
             ProviderCreditSummaryList, ProviderId, ProviderSellerId, ProviderCreditId
         }
@@ -121,15 +124,19 @@ namespace AmazonPay.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.CaptureAmount.ToString()))
                                     {
-                                        captureAmount = decimal.Parse(obj.ToString());
+                                        captureAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.RefundedAmount.ToString()))
                                     {
-                                        refundedAmount = decimal.Parse(obj.ToString());
+                                        refundedAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.CaptureFee.ToString()))
                                     {
-                                        captureFeeAmount = decimal.Parse(obj.ToString());
+                                        captureFeeAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
+                                    }
+                                    else if (parentKey.Equals(Operator.ConvertedAmount.ToString()))
+                                    {
+                                        convertedAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
@@ -145,6 +152,14 @@ namespace AmazonPay.Responses
                                     {
                                         captureFeeCurrencyCode = obj.ToString();
                                     }
+                                    else if (parentKey.Equals(Operator.ConvertedAmount.ToString()))
+                                    {
+                                        convertedAmountCurrencyCode = obj.ToString();
+                                    }
+                                    break;
+                                
+                                case Operator.ConversionRate:
+                                    conversionRate = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = obj.ToString();
@@ -292,6 +307,33 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
+        /// Get the Converted Amount
+        /// </summary>
+        /// <returns>decimal convertedAmount</returns>
+        public decimal GetConvertedAmount()
+        {
+            return this.convertedAmount;
+        }
+
+        /// <summary>
+        /// Get teh ConvertedAmount Currency Code
+        /// </summary>
+        /// <returns>string convertedAmountCurrencyCode</returns>
+        public string GetConvertedAmountCurrencyCode()
+        {
+            return this.convertedAmountCurrencyCode;
+        }
+
+        /// <summary>
+        /// Get the Conversion Rate
+        /// </summary>
+        /// <returns>decimal captureFeeAmount</returns>
+        public decimal GetConversionRate()
+        {
+            return this.conversionRate;
+        }
+
+        /// <summary>
         /// Get teh CaptureFee Currency Code
         /// </summary>
         /// <returns>string captureFeeCurrencyCode</returns>
@@ -353,10 +395,20 @@ namespace AmazonPay.Responses
         {
             return reasonCode;
         }
+
+        /// <summary>
+        /// Get the Reason Description when the Amazon Capture ID is in a different state than Open
+        /// </summary>
+        /// 
         public string GetReasonDescription()
         {
             return reasonDescription;
         }
+
+        /// <summary>
+        /// Get the SoftDescriptor that appears on the buyer's payment instrument statement
+        /// </summary>
+        ///
         public string GetSoftDescriptor()
         {
             return softDescriptor;

@@ -13,12 +13,14 @@ namespace AmazonPay.Responses
         public string errorMessage;
         public bool success;
 
+        /// <summary>
+        /// CloseBillingAgreementResponse
+        /// </summary>
         public CloseBillingAgreementResponse(string xml)
         {
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            json = ResponseParser.ToJson();
-            dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
 
             ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())

@@ -29,6 +29,8 @@
         Responses.GetProviderCreditReversalDetailsResponse ReverseProviderCredit(ProviderCreditRequests.ReverseProviderCreditRequest requestParameters);
         Responses.BillingAgreementDetailsResponse SetBillingAgreementDetails(RecurringPaymentRequests.SetBillingAgreementDetailsRequest requestParameters);
         Responses.OrderReferenceDetailsResponse SetOrderReferenceDetails(StandardPaymentRequests.SetOrderReferenceDetailsRequest requestParameters);
+        Responses.OrderReferenceDetailsResponse SetOrderAttributes(StandardPaymentRequests.SetOrderAttributesRequest requestParameters);
+        Responses.PaymentDetailsResponse GetPaymentDetails(String amazonOrderReferenceID, String mwsAuthToken);
         Responses.ValidateBillingAgreementResponse ValidateBillingAgreement(RecurringPaymentRequests.ValidateBillingAgreementRequest requestParameters);
     }
 }

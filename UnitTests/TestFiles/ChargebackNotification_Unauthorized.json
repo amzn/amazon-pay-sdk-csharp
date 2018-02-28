@@ -1,0 +1,12 @@
+﻿{
+  "Type" : "Notification",
+  "MessageId" : "c1eab499-722a-51fa-89b2-e6bad87a834c",
+  "TopicArn" : "arn:aws:sns:us-east-1:598607868003:A35A4JO734ER04A08593053M41F7TQ7YR7W",
+  "Message" : "{\"ReleaseEnvironment\":\"Live\",\"MarketplaceID\":\"165570\",\"Version\":\"2013-01-01\",\"NotificationType\":\"ChargebackDetailedNotification\",\"SellerId\":\"A08593053M41F7TQ7YR7W\",\"NotificationReferenceId\":\"f01d98f8-969f-41ac-b6cb-930727f47786\",\"Timestamp\":\"2017-09-01T18:33:52.397Z\",\"NotificationData\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><ChargebackNotification xmlns=\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\">\\n    <ChargebackDetails>\\n        <AmazonChargebackId>C9KORZRXQ655G<\\/AmazonChargebackId>\\n        <AmazonOrderReferenceId>P01-7128087-7259534<\\/AmazonOrderReferenceId>\\n        <AmazonCaptureReferenceId>CaptureReference6282176<\\/AmazonCaptureReferenceId>\\n        <CreationTimestamp>2017-08-23T12:20:56.061Z<\\/CreationTimestamp>\\n        <ChargebackAmount>\\n            <Amount>100.0<\\/Amount>\\n            <CurrencyCode>USD<\\/CurrencyCode>\\n        <\\/ChargebackAmount>\\n        <ChargebackState>RECEIVED<\\/ChargebackState>\\n        <ChargebackReason>Unauthorized Transaction Chargeback<\\/ChargebackReason>\\n    <\\/ChargebackDetails>\\n<\\/ChargebackNotification>\"}",
+  "Timestamp" : "2017-09-01T18:33:52.467Z",
+  "SignatureVersion" : "1",
+  "Signature" : "Vj3USX5alWnceXZyf+E9itZycoq+QAa14MCu/vfVTXQG4qTScAcig7J7/ZWywGPW8c0HiPZGoFF3utptInTFbBCyQSZDVUYxoZD7JQ1J5ExFMRr9CP/x33rrQTzgX7Xz/z9eRdtn7W5G8YSRj1052iRP7JERVezRPTu4CVuUqvEtnJZGfIN+ZhetXIfTetbe0S8NEjxHgTpyQb2pVenzQxrR/C2B4HenXuvYGnIQEioaae7mkIo1+Y7CPonRo5HRvq4H4WKom7R3kTHz4E7n+qymk92yA8XxFyGOI0UBZ6fGSHPwhgudkuJ2IGV7wD04f1ipzXPL5Pv3PBiz4bTaxQ==",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-433026a4050d206028891664da859041.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:598607868003:A35A4JO734ER04A08593053M41F7TQ7YR7W:413d945a-6cc4-4c6f-a45a-c5c0918b03b9"
+}
+

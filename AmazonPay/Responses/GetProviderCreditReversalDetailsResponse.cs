@@ -5,37 +5,40 @@ namespace AmazonPay.Responses
 {
     public class GetProviderCreditReversalDetailsResponse : IResponse
     {
-        public string xml;
-        public string json;
-        public IDictionary dictionary;
-        public string amazonProviderCreditReversalId;
-        public string requestId;
-        public string sellerId;
-        public string providerId;
-        public string creditReversalReferenceId;
-        public string creditReversalNote;
+        private string xml;
+        private string json;
+        private IDictionary dictionary;
+        private string amazonProviderCreditReversalId;
+        private string requestId;
+        private string sellerId;
+        private string providerId;
+        private string creditReversalReferenceId;
+        private string creditReversalNote;
 
-        public decimal creditReversalAmount;
-        public string creditReversalAmountCurrencyCode;
-        public string creditReversalStatus;
-        public string lastUpdateTimestamp;
-        public string creationTimestamp;
+        private decimal creditReversalAmount;
+        private string creditReversalAmountCurrencyCode;
+        private string creditReversalStatus;
+        private string lastUpdateTimestamp;
+        private string creationTimestamp;
 
-        public string reasonCode;
-        public string reasonDescription;
+        private string reasonCode;
+        private string reasonDescription;
 
-        public string errorCode;
-        public string errorMessage;
-        public bool success;
-        public string parentKey;
+        private string errorCode;
+        private string errorMessage;
+        private bool success = false;
+        private string parentKey;
 
 
+        /// <summary>
+        /// ProviderCreditReversalDetailsResponse 
+        /// </summary>
         public GetProviderCreditReversalDetailsResponse(string xml)
         {
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            json = ResponseParser.ToJson();
-            dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
+
 
             ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
@@ -124,70 +127,154 @@ namespace AmazonPay.Responses
             }
         }
 
+        /// <summary>
+        /// Get the Amazon ProviderCreditReversalId 
+        /// </summary>
+        /// <returns>string amazonProviderCreditReversalId</returns>
         public string GetAmazonProviderCreditReversalId()
         {
             return amazonProviderCreditReversalId;
         }
+
+        /// <summary>
+        /// Get the Amazon RequestId 
+        /// </summary>
+        /// <returns>string requestId</returns>
         public string GetRequestId()
         {
             return requestId;
         }
+
+        /// <summary>
+        /// Get the CreditReversalReferenceId 
+        /// </summary>
+        /// <returns>string creditReversalReferenceId</returns>
         public string GetCreditReversalReferenceId()
         {
             return creditReversalReferenceId;
         }
+
+        /// <summary>
+        /// Get the CreditReversalNote 
+        /// </summary>
+        /// <returns>string creditReversalNote</returns>
         public string GetCreditReversalNote()
         {
             return creditReversalNote;
         }
+
+        /// <summary>
+        /// Get the CreditReversalAmount
+        /// </summary>
+        /// <returns>string creditReversalAmount</returns>
         public decimal GetCreditReversalAmount()
         {
             return creditReversalAmount;
         }
+
+        /// <summary>
+        /// Get the CreditReversalAmountCurrencyCode 
+        /// </summary>
+        /// <returns>string creditReversalAmountCurrencyCode</returns>
         public string GetCreditReversalAmountCurrencyCode()
         {
             return creditReversalAmountCurrencyCode;
         }
+
+        /// <summary>
+        /// Get the CreditReversalStatus 
+        /// </summary>
+        /// <returns>string creditReversalStatus</returns>
         public string GetCreditReversalStatus()
         {
             return creditReversalStatus;
         }
+
+        /// <summary>
+        /// Get the LastUpdateTimestamp 
+        /// </summary>
+        /// <returns>string lastUpdatetimestamp</returns>
         public string GetLastUpdateTimestamp()
         {
             return lastUpdateTimestamp;
         }
+
+        /// <summary>
+        /// Get the Creationtimestamp 
+        /// </summary>
+        /// <returns>string creationtimestamp</returns>
         public string GetCreationTimestamp()
         {
             return creationTimestamp;
         }
+
+        /// <summary>
+        /// Get the ReasonCode 
+        /// </summary>
+        /// <returns>string reasonCode</returns>
         public string GetReasonCode()
         {
             return reasonCode;
         }
+
+        /// <summary>
+        /// Get the ReasonDescription 
+        /// </summary>
+        /// <returns>string reasonDescription</returns>
         public string GetReasonDescription()
         {
             return reasonDescription;
         }
+
+        /// <summary>
+        /// Get the ErrorCode 
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage 
+        /// </summary>
+        /// <returns>string errorMessage</returns>
         public string GetErrorMessage()
         {
             return errorMessage;
         }
+
+        /// <summary>
+        /// Get the Success 
+        /// </summary>
+        /// <returns>bool success</returns>
         public bool GetSuccess()
         {
             return success;
         }
+
+        /// <summary>
+        /// Get the Json 
+        /// </summary>
+        /// <returns>string json</returns>
         public string GetJson()
         {
             return json;
         }
+
+        /// <summary>
+        /// Get the XML 
+        /// </summary>
+        /// <returns>string xml</returns>
         public string GetXml()
         {
             return xml;
         }
+
+        /// <summary>
+        /// Get the Dictionary 
+        /// </summary>
+        /// <returns>IDictionary dictionary</returns>
         public IDictionary GetDictionary()
         {
             return dictionary;

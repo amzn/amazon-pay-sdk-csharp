@@ -45,7 +45,7 @@ namespace AmazonPay
         /// <param name="timeStamp"></param>
         /// <param name="mwsDevoUrl"></param>
         /// <returns></returns>
-        public string CalculateSignatureAndReturnParametersAsString(IDictionary<string, string> parameters, string timeStamp = "", string mwsDevoUrl = "")
+        public string CalculateSignatureAndReturnParametersAsString(IDictionary<String, String> parameters, string timeStamp = "", string mwsDevoUrl = "")
         {
             parameters.Add("AWSAccessKeyId", clientConfig.GetAccessKey());
             parameters.Add("Timestamp", string.IsNullOrEmpty(timeStamp) ? GetFormattedTimestamp() : timeStamp);

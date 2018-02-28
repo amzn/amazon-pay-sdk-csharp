@@ -11,61 +11,62 @@ namespace AmazonPay.Responses
         /// Documentation Source https://pay.amazon.com/documentation/apireference/201752500
         /// </summary>
 
-        public string xml;
-        public string json;
-        public IDictionary dictionary;
+        private string xml;
+        private string json;
+        private IDictionary dictionary;
 
         // Billing Agreement general details
-        public string amazonBillingAgreementId;
-        public string billingAgreementState;
-        public string releaseEnvironment;
-        public List<string> constraintId = new List<string>();
-        public List<string> description = new List<string>();
-        public bool hasConstraint;
-        public string reasonCode;
-        public string reasonDescription;
-        public string requestId;
+        private string amazonBillingAgreementId;
+        private string billingAgreementState;
+        private string releaseEnvironment;
+        private List<string> constraintId = new List<string>();
+        private List<string> description = new List<string>();
+        private bool hasConstraint = false;
+        private string reasonCode;
+        private string reasonDescription;
+        private string requestId;
+        private DateTime creationTimestamp;
 
         // Billing Agreement Limits
-        public decimal amountLimitPerTimePeriod;
-        public string amountLimitPerTimePeriodCurrencyCode;
-        public decimal currentRemainingBalanceAmount;
-        public string currentRemainingBalanceCurrencyCode;
+        private decimal amountLimitPerTimePeriod;
+        private string amountLimitPerTimePeriodCurrencyCode;
+        private decimal currentRemainingBalanceAmount;
+        private string currentRemainingBalanceCurrencyCode;
 
         // Billing Agreement Seller details
-        public string sellerNote;
-        public string storeName;
-        public string sellerOrderId;
-        public string platformId;
-        public string sellerBillingAgreementId;
+        private string sellerNote;
+        private string storeName;
+        private string sellerOrderId;
+        private string platformId;
+        private string sellerBillingAgreementId;
 
         // Billing Agreement Validity details
-        public DateTime timePeriodStartDate;
-        public DateTime timePeriodEndDate;
-        public DateTime lastUpdatedTimestamp;
+        private DateTime timePeriodStartDate;
+        private DateTime timePeriodEndDate;
+        private DateTime lastUpdatedTimestamp;
 
         // Buyer Login Details
-        public string phone;
+        private string phone;
         private string buyerName;
-        public string email;
+        private string email;
 
         // Buyer Address Details
-        private string buyerShippingName;
-        public string addressLine1;
-        public string addressLine2;
-        public string addressLine3;
-        public string countryCode;
-        public string stateOrRegion;
-        public string city;
-        public string postalCode;
-        public string county;
-        public string district;
-        public string destinationType;
+         private string buyerShippingName;
+        private string addressLine1;
+        private string addressLine2;
+        private string addressLine3;
+        private string countryCode;
+        private string stateOrRegion;
+        private string city;
+        private string postalCode;
+        private string county;
+        private string district;
+        private string destinationType;
 
-        public string errorCode;
-        public string errorMessage;
+        private string errorCode;
+        private string errorMessage;
 
-        public bool success;
+        private bool success = false;
         private string parentKey;
 
         BillingAddressDetails billingAddress;
@@ -74,9 +75,8 @@ namespace AmazonPay.Responses
         public BillingAgreementDetailsResponse(string xml)
         {
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            json = ResponseParser.ToJson();
-            dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
 
             ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
@@ -95,7 +95,7 @@ namespace AmazonPay.Responses
 
         private enum Operator
         {
-            AmazonBillingAgreementId, TimePeriodStartDate, TimePeriodEndDate, RequestId, LastUpdatedTimestamp, ReasonCode, ReasonDescription, State, AmountLimitPerTimePeriod,
+            AmazonBillingAgreementId, TimePeriodStartDate, TimePeriodEndDate, RequestId, CreationTimestamp, LastUpdatedTimestamp, ReasonCode, ReasonDescription, State, AmountLimitPerTimePeriod,
             CurrentRemainingBalance, SellerNote, Amount, CurrencyCode, PlatformId, PostalCode, Name, Type, Id, Email, Phone, CountryCode, StateOrRegion, AddressLine1, AddressLine2,
             AddressLine3, City, County, District, DestinationType, ReleaseEnvironment, SellerOrderId, SellerBillingAgreementId, CustomInformation,
             StoreName, Constraint, ConstraintID, Description, member, BillingAddress, Buyer
@@ -146,6 +146,9 @@ namespace AmazonPay.Responses
                                 case Operator.RequestId:
                                     requestId = obj.ToString();
                                     break;
+                                case Operator.CreationTimestamp:
+                                    creationTimestamp = DateTime.Parse(obj.ToString());
+                                    break;
                                 case Operator.TimePeriodStartDate:
                                     timePeriodStartDate = DateTime.Parse(obj.ToString());
                                     break;
@@ -170,11 +173,11 @@ namespace AmazonPay.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.AmountLimitPerTimePeriod.ToString()))
                                     {
-                                        amountLimitPerTimePeriod = decimal.Parse(obj.ToString());
+                                        amountLimitPerTimePeriod = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.CurrentRemainingBalance.ToString()))
                                     {
-                                        currentRemainingBalanceAmount = decimal.Parse(obj.ToString());
+                                        currentRemainingBalanceAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
@@ -306,6 +309,15 @@ namespace AmazonPay.Responses
         public string GetRequestId()
         {
             return requestId;
+        }
+
+        /// <summary>
+        /// Get the creationTimestamp
+        /// </summary>
+        /// <returns>DateTime creationTimestamp</returns>
+        public DateTime GetCreationTimestamp()
+        {
+            return this.creationTimestamp;
         }
 
         /// <summary>
@@ -482,7 +494,7 @@ namespace AmazonPay.Responses
         /// <summary>
         /// Get the shipping address county of the Buyer
         /// </summary>
-        /// <returns>string county</returns
+        /// <returns>string county</returns>
         public string GetCounty()
         {
             return county;
@@ -491,7 +503,7 @@ namespace AmazonPay.Responses
         /// <summary>
         /// Get the destinationType whether if it's a physical desitination or a Billing address
         /// </summary>
-        /// <returns>string destinationType</returns
+        /// <returns>string destinationType</returns>
         public string GetDestinationType()
         {
             return destinationType;

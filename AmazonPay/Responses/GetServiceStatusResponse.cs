@@ -9,22 +9,26 @@ namespace AmazonPay.Responses
 
     public class GetServiceStatusResponse : IResponse
     {
-        public string xml;
-        public string json;
-        public IDictionary dictionary;
-        public string requestId;
-        public string status;
-        public DateTime timestamp;
-        public string errorCode;
-        public string errorMessage;
-        public bool success;
+        private string xml;
+        private string json;
+        private IDictionary dictionary;
+        private string requestId;
+        private string status;
+        private DateTime timestamp;
+        private string errorCode;
+        private string errorMessage;
+        private bool success = false;
 
+
+        /// <summary>
+        /// ServiceStatusResponse 
+        /// </summary>
         public GetServiceStatusResponse(string xml)
         {
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            json = ResponseParser.ToJson();
-            dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
+
 
             ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
@@ -90,38 +94,82 @@ namespace AmazonPay.Responses
             }
         }
 
+        /// <summary>
+        /// Get the RequestId 
+        /// </summary>
+        /// <returns>string requestId</returns>
         public string GetRequestId()
         {
             return requestId;
         }
+
+        /// <summary>
+        /// Get the Status 
+        /// </summary>
+        /// <returns>string status</returns>
         public string GetStatus()
         {
             return status;
         }
+
+        /// <summary>
+        /// Get the timestamp 
+        /// </summary>
+        /// <returns>DateTime timestamp</returns>
         public DateTime GetTimestamp()
         {
             return timestamp;
         }
+
+        /// <summary>
+        /// Get the ErrorCode 
+        /// </summary>
+        /// <returns>string errorCode</returns>
         public string GetErrorCode()
         {
             return errorCode;
         }
+
+        /// <summary>
+        /// Get the ErrorMessage 
+        /// </summary>
+        /// <returns>string errorMessage</returns>
         public string GetErrorMessage()
         {
             return errorMessage;
         }
+
+        /// <summary>
+        /// Get the Success 
+        /// </summary>
+        /// <returns>bool success</returns>
         public bool GetSuccess()
         {
             return success;
         }
+
+        /// <summary>
+        /// Get the Json 
+        /// </summary>
+        /// <returns>string json</returns>
         public string GetJson()
         {
             return json;
         }
+
+        /// <summary>
+        /// Get the XML 
+        /// </summary>
+        /// <returns>string xml</returns>
         public string GetXml()
         {
             return xml;
         }
+
+        /// <summary>
+        /// Get the Dictionary 
+        /// </summary>
+        /// <returns>IDictionary dictionary</returns>
         public IDictionary GetDictionary()
         {
             return dictionary;

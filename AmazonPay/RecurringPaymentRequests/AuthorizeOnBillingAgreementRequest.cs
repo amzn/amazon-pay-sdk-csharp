@@ -17,8 +17,8 @@ namespace AmazonPay.RecurringPaymentRequests
         private string store_name;
         private string seller_order_id;
         private string custom_information;
-        private bool inherit_shipping_address;
-        private bool capture_now;
+        private bool inherit_shipping_address = true;
+        private bool? capture_now;
         private string seller_authorization_note;
         private string authorization_reference_id;
         private string soft_descriptor;
@@ -141,11 +141,12 @@ namespace AmazonPay.RecurringPaymentRequests
         }
 
         /// <summary>
-        /// Sets the Capture Now Boolean value
+        /// Sets the Capture Now Boolean value.
+        /// The accepted values are true, false and null.
         /// </summary>
         /// <param name="capture_now"></param>
         /// <returns>AuthorizeOnBillingAgreementRequest Object</returns>
-        public AuthorizeOnBillingAgreementRequest WithCaptureNow(bool capture_now = false)
+        public AuthorizeOnBillingAgreementRequest WithCaptureNow(bool? capture_now)
         {
             this.capture_now = capture_now;
             return this;
@@ -247,7 +248,7 @@ namespace AmazonPay.RecurringPaymentRequests
         /// </summary>
         /// <param name="inherit_shipping_address"></param>
         /// <returns>AuthorizeOnBillingAgreementRequest Object</returns>
-        public AuthorizeOnBillingAgreementRequest WithInheritShippingAddress(bool inherit_shipping_address = false)
+        public AuthorizeOnBillingAgreementRequest WithInheritShippingAddress(bool inherit_shipping_address = true)
         {
             this.inherit_shipping_address = inherit_shipping_address;
             return this;

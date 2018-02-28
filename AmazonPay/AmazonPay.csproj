@@ -34,11 +34,10 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>KeyFile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -83,12 +82,14 @@
     <Compile Include="Responses\BillingAgreementDetailsResponse.cs" />
     <Compile Include="Responses\CancelOrderReferenceResponse.cs" />
     <Compile Include="Responses\CaptureResponse.cs" />
+    <Compile Include="Responses\ChargebackResponse.cs" />
     <Compile Include="Responses\CloseAuthorizationResponse.cs" />
     <Compile Include="Responses\CloseBillingAgreementResponse.cs" />
     <Compile Include="Responses\CloseOrderReferenceResponse.cs" />
     <Compile Include="Responses\ConfirmBillingAgreementResponse.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="Responses\ConfirmOrderReferenceResponse.cs" />
+    <Compile Include="Responses\PaymentDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditReversalDetailsResponse.cs" />
     <Compile Include="Responses\GetServiceStatusResponse.cs" />
@@ -113,11 +114,12 @@
     <Compile Include="StandardPaymentRequests\GetRefundDetailsRequest.cs" />
     <Compile Include="CommonRequests\GetServiceStatusRequest.cs" />
     <Compile Include="StandardPaymentRequests\RefundRequest.cs" />
+    <Compile Include="StandardPaymentRequests\SetOrderAttributesRequest.cs" />
     <Compile Include="StandardPaymentRequests\SetOrderReferenceDetailsRequest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="KeyFile.snk" />
     <None Include="packages.config" />
-    <None Include="AmazonPay.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

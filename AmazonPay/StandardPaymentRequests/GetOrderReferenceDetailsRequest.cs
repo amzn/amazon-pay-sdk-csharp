@@ -1,4 +1,5 @@
-﻿namespace AmazonPay.StandardPaymentRequests
+﻿using System;
+namespace AmazonPay.StandardPaymentRequests
 {
     /// <summary>
     /// Request class to set the GetOrderReferenceDetails API call parameters
@@ -8,6 +9,7 @@
         private string merchant_id;
         private string amazon_order_reference_id;
         private string address_consent_token;
+        private string access_token;
         private string mws_auth_token;
         private readonly string action;
 
@@ -59,15 +61,33 @@
         /// </summary>
         /// <param name="address_consent_token"></param>
         /// <returns>GetOrderReferenceDetailsRequest Object</returns>
+        [Obsolete("use WithAccessToken instead")]
         public GetOrderReferenceDetailsRequest WithaddressConsentToken(string address_consent_token)
         {
             this.address_consent_token = System.Web.HttpUtility.UrlDecode(address_consent_token);
             return this;
         }
 
+        [Obsolete("use GetAccessToken instead")]
         public string GetAddressConsentToken()
         {
             return address_consent_token;
+        }
+
+        /// <summary>
+        /// Sets the Access Token
+        /// </summary>
+        /// <param name="access_token"></param>
+        /// <returns>GetOrderReferenceDetailsRequest Object</returns>
+        public GetOrderReferenceDetailsRequest WithAccessToken(string access_token)
+        {
+            this.access_token = System.Web.HttpUtility.UrlDecode(access_token);
+            return this;
+        }
+
+        public string GetAccessToken()
+        {
+            return this.access_token;
         }
 
         /// <summary>

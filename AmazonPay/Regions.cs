@@ -16,7 +16,7 @@ namespace AmazonPay
         }
         public enum currencyCode
         {
-            USD, GBP, EUR, JPY
+            USD, GBP, EUR, JPY, AUD, ZAR, CHF, NOK, DKK, SEK, NZD, HKD
         }
 
         private enum commonRegions

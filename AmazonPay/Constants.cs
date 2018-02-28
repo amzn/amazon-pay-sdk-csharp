@@ -1,8 +1,13 @@
-﻿namespace AmazonPay
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Globalization;
+
+namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.0.0";
+        public static readonly string SDKClientVersion = "3.3.2";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -10,10 +15,16 @@
         /// <summary>
         /// common parameters for all API calls
         /// </summary>
+        
+        //PLEASE DO NOT CHANGE THE USNumberFormat VALUE.
+        public static readonly NumberFormatInfo USNumberFormat = CultureInfo.GetCultureInfo("en-US").NumberFormat;
+        
         public static readonly string SellerId = "SellerId";
         public static readonly string MWSAuthToken = "MWSAuthToken";
         public static readonly string AmazonOrderReferenceId = "AmazonOrderReferenceId";
+        [Obsolete("use AccessToken instead")]
         public static readonly string AddressConsentToken = "AddressConsentToken";
+        public static readonly string AccessToken = "AccessToken";
         public static readonly string OrderReferenceAttributes_OrderTotal_Amount = "OrderReferenceAttributes.OrderTotal.Amount";
         public static readonly string OrderReferenceAttributes_OrderTotal_CurrencyCode = "OrderReferenceAttributes.OrderTotal.CurrencyCode";
 
@@ -21,7 +32,7 @@
         public static readonly string OrderReferenceAttributes_SellerNote = "OrderReferenceAttributes.SellerNote";
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId = "OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId";
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_StoreName = "OrderReferenceAttributes.SellerOrderAttributes.StoreName";
-
+        public static readonly string OrderReferenceAttributes_RequestPaymentAuthorization = "OrderReferenceAttributes.RequestPaymentAuthorization";
 
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_CustomInformation = "OrderReferenceAttributes.SellerOrderAttributes.CustomInformation";
         public static readonly string AuthorizationAmount_Amount = "AuthorizationAmount.Amount";
@@ -77,6 +88,18 @@
         public static readonly string CreditReversalReferenceId = "CreditReversalReferenceId";
         public static readonly string CreditReversalNote = "CreditReversalNote";
 
+        public static readonly string OrderAttributes_OrderTotal_Amount = "OrderAttributes.OrderTotal.Amount";
+        public static readonly string OrderAttributes_OrderTotal_CurrencyCode = "OrderAttributes.OrderTotal.CurrencyCode";
+        public static readonly string OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderId = "OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderId";
+        public static readonly string OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId = "OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderOrderId";
+        public static readonly string OrderAttributes_PlatformId = "OrderAttributes.PlatformId";
+        public static readonly string OrderAttributes_RequestPaymentAuthorization = "OrderAttributes.RequestPaymentAuthorization";
+        public static readonly string OrderAttributes_SellerNote = "OrderAttributes.SellerNote";
+        public static readonly string OrderAttributes_SellerOrderAttributes_CustomInformation = "OrderAttributes.SellerOrderAttributes.CustomInformation";
+        public static readonly string OrderAttributes_SellerOrderAttributes_OrderItemCategories = "OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory";
+        public static readonly string OrderAttributes_SellerOrderAttributes_SellerOrderId = "OrderAttributes.SellerOrderAttributes.SellerOrderId";
+        public static readonly string OrderAttributes_SellerOrderAttributes_StoreName = "OrderAttributes.SellerOrderAttributes.StoreName";
+
 
         /// <summary>
         /// API call MWS Action name Definitions
@@ -105,6 +128,7 @@
         public static readonly string GetProviderCreditDetails = "GetProviderCreditDetails";
         public static readonly string GetProviderCreditReversalDetails = "GetProviderCreditReversalDetails";
         public static readonly string ReverseProviderCredit = "ReverseProviderCredit";
+        public static readonly string SetOrderAttributes = "SetOrderAttributes";
 
         /// <summary>
         /// OrderReference/BillingAgreement state
@@ -117,10 +141,14 @@
         /// </summary>
         public static readonly string CertCN = "sns.amazonaws.com";
 
-        // Cache key format string to avoid conflicts with other items in the application cache
-        public static readonly string CacheKey = "PayWithAmazonNotification";
+        ///<summary>
+        /// Cache key format string to avoid conflicts with other items in the application cache
+        /// </summary>
+        public static readonly string CacheKey = "AmazonPayNotification";
 
-        // Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
+        ///<summary>
+        /// Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
+        /// </summary>
         public static readonly string Iso8601UTCDateWithMillisecondsFormatString = @"yyyy-MM-ddTHH:mm:ss.fffZ";
 
     }

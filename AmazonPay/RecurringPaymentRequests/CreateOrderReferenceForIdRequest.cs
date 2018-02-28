@@ -9,8 +9,8 @@ namespace AmazonPay.RecurringPaymentRequests
     {
         private string merchant_id;
         private string id_type;
-        private bool inherit_shipping_address;
-        private bool confirm_now;
+        private bool inherit_shipping_address = true;
+        private bool? confirm_now;
         private decimal amount;
         private string currency_code;
         private string platform_id;
@@ -81,7 +81,7 @@ namespace AmazonPay.RecurringPaymentRequests
         /// </summary>
         /// <param name="inherit_shipping_address"></param>
         /// <returns>CreateOrderReferenceForIdRequest Object</returns>
-        public CreateOrderReferenceForIdRequest WithInheritShippingAddress(bool inherit_shipping_address)
+        public CreateOrderReferenceForIdRequest WithInheritShippingAddress(bool inherit_shipping_address = true)
         {
             this.inherit_shipping_address = inherit_shipping_address;
             return this;
@@ -92,11 +92,12 @@ namespace AmazonPay.RecurringPaymentRequests
         }
 
         /// <summary>
-        /// Sets the Confirm Now Boolean value
+        /// Sets the Confirm Now Boolean value.
+        /// The accepted values are true, false and null.
         /// </summary>
         /// <param name="confirm_now"></param>
         /// <returns>CreateOrderReferenceForIdRequest Object</returns>
-        public CreateOrderReferenceForIdRequest WithConfirmNow(bool confirm_now)
+        public CreateOrderReferenceForIdRequest WithConfirmNow(bool? confirm_now)
         {
             this.confirm_now = confirm_now;
             return this;

@@ -204,11 +204,12 @@ namespace AmazonPay.StandardPaymentRequests
         }
 
         /// <summary>
-        /// Sets the Capture Now 
+        /// Sets the Capture Now.
+        /// The accepted values are true, false and null.
         /// </summary>
         /// <param name="capture_now"></param>
         /// <returns>ChargeRequest</returns>
-        public ChargeRequest WithCaptureNow(bool capture_now)
+        public ChargeRequest WithCaptureNow(bool? capture_now)
         {
             switch (chargeType)
             {
@@ -227,7 +228,7 @@ namespace AmazonPay.StandardPaymentRequests
         /// </summary>
         /// <param name="inherit_shipping_address"></param>
         /// <returns>ChargeRequest</returns>
-        public ChargeRequest WithInheritShippingAddress(bool inherit_shipping_address)
+        public ChargeRequest WithInheritShippingAddress(bool inherit_shipping_address = true)
         {
             authorizeOnBillingAgreement.WithInheritShippingAddress(inherit_shipping_address);
             return this;

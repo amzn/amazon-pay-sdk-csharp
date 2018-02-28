@@ -15,52 +15,51 @@ namespace AmazonPay.Responses
         /// 3. AuthorizeOnBillingAgreement
         /// </summary>
 
-        public string xml;
-        public string json;
-        public IDictionary dictionary;
-        public string authorizationId;
+        private string xml;
+        private string json;
+        private IDictionary dictionary;
+        private string authorizationId;
 
         /// <summary>
         /// AmazonOrderReferenceId returned only for AuthorizeOnBillingAgreement API call
         /// </summary>
-        public string amazonOrderReferenceId;
-        public string requestId;
-        public string authorizationReferenceId;
-        public string sellerAuthorizationNote;
+        private string amazonOrderReferenceId;
+        private string requestId;
+        private string authorizationReferenceId;
+        private string sellerAuthorizationNote;
 
-        public decimal authorizationAmount;
-        public decimal capturedAmount;
-        public string capturedAmountCurrencyCode;
-        public string authorizationAmountCurrencyCode;
+        private decimal authorizationAmount;
+        private decimal capturedAmount;
+        private string capturedAmountCurrencyCode;
+        private string authorizationAmountCurrencyCode;
 
-        public decimal authorizationFee;
-        public string authorizationFeeCurrencyCode;
-        public string authorizationState;
-        public List<string> captureId = new List<string>();
+        private decimal authorizationFee;
+        private string authorizationFeeCurrencyCode;
+        private string authorizationState;
+        private Boolean softDecline;
+        private List<string> captureId = new List<string>();
 
-        public DateTime lastUpdateTimestamp;
-        public DateTime expirationTimeStamp;
-        public DateTime creationTimestamp;
+        private DateTime lastUpdateTimestamp;
+        private DateTime expirationTimeStamp;
+        private DateTime creationTimestamp;
 
-        public string reasonCode;
-        public string reasonDescription;
+        private string reasonCode;
+        private string reasonDescription;
 
-        public bool captureNow;
-        public string softDescriptor;
+        private bool? captureNow;
+        private string softDescriptor;
 
-        public string errorCode;
-        public string errorMessage;
-        public string parentKey;
+        private string errorCode;
+        private string errorMessage;
+        private string parentKey;
 
-        public bool success;
-
+        private bool success = false;
 
         public AuthorizeResponse(string xml)
         {
             this.xml = xml;
-            ResponseParser.SetXml(xml);
-            json = ResponseParser.ToJson();
-            dictionary = ResponseParser.ToDict();
+            json = ResponseParser.ToJson(xml);
+            dictionary = ResponseParser.ToDict(xml);
 
             ErrorResponse errorResponse = new ErrorResponse(dictionary);
             if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
@@ -80,7 +79,7 @@ namespace AmazonPay.Responses
         private enum Operator
         {
             AmazonOrderReferenceId, AmazonAuthorizationId, RequestId, SellerAuthorizationNote, ExpirationTimestamp, CreationTimestamp, AuthorizationReferenceId, State, Amount,
-            AuthorizationAmount, CapturedAmount, AuthorizationFee, CurrencyCode, ReasonCode, ReasonDescription, CaptureNow, SoftDescriptor, LastUpdateTimestamp, member
+            AuthorizationAmount, CapturedAmount, AuthorizationFee, CurrencyCode, ReasonCode, SoftDecline, ReasonDescription, CaptureNow, SoftDescriptor, LastUpdateTimestamp, member
         }
 
         /// <summary>
@@ -142,15 +141,15 @@ namespace AmazonPay.Responses
                                 case Operator.Amount:
                                     if (parentKey.Equals(Operator.AuthorizationAmount.ToString()))
                                     {
-                                        authorizationAmount = decimal.Parse(obj.ToString());
+                                        authorizationAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.CapturedAmount.ToString()))
                                     {
-                                        capturedAmount = decimal.Parse(obj.ToString());
+                                        capturedAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     else if (parentKey.Equals(Operator.AuthorizationFee.ToString()))
                                     {
-                                        authorizationFee = decimal.Parse(obj.ToString());
+                                        authorizationFee = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
                                     break;
                                 case Operator.CurrencyCode:
@@ -166,6 +165,9 @@ namespace AmazonPay.Responses
                                     {
                                         authorizationFeeCurrencyCode = obj.ToString();
                                     }
+                                    break;
+                                case Operator.SoftDecline:
+                                    softDecline = Boolean.Parse(obj.ToString());
                                     break;
                                 case Operator.ReasonCode:
                                     reasonCode = obj.ToString();
@@ -345,6 +347,15 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
+        /// Get the soft decline value for the Authorization
+        /// </summary>
+        /// <returns>softDelcine</returns>
+        public Boolean GetSoftDecline()
+        {
+            return softDecline;
+        }
+
+        /// <summary>
         /// Get the Reason Code for when the Authorization was closed or declined
         /// </summary>
         /// <returns>reasonCode</returns>
@@ -363,10 +374,10 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Get the bool value if the captureNow was set to True or False
+        /// Get the bool value if the captureNow was set to True or False or Null
         /// </summary>
         /// <returns>captureNow</returns>
-        public bool GetCaptureNow()
+        public bool? GetCaptureNow()
         {
             return captureNow;
         }

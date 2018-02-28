@@ -12,8 +12,14 @@ using AmazonPay.ProviderCreditRequests;
 using AmazonPay.RecurringPaymentRequests;
 using AmazonPay.StandardPaymentRequests;
 using AmazonPay.CommonRequests;
+using AmazonPay.Responses;
 using System.Collections.Specialized;
 using Newtonsoft.Json.Linq;
+using System.Xml;
+using System.Text;
+using System.Globalization;
+using System.Threading;
+
 
 namespace UnitTests
 {
@@ -40,6 +46,49 @@ namespace UnitTests
                 .WithProxyUserName("test")
                 .WithProxyUserPassword("test")
                 .WithAutoRetryOnThrottle(true);
+        }
+
+        //loadTestFile loads XML file for testing
+        private String loadTestFile(String fileName)
+        {
+            StringBuilder output = new StringBuilder();
+            string xmlString = File.ReadAllText(@"TestFiles\" + fileName);
+
+            // Create an XmlReader
+            using (XmlReader reader = XmlReader.Create(new StringReader(xmlString)))
+            {
+                XmlWriterSettings ws = new XmlWriterSettings();
+                ws.Indent = true;
+                using (XmlWriter writer = XmlWriter.Create(output, ws))
+                {
+
+                    // Parse the file and display each of the nodes.
+                    while (reader.Read())
+                    {
+                        switch (reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                writer.WriteStartElement(reader.Name);
+                                break;
+                            case XmlNodeType.Text:
+                                writer.WriteString(reader.Value);
+                                break;
+                            case XmlNodeType.XmlDeclaration:
+                            case XmlNodeType.ProcessingInstruction:
+                                writer.WriteProcessingInstruction(reader.Name, reader.Value);
+                                break;
+                            case XmlNodeType.Comment:
+                                writer.WriteComment(reader.Value);
+                                break;
+                            case XmlNodeType.EndElement:
+                                writer.WriteFullEndElement();
+                                break;
+                        }
+                    }
+
+                }
+            }
+            return output.ToString();
         }
 
         [Test]
@@ -84,7 +133,7 @@ namespace UnitTests
             }
             try
             {
-                string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"confi.json");
+                string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"config.json");
                 Client client = new Client(jsonfilepath);
             }
             catch (FileNotFoundException expected)
@@ -109,7 +158,7 @@ namespace UnitTests
                 {"Action","GetOrderReferenceDetails"},
                 {"SellerId","test"},
                 {"AmazonOrderReferenceId","test"},
-                {"AddressConsentToken","test"},
+                {"AccessToken","test"},
                 {"MWSAuthToken","test"}
             };
 
@@ -127,13 +176,78 @@ namespace UnitTests
 
             GetOrderReferenceDetailsRequest getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
             getOrderReferenceDetails.WithAmazonOrderReferenceId("test")
-            .WithaddressConsentToken("test")
-            .WithMerchantId("test")
-            .WithMWSAuthToken("test");
+                .WithAccessToken("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
 
+            //Testing GetOrderReferenceDetails Request
             client.GetOrderReferenceDetails(getOrderReferenceDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing GetOrderReferenceDetails Response
+            String rawResponse = loadTestFile("GetOrderReferenceDetails.xml");
+            OrderReferenceDetailsResponse oroResponseObject = new OrderReferenceDetailsResponse(rawResponse);
+            Assert.AreEqual(oroResponseObject.GetAmazonOrderReferenceId(), "S01-9111020-6707923");
+            Assert.AreEqual(oroResponseObject.GetOrderReferenceState(), "Open");
+            Assert.AreEqual(oroResponseObject.GetDestinationType(), "Physical");
+            Assert.AreEqual(oroResponseObject.GetCity(), "New York");
+            Assert.AreEqual(oroResponseObject.GetStateOrRegion(), "NY");
+            Assert.AreEqual(oroResponseObject.GetPostalCode(), "10101-9876");
+            Assert.AreEqual(oroResponseObject.GetCountryCode(), "US");
+            Assert.AreEqual(oroResponseObject.GetReleaseEnvironment(), "Sandbox");
+            Assert.AreEqual(oroResponseObject.GetRequestId(), "373eb307-5f37-468c-b6ba-1ef578ac2f51");
+            Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetAddressLine1(), "4996 Rockford Mountain Lane");
+            Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetCity(), "Appleton");
+            Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetStateOrRegion(), "WI");
+            Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetPostalCode(), "54911");
+            Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetCountryCode(), "US");
+            Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetName(), "Christopher C. Conn");
+            
+            //Test Payment Descriptor
+            Assert.AreEqual(oroResponseObject.GetAmazonBalanceFirst().ToString(), "False");
+            Assert.AreNotEqual(oroResponseObject.GetAmazonBalanceFirst().ToString(), "true");
+            Assert.AreEqual(oroResponseObject.GetFullDescriptor(), "Amazon Pay (Visa **11)");
+
+            Assert.AreEqual(oroResponseObject.GetXml(), rawResponse);
+        }
+
+        [Test]
+        public void TestGetPaymentDetails()
+        {
+            PaymentDetailsResponse testGetAllResponseDetails = new PaymentDetailsResponse();
+            String rawOroResponse = loadTestFile("GetOrderReferenceDetails.xml");
+            OrderReferenceDetailsResponse oroResponseObject = new OrderReferenceDetailsResponse(rawOroResponse);
+
+            String rawAuthResponse = loadTestFile("GetAuthorizationDetails.xml");
+            AuthorizeResponse authResponseObject = new AuthorizeResponse(rawAuthResponse);
+
+            String rawCaptureResponse = loadTestFile("GetCaptureDetails.xml");
+            CaptureResponse captureResponseObject = new CaptureResponse(rawCaptureResponse);
+
+            String rawRefundResponse = loadTestFile("GetRefundDetails.xml");
+            RefundResponse refundResponseObject = new RefundResponse(rawRefundResponse);
+         
+            testGetAllResponseDetails.PutOrderReferenceDetails(oroResponseObject.GetAmazonOrderReferenceId().ToString(), oroResponseObject);
+            Assert.AreEqual(testGetAllResponseDetails.GetOrderReferenceDetails(), oroResponseObject);
+
+            testGetAllResponseDetails.PutAuthorizationDetails(authResponseObject.GetAuthorizationReferenceId(), authResponseObject);
+            foreach (var group in testGetAllResponseDetails.GetAuthorizationDetails())
+            {
+                Assert.AreEqual(group.Value.GetXml(), authResponseObject.GetXml());
+            }
+            
+            testGetAllResponseDetails.PutCaptureDetails(captureResponseObject.GetCaptureReferenceId(), captureResponseObject);
+            foreach (var group in testGetAllResponseDetails.GetCaptureDetails())
+            {
+                Assert.AreEqual(group.Value.GetXml(), captureResponseObject.GetXml());
+            }
+
+            testGetAllResponseDetails.PutRefundDetails(refundResponseObject.GetRefundReferenceId(), refundResponseObject);
+            foreach (var group in testGetAllResponseDetails.GetRefundDetails())
+            {
+                Assert.AreEqual(group.Value.GetXml(), refundResponseObject.GetXml());
+            }
         }
 
         [Test]
@@ -158,9 +272,9 @@ namespace UnitTests
 
             GetOrderReferenceDetailsRequest getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
             getOrderReferenceDetails.WithAmazonOrderReferenceId("test")
-            .WithaddressConsentToken("test")
-            .WithMerchantId("test")
-            .WithMWSAuthToken("test");
+                .WithAccessToken("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test");
 
             var response = client.GetOrderReferenceDetails(getOrderReferenceDetails);
             // Creating Request String
@@ -185,23 +299,86 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             StringAssert.AreEqualIgnoringCase(expectedresponse, SanitizeData.SanitizeGivenData(response.GetXml(), SanitizeData.DataType.Response), "Actual Response after Sanitizing data is not was is Expected");
 
         }
+
         [Test]
         public void TestLoggingMessage_IpnHandler()
         {
             // Setting Simple Logger Adapter
             Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+
             // Create logger
             Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<IpnHandler>();
 
+            //Setting filePath to access test files 
+            string filePath = @"TestFiles\AuthorizeNotification.json";
+
             // Extract AuthorizeNotification XML data from json
-            var json = JObject.Parse(File.ReadAllText("AuthorizeNotification.json"));
+            var json = JObject.Parse(File.ReadAllText(filePath));
+           
+            string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
+            
+            NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
+
+            IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath), logger);
+            Assert.AreEqual(ipnHandler.GetAuthorizeResponse().GetAuthorizationId(), new AuthorizeResponse(xmlData).GetAuthorizationId());
+        }
+
+        [Test]
+        public void TestChargebackIPN()
+        {
+            //Setting filePath to access test files 
+            string filePath_chargeback = @"TestFiles\ChargebackNotification.json";
+
+            // Extract ChargebackNotification XML data from json
+            var json = JObject.Parse(File.ReadAllText(filePath_chargeback));
+
+            string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
+
+            NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
+          
+            IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath_chargeback));
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonChargebackId(), new ChargebackResponse(xmlData).GetAmazonChargebackId());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmount(), new ChargebackResponse(xmlData).GetChargebackAmount());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmountCurrencyCode(), new ChargebackResponse(xmlData).GetChargebackAmountCurrencyCode());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackReason(), new ChargebackResponse(xmlData).GetChargebackReason());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackState(), new ChargebackResponse(xmlData).GetChargebackState());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetCreationTimestamp(), new ChargebackResponse(xmlData).GetCreationTimestamp());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonCaptureId(), new ChargebackResponse(xmlData).GetAmazonCaptureId());
+            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "5724eb31-5cb9-45a8-a0f4-d82ba12e4d3d");
+            Assert.AreEqual(ipnHandler.GetNotificationType().ToString(), "ChargebackDetailedNotification");
+            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A08593053M41F7TQ7YR7W");
+            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "165570");
+            Assert.AreEqual(ipnHandler.GetVersion().ToString(), "2013-01-01");
+            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Live");
+        }
+
+        [Test]
+        public void TestChargebackIPN_Unauthorized()
+        {
+            //Setting filePath to access test files 
+            string filePath_chargeback = @"TestFiles\ChargebackNotification_Unauthorized.json";
+
+            // Extract ChargebackNotification XML data from json
+            var json = JObject.Parse(File.ReadAllText(filePath_chargeback));
 
             string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
 
             NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
 
-            IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText("AuthorizeNotification.json"), logger);
-            Assert.AreEqual(ipnHandler.GetAuthorizeResponse().authorizationId, new AmazonPay.Responses.AuthorizeResponse(xmlData).authorizationId);
+            IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath_chargeback));
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonChargebackId(), new ChargebackResponse(xmlData).GetAmazonChargebackId());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmount(), new ChargebackResponse(xmlData).GetChargebackAmount());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmountCurrencyCode(), new ChargebackResponse(xmlData).GetChargebackAmountCurrencyCode());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackReason(), new ChargebackResponse(xmlData).GetChargebackReason());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackState(), new ChargebackResponse(xmlData).GetChargebackState());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetCreationTimestamp(), new ChargebackResponse(xmlData).GetCreationTimestamp());
+            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonCaptureId(), new ChargebackResponse(xmlData).GetAmazonCaptureId());
+            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "f01d98f8-969f-41ac-b6cb-930727f47786");
+            Assert.AreEqual(ipnHandler.GetNotificationType().ToString(), "ChargebackDetailedNotification");
+            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A08593053M41F7TQ7YR7W");
+            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "165570");
+            Assert.AreEqual(ipnHandler.GetVersion().ToString(), "2013-01-01");
+            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Live");
         }
 
         [Test]
@@ -212,13 +389,14 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"Action","SetOrderReferenceDetails"},
                 {"SellerId","test"},
                 {"AmazonOrderReferenceId","test"},
-                {"OrderReferenceAttributes.OrderTotal.Amount","100"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100.05"},
                 {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
                 {"OrderReferenceAttributes.PlatformId","test"},
                 {"OrderReferenceAttributes.SellerNote","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
                 {"MWSAuthToken","test"}
             };
 
@@ -237,18 +415,196 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             SetOrderReferenceDetailsRequest setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
             setOrderReferenceDetails.WithAmazonOrderReferenceId("test")
                 .WithMerchantId("test")
-                .WithAmount(100)
+                .WithAmount(100.05m)
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithPlatformId("test")
                 .WithSellerNote("test")
                 .WithSellerOrderId("test")
                 .WithStoreName("test")
                 .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
+            
             client.SetOrderReferenceDetails(setOrderReferenceDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestSetOrderReferenceDetails_withCIIT()
+        {
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("it-IT");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","SetOrderReferenceDetails"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","123123.45"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetOrderReferenceDetails
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            SetOrderReferenceDetailsRequest setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
+            setOrderReferenceDetails.WithAmazonOrderReferenceId("test")
+                .WithMerchantId("test")
+                .WithAmount(decimal.Parse("123.123,45"))
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test")
+                .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true)
+                .WithMWSAuthToken("test");
+
+            client.SetOrderReferenceDetails(setOrderReferenceDetails);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestSetOrderReferenceDetails_withCIUS()
+        {
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","SetOrderReferenceDetails"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100.50"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetOrderReferenceDetails
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            SetOrderReferenceDetailsRequest setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
+            setOrderReferenceDetails.WithAmazonOrderReferenceId("test")
+                .WithMerchantId("test")
+                .WithAmount(decimal.Parse("100.50"))
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test")
+                .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true)
+                .WithMWSAuthToken("test");
+
+            client.SetOrderReferenceDetails(setOrderReferenceDetails);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestSetOrderAttributes()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","SetOrderAttributes"},
+                {"AmazonOrderReferenceId","Order #12345"},
+                {"SellerId","test"},
+                {"OrderAttributes.OrderTotal.Amount","100.05"},
+                {"OrderAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderAttributes.PlatformId","A2STY9B5HPCDII"},
+                {"OrderAttributes.SellerNote","testNote #12345"},
+                {"OrderAttributes.SellerOrderAttributes.SellerOrderId","test-12345"},
+                {"OrderAttributes.SellerOrderAttributes.StoreName","testStore #12345"},
+                {"OrderAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderAttributes.RequestPaymentAuthorization", "true"},
+                {"OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderId", "A2STY9B5HPCDII"},
+                {"OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderOrderId", "PSP-Order-Id"},
+                {"OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory.1", "Antiques"},
+                {"OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory.2", "Apparel"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetOrderReferenceDetails
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            List<string> orderItemCategories = new List<string>();
+            orderItemCategories.Add("Antiques");
+            orderItemCategories.Add("Apparel");
+            SetOrderAttributesRequest setOrderAttributes = new SetOrderAttributesRequest();
+            setOrderAttributes.WithPaymentServiceProviderId("A2STY9B5HPCDII")
+                .WithPaymentServiceProviderOrderId("PSP-Order-Id")
+                .WithOrderItemCategories(orderItemCategories)
+                .WithAmazonOrderReferenceId("Order #12345")
+                .WithMerchantId("test")
+                .WithAmount(100.05m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("A2STY9B5HPCDII")
+                .WithSellerNote("testNote #12345")
+                .WithSellerOrderId("test-12345")
+                .WithStoreName("testStore #12345")
+                .WithCustomInformation("test")
+                .WithRequestPaymentAuthorization(true);
+
+            client.SetOrderAttributes(setOrderAttributes);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing SetOrderAttributes Response
+            String rawResponse = loadTestFile("GetOrderReferenceDetails.xml");
+            OrderReferenceDetailsResponse oroResponseObject = new OrderReferenceDetailsResponse(rawResponse);
+            Assert.AreEqual(oroResponseObject.GetAmazonOrderReferenceId(), "S01-9111020-6707923");
+            Assert.AreEqual(oroResponseObject.GetSellerNote(), "1st Amazon Pay OneTime Checkout Order");
+            Assert.AreEqual(oroResponseObject.GetSellerOrderId(), "test-12345");
+            Assert.AreEqual(oroResponseObject.GetStoreName(), "Java Cosmos Store");
+            Assert.AreEqual(oroResponseObject.GetRequestPaymentAuthorization(), false);
+            Assert.AreEqual(oroResponseObject.GetPaymentServiceProviderId(), "A2STY9B5HPCDII");
+            Assert.AreEqual(oroResponseObject.GetPaymentServiceProviderOrderId(), "PSP-Order-Id");
+            Assert.AreEqual(oroResponseObject.GetOrderItemCategories().Count, 2);
+
+            Assert.AreEqual(oroResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -280,10 +636,10 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
 
             client.ConfirmOrderReference(confirmOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
         }
 
+        [Test]
         public void TestCancelOrderReference()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
@@ -308,16 +664,16 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetTimeStamp("0000");
             CancelOrderReferenceRequest cancelOrderReference = new CancelOrderReferenceRequest();
             cancelOrderReference.WithAmazonOrderReferenceId("test")
-                .WithAmazonOrderReferenceId("test")
                 .WithCancelationReason("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
+            
             client.CancelOrderReference(cancelOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
         }
 
+        [Test]
         public void TestCloseOrderReference()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
@@ -345,9 +701,9 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithClosureReason("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
+            
             client.CloseOrderReference(closeOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
         }
 
@@ -383,19 +739,18 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
 
             client.CloseAuthorization(closeAuthorization);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
         }
 
         [Test]
-        public void TestAuthorize()
+        public void TestAuthorizeWithCaptureNowTrue()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","Authorize"},
                 {"SellerId","test"},
                 {"AmazonOrderReferenceId","test"},
-                {"AuthorizationAmount.Amount","100"},
+                {"AuthorizationAmount.Amount","100.00"},
                 {"AuthorizationAmount.CurrencyCode","USD"},
                 {"AuthorizationReferenceId","test"},
                 {"CaptureNow","true"},
@@ -418,7 +773,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetTimeStamp("0000");
             AuthorizeRequest authorize = new AuthorizeRequest();
             authorize.WithAmazonOrderReferenceId("test")
-                .WithAmount(100)
+                .WithAmount(100.00m)
                 .WithAuthorizationReferenceId("test")
                 .WithCaptureNow(true)
                 .WithCurrencyCode(Regions.currencyCode.USD)
@@ -427,10 +782,99 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerAuthorizationNote("test")
                 .WithTransactionTimeout(5)
                 .WithSoftDescriptor("test");
+            
             client.Authorize(authorize);
-
             IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
 
+        [Test]
+        public void TestAuthorizeWithCaptureNowFalse()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","Authorize"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.00"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"AuthorizationReferenceId","test"},
+                {"CaptureNow","false"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"SoftDescriptor","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API Authorize
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeRequest authorize = new AuthorizeRequest();
+            authorize.WithAmazonOrderReferenceId("test")
+                .WithAmount(100.00m)
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(false)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test");
+
+            client.Authorize(authorize);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestAuthorizeWithNoCaptureNow()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","Authorize"},
+                {"SellerId","test"},
+                {"AmazonOrderReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.00"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"AuthorizationReferenceId","test"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"SoftDescriptor","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API Authorize
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeRequest authorize = new AuthorizeRequest();
+            authorize.WithAmazonOrderReferenceId("test")
+                .WithAmount(100.00m)
+                .WithAuthorizationReferenceId("test")
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test");
+
+            client.Authorize(authorize);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
         }
 
@@ -460,9 +904,9 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             getAuthorizationDetails.WithAmazonAuthorizationId("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
+            
             client.GetAuthorizationDetails(getAuthorizationDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
         }
 
@@ -474,7 +918,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"Action","Capture"},
                 {"SellerId","test"},
                 {"AmazonAuthorizationId","test"},
-                {"CaptureAmount.Amount","100"},
+                {"CaptureAmount.Amount","100.02"},
                 {"CaptureAmount.CurrencyCode","USD"},
                 {"CaptureReferenceId","test"},
                 {"SellerCaptureNote","test"},
@@ -496,7 +940,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
 
             CaptureRequest capture = new CaptureRequest();
             capture.WithAmazonAuthorizationId("test")
-                .WithAmount(100)
+                .WithAmount(100.02m)
                 .WithCaptureReferenceId("test")
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithMerchantId("test")
@@ -535,11 +979,35 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             getCaptureDetails.WithAmazonCaptureId("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
+
+            //Test CaptureDetails Request
             client.GetCaptureDetails(getCaptureDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
 
+            //Test CaptureDetails Response
+            String rawCapResponse = loadTestFile("GetCaptureDetails_MultiCurrency.xml");
+            CaptureResponse capResponseObject = new CaptureResponse(rawCapResponse);
+            Assert.AreEqual(capResponseObject.GetCaptureId(), "S02-7423235-4925359-C052508");
+            Assert.AreEqual(capResponseObject.GetCaptureAmount(), 0.99m);
+            Assert.AreNotEqual(capResponseObject.GetCaptureAmount(), "0.99"); // I18N/culture test
+            Assert.AreEqual(capResponseObject.GetCaptureAmountCurrencyCode(), "CHF");
+            Assert.AreEqual(capResponseObject.GetCaptureReferenceId(), "7a087b12a3cb4d0ba3cb4230aa953de4");
+            Assert.AreEqual(capResponseObject.GetCaptureFee(), 0.00m);
+            Assert.AreNotEqual(capResponseObject.GetCaptureFee(), "0.00"); // I18N/culture test
+            Assert.AreEqual(capResponseObject.GetCaptureFeeCurrencyCode(), "EUR");
+            Assert.AreEqual(capResponseObject.GetSoftDescriptor(), "AMZ*Matt's Test Stor");
+            Assert.AreEqual(capResponseObject.GetSellerCaptureNote(), null);
+            Assert.AreEqual(capResponseObject.GetCaptureState(), "Completed");
+            Assert.AreEqual(capResponseObject.GetRequestId(), "a17ee562-9a97-4b22-8487-20e8e7230639");
+
+            // Test multi-currency specific fields
+            Assert.AreEqual(capResponseObject.GetConvertedAmount(), 1.88m);
+            Assert.AreNotEqual(capResponseObject.GetConvertedAmount(), "1.88"); // I18N/culture test
+            Assert.AreEqual(capResponseObject.GetConvertedAmountCurrencyCode(), "EUR");
+            Assert.AreEqual(capResponseObject.GetConversionRate(), 1.1297854087m);
+            
+            Assert.AreEqual(capResponseObject.GetXml(), rawCapResponse);
         }
 
         [Test]
@@ -551,7 +1019,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"SellerId","test"},
                 {"AmazonCaptureId","test"},
                 {"RefundReferenceId","test"},
-                {"RefundAmount.Amount","100"},
+                {"RefundAmount.Amount","10.05"},
                 {"RefundAmount.CurrencyCode","USD"},
                 {"SellerRefundNote","test"},
                 {"SoftDescriptor","test"},
@@ -571,7 +1039,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetTimeStamp("0000");
             RefundRequest refund = new RefundRequest();
             refund.WithAmazonCaptureId("test")
-                .WithAmount(100)
+                .WithAmount(10.05m)
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test")
@@ -611,10 +1079,36 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             getRefundDetails.WithAmazonRefundId("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
+
+            //Test RefundDetails Request
             client.GetRefundDetails(getRefundDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
-
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Test RefundDetails Response
+            String rawRefResponse = loadTestFile("GetRefundDetails_MultiCurrency.xml");
+            RefundResponse refundResponseObject = new RefundResponse(rawRefResponse);
+            Assert.AreEqual(refundResponseObject.GetAmazonRefundId(), "S02-8274313-3487267-R019346");
+            Assert.AreEqual(refundResponseObject.GetRefundType(), "SellerInitiated");
+            Assert.AreEqual(refundResponseObject.GetRefundAmount(), 1.33m);
+            Assert.AreNotEqual(refundResponseObject.GetRefundAmount(), "1,33");  // I18N/culture test
+            Assert.AreEqual(refundResponseObject.GetRefundAmountCurrencyCode(), "NOK");
+            Assert.AreEqual(refundResponseObject.GetRefundFee(), 0.00m);
+            Assert.AreNotEqual(refundResponseObject.GetRefundFee(), "0,00"); //// I18N/culture test
+            Assert.AreEqual(refundResponseObject.GetRefundFeeCurrencyCode(), "EUR");
+            Assert.AreEqual(refundResponseObject.GetRefundState(), "Completed");
+            Assert.AreEqual(refundResponseObject.GetReasonCode(), null);
+            Assert.AreEqual(refundResponseObject.GetReasonDescription(), null);
+            Assert.AreEqual(refundResponseObject.GetSoftDescriptor(), "AMZ*Matt's Test Stor");
+
+            // The three new multi-currency specific fields
+            Assert.AreEqual(refundResponseObject.GetConvertedAmount(), 1.03m);
+            Assert.AreNotEqual(refundResponseObject.GetConvertedAmount(), "1.03"); // I18N/culture test
+            Assert.AreEqual(refundResponseObject.GetConvertedAmountCurrencyCode(), "EUR");
+            Assert.AreEqual(refundResponseObject.GetConversionRate(), 9.9248293483m);
+
+            Assert.AreEqual(refundResponseObject.GetRequestId(), "3b14705b-0a11-4b05-98d3-eb62c9bf1d22");
+            Assert.AreEqual(refundResponseObject.GetXml(), rawRefResponse);
         }
 
         [Test]
@@ -648,7 +1142,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
-        public void TestCreateOrderReferenceForId()
+        public void TestCreateOrderReferenceForIdWithConfirmNowTrue()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
@@ -658,7 +1152,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"IdType","test"},
                 {"InheritShippingAddress","true"},
                 {"ConfirmNow","true"},
-                {"OrderReferenceAttributes.OrderTotal.Amount","100"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100.05"},
                 {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
                 {"OrderReferenceAttributes.PlatformId","test"},
                 {"OrderReferenceAttributes.SellerNote","test"},
@@ -681,7 +1175,109 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetTimeStamp("0000");
             CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
             createOrderReferenceForId.WithConfirmNow(true)
-                .WithAmount(100)
+                .WithAmount(100.05m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithCustomInformation("test")
+                .WithId("test")
+                .WithIdType("test")
+                .WithInheritShippingAddress(true)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test");
+            client.CreateOrderReferenceForId(createOrderReferenceForId);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestCreateOrderReferenceForIdWithConfirmNowFalse()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","CreateOrderReferenceForId"},
+                {"SellerId","test"},
+                {"Id","test"},
+                {"IdType","test"},
+                {"InheritShippingAddress","true"},
+                {"ConfirmNow","false"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100.05"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API CreateOrderReferenceForId
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
+            createOrderReferenceForId.WithConfirmNow(false)
+                .WithAmount(100.05m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithCustomInformation("test")
+                .WithId("test")
+                .WithIdType("test")
+                .WithInheritShippingAddress(true)
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithPlatformId("test")
+                .WithSellerNote("test")
+                .WithSellerOrderId("test")
+                .WithStoreName("test");
+            client.CreateOrderReferenceForId(createOrderReferenceForId);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestCreateOrderReferenceForIdWithNoConfirmNow()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","CreateOrderReferenceForId"},
+                {"SellerId","test"},
+                {"Id","test"},
+                {"IdType","test"},
+                {"InheritShippingAddress","true"},
+                {"OrderReferenceAttributes.OrderTotal.Amount","100.05"},
+                {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
+                {"OrderReferenceAttributes.PlatformId","test"},
+                {"OrderReferenceAttributes.SellerNote","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API CreateOrderReferenceForId
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            CreateOrderReferenceForIdRequest createOrderReferenceForId = new CreateOrderReferenceForIdRequest();
+            createOrderReferenceForId.WithAmount(100.05m)
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithCustomInformation("test")
                 .WithId("test")
@@ -841,7 +1437,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
-        public void TestAuthorizeOnBillingAgreement()
+        public void TestAuthorizeOnBillingAgreementWithDefaultInheritShippingAddress()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
@@ -849,7 +1445,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"SellerId","test"},
                 {"AmazonBillingAgreementId","test"},
                 {"AuthorizationReferenceId","test"},
-                {"AuthorizationAmount.Amount","100"},
+                {"AuthorizationAmount.Amount","100.05"},
                 {"AuthorizationAmount.CurrencyCode","USD"},
                 {"SellerAuthorizationNote","test"},
                 {"TransactionTimeout","5"},
@@ -877,13 +1473,12 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetTimeStamp("0000");
             AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
             authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
-                .WithAmount(100)
+                .WithAmount(100.05m)
                 .WithAuthorizationReferenceId("test")
                 .WithCaptureNow(true)
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithPlatformId("test")
                 .WithCustomInformation("test")
-                .WithInheritShippingAddress(true)
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test")
                 .WithSellerAuthorizationNote("test")
@@ -893,6 +1488,124 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithStoreName("test")
                 .WithSellerOrderId("test")
                 .WithTransactionTimeout(5);
+            client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestAuthorizeOnBillingAgreementWithInheritShippingAddressTrue()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","AuthorizeOnBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"AuthorizationReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.05"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"CaptureNow","true"},
+                {"SoftDescriptor","test"},
+                {"SellerNote","test"},
+                {"PlatformId","test"},
+                {"SellerOrderAttributes.CustomInformation","test"},
+                {"SellerOrderAttributes.SellerOrderId","test"},
+                {"SellerOrderAttributes.StoreName","test"},
+                {"InheritShippingAddress","true"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API AuthorizeOnBillingAgreement
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
+            authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
+                .WithAmount(100.05m)
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(true)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("test")
+                .WithCustomInformation("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithSellerNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test")
+                .WithStoreName("test")
+                .WithSellerOrderId("test")
+                .WithTransactionTimeout(5)
+                .WithInheritShippingAddress(true);
+            client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
+        public void TestAuthorizeOnBillingAgreementWithInheritShippingAddressFalse()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","AuthorizeOnBillingAgreement"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"AuthorizationReferenceId","test"},
+                {"AuthorizationAmount.Amount","100.05"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"SellerAuthorizationNote","test"},
+                {"TransactionTimeout","5"},
+                {"CaptureNow","true"},
+                {"SoftDescriptor","test"},
+                {"SellerNote","test"},
+                {"PlatformId","test"},
+                {"SellerOrderAttributes.CustomInformation","test"},
+                {"SellerOrderAttributes.SellerOrderId","test"},
+                {"SellerOrderAttributes.StoreName","test"},
+                {"InheritShippingAddress","false"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API AuthorizeOnBillingAgreement
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
+            authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
+                .WithAmount(100.05m)
+                .WithAuthorizationReferenceId("test")
+                .WithCaptureNow(true)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithPlatformId("test")
+                .WithCustomInformation("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithSellerAuthorizationNote("test")
+                .WithSellerNote("test")
+                .WithTransactionTimeout(5)
+                .WithSoftDescriptor("test")
+                .WithStoreName("test")
+                .WithSellerOrderId("test")
+                .WithTransactionTimeout(5)
+                .WithInheritShippingAddress(false);
             client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
@@ -941,7 +1654,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             {
                 ChargeRequest charge = new ChargeRequest();
                 charge.WithAmazonReferenceId("S01-TEST")
-                    .WithAmount(100)
+                    .WithAmount(100.05m)
                     .WithCaptureNow(true)
                     .WithChargeNote("test")
                     .WithChargeOrderId("test")
@@ -1106,8 +1819,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
 
             string json = File.ReadAllText("json.txt");
 
-            ResponseParser.SetXml(response["ResponseBody"].ToString());
-            string jsonResponse = ResponseParser.ToJson();
+            string jsonResponse = ResponseParser.ToJson(response["ResponseBody"].ToString());
             Assert.AreEqual(json, jsonResponse);
         }
 
@@ -1131,8 +1843,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                   {"SellerNote","This is testing API call"}
               };
 
-            ResponseParser.SetXml(response["ResponseBody"].ToString());
-            Dictionary<string, object> returnDictResponse = ResponseParser.ToDict();
+            Dictionary<string, object> returnDictResponse = ResponseParser.ToDict(response["ResponseBody"].ToString());
 
             foreach (KeyValuePair<string, object> item in returnDictResponse)
             {

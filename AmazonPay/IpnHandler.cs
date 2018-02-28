@@ -21,7 +21,7 @@ namespace AmazonPay
     /// </summary>
     public enum NotificationType
     {
-        OrderReferenceNotification, BillingAgreementNotification, PaymentAuthorize, PaymentCapture, PaymentRefund, ProviderCredit, ProviderCreditReversal
+        OrderReferenceNotification, BillingAgreementNotification, PaymentAuthorize, PaymentCapture, PaymentRefund, ProviderCredit, ProviderCreditReversal, ChargebackDetailedNotification
     }
 
     /// <summary>
@@ -37,8 +37,11 @@ namespace AmazonPay
         private string notificationReferenceId;
         private string notificationType;
         private string sellerId;
+        private string marketplaceId;
         private string releaseEnvironment;
         private string notificationData;
+        private string timeStamp;
+        private string version;
 
         private OrderReferenceDetailsResponse orderReferenceDetailsObject;
         private AuthorizeResponse authorizeResponseObject;
@@ -47,14 +50,15 @@ namespace AmazonPay
         private GetProviderCreditDetailsResponse providerCreditResponseObject;
         private GetProviderCreditReversalDetailsResponse providerCreditReversalResponseObject;
         private BillingAgreementDetailsResponse billingAgreementDetailsObject;
+        private ChargebackResponse chargebackResponseObject;
 
         /// <summary>
-        ///  Common Looger Property
+        ///  Common Logger Property
         /// </summary>
         public ILog Logger { private get; set; }
 
         /// <summary>
-        /// IpnHandler takes Ipn Headers and JSON data 
+        /// IpnHandler takes Ipn Headers and JSON data
         /// </summary>
         /// <param name="headers"></param>
         /// <param name="jsonMessage"></param>
@@ -64,7 +68,7 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// IpnHandler takes Inp Header, JSON data and Logger Object
+        /// IpnHandler takes Ipn Header, JSON data and Logger Object
         /// </summary>
         /// <param name="headers"></param>
         /// <param name="jsonMessage"></param>
@@ -76,7 +80,7 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// IpnHander Initializer
+        /// IpnHandler Initializer
         /// </summary>
         private void IpnHandlerInit(NameValueCollection headers, string jsonMessage)
         {
@@ -114,9 +118,9 @@ namespace AmazonPay
         /// <summary>
         /// Convert a raw http POST request that contains an IPN and
         /// convert to an object
-        /// 
+        ///
         /// Will throw a Exception if the content is not a valid IPN
-        /// 
+        ///
         /// Callers are expected to return a 503 http code an exception is
         /// thrown by this method, otherwise reply with a HTTP OK status
         /// </summary>
@@ -269,7 +273,7 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// Verifies that the signing certificate url is from a recognizable source. 
+        /// Verifies that the signing certificate url is from a recognizable source.
         /// Returns the cert url if it cen be verified, otherwise throws an exception.
         /// </summary>
         /// <returns></returns>
@@ -292,7 +296,7 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// Validates if the Signature version is correct , else throws an exception 
+        /// Validates if the Signature version is correct , else throws an exception
         /// </summary>
         private void ValidateMessageIsTrusted()
         {
@@ -572,6 +576,9 @@ namespace AmazonPay
                     case NotificationType.ProviderCreditReversal:
                         providerCreditReversalResponseObject = new GetProviderCreditReversalDetailsResponse(xml);
                         break;
+                    case NotificationType.ChargebackDetailedNotification:
+                        chargebackResponseObject = new ChargebackResponse(xml);
+                        break;
                 }
             }
         }
@@ -618,36 +625,67 @@ namespace AmazonPay
         /// </summary>
         private void parseRemainingIpnFields()
         {
-            JObject message = JObject.Parse(parsedMessage.GetValue("Message").ToString());
+            JObject message = JObject.Parse(this.parsedMessage.GetValue("Message").ToString());
             notificationReferenceId = message.GetValue("NotificationReferenceId").ToString();
             notificationType = message.GetValue("NotificationType").ToString();
             sellerId = message.GetValue("SellerId").ToString();
             releaseEnvironment = message.GetValue("ReleaseEnvironment").ToString();
+            timeStamp = message.GetValue("Timestamp").ToString();
+            marketplaceId = message.GetValue("MarketplaceID").ToString();
+            version = message.GetValue("Version").ToString();
         }
 
 
         /// <summary>
-        /// Getter for the type of notification received
+        /// Getter for the sellerId from the IPN Message
         /// </summary>
-        /// <returns></returns>
+        /// <returns>sellerId</returns>
         public string GetSellerId()
         {
             return sellerId;
         }
 
         /// <summary>
-        /// Getter for the NotificationReferenceId
+        /// Getter for the timeStamp in the IPN Message
         /// </summary>
-        /// <returns></returns>
+        /// <returns>timeStamp</returns>
+        public string GetTimeStamp()
+        {
+            return this.timeStamp;
+        }
+
+        /// <summary>
+        /// Getter for the marketplaceId in the IPN Message
+        /// </summary>
+        /// <returns>marketplaceId</returns>
+        public string GetMarketplaceId()
+        {
+            return this.marketplaceId;
+        }
+
+        /// <summary>
+        /// Getter for the version in the IPN Message
+        /// </summary>
+        /// <returns>version</returns>
+        public string GetVersion()
+        {
+            return this.version;
+        }
+
+
+        /// <summary>
+        /// Getter for the NotificationReferenceId in the IPN Message
+        /// </summary>
+        /// <returns>notificationReferenceId</returns>
         public string GetNotificationReferenceId()
         {
             return notificationReferenceId;
         }
 
         /// <summary>
-        /// Getter for the type of ReleaseEnvironment
+        /// Getter for the type of ReleaseEnvironment in the IPN Message
         /// </summary>
-        /// <returns></returns>
+        /// <returns>releaseEnvironment</returns>
         public string GetReleaseEnvironment()
         {
             return releaseEnvironment;
@@ -657,10 +695,10 @@ namespace AmazonPay
         /// Getter for the type of notification received
         /// The return type is a string and not an Enum for forward compatibility.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>notificationType</returns>
         public string GetNotificationType()
         {
-            return notificationType;
+            return notificationType.Replace(" ","");
         }
 
         /// <summary>
@@ -673,7 +711,7 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// Getter for the BillingAgreementDetailsResponse object for OrderReferenceDetails IPN
+        /// Getter for the BillingAgreementDetailsResponse object for BillingAgreementDetails IPN
         /// </summary>
         /// <returns>BillingAgreementDetailsResponse Object</returns>
         public BillingAgreementDetailsResponse GetBillingAgreementDetailsResponse()
@@ -700,7 +738,7 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// Getter for the RefundResponse object for Capture IPN
+        /// Getter for the RefundResponse object for Refund IPN
         /// </summary>
         /// <returns>RefundResponse Object</returns>
         public RefundResponse GetRefundResponse()
@@ -709,7 +747,7 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// Getter for the ProviderCreditDetailsResponse object for Capture IPN
+        /// Getter for the ProviderCreditDetailsResponse object for ProviderCredit IPN
         /// </summary>
         /// <returns>GetProviderCreditDetailsResponse Object</returns>
         public GetProviderCreditDetailsResponse GetProviderCreditDetailsResponse()
@@ -718,12 +756,21 @@ namespace AmazonPay
         }
 
         /// <summary>
-        /// Getter for the ProviderCreditReversalDetailsResponse object for Capture IPN
+        /// Getter for the ProviderCreditReversalDetailsResponse object for ProviderCreditReversal IPN
         /// </summary>
         /// <returns>GetProviderCreditReversalDetailsResponse Object</returns>
         public GetProviderCreditReversalDetailsResponse GetProviderCreditReversalDetailsResponse()
         {
             return providerCreditReversalResponseObject;
+        }
+
+        /// <summary>
+        /// Getter for the ChargebackResponse object for ChargebackDetailed IPN
+        /// </summary>
+        /// <returns>ChargebackIpnResponse Object</returns>
+        public ChargebackResponse GetChargebackResponse()
+        {
+            return this.chargebackResponseObject;
         }
 
         /// <summary>
