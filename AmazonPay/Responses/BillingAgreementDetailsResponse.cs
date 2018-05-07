@@ -5,15 +5,11 @@ using System.Collections.Generic;
 
 namespace AmazonPay.Responses
 {
-    public class BillingAgreementDetailsResponse : IResponse
+    public class BillingAgreementDetailsResponse : AbstractResponse
     {
         /// <summary>
         /// Documentation Source https://pay.amazon.com/documentation/apireference/201752500
         /// </summary>
-
-        private string xml;
-        private string json;
-        private IDictionary dictionary;
 
         // Billing Agreement general details
         private string amazonBillingAgreementId;
@@ -24,7 +20,6 @@ namespace AmazonPay.Responses
         private bool hasConstraint = false;
         private string reasonCode;
         private string reasonDescription;
-        private string requestId;
         private DateTime creationTimestamp;
 
         // Billing Agreement Limits
@@ -63,10 +58,6 @@ namespace AmazonPay.Responses
         private string district;
         private string destinationType;
 
-        private string errorCode;
-        private string errorMessage;
-
-        private bool success = false;
         private string parentKey;
 
         BillingAddressDetails billingAddress;
@@ -74,31 +65,11 @@ namespace AmazonPay.Responses
 
         public BillingAgreementDetailsResponse(string xml)
         {
-            this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
-
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
-            if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
+            SetDictionaryAndErrorResponse(xml);
+            if (success)
             {
-                success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
-            }
-            else
-            {
-                success = true;
-                ParseDictionaryToVariables(this.dictionary);
-            }
-        }
-
-        private enum Operator
-        {
-            AmazonBillingAgreementId, TimePeriodStartDate, TimePeriodEndDate, RequestId, CreationTimestamp, LastUpdatedTimestamp, ReasonCode, ReasonDescription, State, AmountLimitPerTimePeriod,
-            CurrentRemainingBalance, SellerNote, Amount, CurrencyCode, PlatformId, PostalCode, Name, Type, Id, Email, Phone, CountryCode, StateOrRegion, AddressLine1, AddressLine2,
-            AddressLine3, City, County, District, DestinationType, ReleaseEnvironment, SellerOrderId, SellerBillingAgreementId, CustomInformation,
-            StoreName, Constraint, ConstraintID, Description, member, BillingAddress, Buyer
+                ParseDictionaryToNewVariables(this.dictionary);
+            }   
         }
 
         /// <summary>
@@ -110,7 +81,7 @@ namespace AmazonPay.Responses
         /// else it will recursively parse the inner dictionary for Type 2
         /// </summary>
         /// <param name="dictionary"></param>
-        private void ParseDictionaryToVariables(IDictionary dictionary)
+        private void ParseDictionaryToNewVariables(IDictionary dictionary)
         {
             foreach (string strKey in dictionary.Keys)
             {
@@ -132,7 +103,7 @@ namespace AmazonPay.Responses
                             billingAddress = new BillingAddressDetails((IDictionary)obj);
                             continue;
                         }
-                        ParseDictionaryToVariables((IDictionary)obj);
+                        ParseDictionaryToNewVariables((IDictionary)obj);
                     }
                     else
                     {
@@ -300,15 +271,6 @@ namespace AmazonPay.Responses
         public string GetAmazonBillingAgreementId()
         {
             return this.amazonBillingAgreementId;
-        }
-
-        /// <summary>
-        /// Get the requestId
-        /// </summary>
-        /// <returns>string requestId</returns>
-        public string GetRequestId()
-        {
-            return this.requestId;
         }
 
         /// <summary>
@@ -510,15 +472,6 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Response in Dictionary Format
-        /// </summary>
-        /// <returns>Dictionary<string,object> type Response</returns>
-        public IDictionary GetDictionary()
-        {
-            return this.dictionary;
-        }
-
-        /// <summary>
         /// Get the shipping address district of the Buyer
         /// </summary>
         /// <returns>string district</returns>
@@ -537,48 +490,12 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Get the ErrorCode when te API call failed
-        /// </summary>
-        /// <returns>string errorCode</returns>
-        public string GetErrorCode()
-        {
-            return this.errorCode;
-        }
-
-        /// <summary>
-        /// Get the ErrorMessage when the API call failed
-        /// </summary>
-        /// <returns>string errorCode</returns>
-        public string GetErrorMessage()
-        {
-            return this.errorMessage;
-        }
-
-        /// <summary>
-        /// Get the bool value to know if the API call was a success(true) or a failure(false)
-        /// </summary>
-        /// <returns>success can be true or false</returns>
-        public bool GetSuccess()
-        {
-            return success;
-        }
-
-        /// <summary>
         /// Get the boolean value to check if the Constaints exist
         /// </summary>
         /// <returns>true or false for hasConstraint</returns>
         public bool GetHasConstraint()
         {
             return this.hasConstraint;
-        }
-
-        /// <summary>
-        /// Response returned in JSON format
-        /// </summary>
-        /// <returns>JSON format Response</returns>
-        public string GetJson()
-        {
-            return this.json;
         }
 
         /// <summary>
@@ -669,15 +586,6 @@ namespace AmazonPay.Responses
         public BillingAddressDetails GetBillingAddressDetails()
         {
             return this.billingAddress;
-        }
-
-        /// <summary>
-        /// Response returned in XML format
-        /// </summary>
-        /// <returns>XML format Response</returns>
-        public string GetXml()
-        {
-            return this.xml;
         }
     }
 }

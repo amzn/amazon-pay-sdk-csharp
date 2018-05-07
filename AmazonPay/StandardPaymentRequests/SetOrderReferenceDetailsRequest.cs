@@ -5,10 +5,8 @@ namespace AmazonPay.StandardPaymentRequests
     /// <summary>
     /// Request class to set the SetOrderReferenceDetails API call parameters
     /// </summary>
-    public class SetOrderReferenceDetailsRequest
+    public class SetOrderReferenceDetailsRequest : DelegateRequest<SetOrderReferenceDetailsRequest>
     {
-        protected string action;
-        protected string merchant_id;
         protected string amazon_order_reference_id;
         protected decimal? amount;
         protected string currency_code;
@@ -18,31 +16,15 @@ namespace AmazonPay.StandardPaymentRequests
         protected string store_name;
         protected string custom_information;
         protected bool request_payment_authorization;
-        protected string mws_auth_token;
-        
 
         public SetOrderReferenceDetailsRequest()
         {
-            this.action = Constants.SetOrderReferenceDetails;
+            SetAction(Constants.SetOrderReferenceDetails);
         }
-        public string GetAction()
+
+        protected override SetOrderReferenceDetailsRequest GetThis()
         {
-            return this.action;
-        }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>SetOrderReferenceDetailsRequest Object</returns>
-        public SetOrderReferenceDetailsRequest WithMerchantId(string merchant_id)
-        {
-            this.merchant_id = merchant_id;
-            
             return this;
-        }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
         }
 
         /// <summary>
@@ -56,10 +38,15 @@ namespace AmazonPay.StandardPaymentRequests
             return this;
         }
 
+        /// <summary>
+        /// Gets the Amazon Order Reference ID
+        /// </summary>
+        /// <returns>Amazon Order Reference ID</returns>
         public string GetAmazonOrderReferenceId()
         {
             return this.amazon_order_reference_id;
         }
+
         /// <summary>
         /// Sets the Amount for the order
         /// </summary>
@@ -71,6 +58,10 @@ namespace AmazonPay.StandardPaymentRequests
             return this;
         }
 
+        /// <summary>
+        /// Gets the Amount for the order
+        /// </summary>
+        /// <returns>Amount</returns>
         public decimal? GetAmount()
         {
             return this.amount;
@@ -87,6 +78,10 @@ namespace AmazonPay.StandardPaymentRequests
             return this;
         }
 
+        /// <summary>
+        /// Gets the Currency Code
+        /// </summary>
+        /// <returns>Currency Code</returns>
         public string GetCurrencyCode()
         {
             return this.currency_code;
@@ -102,6 +97,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.platform_id = platform_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Platform ID
+        /// </summary>
+        /// <returns>Platform ID</returns>
         public string GetPlatformId()
         {
             return this.platform_id;
@@ -117,10 +117,16 @@ namespace AmazonPay.StandardPaymentRequests
             this.seller_note = seller_note;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Seller Note
+        /// </summary>
+        /// <returns>Seller Note</returns>
         public string GetSellerNote()
         {
             return this.seller_note;
         }
+
         /// <summary>
         /// Sets the Seller Order ID
         /// </summary>
@@ -131,6 +137,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.seller_order_id = seller_order_id;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Seller Order ID
+        /// </summary>
+        /// <returns>Seller Order ID</returns>
         public string GetSellerOrderId()
         {
             return this.seller_order_id;
@@ -146,6 +157,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.store_name = store_name;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Store Name
+        /// </summary>
+        /// <returns>Store Name</returns>
         public string GetStoreName()
         {
             return this.store_name;
@@ -161,24 +177,14 @@ namespace AmazonPay.StandardPaymentRequests
             this.custom_information = custom_information;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Custom Information
+        /// </summary>
+        /// <returns>Custom Information</returns>
         public string GetCustomInformation()
         {
             return this.custom_information;
-        }
-
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>SetOrderReferenceDetailsRequest Object</returns>
-        public SetOrderReferenceDetailsRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
 
         /// <summary>
@@ -192,6 +198,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.request_payment_authorization = request_payment_authorization;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Request Payment Authorization boolean value
+        /// </summary>
+        /// <returns>Request Payment Authorization</returns>
         public bool GetRequestPaymentAuthorization()
         {
             return this.request_payment_authorization;

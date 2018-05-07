@@ -6,44 +6,28 @@ namespace AmazonPay.StandardPaymentRequests
     /// <summary>
     /// Request class to set the Refund API call parameters
     /// </summary>
-    public class RefundRequest
+    public class RefundRequest : DelegateRequest<RefundRequest>
     {
-        private string action;
-        private string merchant_id;
         private string amazon_capture_id;
         private decimal amount;
         private string currency_code;
         private string seller_refund_note;
         private string refund_reference_id;
         private string soft_descriptor;
-        private string mws_auth_token;
         List<Dictionary<string, string>> providerReverseCredit = new List<Dictionary<string, string>>();
 
         public RefundRequest()
         {
-            this.action = Constants.Refund;
+            SetAction(Constants.Refund);
         }
-        public string GetAction()
+
+        protected override RefundRequest GetThis()
         {
-            return this.action;
-        }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>RefundRequest Object</returns>
-        public RefundRequest WithMerchantId(string merchant_id)
-        {
-            this.merchant_id = merchant_id;
             return this;
-        }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
         }
 
         /// <summary>
-        /// sets the Amazon Refund ID
+        /// sets the Amazon Capture ID
         /// </summary>
         /// <param name="amazon_capture_id"></param>
         /// <returns>RefundRequest Object</returns>
@@ -52,6 +36,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.amazon_capture_id = amazon_capture_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amazon Capture ID
+        /// </summary>
+        /// <returns>Amazon Capture ID</returns>
         public string GetAmazonCaptureId()
         {
             return this.amazon_capture_id;
@@ -67,6 +56,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.amount = refund_amount;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Refund Amount
+        /// </summary>
+        /// <returns>Refund Amount</returns>
         public decimal GetAmount()
         {
             return this.amount;
@@ -82,6 +76,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.currency_code = currency_code.ToString();
             return this;
         }
+
+        /// <summary>
+        /// Gets the Currency Code
+        /// </summary>
+        /// <returns>Currency Code</returns>
         public string GetCurrencyCode()
         {
             return this.currency_code;
@@ -97,6 +96,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.refund_reference_id = refund_reference_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Refund Reference ID
+        /// </summary>
+        /// <returns>Refund Refrence ID</returns>
         public string GetRefundReferenceId()
         {
             return this.refund_reference_id;
@@ -120,6 +124,11 @@ namespace AmazonPay.StandardPaymentRequests
             providerReverseCredit.Add(providerCreditDetails);
             return this;
         }
+
+        /// <summary>
+        /// Gets the Provider Reverse Credit
+        /// </summary>
+        /// <returns>Provider Reverse Credit</returns>
         public IList<Dictionary<string, string>> GetProviderReverseCredit()
         {
             return this.providerReverseCredit.AsReadOnly();
@@ -135,6 +144,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.seller_refund_note = seller_refund_note;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Seller Refund Note
+        /// </summary>
+        /// <returns>Seller Refund Note</returns>
         public string GetSellerRefundNote()
         {
             return this.seller_refund_note;
@@ -150,24 +164,14 @@ namespace AmazonPay.StandardPaymentRequests
             this.soft_descriptor = soft_descriptor;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Soft Descriptor value
+        /// </summary>
+        /// <returns>Soft Descriptor</returns>
         public string GetSoftDescriptor()
         {
             return this.soft_descriptor;
-        }
-
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>RefundRequest Object</returns>
-        public RefundRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

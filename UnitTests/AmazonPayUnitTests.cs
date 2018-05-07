@@ -175,9 +175,9 @@ namespace UnitTests
             client.SetTimeStamp("0000");
 
             GetOrderReferenceDetailsRequest getOrderReferenceDetails = new GetOrderReferenceDetailsRequest();
-            getOrderReferenceDetails.WithAmazonOrderReferenceId("test")
+            getOrderReferenceDetails.WithMerchantId("test")
                 .WithAccessToken("test")
-                .WithMerchantId("test")
+                .WithAmazonOrderReferenceId("test")
                 .WithMWSAuthToken("test");
 
             //Testing GetOrderReferenceDetails Request
@@ -218,12 +218,13 @@ namespace UnitTests
             PaymentDetailsResponse testGetAllResponseDetails = new PaymentDetailsResponse();
             String rawOroResponse = loadTestFile("GetOrderReferenceDetails.xml");
             OrderReferenceDetailsResponse oroResponseObject = new OrderReferenceDetailsResponse(rawOroResponse);
-
+            
             String rawAuthResponse = loadTestFile("GetAuthorizationDetails.xml");
             AuthorizeResponse authResponseObject = new AuthorizeResponse(rawAuthResponse);
 
             String rawCaptureResponse = loadTestFile("GetCaptureDetails.xml");
             CaptureResponse captureResponseObject = new CaptureResponse(rawCaptureResponse);
+
 
             String rawRefundResponse = loadTestFile("GetRefundDetails.xml");
             RefundResponse refundResponseObject = new RefundResponse(rawRefundResponse);
@@ -414,8 +415,8 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetTimeStamp("0000");
 
             SetOrderReferenceDetailsRequest setOrderReferenceDetails = new SetOrderReferenceDetailsRequest();
-            setOrderReferenceDetails.WithAmazonOrderReferenceId("test")
-                .WithMerchantId("test")
+            setOrderReferenceDetails.WithMerchantId("test")
+                .WithAmazonOrderReferenceId("test")
                 .WithAmount(100.05m)
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithPlatformId("test")
@@ -575,11 +576,11 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             orderItemCategories.Add("Antiques");
             orderItemCategories.Add("Apparel");
             SetOrderAttributesRequest setOrderAttributes = new SetOrderAttributesRequest();
-            setOrderAttributes.WithPaymentServiceProviderId("A2STY9B5HPCDII")
+            setOrderAttributes.WithMerchantId("test")
+                .WithPaymentServiceProviderId("A2STY9B5HPCDII")
                 .WithPaymentServiceProviderOrderId("PSP-Order-Id")
                 .WithOrderItemCategories(orderItemCategories)
                 .WithAmazonOrderReferenceId("Order #12345")
-                .WithMerchantId("test")
                 .WithAmount(100.05m)
                 .WithCurrencyCode(Regions.currencyCode.USD)
                 .WithPlatformId("A2STY9B5HPCDII")
@@ -638,6 +639,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.ConfirmOrderReference(confirmOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing ConfirmOrderReference Response
+            String rawResponse = loadTestFile("ConfirmOrderReference.xml");
+            ConfirmOrderReferenceResponse confirmOrderResponseObject = new ConfirmOrderReferenceResponse(rawResponse);
+            Assert.AreEqual(confirmOrderResponseObject.GetRequestId(), "f1f52572-a347-4f7a-a630-be066f3ba827");
+
+            Assert.AreEqual(confirmOrderResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -672,6 +680,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.CancelOrderReference(cancelOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing CancelOrderReference Response
+            String rawResponse = loadTestFile("CancelOrderReference.xml");
+            CancelOrderReferenceResponse cancelOrderResponseObject = new CancelOrderReferenceResponse(rawResponse);
+            Assert.AreEqual(cancelOrderResponseObject.GetRequestId(), "0714c2dd-c3fa-45af-afc7-b48055cfd7bf");
+
+            Assert.AreEqual(cancelOrderResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -706,6 +721,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.CloseOrderReference(closeOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing CloseOrderReference Response
+            String rawResponse = loadTestFile("CloseOrderReference.xml");
+            CloseOrderReferenceResponse closeOrderResponseObject = new CloseOrderReferenceResponse(rawResponse);
+            Assert.AreEqual(closeOrderResponseObject.GetRequestId(), "5f20169b-7ab2-11df-bcef-d35615e2b044");
+
+            Assert.AreEqual(closeOrderResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -741,6 +763,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.CloseAuthorization(closeAuthorization);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing CloseAuthorization Response
+            String rawResponse = loadTestFile("CloseOrderReference.xml");
+            CloseAuthorizationResponse closeAuthorizationResponseObject = new CloseAuthorizationResponse(rawResponse);
+            Assert.AreEqual(closeAuthorizationResponseObject.GetRequestId(), "5f20169b-7ab2-11df-bcef-d35615e2b044");
+
+            Assert.AreEqual(closeAuthorizationResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -787,6 +816,24 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.Authorize(authorize);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing Authorize Response
+            String rawResponse = loadTestFile("AuthorizeResponse.xml");
+            AuthorizeResponse authorizeResponseObject = new AuthorizeResponse(rawResponse);
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationAmount(), 1.00);
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationAmountCurrencyCode(), "USD");
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationFee(),0.00 );
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationFeeCurrencyCode(), "USD");
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationId(), "S01-9821095-1837200-A041953");
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationReferenceId(), "asdcdsd5iiiii");
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationState(), "Closed");
+            Assert.AreEqual(authorizeResponseObject.GetCapturedAmount(), 0);
+            Assert.AreEqual(authorizeResponseObject.GetCapturedAmountCurrencyCode(), "USD");
+            Assert.AreEqual(authorizeResponseObject.GetCaptureNow(), true);
+            Assert.AreEqual(authorizeResponseObject.GetSellerAuthorizationNote(), "testing");
+            Assert.AreEqual(authorizeResponseObject.GetRequestId(), "adabc99d-8351-48dc-acef-1bc049215f55");
+
+            Assert.AreEqual(authorizeResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -952,6 +999,19 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing Authorize Response
+            String rawResponse = loadTestFile("CaptureResponse.xml");
+            CaptureResponse captureResponseObject = new CaptureResponse(rawResponse);
+            Assert.AreEqual(captureResponseObject.GetCaptureAmount(), 1.00);
+            Assert.AreEqual(captureResponseObject.GetCaptureAmountCurrencyCode(), "USD");
+            Assert.AreEqual(captureResponseObject.GetCaptureFee(), 0.00);
+            Assert.AreEqual(captureResponseObject.GetCaptureFeeCurrencyCode(), "USD");
+            Assert.AreEqual(captureResponseObject.GetCaptureId(), "S01-9821095-1837200-C053432");
+            Assert.AreEqual(captureResponseObject.GetCaptureState(), "Completed");
+            Assert.AreEqual(captureResponseObject.GetRequestId(), "1ec2813f-3d33-4b3a-a198-a25cd608310d");
+
+            Assert.AreEqual(captureResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1051,6 +1111,22 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing Refund Response
+            String rawResponse = loadTestFile("RefundResponse.xml");
+            RefundResponse refundResponseObject = new RefundResponse(rawResponse);
+            Assert.AreEqual(refundResponseObject.GetAmazonRefundId(), "S01-5695290-1354077-R072290");
+            Assert.AreEqual(refundResponseObject.GetRefundType(), "SellerInitiated");
+            Assert.AreEqual(refundResponseObject.GetRefundAmount(), 0.50m);
+            Assert.AreEqual(refundResponseObject.GetRefundAmountCurrencyCode(), "USD");
+            Assert.AreEqual(refundResponseObject.GetRefundFee(), 0.00m);
+            Assert.AreEqual(refundResponseObject.GetRefundFeeCurrencyCode(), "USD");
+            Assert.AreEqual(refundResponseObject.GetRefundState(), "Pending");
+            Assert.AreEqual(refundResponseObject.GetReasonCode(), null);
+            Assert.AreEqual(refundResponseObject.GetReasonDescription(), null);
+            Assert.AreEqual(refundResponseObject.GetSoftDescriptor(), "AMZ*test");
+
+            Assert.AreEqual(refundResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1140,6 +1216,14 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing GetServiceStatus Response
+            String rawResponse = loadTestFile("GetServiceStatusResponse.xml");
+            GetServiceStatusResponse getServiceStatusResponseObject = new GetServiceStatusResponse(rawResponse);
+            Assert.AreEqual(getServiceStatusResponseObject.GetStatus(), "GREEN");
+            Assert.AreEqual(getServiceStatusResponseObject.GetRequestId(), "93437336-70dd-4359-b453-f13a90dccb99");
+
+            Assert.AreEqual(getServiceStatusResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1328,6 +1412,25 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing BillingAgreementDetails Response
+            String rawResponse = loadTestFile("BillingAgreementDetailsResponse.xml");
+            BillingAgreementDetailsResponse billingAgreementDetailsResponseObject = new BillingAgreementDetailsResponse(rawResponse);
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetStateOrRegion(), "BC");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmazonBillingAgreementId(), "C01-3925266-2250830");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetAddressLine1(), "999 Canada Place 140");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmountLimitPerTimePeriod(), 500.00);
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmountLimitPerTimePeriodCurrencyCode(), "USD");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetBillingAgreementState(), "Draft");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetBuyerName(), "Test Buyer");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCurrentRemainingBalanceAmount(), 500.00);
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCurrentRemainingBalanceCurrencyCode(), "USD");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCity(), "Vancouver");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCountryCode(), "CA");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetEmail(), "testbuyer2@amazon.com");
+             Assert.AreEqual(billingAgreementDetailsResponseObject.GetRequestId(), "d69e8d60-3682-43d7-bf5e-e2ef64dc685e");
+
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1402,6 +1505,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing ConfirmBillingAgrrement Response
+            String rawResponse = loadTestFile("ConfirmBillingAgreementResponse.xml");
+            ConfirmBillingAgreementResponse confirmBillingAgreementResponseObject = new ConfirmBillingAgreementResponse(rawResponse);
+            Assert.AreEqual(confirmBillingAgreementResponseObject.GetRequestId(), "3d1db999-b790-47bb-87d3-9c673c38a1ed");
+
+            Assert.AreEqual(confirmBillingAgreementResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1435,6 +1545,15 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing ValidateBillingAgrrement Response
+            String rawResponse = loadTestFile("ValidateBillingAgreementResponse.xml");
+            ValidateBillingAgreementResponse validateBillingAgreementResponseObject = new ValidateBillingAgreementResponse(rawResponse);
+            Assert.AreEqual(validateBillingAgreementResponseObject.GetBillingAgreementState(), "Open");
+            Assert.AreEqual(validateBillingAgreementResponseObject.GetValidationResult(), "Success");
+            Assert.AreEqual(validateBillingAgreementResponseObject.GetRequestId(), "0f48a4e0-2a7c-4036-9a8a-339e419fd53f");
+
+            Assert.AreEqual(validateBillingAgreementResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1645,6 +1764,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing CloseBillingAgreement Response
+            String rawResponse = loadTestFile("CloseBillingAgreementResponse.xml");
+            CloseBillingAgreementResponse closeBillingAgreementResponseObject = new CloseBillingAgreementResponse(rawResponse);
+            Assert.AreEqual(closeBillingAgreementResponseObject.GetRequestId(), "7541230f-e349-4180-a4ac-ba9f2cf6ac79");
+
+            Assert.AreEqual(closeBillingAgreementResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1724,13 +1850,28 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetTimeStamp("0000");
             GetProviderCreditDetailsRequest getProviderCreditDetails = new GetProviderCreditDetailsRequest();
             getProviderCreditDetails
-                 .WithAmazonProviderCreditId("test")
                  .WithMerchantId("test")
+                 .WithAmazonProviderCreditId("test")
                  .WithMWSAuthToken("test");
             client.GetProviderCreditDetails(getProviderCreditDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing GetProviderCreditDetails Response
+            String rawResponse = loadTestFile("GetProviderCreditDetailsResponse.xml");
+            GetProviderCreditDetailsResponse getProviderCreditDetailsResponseObject = new GetProviderCreditDetailsResponse(rawResponse);
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetAmazonProviderCreditId(), "S01-2117025-2155793-P045170");
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetCreditAmount(), 1.00);
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetCreditAmountCurrencyCode(), "USD");
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetCreditReferenceId(), "S01-2117025-2155793nesasdh");
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetCreditStatus(), "Closed");
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetCreditReversalAmount(), 1.00);
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetCreditReversalAmountCurrencyCode(), "USD");
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetSellerId(), "TEST_SELLER_ID");
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetRequestId(), "21162350-7135-46ae-aa20-68d5361cef17");
+
+            Assert.AreEqual(getProviderCreditDetailsResponseObject.GetXml(), rawResponse);
         }
 
         [Test]
@@ -1764,6 +1905,56 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing GetProviderCreditReversalDetails Response
+            String rawResponse = loadTestFile("GetProviderCreditReversalDetailsResponse.xml");
+            GetProviderCreditReversalDetailsResponse getProviderCreditReversalDetailsResponseObject = new GetProviderCreditReversalDetailsResponse(rawResponse);
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetAmazonProviderCreditReversalId(), "S01-2117025-2155793-P045170");
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetCreditReversalAmount(), 1.00);
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetCreditReversalAmountCurrencyCode(), "USD");
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetCreditReversalReferenceId(), "S01-2117025-2155793nesasdh");
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetCreditReversalStatus(), "Closed");
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetReasonCode(), "MaxAmountReversed");
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetRequestId(), "10a7736b-bb9b-447c-9be1-4f5e76166e48");
+
+            Assert.AreEqual(getProviderCreditReversalDetailsResponseObject.GetXml(), rawResponse);
+        }
+
+        [Test]
+        public void TestGetMerchantAccountStatus()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetMerchantAccountStatus"},
+                {"SellerId","A2AMR0CLHFUKIG"},
+                {"MWSAuthToken","test123"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("2018-09-27T02:18:33.408Z");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API GetMerchantAccountStatus
+            client = new Client(clientConfig);
+            client.SetTimeStamp("2018-09-27T02:18:33.408Z");
+            GetMerchantAccountStatusRequest getMerchantAccountStatus = new GetMerchantAccountStatusRequest();
+            getMerchantAccountStatus.WithMerchantId("A2AMR0CLHFUKIG")
+                .WithMWSAuthToken("test123");
+
+            client.GetMerchantAccountStatus(getMerchantAccountStatus);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing GetMerchantAccountStatus Response
+            String rawResponse = loadTestFile("GetMerchantAccountStatusResponse.xml");
+            GetMerchantAccountStatusResponse getMerchantAccountStatusResponseObject = new GetMerchantAccountStatusResponse(rawResponse);
+            Assert.AreEqual(getMerchantAccountStatusResponseObject.GetRequestId(), "51eaf2d5-0b9c-4630-b0e7-1ef61582076a");
+
+            Assert.AreEqual(getMerchantAccountStatusResponseObject.GetXml(), rawResponse);
         }
 
         [Test]

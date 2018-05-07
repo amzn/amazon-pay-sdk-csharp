@@ -6,10 +6,8 @@ namespace AmazonPay.StandardPaymentRequests
     /// <summary>
     /// Request class to set the Autorize API call parameters
     /// </summary>
-    public class AuthorizeRequest
+    public class AuthorizeRequest : DelegateRequest<AuthorizeRequest>
     {
-        private string action;
-        private string merchant_id;
         private string amazon_order_reference_id;
         private decimal amount;
         private string currency_code;
@@ -18,31 +16,17 @@ namespace AmazonPay.StandardPaymentRequests
         private string authorization_reference_id;
         private string soft_descriptor;
         private int? transaction_timeout;
-        private string mws_auth_token;
         List<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
 
 
         public AuthorizeRequest()
         {
-            this.action = Constants.Authorize;
+            SetAction(Constants.Authorize);
         }
-        public string GetAction()
+
+        protected override AuthorizeRequest GetThis()
         {
-            return this.action;
-        }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>Merchant ID</returns>
-        public AuthorizeRequest WithMerchantId(string merchant_id)
-        {
-            this.merchant_id = merchant_id;
             return this;
-        }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
         }
 
         /// <summary>
@@ -55,6 +39,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.amazon_order_reference_id = amazon_order_reference_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amzon Order Reference ID
+        /// </summary>
+        /// <returns>Amzon Order Reference ID</returns>
         public string GetAmazonOrderReferenceId()
         {
             return this.amazon_order_reference_id;
@@ -70,6 +59,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.amount = authorization_amount;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amount for the order
+        /// </summary>
+        /// <returns>Amount</returns>
         public decimal GetAmount()
         {
             return this.amount;
@@ -85,6 +79,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.currency_code = currency_code.ToString();
             return this;
         }
+
+        /// <summary>
+        /// Gets the Currency Code for the amount
+        /// </summary>
+        /// <returns>Currency Code</returns>
         public string GetCurrencyCode()
         {
             return this.currency_code;
@@ -100,10 +99,16 @@ namespace AmazonPay.StandardPaymentRequests
             this.authorization_reference_id = authorization_reference_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Authorization reference ID
+        /// </summary>
+        /// <returns>Authorization reference ID</returns>
         public string GetAuthorizationReferenceId()
         {
             return this.authorization_reference_id;
         }
+
         /// <summary>
         /// Sets the Boolean value for the Capture Now.
         /// The accepted values are true, false and null.
@@ -115,6 +120,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.capture_now = capture_now;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Capture Now value
+        /// </summary>
+        /// <returns>Capture Now</returns>
         public string GetCaptureNow()
         {
             return this.capture_now.ToString().ToLower();
@@ -139,6 +149,10 @@ namespace AmazonPay.StandardPaymentRequests
             return this;
         }
 
+        /// <summary>
+        /// Gets the Provider Credit Details
+        /// </summary>
+        /// <returns>Provider Credit Details</returns>
         public IList<Dictionary<string, string>> GetProviderCreditDetails()
         {
             return this.providerCredit;
@@ -154,6 +168,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.seller_authorization_note = seller_authorization_note;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Seller Authorization Note
+        /// </summary>
+        /// <returns>Seller Authorization Note</returns>
         public string GetSellerAuthorizationNote()
         {
             return this.seller_authorization_note;
@@ -169,6 +188,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.transaction_timeout = transaction_timeout;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Transaction Timeout
+        /// </summary>
+        /// <returns>Transaction Timeout</returns>
         public int? GetTransactionTimeout()
         {
             return this.transaction_timeout;
@@ -184,24 +208,14 @@ namespace AmazonPay.StandardPaymentRequests
             this.soft_descriptor = soft_descriptor;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Soft Descriptor value
+        /// </summary>
+        /// <returns>Soft Descriptor</returns>
         public string GetSoftDescriptor()
         {
             return this.soft_descriptor;
-        }
-
-        /// <summary>
-        /// Sets the MWS AuthToken
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>AuthorizeRequest Object</returns>
-        public AuthorizeRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

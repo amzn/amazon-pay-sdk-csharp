@@ -54,8 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountStatus.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DelegateRequest.cs" />
     <Compile Include="HttpImpl.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="IpnHandler.cs" />
@@ -77,6 +79,7 @@
     </Compile>
     <Compile Include="Regions.cs" />
     <Compile Include="ResponseParser.cs" />
+    <Compile Include="Responses\AbstractResponse.cs" />
     <Compile Include="Responses\AuthorizeResponse.cs" />
     <Compile Include="Responses\BillingAddressDetails.cs" />
     <Compile Include="Responses\BillingAgreementDetailsResponse.cs" />
@@ -89,6 +92,8 @@
     <Compile Include="Responses\ConfirmBillingAgreementResponse.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="Responses\ConfirmOrderReferenceResponse.cs" />
+    <Compile Include="Responses\GetMerchantAccountStatusResponse.cs" />
+    <Compile Include="Responses\Operator.cs" />
     <Compile Include="Responses\PaymentDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditReversalDetailsResponse.cs" />
@@ -109,6 +114,7 @@
     <Compile Include="StandardPaymentRequests\ConfirmOrderReferenceRequest.cs" />
     <Compile Include="StandardPaymentRequests\GetAuthorizationDetailsRequest.cs" />
     <Compile Include="StandardPaymentRequests\GetCaptureDetailsRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetMerchantAccountStatusRequest.cs" />
     <Compile Include="StandardPaymentRequests\GetOrderReferenceDetailsRequest.cs" />
     <Compile Include="ProviderCreditRequests\GetProviderCreditDetailsRequest.cs" />
     <Compile Include="StandardPaymentRequests\GetRefundDetailsRequest.cs" />

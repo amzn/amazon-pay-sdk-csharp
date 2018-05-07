@@ -6,42 +6,26 @@ namespace AmazonPay.StandardPaymentRequests
     /// <summary>
     /// Request class to set the Capture API call parameters
     /// </summary>
-    public class CaptureRequest
+    public class CaptureRequest : DelegateRequest<CaptureRequest>
     {
-
-        private string action;
-        private string merchant_id;
         private string amazon_authorization_id;
         private decimal amount;
         private string currency_code;
         private string seller_capture_note;
         private string capture_reference_id;
         private string soft_descriptor;
-        private string mws_auth_token;
         List<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
 
         public CaptureRequest()
         {
-            this.action = Constants.Capture;
+            SetAction(Constants.Capture);
         }
-        public string GetAction()
+
+        protected override CaptureRequest GetThis()
         {
-            return this.action;
-        }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>CaptureRequest Object</returns>
-        public CaptureRequest WithMerchantId(string merchant_id)
-        {
-            this.merchant_id = merchant_id;
             return this;
         }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
-        }
+
         /// <summary>
         /// Sets the Amazon Authorization ID
         /// </summary>
@@ -52,10 +36,16 @@ namespace AmazonPay.StandardPaymentRequests
             this.amazon_authorization_id = amazon_authorization_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amazon Authorization ID
+        /// </summary>
+        /// <returns> Amazon Authorization ID</returns>
         public string GetAmazonAuthorizationId()
         {
             return this.amazon_authorization_id;
         }
+
         /// <summary>
         ///  Sets the Capture amount
         /// </summary>
@@ -66,10 +56,16 @@ namespace AmazonPay.StandardPaymentRequests
             this.amount = capture_amount;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Capture amount
+        /// </summary>
+        /// <returns>Capture amount</returns>
         public decimal GetAmount()
         {
             return this.amount;
         }
+
         /// <summary>
         ///  Sets the Capture Currency Code
         /// </summary>
@@ -80,10 +76,16 @@ namespace AmazonPay.StandardPaymentRequests
             this.currency_code = currency_code.ToString();
             return this;
         }
+
+        /// <summary>
+        /// Gets the Capture Currency Code
+        /// </summary>
+        /// <returns>Currency Code</returns>
         public string GetCurrencyCode()
         {
             return this.currency_code;
         }
+
         /// <summary>
         /// Sets the Capture Reference ID  - Unique string
         /// </summary>
@@ -94,6 +96,11 @@ namespace AmazonPay.StandardPaymentRequests
             this.capture_reference_id = capture_reference_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Capture Reference ID
+        /// </summary>
+        /// <returns>Capture Reference ID</returns>
         public string GetCaptureReferenceId()
         {
             return this.capture_reference_id;
@@ -117,6 +124,11 @@ namespace AmazonPay.StandardPaymentRequests
             providerCredit.Add(providerCreditDetails);
             return this;
         }
+
+        /// <summary>
+        /// Gets the Provider Credit Details
+        /// </summary>
+        /// <returns>Provider Credit Details</returns>
         public IList<Dictionary<string, string>> GetProviderCreditDetails()
         {
             return this.providerCredit.AsReadOnly();
@@ -133,10 +145,16 @@ namespace AmazonPay.StandardPaymentRequests
             return this;
 
         }
+
+        /// <summary>
+        /// Gets the Seller Capture Note
+        /// </summary>
+        /// <returns>Seller Capture Note</returns>
         public string GetSellerCaptureNote()
         {
             return this.seller_capture_note;
         }
+
         /// <summary>
         /// Sets the Soft Descriptor
         /// </summary>
@@ -148,23 +166,14 @@ namespace AmazonPay.StandardPaymentRequests
             return this;
 
         }
+
+        /// <summary>
+        /// Gets the Soft Descriptor value
+        /// </summary>
+        /// <returns>Soft Descriptor</returns>
         public string GetSoftDescriptor()
         {
             return this.soft_descriptor;
-        }
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>CaptureRequest Object</returns>
-        public CaptureRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

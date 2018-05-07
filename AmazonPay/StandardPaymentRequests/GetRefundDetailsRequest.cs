@@ -3,35 +3,20 @@
     /// <summary>
     /// Request class to set the GetRefundDetails API call parameters
     /// </summary>
-    public class GetRefundDetailsRequest
+    public class GetRefundDetailsRequest : DelegateRequest<GetRefundDetailsRequest>
     {
-        private string action;
-        private string merchant_id;
         private string amazon_refund_id;
-        private string mws_auth_token;
 
         public GetRefundDetailsRequest()
         {
-            this.action = Constants.GetRefundDetails;
+            SetAction(Constants.GetRefundDetails);
         }
-        public string GetAction()
+
+        protected override GetRefundDetailsRequest GetThis()
         {
-            return this.action;
+            return this;
         }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>GetRefundDetailsRequest Object</returns>
-        public GetRefundDetailsRequest WithMerchantId(string merchant_id)
-        {
-           this.merchant_id = merchant_id;
-           return this;
-        }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
-        }
+        
         /// <summary>
         /// Sets the Amazon Refund ID
         /// </summary>
@@ -42,23 +27,14 @@
             this.amazon_refund_id = amazon_refund_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amazon Refund ID
+        /// </summary>
+        /// <returns>Amazon Refund ID</returns>
         public string GetAmazonRefundId()
         {
             return this.amazon_refund_id;
-        }
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>GetRefundDetailsRequest Object</returns>
-        public GetRefundDetailsRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

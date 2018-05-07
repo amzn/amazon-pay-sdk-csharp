@@ -7,46 +7,21 @@ namespace AmazonPay.Responses
     /// Documentation Source https://pay.amazon.com/documentation/apireference/201752740#201752110
     /// </summary>
 
-    public class GetServiceStatusResponse : IResponse
+    public class GetServiceStatusResponse : AbstractResponse
     {
-        private string xml;
-        private string json;
-        private IDictionary dictionary;
-        private string requestId;
         private string status;
         private DateTime timestamp;
-        private string errorCode;
-        private string errorMessage;
-        private bool success = false;
-
 
         /// <summary>
         /// ServiceStatusResponse 
         /// </summary>
         public GetServiceStatusResponse(string xml)
         {
-            this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
-
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
-            if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
+            SetDictionaryAndErrorResponse(xml);
+            if (success)
             {
-                success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                ParseDictionaryToNewVariables(this.dictionary);
             }
-            else
-            {
-                success = true;
-                ParseDictionaryToVariables(this.dictionary);
-            }
-        }
-
-        public enum Operator
-        {
-            RequestId, Status, Timestamp
         }
 
         /// <summary>
@@ -58,7 +33,7 @@ namespace AmazonPay.Responses
         /// else it will recursively parse the inner dictionary for Type 2
         /// </summary>
         /// <param name="dictionary"></param>
-        private void ParseDictionaryToVariables(IDictionary dictionary)
+        private void ParseDictionaryToNewVariables(IDictionary dictionary)
         {
             foreach (string strKey in dictionary.Keys)
             {
@@ -69,7 +44,7 @@ namespace AmazonPay.Responses
                     // If obj is dictionary recursively parse it
                     if (obj is IDictionary)
                     {
-                        ParseDictionaryToVariables((IDictionary)obj);
+                        ParseDictionaryToNewVariables((IDictionary)obj);
                     }
                     else
                     {
@@ -94,15 +69,6 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Get the RequestId 
-        /// </summary>
-        /// <returns>string requestId</returns>
-        public string GetRequestId()
-        {
-            return requestId;
-        }
-
-        /// <summary>
         /// Get the Status 
         /// </summary>
         /// <returns>string status</returns>
@@ -119,60 +85,5 @@ namespace AmazonPay.Responses
         {
             return timestamp;
         }
-
-        /// <summary>
-        /// Get the ErrorCode 
-        /// </summary>
-        /// <returns>string errorCode</returns>
-        public string GetErrorCode()
-        {
-            return errorCode;
-        }
-
-        /// <summary>
-        /// Get the ErrorMessage 
-        /// </summary>
-        /// <returns>string errorMessage</returns>
-        public string GetErrorMessage()
-        {
-            return errorMessage;
-        }
-
-        /// <summary>
-        /// Get the Success 
-        /// </summary>
-        /// <returns>bool success</returns>
-        public bool GetSuccess()
-        {
-            return success;
-        }
-
-        /// <summary>
-        /// Get the Json 
-        /// </summary>
-        /// <returns>string json</returns>
-        public string GetJson()
-        {
-            return json;
-        }
-
-        /// <summary>
-        /// Get the XML 
-        /// </summary>
-        /// <returns>string xml</returns>
-        public string GetXml()
-        {
-            return xml;
-        }
-
-        /// <summary>
-        /// Get the Dictionary 
-        /// </summary>
-        /// <returns>IDictionary dictionary</returns>
-        public IDictionary GetDictionary()
-        {
-            return dictionary;
-        }
-
     }
 }

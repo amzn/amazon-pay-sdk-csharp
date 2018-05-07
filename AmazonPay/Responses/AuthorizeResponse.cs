@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AmazonPay.Responses
 {
-    public class AuthorizeResponse : IResponse
+    public class AuthorizeResponse : AbstractResponse
     {
         /// <summary>
         /// Documentation source https://pay.amazon.com/documentation/apireference/201752450
@@ -15,16 +15,12 @@ namespace AmazonPay.Responses
         /// 3. AuthorizeOnBillingAgreement
         /// </summary>
 
-        private string xml;
-        private string json;
-        private IDictionary dictionary;
         private string authorizationId;
 
         /// <summary>
         /// AmazonOrderReferenceId returned only for AuthorizeOnBillingAgreement API call
         /// </summary>
         private string amazonOrderReferenceId;
-        private string requestId;
         private string authorizationReferenceId;
         private string sellerAuthorizationNote;
 
@@ -49,37 +45,15 @@ namespace AmazonPay.Responses
         private bool? captureNow;
         private string softDescriptor;
 
-        private string errorCode;
-        private string errorMessage;
         private string parentKey;
-
-        private bool success = false;
 
         public AuthorizeResponse(string xml)
         {
-            this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
-
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
-            if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
+            SetDictionaryAndErrorResponse(xml);
+            if (success)
             {
-                success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
-            }
-            else
-            {
-                success = true;
-                ParseDictionaryToVariables(this.dictionary);
-            }
-        }
-
-        private enum Operator
-        {
-            AmazonOrderReferenceId, AmazonAuthorizationId, RequestId, SellerAuthorizationNote, ExpirationTimestamp, CreationTimestamp, AuthorizationReferenceId, State, Amount,
-            AuthorizationAmount, CapturedAmount, AuthorizationFee, CurrencyCode, ReasonCode, SoftDecline, ReasonDescription, CaptureNow, SoftDescriptor, LastUpdateTimestamp, member
+                ParseDictionaryToNewVariables(this.dictionary);
+            }      
         }
 
         /// <summary>
@@ -91,7 +65,7 @@ namespace AmazonPay.Responses
         /// else it will recursively parse the inner dictionary for Type 2
         /// </summary>
         /// <param name="dictionary"></param>
-        private void ParseDictionaryToVariables(IDictionary dictionary)
+        private void ParseDictionaryToNewVariables(IDictionary dictionary)
         {
             foreach (string strKey in dictionary.Keys)
             {
@@ -103,7 +77,7 @@ namespace AmazonPay.Responses
                     if (obj is IDictionary)
                     {
                         parentKey = strKey;
-                        ParseDictionaryToVariables((IDictionary)obj);
+                        ParseDictionaryToNewVariables((IDictionary)obj);
                     }
                     else
                     {
@@ -218,15 +192,6 @@ namespace AmazonPay.Responses
         public string GetAuthorizationId()
         {
             return authorizationId;
-        }
-
-        /// <summary>
-        /// Get the request ID for the API call
-        /// </summary>
-        /// <returns>requestId</returns>
-        public string GetRequestId()
-        {
-            return requestId;
         }
 
         /// <summary>
@@ -389,60 +354,6 @@ namespace AmazonPay.Responses
         public string GetSoftDescriptor()
         {
             return softDescriptor;
-        }
-
-        /// <summary>
-        /// Get the bool value to know if the API call was a success(true) or a failure(false)
-        /// </summary>
-        /// <returns>success can be true or false</returns>
-        public bool GetSuccess()
-        {
-            return success;
-        }
-
-        /// <summary>
-        /// If the API call failed Get the Error Code
-        /// </summary>
-        /// <returns>errorCode</returns>
-        public string GetErrorCode()
-        {
-            return errorCode;
-        }
-
-        /// <summary>
-        /// If the API call failed Get the Error Message
-        /// </summary>
-        /// <returns>errorMessage</returns>
-        public string GetErrorMessage()
-        {
-            return errorMessage;
-        }
-
-        /// <summary>
-        /// Response returned in JSON format
-        /// </summary>
-        /// <returns>JSON format Response</returns>
-        public string GetJson()
-        {
-            return json;
-        }
-
-        /// <summary>
-        /// Response returned in XML format
-        /// </summary>
-        /// <returns>XML format Response</returns>
-        public string GetXml()
-        {
-            return xml;
-        }
-
-        /// <summary>
-        /// Response in Dictionary Format
-        /// </summary>
-        /// <returns>Dictionary<string,object> type Response</returns>
-        public IDictionary GetDictionary()
-        {
-            return dictionary;
         }
     }
 }

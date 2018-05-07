@@ -1,0 +1,8 @@
+﻿<GetMerchantAccountStatusResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+  <GetMerchantAccountStatusResult>
+    <AccountStatus>ACTIVE</AccountStatus>
+  </GetMerchantAccountStatusResult>
+  <ResponseMetadata>
+    <RequestId>51eaf2d5-0b9c-4630-b0e7-1ef61582076a</RequestId>
+  </ResponseMetadata>
+</GetMerchantAccountStatusResponse>

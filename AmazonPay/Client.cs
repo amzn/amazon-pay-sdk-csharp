@@ -1551,6 +1551,32 @@ namespace AmazonPay
         }
 
         /// <summary>
+        /// GetMerchantAccountStatus API call - To query the status of a particular merchant account and retrieve if the account is active or inactive.
+        /// </summary>
+        /// <param name="requestParameters"></param>
+        /// <example>
+        /// <code>
+        ///  GetMerchantAccountStatusRequest requestParameters = new GetMerchantAccountStatusRequest();
+        ///  // Optional
+        ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        /// </code>
+        /// </example>
+        /// <returns>ResponseParser responseObject</returns>
+        public GetMerchantAccountStatusResponse GetMerchantAccountStatus(GetMerchantAccountStatusRequest requestParameters)
+        {
+            Dictionary<string, string> getMerchantAccountStatusDictionary = new Dictionary<string, string>()
+            {
+                {Constants.Action,requestParameters.GetAction()},
+                {Constants.SellerId,requestParameters.GetMerchantId()},
+                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+            };
+            string response = SetParametersAndPost(getMerchantAccountStatusDictionary);
+            GetMerchantAccountStatusResponse responseObject = new GetMerchantAccountStatusResponse(response);
+            return responseObject;
+        }
+
+        /// <summary>
         /// Create an Dictionary of required parameters, sort them
         /// Calculate signature and invoke the POST to the MWS Service URL
         /// </summary>

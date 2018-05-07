@@ -5,39 +5,22 @@ namespace AmazonPay.ProviderCreditRequests
     /// <summary>
     /// Request class to set the ReverseProviderCredit API call parameters
     /// </summary>
-    public class ReverseProviderCreditRequest
+    public class ReverseProviderCreditRequest : DelegateRequest<ReverseProviderCreditRequest>
     {
-        private string action;
-        private string merchant_id;
         private string amazon_provider_credit_id;
         private string credit_reversal_reference_id;
         private decimal amount;
         private string currency_code;
         private string credit_reversal_note;
-        private string mws_auth_token;
 
         public ReverseProviderCreditRequest()
         {
-            this.action = Constants.ReverseProviderCredit;
-        }
-        public string GetAction()
-        {
-            return this.action;
+            SetAction(Constants.ReverseProviderCredit);
         }
 
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>ReverseProviderCreditRequest Object</returns>
-        public ReverseProviderCreditRequest WithMerchantId(string merchant_id)
+        protected override ReverseProviderCreditRequest GetThis()
         {
-            this.merchant_id = merchant_id;
             return this;
-        }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
         }
 
         /// <summary>
@@ -50,6 +33,11 @@ namespace AmazonPay.ProviderCreditRequests
             this.amazon_provider_credit_id = amazon_provider_credit_id;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Amazon Provider Credit ID
+        /// </summary>
+        /// <returns>Amazon Provider Credit ID</returns>
         public string GetAmazonProviderCreditId()
         {
             return this.amazon_provider_credit_id;
@@ -65,6 +53,11 @@ namespace AmazonPay.ProviderCreditRequests
             this.credit_reversal_reference_id = credit_reversal_reference_id;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Credit Reversal Reference ID
+        /// </summary>
+        /// <returns>Credit Reversal Reference ID</returns>
         public string GetCreditReversalReferenceId()
         {
             return this.credit_reversal_reference_id;
@@ -80,6 +73,11 @@ namespace AmazonPay.ProviderCreditRequests
             this.amount = amount;
             return this;
         }
+
+        /// <summary>
+        /// Gets the amount for reversal
+        /// </summary>
+        /// <returns>amount</returns>
         public decimal GetAmount()
         {
             return this.amount;
@@ -113,20 +111,6 @@ namespace AmazonPay.ProviderCreditRequests
         public string GetCreditReversalNote()
         {
             return this.credit_reversal_note;
-        }
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>ReverseProviderCreditRequest Object</returns>
-        public ReverseProviderCreditRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.3.2";
+        public static readonly string SDKClientVersion = "3.4.0";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -129,6 +129,7 @@ namespace AmazonPay
         public static readonly string GetProviderCreditReversalDetails = "GetProviderCreditReversalDetails";
         public static readonly string ReverseProviderCredit = "ReverseProviderCredit";
         public static readonly string SetOrderAttributes = "SetOrderAttributes";
+        public static readonly string GetMerchantAccountStatus = "GetMerchantAccountStatus";
 
         /// <summary>
         /// OrderReference/BillingAgreement state

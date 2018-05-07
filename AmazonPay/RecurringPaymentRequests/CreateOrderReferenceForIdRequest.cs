@@ -5,9 +5,8 @@ namespace AmazonPay.RecurringPaymentRequests
     /// <summary>
     /// Request class to set the CreateOrderReferenceForId API call parameters
     /// </summary>
-    public class CreateOrderReferenceForIdRequest
+    public class CreateOrderReferenceForIdRequest : DelegateRequest<CreateOrderReferenceForIdRequest>
     {
-        private string merchant_id;
         private string id_type;
         private bool inherit_shipping_address = true;
         private bool? confirm_now;
@@ -19,31 +18,15 @@ namespace AmazonPay.RecurringPaymentRequests
         private string store_name;
         private string custom_information;
         private string amazon_billing_agreement_id;
-        private string mws_auth_token;
-        private string action;
 
         public CreateOrderReferenceForIdRequest()
         {
-            this.action = Constants.CreateOrderReferenceForId;
+            SetAction(Constants.CreateOrderReferenceForId);
         }
-        public string GetAction()
-        {
-            return this.action;
-        }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>CreateOrderReferenceForIdRequest Object</returns>
-        public CreateOrderReferenceForIdRequest WithMerchantId(string merchant_id)
-        {
-            this.merchant_id = merchant_id;
 
-            return this;
-        }
-        public string GetMerchantId()
+        protected override CreateOrderReferenceForIdRequest GetThis()
         {
-            return this.merchant_id;
+            return this;
         }
 
         /// <summary>
@@ -56,6 +39,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.amazon_billing_agreement_id = id;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>Amazon Billing Agreement ID</returns>
         public string GetId()
         {
             return this.amazon_billing_agreement_id;
@@ -71,6 +59,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.id_type = id_type;
             return this;
         }
+
+        /// <summary>
+        /// Gets the ID Type
+        /// </summary>
+        /// <returns>ID Type</returns>
         public string GetIdType()
         {
             return this.id_type;
@@ -86,6 +79,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.inherit_shipping_address = inherit_shipping_address;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Inherit Shipping Address value
+        /// </summary>
+        /// <returns>Inherit Shipping Address</returns>
         public string GetInheritShippingAddress()
         {
             return this.inherit_shipping_address.ToString().ToLower();
@@ -102,6 +100,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.confirm_now = confirm_now;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Confirm Now value
+        /// </summary>
+        /// <returns>Confirm Now</returns>
         public string GetConfirmNow()
         {
             return this.confirm_now.ToString().ToLower();
@@ -117,6 +120,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.amount = amount;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Amount
+        /// </summary>
+        /// <returns>Amount</returns>
         public decimal GetAmount()
         {
             return this.amount;
@@ -132,6 +140,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.currency_code = currency_code.ToString();
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Currency Code
+        /// </summary>
+        /// <returns>Currency Code</returns>
         public string GetCurrencyCode()
         {
             return this.currency_code;
@@ -147,6 +160,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.platform_id = platform_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Platform ID
+        /// </summary>
+        /// <returns>Platform ID</returns>
         public string GetPlatformId()
         {
             return this.platform_id;
@@ -162,6 +180,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.seller_note = seller_note;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Seller Note
+        /// </summary>
+        /// <returns>Seller Note</returns>
         public string GetSellerNote()
         {
             return this.seller_note;
@@ -177,6 +200,11 @@ namespace AmazonPay.RecurringPaymentRequests
             this.seller_order_id = seller_order_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Seller Order ID
+        /// </summary>
+        /// <returns>Seller Order ID</returns>
         public string GetSellerOrderId()
         {
             return this.seller_order_id;
@@ -192,10 +220,16 @@ namespace AmazonPay.RecurringPaymentRequests
             this.store_name = store_name;
             return this;
         }
+        
+        /// <summary>
+        /// Gets the Store Name
+        /// </summary>
+        /// <returns>Store Name</returns>
         public string GetStoreName()
         {
             return this.store_name;
         }
+
         /// <summary>
         /// Sets the Custom Information
         /// </summary>
@@ -206,24 +240,14 @@ namespace AmazonPay.RecurringPaymentRequests
             this.custom_information = custom_information;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Custom Information
+        /// </summary>
+        /// <returns>Custom Information</returns>
         public string GetCustomInformation()
         {
             return this.custom_information;
-        }
-
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>CreateOrderReferenceForIdRequest Object</returns>
-        public CreateOrderReferenceForIdRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

@@ -9,21 +9,18 @@ namespace AmazonPay.Responses
     /// Documentation Source https://pay.amazon.com/documentation/apireference/201752580
     /// </summary>
 
-    public class OrderReferenceDetailsResponse : IResponse
+    public class OrderReferenceDetailsResponse : AbstractResponse
     {
-        private string xml;
-        private string json;
         private string amazonOrderReferenceId;
 
         private DateTime expirationTimeStamp;
         private DateTime creationTimestamp;
         private DateTime lastUpdateTimestamp;
-        private IDictionary dictionary;
+
         private List<string> constraintID = new List<string>();
         private List<string> description = new List<string>();
         private bool hasConstraint = false;
 
-        private string requestId;
         private string reasonCode;
         private string reasonDescription;
         private string orderLanguage;
@@ -67,10 +64,6 @@ namespace AmazonPay.Responses
         private string id;
         private string type;
 
-        private string errorCode;
-        private string errorMessage;
-
-        private bool success = false;
         private string parentKey;
 
         /// <summary>
@@ -88,31 +81,11 @@ namespace AmazonPay.Responses
         /// </summary>
         public OrderReferenceDetailsResponse(string xml)
         {
-            this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
-
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
-            if (errorResponse.IsSetErrorCode() || errorResponse.IsSetErrorMessage())
+            SetDictionaryAndErrorResponse(xml);
+            if (success)
             {
-                this.success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                ParseDictionaryToNewVariables(this.dictionary);
             }
-            else
-            {
-                this.success = true;
-                ParseDictionaryToVariables(this.dictionary);
-            }
-        }
-
-        private enum Operator
-        {
-            AmazonOrderReferenceId, ExpirationTimestamp, RequestId, CreationTimestamp, LastUpdateTimestamp, ReasonCode, ReasonDescription, State, SellerNote, Amount,
-            CurrencyCode, PlatformId, PostalCode, Name, Type, Id, Email, Phone, FullDescriptor, isAmazonBalanceFirst, CountryCode, StateOrRegion, AddressLine1, AddressLine2, AddressLine3,
-            City, County, District, DestinationType, ReleaseEnvironment, SellerOrderId, CustomInformation,
-            StoreName, Constraint, ConstraintID, Description, OrderLanguage, member, BillingAddress, Buyer, RequestPaymentAuthorization, PaymentServiceProviderId, PaymentServiceProviderOrderId, OrderItemCategory
         }
 
         /// <summary>
@@ -124,7 +97,7 @@ namespace AmazonPay.Responses
         /// else it will recursively parse the inner dictionary for Type 2
         /// </summary>
         /// <param name="dictionary"></param>
-        private void ParseDictionaryToVariables(IDictionary dictionary)
+        private void ParseDictionaryToNewVariables(IDictionary dictionary)
         {
             foreach (string strKey in dictionary.Keys)
             {
@@ -146,7 +119,7 @@ namespace AmazonPay.Responses
                             billingAddress = new BillingAddressDetails((IDictionary)obj);
                             continue;
                         }
-                        ParseDictionaryToVariables((IDictionary)obj);
+                        ParseDictionaryToNewVariables((IDictionary)obj);
                     }
                     else
                     {
@@ -385,15 +358,6 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Get the RequestId 
-        /// </summary>
-        /// <returns>string requestId</returns>
-        public string GetRequestId()
-        {
-            return this.requestId;
-        }
-
-        /// <summary>
         /// Get the ReasonCode 
         /// </summary>
         /// <returns>string reasonCode</returns>
@@ -574,24 +538,6 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Get the ErrorCode 
-        /// </summary>
-        /// <returns>string errorCode</returns>
-        public string GetErrorCode()
-        {
-            return this.errorCode;
-        }
-
-        /// <summary>
-        /// Get the ErrorMessage 
-        /// </summary>
-        /// <returns>string errorMessage</returns>
-        public string GetErrorMessage()
-        {
-            return this.errorMessage;
-        }
-
-        /// <summary>
         /// Get the HasConstraint 
         /// </summary>
         /// <returns>bool hasConstraint</returns>
@@ -742,42 +688,6 @@ namespace AmazonPay.Responses
         public List<string> GetOrderItemCategories()
         {
             return this.orderItemCategories;
-        }
-
-        /// <summary>
-        /// Get the Success 
-        /// </summary>
-        /// <returns>bool success</returns>
-        public bool GetSuccess()
-        {
-            return this.success;
-        }
-
-        /// <summary>
-        /// Get the Json 
-        /// </summary>
-        /// <returns>string json</returns>
-        public string GetJson()
-        {
-            return this.json;
-        }
-
-        /// <summary>
-        /// Get the XML 
-        /// </summary>
-        /// <returns>string xml</returns>
-        public string GetXml()
-        {
-            return this.xml;
-        }
-
-        /// <summary>
-        /// Get the Dictionary 
-        /// </summary>
-        /// <returns>IDictionary dictionary</returns>
-        public IDictionary GetDictionary()
-        {
-            return this.dictionary;
         }
     }
 }

@@ -6,11 +6,8 @@ using System.Collections.Generic;
 namespace AmazonPay.Responses
 {
 
-    public class ChargebackResponse : IResponse
+    public class ChargebackResponse : AbstractResponse
     {
-        private string xml;
-        private string json;
-        private IDictionary dictionary;
         private string amazonChargebackId;
         private string amazonOrderReferenceId;
         private string amazonCaptureReferenceId;
@@ -19,43 +16,19 @@ namespace AmazonPay.Responses
         private string chargebackReason;
         private decimal chargebackAmount;
         private string chargebackAmountCurrencyCode;
-
-
-        private string requestId;
-
-        private string errorCode;
-        private string errorMessage;
+        
         private string parentKey;
-        private bool success = false;
-
 
         /// <summary>
         /// Get the ChargebackResponse
         /// </summary>
         public ChargebackResponse(string xml)
         {
-            this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
-
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
-            if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
+            SetDictionaryAndErrorResponse(xml);
+            if (success)
             {
-                success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
-            }
-            else
-            {
-                success = true;
-                ParseDictionaryToVariables(this.dictionary);
-            }
-        }
-
-        private enum Operator
-        {
-            AmazonChargebackId, AmazonOrderReferenceId, AmazonCaptureReferenceId, RequestId, Amount, CurrencyCode, ChargebackReason, ChargebackState, CreationTimestamp
+                ParseDictionaryToNewVariables(this.dictionary);
+            } 
         }
 
         /// <summary>
@@ -67,7 +40,7 @@ namespace AmazonPay.Responses
         /// else it will recursively parse the inner dictionary for Type 2
         /// </summary>
         /// <param name="dictionary"></param>
-        private void ParseDictionaryToVariables(IDictionary dictionary)
+        private void ParseDictionaryToNewVariables(IDictionary dictionary)
         {
             foreach (string strKey in dictionary.Keys)
             {
@@ -79,7 +52,7 @@ namespace AmazonPay.Responses
                     if (obj is IDictionary)
                     {
                         parentKey = strKey;
-                        ParseDictionaryToVariables((IDictionary)obj);
+                        ParseDictionaryToNewVariables((IDictionary)obj);
                     }
                     else
                     {
@@ -128,15 +101,6 @@ namespace AmazonPay.Responses
         public string GetAmazonChargebackId()
         {
             return this.amazonChargebackId;
-        }
-
-        /// <summary>
-        /// Get the RequestID
-        /// </summary>
-        /// <returns>string requestID</returns>
-        public string GetRequestId()
-        {
-            return this.requestId;
         }
 
         /// <summary>
@@ -200,60 +164,6 @@ namespace AmazonPay.Responses
         public DateTime GetCreationTimestamp()
         {
             return this.creationTimestamp;
-        }
-
-        /// <summary>
-        /// Get the ErrorCode
-        /// </summary>
-        /// <returns>string errorCode</returns>
-        public string GetErrorCode()
-        {
-            return errorCode;
-        }
-
-        /// <summary>
-        /// Get the ErrorMessage
-        /// </summary>
-        /// <returns>string errorMessage</returns>
-        public string GetErrorMessage()
-        {
-            return errorMessage;
-        }
-
-        /// <summary>
-        /// Get the Success
-        /// </summary>
-        /// <returns>bool success</returns>
-        public bool GetSuccess()
-        {
-            return success;
-        }
-
-        /// <summary>
-        /// Get the XML
-        /// </summary>
-        /// <returns>string xml</returns>
-        public string GetXml()
-        {
-            return this.xml;
-        }
-
-        /// <summary>
-        /// Get the Json
-        /// </summary>
-        /// <returns>string json</returns>
-        public string GetJson()
-        {
-            return this.json;
-        }
-
-        /// <summary>
-        /// Get the Dictionary
-        /// </summary>
-        /// <returns>IDictionary dictionary</returns>
-        public IDictionary GetDictionary()
-        {
-            return this.dictionary;
         }
     }
 }

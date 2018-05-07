@@ -9,13 +9,9 @@ namespace AmazonPay.Responses
     /// Documentation Source https://pay.amazon.com/documentation/apireference/201752740
     /// </summary>
 
-    public class RefundResponse : IResponse
+    public class RefundResponse : AbstractResponse
     {
-        private string xml;
-        private string json;
-        private IDictionary dictionary;
         private string amazonRefundId;
-        private string requestId;
         private string refundReferenceId;
         private string sellerNote;
         private string sellerRefundNote;
@@ -42,40 +38,18 @@ namespace AmazonPay.Responses
         private List<string> providerCreditReversalId = new List<string>();
         private List<string> providerId = new List<string>();
 
-        private string errorCode;
-        private string errorMessage;
         private string parentKey;
-        private bool success = false;
-
 
         /// <summary>
         /// Get the RefundResponse
         /// </summary>
         public RefundResponse(string xml)
         {
-            this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
-
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
-            if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
+            SetDictionaryAndErrorResponse(xml);
+            if (success)
             {
-                success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                ParseDictionaryToNewVariables(this.dictionary);
             }
-            else
-            {
-                success = true;
-                ParseDictionaryToVariables(this.dictionary);
-            }
-        }
-
-        private enum Operator
-        {
-            AmazonRefundId, RequestId, SellerRefundNote, RefundReferenceId, Amount, CurrencyCode, RefundAmount, FeeRefunded, ReasonCode, ReasonDescription, RefundType, ConvertedAmount, ConversionRate, 
-            SoftDescriptor, State, ProviderCreditReversalSummaryList, LastUpdateTimestamp, CreationTimestamp, member, ProviderId, ProviderSellerId, ProviderCreditReversalId
         }
 
         /// <summary>
@@ -87,7 +61,7 @@ namespace AmazonPay.Responses
         /// else it will recursively parse the inner dictionary for Type 2
         /// </summary>
         /// <param name="dictionary"></param>
-        private void ParseDictionaryToVariables(IDictionary dictionary)
+        private void ParseDictionaryToNewVariables(IDictionary dictionary)
         {
             foreach (string strKey in dictionary.Keys)
             {
@@ -99,7 +73,7 @@ namespace AmazonPay.Responses
                     if (obj is IDictionary)
                     {
                         parentKey = strKey;
-                        ParseDictionaryToVariables((IDictionary)obj);
+                        ParseDictionaryToNewVariables((IDictionary)obj);
                     }
                     else
                     {
@@ -218,15 +192,6 @@ namespace AmazonPay.Responses
         public string GetAmazonRefundId()
         {
             return this.amazonRefundId;
-        }
-
-        /// <summary>
-        /// Get the RequestID
-        /// </summary>
-        /// <returns>string requestID</returns>
-        public string GetRequestId()
-        {
-            return this.requestId;
         }
 
         /// <summary>
@@ -390,60 +355,5 @@ namespace AmazonPay.Responses
         {
             return this.softDescriptor;
         }
-
-        /// <summary>
-        /// Get the ErrorCode
-        /// </summary>
-        /// <returns>string errorCode</returns>
-        public string GetErrorCode()
-        {
-            return errorCode;
-        }
-
-        /// <summary>
-        /// Get the ErrorMessage
-        /// </summary>
-        /// <returns>string errorMessage</returns>
-        public string GetErrorMessage()
-        {
-            return errorMessage;
-        }
-
-        /// <summary>
-        /// Get the Success
-        /// </summary>
-        /// <returns>bool success</returns>
-        public bool GetSuccess()
-        {
-            return success;
-        }
-
-        /// <summary>
-        /// Get the XML
-        /// </summary>
-        /// <returns>string xml</returns>
-        public string GetXml()
-        {
-            return this.xml;
-        }
-
-        /// <summary>
-        /// Get the Json
-        /// </summary>
-        /// <returns>string json</returns>
-        public string GetJson()
-        {
-            return this.json;
-        }
-        /// <summary>
-        /// Get the Dictionary
-        /// </summary>
-        /// <returns>IDictionary dictionary</returns>
-
-        public IDictionary GetDictionary()
-        {
-            return this.dictionary;
-        }
-
     }
 }

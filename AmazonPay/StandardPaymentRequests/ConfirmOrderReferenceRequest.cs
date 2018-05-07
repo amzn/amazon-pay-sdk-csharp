@@ -3,36 +3,20 @@
     /// <summary>
     /// Request class to set the ConfirmOrderReference API call parameters
     /// </summary>
-    public class ConfirmOrderReferenceRequest
+    public class ConfirmOrderReferenceRequest : DelegateRequest<ConfirmOrderReferenceRequest>
     {
-        private string action;
         private string amazon_order_reference_id;
-        private string merchant_id;
-        private string mws_auth_token;
 
         public ConfirmOrderReferenceRequest()
         {
-            this.action = Constants.ConfirmOrderReference;
-        }
-        public string GetAction()
-        {
-            return this.action;
-        }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>ConfirmOrderReferenceRequest Object</returns>
-        public ConfirmOrderReferenceRequest WithMerchantId(string merchant_id)
-        {
-            this.merchant_id = merchant_id;
-            return this;
+            SetAction(Constants.ConfirmOrderReference);
         }
 
-        public string GetMerchantId()
+        protected override ConfirmOrderReferenceRequest GetThis()
         {
-            return this.merchant_id;
+            return this;
         }
+        
         /// <summary>
         /// Sets the Amazon Order Reference ID
         /// </summary>
@@ -43,24 +27,14 @@
             this.amazon_order_reference_id = amazon_order_reference_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amazon Order Reference ID
+        /// </summary>
+        /// <returns>Amazon Order Reference ID</returns>
         public string GetAmazonOrderReferenceId()
         {
             return this.amazon_order_reference_id;
-        }
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>ConfirmOrderReferenceRequest Object</returns>
-        public ConfirmOrderReferenceRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

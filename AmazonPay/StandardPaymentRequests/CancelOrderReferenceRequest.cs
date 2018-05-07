@@ -3,36 +3,19 @@
     /// <summary>
     /// Request class to set the CancelOrderReference API call parameters
     /// </summary>
-    public class CancelOrderReferenceRequest
+    public class CancelOrderReferenceRequest : DelegateRequest<CancelOrderReferenceRequest>
     {
-        private string merchant_id;
         private string amazon_order_reference_id;
         private string cancelation_reason;
-        private string mws_auth_token;
-        private string action;
 
         public CancelOrderReferenceRequest()
         {
-            this.action = Constants.CancelOrderReference;
-        }
-        public string GetAction()
-        {
-            return this.action;
+            SetAction(Constants.CancelOrderReference);
         }
 
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>CancelOrderReferenceRequest Object</returns>
-        public CancelOrderReferenceRequest WithMerchantId(string merchant_id)
+        protected override CancelOrderReferenceRequest GetThis()
         {
-            this.merchant_id = merchant_id;
             return this;
-        }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
         }
 
         /// <summary>
@@ -45,6 +28,11 @@
             this.amazon_order_reference_id = amazon_order_reference_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amazon Order Reference ID
+        /// </summary>
+        /// <returns>Amazon Order Reference ID</returns>
         public string GetAmazonOrderReferenceId()
         {
             return this.amazon_order_reference_id;
@@ -60,24 +48,14 @@
             this.cancelation_reason = cancelation_reason;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Cancelation reason
+        /// </summary>
+        /// <returns>Cancelation reason</returns>
         public string GetCancelationReason()
         {
             return this.cancelation_reason;
-        }
-
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>CancelOrderReferenceRequest Object</returns>
-        public CancelOrderReferenceRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

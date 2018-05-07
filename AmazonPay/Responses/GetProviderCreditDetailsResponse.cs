@@ -5,16 +5,13 @@ using System.Collections.Generic;
 
 namespace AmazonPay.Responses
 {
-    public class GetProviderCreditDetailsResponse : IResponse
+    public class GetProviderCreditDetailsResponse : AbstractResponse
     {
-        private string xml;
-        private string json;
-        private IDictionary dictionary;
+        
         private string amazonProviderCreditId;
         private string providerId;
         private string sellerId;
         private string creditReferenceId;
-        private string requestId;
 
         private decimal creditAmount;
         private string creditAmountCurrencyCode;
@@ -32,9 +29,6 @@ namespace AmazonPay.Responses
         private string reasonDescription;
         private string softDescriptor;
 
-        private string errorCode;
-        private string errorMessage;
-        private bool success = false;
         private string parentKey;
 
         /// <summary>
@@ -42,29 +36,11 @@ namespace AmazonPay.Responses
         /// </summary>
         public GetProviderCreditDetailsResponse(string xml)
         {
-            this.xml = xml;
-            this.json = ResponseParser.ToJson(xml);
-            this.dictionary = ResponseParser.ToDict(xml);
-
-            ErrorResponse errorResponse = new ErrorResponse(this.dictionary);
-            if (errorResponse.IsSetErrorCode() && errorResponse.IsSetErrorMessage())
+            SetDictionaryAndErrorResponse(xml);
+            if (success)
             {
-                success = false;
-                this.errorCode = errorResponse.GetErrorCode();
-                this.errorMessage = errorResponse.GetErrorMessage();
-                this.requestId = errorResponse.GetRequestId();
+                ParseDictionaryToNewVariables(this.dictionary);
             }
-            else
-            {
-                success = true;
-                ParseDictionaryToVariables(this.dictionary);
-            }
-        }
-
-        private enum Operator
-        {
-            AmazonProviderCreditId, RequestId, ProviderId, ProviderSellerId, CreditReferenceId, Amount, CreditAmount, CreditReversalAmount, CurrencyCode, ReasonCode, ReasonDescription,
-            State, SoftDescriptor, LastUpdateTimestamp, member, Id, SellerId
         }
 
         /// <summary>
@@ -76,7 +52,7 @@ namespace AmazonPay.Responses
         /// else it will recursively parse the inner dictionary for Type 2
         /// </summary>
         /// <param name="dictionary"></param>
-        private void ParseDictionaryToVariables(IDictionary dictionary)
+        private void ParseDictionaryToNewVariables(IDictionary dictionary)
         {
             foreach (string strKey in dictionary.Keys)
             {
@@ -88,7 +64,7 @@ namespace AmazonPay.Responses
                     if (obj is IDictionary)
                     {
                         parentKey = strKey;
-                        ParseDictionaryToVariables((IDictionary)obj);
+                        ParseDictionaryToNewVariables((IDictionary)obj);
                     }
                     else
                     {
@@ -201,15 +177,6 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
-        /// Get the requestId
-        /// </summary>
-        /// <returns>string requestId</returns>
-        public string GetRequestId()
-        {
-            return this.requestId;
-        }
-
-        /// <summary>
         /// Get the Creation timestamp of the Amazon Provider Credit ID
         /// </summary>
         /// <returns>DateTime creationTimestamp</returns>
@@ -315,60 +282,6 @@ namespace AmazonPay.Responses
         public string GetSellerId()
         {
             return this.sellerId;
-        }
-
-        /// <summary>
-        /// Get the ErrorCode when te API call failed
-        /// </summary>
-        /// <returns>string errorCode</returns>
-        public string GetErrorCode()
-        {
-            return errorCode;
-        }
-
-        /// <summary>
-        /// Get the ErrorMessage when the API call failed
-        /// </summary>
-        /// <returns>string errorMesage</returns>
-        public string GetErrorMessage()
-        {
-            return errorMessage;
-        }
-
-        /// <summary>
-        /// Get the bool value to know if the API call was a success(true) or a failure(false)
-        /// </summary>
-        /// <returns>success can be true or false</returns>
-        public bool GetSuccess()
-        {
-            return this.success;
-        }
-
-        /// <summary>
-        /// Response returned in XML format
-        /// </summary>
-        /// <returns>XML format Response</returns>
-        public string GetXml()
-        {
-            return this.xml;
-        }
-
-        /// <summary>
-        /// Response in Dictionary Format
-        /// </summary>
-        /// <returns>Dictionary<string,object> type Response</returns>
-        public IDictionary GetDictionary()
-        {
-            return this.dictionary;
-        }
-
-        /// <summary>
-        /// Response returned in JSON format
-        /// </summary>
-        /// <returns>JSON format Response</returns>
-        public string GetJson()
-        {
-            return this.json;
         }
     }
 }

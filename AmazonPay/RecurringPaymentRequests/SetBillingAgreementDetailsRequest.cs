@@ -3,10 +3,8 @@
     /// <summary>
     /// Request class to set the SetBillingAgreementDetails API call parameters
     /// </summary>
-    public class SetBillingAgreementDetailsRequest
+    public class SetBillingAgreementDetailsRequest : DelegateRequest<SetBillingAgreementDetailsRequest>
     {
-        private string action;
-        private string merchant_id;
         private string amazon_billing_agreement_id;
         private string platform_id;
         private string seller_note;
@@ -14,33 +12,19 @@
         private string seller_billing_agreement_id;
         private string store_name;
         private string custom_information;
-        private string mws_auth_token;
 
         public SetBillingAgreementDetailsRequest()
         {
-            this.action = Constants.SetBillingAgreementDetails;
+            SetAction(Constants.SetBillingAgreementDetails);
         }
-        public string GetAction()
+
+        protected override SetBillingAgreementDetailsRequest GetThis()
         {
-            return this.action;
-        }
-        /// <summary>
-        /// Sets the Merchant ID
-        /// </summary>
-        /// <param name="merchant_id"></param>
-        /// <returns>SetBillingAgreementDetailsRequest Object</returns>
-        public SetBillingAgreementDetailsRequest WithMerchantId(string merchant_id)
-        {
-            this.merchant_id = merchant_id;
             return this;
-        }
-        public string GetMerchantId()
-        {
-            return this.merchant_id;
         }
 
         /// <summary>
-        /// Sets the Amazon Order Reference ID
+        /// Sets the Amazon Billing Agreement ID
         /// </summary>
         /// <param name="amazon_billing_agreement_id"></param>
         /// <returns>SetBillingAgreementDetailsRequest Object</returns>
@@ -49,9 +33,34 @@
             this.amazon_billing_agreement_id = amazon_billing_agreement_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Amazon Billing Agreement ID
+        /// </summary>
+        /// <returns>Amazon Billing Agreement ID</returns>
         public string GetAmazonBillingAgreementId()
         {
             return this.amazon_billing_agreement_id;
+        }
+
+        /// <summary>
+        /// Sets the Seller Order ID
+        /// </summary>
+        /// <param name="amazon_billing_agreement_id"></param>
+        /// <returns>SetBillingAgreementDetailsRequest Object</returns>
+        public SetBillingAgreementDetailsRequest WithSellerOrderId(string seller_order_id)
+        {
+            this.seller_order_id = seller_order_id;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Seller Order ID
+        /// </summary>
+        /// <returns>Seller Order ID</returns>
+        public string GetSellerOrderId()
+        {
+            return this.seller_order_id;
         }
 
         /// <summary>
@@ -64,6 +73,11 @@
             this.platform_id = platform_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Platform ID
+        /// </summary>
+        /// <returns>Platform ID</returns>
         public string GetPlatformId()
         {
             return this.platform_id;
@@ -79,6 +93,11 @@
             this.seller_note = seller_note;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Seller Note
+        /// </summary>
+        /// <returns>Seller Note</returns>
         public string GetSellerNote()
         {
             return this.seller_note;
@@ -94,6 +113,11 @@
             this.seller_billing_agreement_id = seller_billing_agreement_id;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Seller Billing Agreement ID
+        /// </summary>
+        /// <returns>Seller Billing Agreement ID</returns>
         public string GetSellerBillingAgreementId()
         {
             return this.seller_billing_agreement_id;
@@ -109,10 +133,16 @@
             this.store_name = store_name;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Store Name
+        /// </summary>
+        /// <returns>Store Name</returns>
         public string GetStoreName()
         {
             return this.store_name;
         }
+
         /// <summary>
         /// Sets the Custom Information
         /// </summary>
@@ -123,24 +153,14 @@
             this.custom_information = custom_information;
             return this;
         }
+
+        /// <summary>
+        /// Gets the Custom Information
+        /// </summary>
+        /// <returns>Custom Information</returns>
         public string GetCustomInformation()
         {
             return this.custom_information;
-        }
-
-        /// <summary>
-        /// Sets the MWS Auth Token
-        /// </summary>
-        /// <param name="mws_auth_token"></param>
-        /// <returns>SetBillingAgreementDetailsRequest Object</returns>
-        public SetBillingAgreementDetailsRequest WithMWSAuthToken(string mws_auth_token)
-        {
-            this.mws_auth_token = mws_auth_token;
-            return this;
-        }
-        public string GetMWSAuthToken()
-        {
-            return this.mws_auth_token;
         }
     }
 }

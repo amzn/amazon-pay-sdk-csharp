@@ -1,3 +1,9 @@
+Version 3.4.0 April 2018
+- Add support for GetMerchantAccountStatus API call.
+- Refactor all response classes.
+- Refactor all request classes.
+- Add unit tests for all responses.
+
 Version 3.3.2 February 2018
 - Update version number in all relevant files
 

@@ -43,6 +43,7 @@ Folder PATH listing
 |       UnitTests.dll
 |                     
 +---AmazonPay
+|   |   AccountStatus.cs
 |   |   Client.cs
 |   |   Constants.cs
 |   |   HttpImpl.cs
@@ -81,6 +82,7 @@ Folder PATH listing
 |   |       ConfirmBillingAgreementResponse.cs
 |   |       ConfirmOrderReferenceResponse.cs
 |   |       ErrorResponse.cs
+|   |       GetMerchantAccountStatus.cs
 |   |       GetProviderCreditDetailsResponse.cs
 |   |       GetProviderCreditReversalDetailsResponse.cs
 |   |       GetServiceStatusResponse.cs
@@ -99,9 +101,11 @@ Folder PATH listing
 |           ConfirmOrderReferenceRequest.cs
 |           GetAuthorizationDetailsRequest.cs
 |           GetCaptureDetailsRequest.cs
+|           GetMerchantAccountStatusRequest.cs
 |           GetOrderReferenceDetailsRequest.cs
 |           GetRefundDetailsRequest.cs
 |           RefundRequest.cs
+|           SetOrderAttributesRequest.cs
 |           SetOrderReferenceDetailsRequest.cs
 |           
 |                 
@@ -633,4 +637,25 @@ string userId = jsonObject.GetValue("user_id").ToString();
     System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetFullDescriptor());
     System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetAmazonBalanceFirst());
     System.Diagnostics.Debug.WriteLine(getOrderReferenceDetailsResponse.GetXml());
+```
+
+### Get Merchant Account Status API
+
+##### The GetMerchantAccountStatus operation is used to query the status of a particular merchant account and to retrieve information if the account is active or inactive.
+
+```
+// To check the status of your merchant account
+GetMerchantAccountStatusRequest request = new GetMerchantAccountStatusRequest();
+request.WithMerchantId("YOUR_MERCHANT_ID");
+
+GetMerchantAccountStatusResponse response = client.GetMerchantAccountStatus(request);
+System.Diagnostics.Debug.WriteLine("Merchant account status is:" + " " + response.GetAccountStatus());
+
+// Or using MWS delegation to check on the status of another merchant account
+GetMerchantAccountStatusRequest request = new GetMerchantAccountStatusRequest();
+request.WithMerchantId("YOUR_MERCHANT_ID")
+		.WithMWSAuthToken("YOUR_MWS_AUTH_TOKEN");
+
+GetMerchantAccountStatusResponse response = client.GetMerchantAccountStatus(request);
+System.Diagnostics.Debug.WriteLine("Child account status is:" + " " + response.GetAccountStatus());
 ```
