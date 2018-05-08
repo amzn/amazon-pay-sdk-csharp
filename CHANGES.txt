@@ -1,3 +1,6 @@
+Version 3.4.1 May 2018
+- Update json files with the new SigningCertURL value.
+
 Version 3.4.0 April 2018
 - Add support for GetMerchantAccountStatus API call.
 - Refactor all response classes.

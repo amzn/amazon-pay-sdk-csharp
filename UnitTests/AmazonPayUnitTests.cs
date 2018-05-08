@@ -346,12 +346,12 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackState(), new ChargebackResponse(xmlData).GetChargebackState());
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetCreationTimestamp(), new ChargebackResponse(xmlData).GetCreationTimestamp());
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonCaptureId(), new ChargebackResponse(xmlData).GetAmazonCaptureId());
-            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "5724eb31-5cb9-45a8-a0f4-d82ba12e4d3d");
+            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "1111111-1111-11111-1111-11111EXAMPLE");
             Assert.AreEqual(ipnHandler.GetNotificationType().ToString(), "ChargebackDetailedNotification");
-            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A08593053M41F7TQ7YR7W");
-            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "165570");
+            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A2AMR0CLHFUKIG");
+            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "A3BXB0YN3XH17H");
             Assert.AreEqual(ipnHandler.GetVersion().ToString(), "2013-01-01");
-            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Live");
+            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Sandbox");
         }
 
         [Test]
@@ -375,12 +375,12 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackState(), new ChargebackResponse(xmlData).GetChargebackState());
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetCreationTimestamp(), new ChargebackResponse(xmlData).GetCreationTimestamp());
             Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonCaptureId(), new ChargebackResponse(xmlData).GetAmazonCaptureId());
-            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "f01d98f8-969f-41ac-b6cb-930727f47786");
+            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "1111111-1111-11111-1111-11111EXAMPLE");
             Assert.AreEqual(ipnHandler.GetNotificationType().ToString(), "ChargebackDetailedNotification");
-            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A08593053M41F7TQ7YR7W");
-            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "165570");
+            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A2AMR0CLHFUKIG");
+            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "A3BXB0YN3XH17H");
             Assert.AreEqual(ipnHandler.GetVersion().ToString(), "2013-01-01");
-            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Live");
+            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Sandbox");
         }
 
         [Test]
