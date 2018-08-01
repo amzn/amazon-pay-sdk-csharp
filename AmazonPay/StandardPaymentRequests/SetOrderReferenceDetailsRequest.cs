@@ -16,6 +16,7 @@ namespace AmazonPay.StandardPaymentRequests
         protected string store_name;
         protected string custom_information;
         protected bool request_payment_authorization;
+        protected string supplementary_data;
 
         public SetOrderReferenceDetailsRequest()
         {
@@ -206,6 +207,26 @@ namespace AmazonPay.StandardPaymentRequests
         public bool GetRequestPaymentAuthorization()
         {
             return this.request_payment_authorization;
+        }
+
+        /// <summary>
+        /// Sets the Supplementary Data
+        /// </summary>
+        /// <param name="supplementary_data"></param>
+        /// <returns>SetOrderReferenceDetailsRequest Object</returns>
+        public SetOrderReferenceDetailsRequest WithSupplementaryData(string supplementary_data)
+        {
+            this.supplementary_data = supplementary_data;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Supplementary Data
+        /// </summary>
+        /// <returns>Supplementary Data</returns>
+        public string GetSupplementaryData()
+        {
+            return this.supplementary_data;
         }
     }
 }

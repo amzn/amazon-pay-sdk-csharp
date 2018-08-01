@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.4.1";
+        public static readonly string SDKClientVersion = "3.4.2";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -32,6 +32,7 @@ namespace AmazonPay
         public static readonly string OrderReferenceAttributes_SellerNote = "OrderReferenceAttributes.SellerNote";
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId = "OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId";
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_StoreName = "OrderReferenceAttributes.SellerOrderAttributes.StoreName";
+        public static readonly string OrderReferenceAttributes_SellerOrderAttributes_SupplementaryData = "OrderReferenceAttributes.SellerOrderAttributes.SupplementaryData";
         public static readonly string OrderReferenceAttributes_RequestPaymentAuthorization = "OrderReferenceAttributes.RequestPaymentAuthorization";
 
         public static readonly string OrderReferenceAttributes_SellerOrderAttributes_CustomInformation = "OrderReferenceAttributes.SellerOrderAttributes.CustomInformation";
@@ -96,6 +97,7 @@ namespace AmazonPay
         public static readonly string OrderAttributes_RequestPaymentAuthorization = "OrderAttributes.RequestPaymentAuthorization";
         public static readonly string OrderAttributes_SellerNote = "OrderAttributes.SellerNote";
         public static readonly string OrderAttributes_SellerOrderAttributes_CustomInformation = "OrderAttributes.SellerOrderAttributes.CustomInformation";
+        public static readonly string OrderAttributes_SellerOrderAttributes_SupplementaryData = "OrderAttributes.SellerOrderAttributes.SupplementaryData";
         public static readonly string OrderAttributes_SellerOrderAttributes_OrderItemCategories = "OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory";
         public static readonly string OrderAttributes_SellerOrderAttributes_SellerOrderId = "OrderAttributes.SellerOrderAttributes.SellerOrderId";
         public static readonly string OrderAttributes_SellerOrderAttributes_StoreName = "OrderAttributes.SellerOrderAttributes.StoreName";

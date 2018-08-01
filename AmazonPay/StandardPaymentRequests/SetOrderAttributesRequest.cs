@@ -21,6 +21,7 @@ namespace AmazonPay.StandardPaymentRequests
         private string payment_service_provider_id;
         private string payment_service_provider_order_id;
         private List<string> order_item_categories;
+        private string supplementary_data;
 
        public SetOrderAttributesRequest()
         {
@@ -271,6 +272,28 @@ namespace AmazonPay.StandardPaymentRequests
         public List<string> GetOrderItemCategories()
         {
             return this.order_item_categories;
+        }
+
+        /// <summary>
+        /// Sets the Supplementary Data
+        /// </summary>
+        /// <param name="supplementary_data">
+        /// Supplementary data in valid JSON format
+        /// </param>
+        /// <returns>SetOrderAttributesRequest Object</returns>
+        public SetOrderAttributesRequest WithSupplementaryData(string supplementary_data)
+        {
+            this.supplementary_data = supplementary_data;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Supplementary Data
+        /// </summary>
+        /// <returns>Supplementary Data</returns>
+        public string GetSupplementaryData()
+        {
+            return this.supplementary_data;
         }
     }
 }

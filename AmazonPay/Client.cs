@@ -506,6 +506,7 @@ namespace AmazonPay
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId,requestParameters.GetSellerOrderId()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_StoreName,requestParameters.GetStoreName()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_CustomInformation,requestParameters.GetCustomInformation()},
+                {Constants.OrderReferenceAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
                 {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
                 {Constants.OrderReferenceAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower()}
             };
@@ -1523,7 +1524,8 @@ namespace AmazonPay
                 {Constants.OrderAttributes_SellerNote, requestParameters.GetSellerNote()},            
                 {Constants.OrderAttributes_SellerOrderAttributes_SellerOrderId, requestParameters.GetSellerOrderId()},            
                 {Constants.OrderAttributes_SellerOrderAttributes_StoreName, requestParameters.GetStoreName()},            
-                {Constants.OrderAttributes_SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation()},            
+                {Constants.OrderAttributes_SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation()},
+                {Constants.OrderAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
                 {Constants.OrderAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower()},           
                 {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderId, requestParameters.GetPaymentServiceProviderId()},            
                 {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId, requestParameters.GetPaymentServiceProviderOrderId()}

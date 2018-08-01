@@ -34,7 +34,7 @@
 
         //OrderReferenceDetailsResponse
         FullDescriptor, isAmazonBalanceFirst, OrderLanguage, RequestPaymentAuthorization, PaymentServiceProviderId, 
-        PaymentServiceProviderOrderId, OrderItemCategory, 
+        PaymentServiceProviderOrderId, OrderItemCategory, SupplementaryData,
         
         //GetMerchantAccountStatusResponse
         AccountStatus,

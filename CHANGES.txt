@@ -1,3 +1,7 @@
+Version 3.4.2 July 2018
+- Add parameter SupplementaryData to SetOrderAttributes, SetOrderReferenceDetails and GetOrderReferenceDetails API calls.
+- Update Newtonsoft JSON.NET library version from 4.5.11 to 11.0.2.
+
 Version 3.4.1 May 2018
 - Update json files with the new SigningCertURL value.
 

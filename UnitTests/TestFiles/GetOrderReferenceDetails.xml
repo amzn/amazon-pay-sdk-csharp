@@ -30,6 +30,7 @@
           <OrderItemCategory>Apparel</OrderItemCategory>
         </OrderItemCategories>
         <SellerOrderId>test-12345</SellerOrderId>
+        <SupplementaryData>{"Travel": {"version" : "1.0", "PassengerName": "Megan Fisher", "AirlineCode": "AS", "FlightDate": "2018-01-01","DepartureAirport": "SEA"},"Accommodation": {"version" : "2.0","GuestName": "John Walker","LengthOfStay": 2,"NumberOfGuests": 1}}</SupplementaryData>
       </SellerOrderAttributes>
       <PaymentDescriptor>
         <Name>Visa</Name>

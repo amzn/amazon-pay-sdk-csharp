@@ -154,6 +154,8 @@ namespace UnitTests
         [Test]
         public void TestGetOrderReferenceDetails()
         {
+            string sampleSupplementaryData = getSampleSupplementaryData();
+
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()  {
                 {"Action","GetOrderReferenceDetails"},
                 {"SellerId","test"},
@@ -203,6 +205,7 @@ namespace UnitTests
             Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetPostalCode(), "54911");
             Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetCountryCode(), "US");
             Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetName(), "Christopher C. Conn");
+            Assert.AreEqual(oroResponseObject.GetSupplementaryData(), sampleSupplementaryData);
             
             //Test Payment Descriptor
             Assert.AreEqual(oroResponseObject.GetAmazonBalanceFirst().ToString(), "False");
@@ -386,6 +389,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         [Test]
         public void TestSetOrderReferenceDetails()
         {
+            string sampleSupplementaryData = getSampleSupplementaryData();
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","SetOrderReferenceDetails"},
@@ -398,6 +402,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SupplementaryData",sampleSupplementaryData},
                 {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
                 {"MWSAuthToken","test"}
             };
@@ -424,6 +429,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerOrderId("test")
                 .WithStoreName("test")
                 .WithCustomInformation("test")
+                .WithSupplementaryData(sampleSupplementaryData)
                 .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
             
@@ -439,6 +445,8 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
+            string sampleSupplementaryData = getSampleSupplementaryData();
+
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","SetOrderReferenceDetails"},
@@ -451,6 +459,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SupplementaryData", sampleSupplementaryData},
                 {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
                 {"MWSAuthToken","test"}
             };
@@ -477,6 +486,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerOrderId("test")
                 .WithStoreName("test")
                 .WithCustomInformation("test")
+                .WithSupplementaryData(sampleSupplementaryData)
                 .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
 
@@ -492,6 +502,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
+            string sampleSupplementaryData = getSampleSupplementaryData();
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","SetOrderReferenceDetails"},
@@ -504,6 +515,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
                 {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SupplementaryData", sampleSupplementaryData},
                 {"OrderReferenceAttributes.RequestPaymentAuthorization", "true"},
                 {"MWSAuthToken","test"}
             };
@@ -530,6 +542,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerOrderId("test")
                 .WithStoreName("test")
                 .WithCustomInformation("test")
+                .WithSupplementaryData(sampleSupplementaryData)
                 .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
 
@@ -541,6 +554,8 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         [Test]
         public void TestSetOrderAttributes()
         {
+            string sampleSupplementaryData = getSampleSupplementaryData();
+
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","SetOrderAttributes"},
@@ -553,6 +568,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 {"OrderAttributes.SellerOrderAttributes.SellerOrderId","test-12345"},
                 {"OrderAttributes.SellerOrderAttributes.StoreName","testStore #12345"},
                 {"OrderAttributes.SellerOrderAttributes.CustomInformation","test"},
+                {"OrderAttributes.SellerOrderAttributes.SupplementaryData", sampleSupplementaryData},
                 {"OrderAttributes.RequestPaymentAuthorization", "true"},
                 {"OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderId", "A2STY9B5HPCDII"},
                 {"OrderAttributes.PaymentServiceProviderAttributes.PaymentServiceProviderOrderId", "PSP-Order-Id"},
@@ -588,6 +604,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerOrderId("test-12345")
                 .WithStoreName("testStore #12345")
                 .WithCustomInformation("test")
+                .WithSupplementaryData(sampleSupplementaryData)
                 .WithRequestPaymentAuthorization(true);
 
             client.SetOrderAttributes(setOrderAttributes);
@@ -605,6 +622,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Assert.AreEqual(oroResponseObject.GetPaymentServiceProviderId(), "A2STY9B5HPCDII");
             Assert.AreEqual(oroResponseObject.GetPaymentServiceProviderOrderId(), "PSP-Order-Id");
             Assert.AreEqual(oroResponseObject.GetOrderItemCategories().Count, 2);
+            Assert.AreEqual(oroResponseObject.GetSupplementaryData(), sampleSupplementaryData);
 
             Assert.AreEqual(oroResponseObject.GetXml(), rawResponse);
         }
@@ -2084,6 +2102,11 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             }
 
             return dict;
+        }
+
+        private string getSampleSupplementaryData()
+        {
+            return "{\"Travel\": {\"version\" : \"1.0\", \"PassengerName\": \"Megan Fisher\", \"AirlineCode\": \"AS\", \"FlightDate\": \"2018-01-01\",\"DepartureAirport\": \"SEA\"},\"Accommodation\": {\"version\" : \"2.0\",\"GuestName\": \"John Walker\",\"LengthOfStay\": 2,\"NumberOfGuests\": 1}}";
         }
     }
 }

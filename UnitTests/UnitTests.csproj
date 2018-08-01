@@ -31,7 +31,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AmazonPay, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AmazonPay, Version=3.4.2.0, Culture=neutral, PublicKeyToken=21f551eda64a8c99, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\AmazonPay.dll</HintPath>
     </Reference>
@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />

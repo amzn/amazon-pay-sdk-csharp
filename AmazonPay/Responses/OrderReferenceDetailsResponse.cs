@@ -57,6 +57,7 @@ namespace AmazonPay.Responses
         private string storeName;
         private string sellerOrderId;
         private string customInformation;
+        private string supplementaryData;
 
         /// <summary>
         /// Billing Agreement ID for CreateOrderReferenceForID API call
@@ -313,6 +314,9 @@ namespace AmazonPay.Responses
                                     {
                                        orderItemCategories.Add(obj.ToString());
                                     }
+                                    break;
+                                case Operator.SupplementaryData:
+                                    supplementaryData = obj.ToString();
                                     break;
                             }
                         }
@@ -688,6 +692,15 @@ namespace AmazonPay.Responses
         public List<string> GetOrderItemCategories()
         {
             return this.orderItemCategories;
+        }
+
+        /// <summary>
+        /// Get the SupplemetaryData
+        /// </summary>
+        /// <returns>string supplementaryData</returns>
+        public string GetSupplementaryData()
+        {
+            return this.supplementaryData;
         }
     }
 }
