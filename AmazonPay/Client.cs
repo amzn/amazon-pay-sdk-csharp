@@ -1528,7 +1528,8 @@ namespace AmazonPay
                 {Constants.OrderAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
                 {Constants.OrderAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower()},           
                 {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderId, requestParameters.GetPaymentServiceProviderId()},            
-                {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId, requestParameters.GetPaymentServiceProviderOrderId()}
+                {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId, requestParameters.GetPaymentServiceProviderOrderId()},
+                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
             };
            
             if (requestParameters.GetAmount() != null)
