@@ -1506,6 +1506,7 @@ namespace AmazonPay
         ///   requestParameters.WithSellerOrderId("CUSTOM_ORDER_ID");
         ///   requestParameters.WithStoreName("CUSTOM_STORE_NAME");
         ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///   requestParameters.WithRequestPaymentAuthorization("REQUEST_PAYMENT_AUTHORIZATION");
         ///   requestParameters.WithPaymentServiceProviderId("PAYMENT_SERVICE_PROVIDER_ID");
         ///   requestParameters.WithPaymentServiceProviderOrderId("PAYMENT_SERVICE_PROVIDER_ORDER_ID");

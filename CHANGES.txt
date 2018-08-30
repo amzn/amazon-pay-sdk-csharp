@@ -1,3 +1,9 @@
+Version 3.4.3.1 August 2018
+- Update SetOrderAttributes comments with mws auth token parameter in Client.cs.
+
+Version 3.4.3 August 2018
+- Set mws auth token in SetOrderAttributes response.
+
 Version 3.4.2 July 2018
 - Add parameter SupplementaryData to SetOrderAttributes, SetOrderReferenceDetails and GetOrderReferenceDetails API calls.
 - Update Newtonsoft JSON.NET library version from 4.5.11 to 11.0.2.
