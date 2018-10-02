@@ -198,12 +198,7 @@ namespace AmazonPay
         /// <returns>DateTime object</returns>
         private String GetFormattedTimestamp()
         {
-            DateTime dateTime = DateTime.Now;
-            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day,
-                                 dateTime.Hour, dateTime.Minute, dateTime.Second,
-                                 dateTime.Millisecond
-                                , DateTimeKind.Local
-                               ).ToUniversalTime().ToString("yyyy-MM-dd\\THH:mm:ss.fff\\Z",
+            return DateTime.UtcNow.ToString("yyyy-MM-dd\\THH:mm:ss.fff\\Z",
                                 CultureInfo.InvariantCulture);
         }
 
