@@ -262,6 +262,24 @@ namespace AmazonPay.Responses
         }
 
         /// <summary>
+        /// Get the Refunded Amount
+        /// </summary>
+        /// <returns>decimal refundedAmount</returns>
+        public decimal GetRefundedAmount()
+        {
+            return this.refundedAmount;
+        }
+
+        /// <summary>
+        /// Get the Currency Code of the amount Refunded
+        /// </summary>
+        /// <returns>string refundCurrencyCode</returns>
+        public string GetRefundedAmountCurrencyCode()
+        {
+            return this.refundedAmountCurrencyCode;
+        }
+
+        /// <summary>
         /// Get the Capture Fee
         /// </summary>
         /// <returns>decimal captureFeeAmount</returns>

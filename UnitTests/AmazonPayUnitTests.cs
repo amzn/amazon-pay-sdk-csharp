@@ -633,9 +633,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","ConfirmOrderReference"},
-                {"SellerId","test"},
-                {"AmazonOrderReferenceId","test"},
-                {"MWSAuthToken","test"}
+                {"SellerId","testSellerId"},
+                {"AmazonOrderReferenceId","P01-4396315-158792"},
+                {"MWSAuthToken","testAuthToken"},
+                {"AuthorizationAmount.Amount","100.00"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"SuccessUrl", "https://testSuccessUrl.com"},
+                {"FailureUrl", "https://testFailureUrl.com"}
             };
 
             // Test direct call to CalculateSignatureAndParametersToString
@@ -650,9 +654,13 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client = new Client(clientConfig);
             client.SetTimeStamp("0000");
             ConfirmOrderReferenceRequest confirmOrderReference = new ConfirmOrderReferenceRequest();
-            confirmOrderReference.WithAmazonOrderReferenceId("test")
-                .WithMerchantId("test")
-                .WithMWSAuthToken("test");
+            confirmOrderReference.WithAmazonOrderReferenceId("P01-4396315-158792")
+                .WithMerchantId("testSellerId")
+                .WithMWSAuthToken("testAuthToken")
+                .WithAmount(100.00m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithSuccessUrl("https://testSuccessUrl.com")
+                .WithFailureUrl("https://testFailureUrl.com");
 
             client.ConfirmOrderReference(confirmOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
@@ -1247,22 +1255,25 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         [Test]
         public void TestCreateOrderReferenceForIdWithConfirmNowTrue()
         {
+            string sampleSupplementaryData = getSampleSupplementaryData();
+
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","CreateOrderReferenceForId"},
-                {"SellerId","test"},
-                {"Id","test"},
-                {"IdType","test"},
+                {"SellerId","testSellerId"},
+                {"Id","B01-4396315-158792"},
+                {"IdType","BillingAgreement"},
                 {"InheritShippingAddress","true"},
                 {"ConfirmNow","true"},
                 {"OrderReferenceAttributes.OrderTotal.Amount","100.05"},
                 {"OrderReferenceAttributes.OrderTotal.CurrencyCode","USD"},
-                {"OrderReferenceAttributes.PlatformId","test"},
-                {"OrderReferenceAttributes.SellerNote","test"},
-                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","test"},
-                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","test"},
-                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","test"},
-                {"MWSAuthToken","test"}
+                {"OrderReferenceAttributes.PlatformId","testPlatformId"},
+                {"OrderReferenceAttributes.SellerNote","testSellerNote"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId","testSellerOrderId"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.StoreName","testStoreName"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.CustomInformation","testCustomInfo"},
+                {"OrderReferenceAttributes.SellerOrderAttributes.SupplementaryData",sampleSupplementaryData},
+                {"MWSAuthToken","testAuthToken"}
             };
 
             // Test direct call to CalculateSignatureAndParametersToString
@@ -1280,16 +1291,17 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             createOrderReferenceForId.WithConfirmNow(true)
                 .WithAmount(100.05m)
                 .WithCurrencyCode(Regions.currencyCode.USD)
-                .WithCustomInformation("test")
-                .WithId("test")
-                .WithIdType("test")
+                .WithCustomInformation("testCustomInfo")
+                .WithId("B01-4396315-158792")
+                .WithIdType("BillingAgreement")
                 .WithInheritShippingAddress(true)
-                .WithMerchantId("test")
-                .WithMWSAuthToken("test")
-                .WithPlatformId("test")
-                .WithSellerNote("test")
-                .WithSellerOrderId("test")
-                .WithStoreName("test");
+                .WithMerchantId("testSellerId")
+                .WithMWSAuthToken("testAuthToken")
+                .WithPlatformId("testPlatformId")
+                .WithSellerNote("testSellerNote")
+                .WithSellerOrderId("testSellerOrderId")
+                .WithStoreName("testStoreName")
+                .WithSupplementaryData(sampleSupplementaryData);
             client.CreateOrderReferenceForId(createOrderReferenceForId);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
@@ -1577,25 +1589,28 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         [Test]
         public void TestAuthorizeOnBillingAgreementWithDefaultInheritShippingAddress()
         {
+            string sampleSupplementaryData = getSampleSupplementaryData();
+
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","AuthorizeOnBillingAgreement"},
-                {"SellerId","test"},
-                {"AmazonBillingAgreementId","test"},
-                {"AuthorizationReferenceId","test"},
+                {"SellerId","testSellerId"},
+                {"AmazonBillingAgreementId","B01-4396315-158792"},
+                {"AuthorizationReferenceId","testAuthRefId"},
                 {"AuthorizationAmount.Amount","100.05"},
                 {"AuthorizationAmount.CurrencyCode","USD"},
-                {"SellerAuthorizationNote","test"},
+                {"SellerAuthorizationNote","testAuthNote"},
                 {"TransactionTimeout","5"},
                 {"CaptureNow","true"},
-                {"SoftDescriptor","test"},
-                {"SellerNote","test"},
-                {"PlatformId","test"},
-                {"SellerOrderAttributes.CustomInformation","test"},
-                {"SellerOrderAttributes.SellerOrderId","test"},
-                {"SellerOrderAttributes.StoreName","test"},
+                {"SoftDescriptor","testSoftDescriptor"},
+                {"SellerNote","testSellerNote"},
+                {"PlatformId","testPlatformId"},
+                {"SellerOrderAttributes.CustomInformation","testCustomInfo"},
+                {"SellerOrderAttributes.SellerOrderId","testSellerOrderId"},
+                {"SellerOrderAttributes.StoreName","testStoreName"},
+                {"SellerOrderAttributes.SupplementaryData",sampleSupplementaryData},
                 {"InheritShippingAddress","true"},
-                {"MWSAuthToken","test"}
+                {"MWSAuthToken","testAuthToken"}
             };
 
             // Test direct call to CalculateSignatureAndParametersToString
@@ -1610,22 +1625,23 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client = new Client(clientConfig);
             client.SetTimeStamp("0000");
             AuthorizeOnBillingAgreementRequest authorizeOnBillingAgreement = new AuthorizeOnBillingAgreementRequest();
-            authorizeOnBillingAgreement.WithAmazonBillingAgreementId("test")
+            authorizeOnBillingAgreement.WithAmazonBillingAgreementId("B01-4396315-158792")
                 .WithAmount(100.05m)
-                .WithAuthorizationReferenceId("test")
+                .WithAuthorizationReferenceId("testAuthRefId")
                 .WithCaptureNow(true)
                 .WithCurrencyCode(Regions.currencyCode.USD)
-                .WithPlatformId("test")
-                .WithCustomInformation("test")
-                .WithMerchantId("test")
-                .WithMWSAuthToken("test")
-                .WithSellerAuthorizationNote("test")
-                .WithSellerNote("test")
+                .WithPlatformId("testPlatformId")
+                .WithCustomInformation("testCustomInfo")
+                .WithMerchantId("testSellerId")
+                .WithMWSAuthToken("testAuthToken")
+                .WithSellerAuthorizationNote("testAuthNote")
+                .WithSellerNote("testSellerNote")
                 .WithTransactionTimeout(5)
-                .WithSoftDescriptor("test")
-                .WithStoreName("test")
-                .WithSellerOrderId("test")
-                .WithTransactionTimeout(5);
+                .WithSoftDescriptor("testSoftDescriptor")
+                .WithStoreName("testStoreName")
+                .WithSellerOrderId("testSellerOrderId")
+                .WithTransactionTimeout(5)
+                .WithSupplementaryData(sampleSupplementaryData);
             client.AuthorizeOnBillingAgreement(authorizeOnBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 

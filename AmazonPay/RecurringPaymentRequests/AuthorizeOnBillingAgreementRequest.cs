@@ -21,6 +21,7 @@ namespace AmazonPay.RecurringPaymentRequests
         private string authorization_reference_id;
         private string soft_descriptor;
         private int? transaction_timeout;
+        private string supplementary_data;
 
         public AuthorizeOnBillingAgreementRequest()
         {
@@ -311,6 +312,28 @@ namespace AmazonPay.RecurringPaymentRequests
         public string GetInheritShippingAddress()
         {
             return this.inherit_shipping_address.ToString().ToLower();
+        }
+
+        /// <summary>
+        /// Sets the Supplementary Data
+        /// </summary>
+        /// <param name="supplementary_data">
+        /// Supplementary data in valid JSON format
+        /// </param>
+        /// <returns>AuthorizeOnBillingAgreementRequest Object</returns>
+        public AuthorizeOnBillingAgreementRequest WithSupplementaryData(string supplementary_data)
+        {
+            this.supplementary_data = supplementary_data;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Supplementary Data
+        /// </summary>
+        /// <returns>Supplementary Data</returns>
+        public string GetSupplementaryData()
+        {
+            return this.supplementary_data;
         }
     }
 }

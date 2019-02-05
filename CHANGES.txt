@@ -1,3 +1,8 @@
+Version 3.5.0 Febraury 2019
+- Add support for 'Amazon Pay Strong Customer Authentication (SCA) Upgrade' fields in ConfirmOrderReference API.
+- Add support for Supplementary data in CreateOrderReferenceForId and AuthorizeOnBillingAgreement APIs.
+- Add getters for refundedAmount and refundedAmountCurrencyCode in CaptureResponse.
+
 Version 3.4.3.2 October 2018
 - Fix timestamp generation for signatures.
 

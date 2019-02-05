@@ -18,6 +18,7 @@ namespace AmazonPay.RecurringPaymentRequests
         private string store_name;
         private string custom_information;
         private string amazon_billing_agreement_id;
+        private string supplementary_data;
 
         public CreateOrderReferenceForIdRequest()
         {
@@ -248,6 +249,28 @@ namespace AmazonPay.RecurringPaymentRequests
         public string GetCustomInformation()
         {
             return this.custom_information;
+        }
+
+        /// <summary>
+        /// Sets the Supplementary Data
+        /// </summary>
+        /// <param name="supplementary_data">
+        /// Supplementary data in valid JSON format
+        /// </param>
+        /// <returns>CreateOrderReferenceForIdrequest Object</returns>
+        public CreateOrderReferenceForIdRequest WithSupplementaryData(string supplementary_data)
+        {
+            this.supplementary_data = supplementary_data;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Supplementary Data
+        /// </summary>
+        /// <returns>Supplementary Data</returns>
+        public string GetSupplementaryData()
+        {
+            return this.supplementary_data;
         }
     }
 }

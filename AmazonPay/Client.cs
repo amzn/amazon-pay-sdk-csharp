@@ -489,6 +489,7 @@ namespace AmazonPay
         ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///   requestParameters.WithRequestPaymentAuthorization("REQUEST_PAYMENT_AUTHORIZATION");
+        ///   requestParameters.WithSupplementaryData("SUPPLEMENTARY_DATA");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
@@ -530,6 +531,10 @@ namespace AmazonPay
         ///  // Optional
         ///  requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
         ///  requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///  requestParameters.WithSuccessurl("SUCCESS_URL");
+        ///  requestParameters.WithFailureUrl("FAILURE_URL");
+        ///  requestParameters.WithAmount("AUTHORIZATION_AMOUNT");
+        ///  requestParameters.withCurrencyCode("AUTHORIZATION_CURRENCY_CODE");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
@@ -541,7 +546,18 @@ namespace AmazonPay
                 {Constants.SellerId,requestParameters.GetMerchantId()},
                 {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
                 {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                {Constants.SuccessUrl, requestParameters.GetSuccessUrl()},
+                {Constants.FailureUrl, requestParameters.GetFailureUrl()},
             };
+
+            if (requestParameters.GetAmount() != null)
+            {
+                confirmOrderReferenceDetailsDictionary.Add(Constants.AuthorizationAmount_Amount, requestParameters.GetAmount().Value.ToString(Constants.USNumberFormat));
+                if (requestParameters.GetCurrencyCode() != null)
+                {
+                    confirmOrderReferenceDetailsDictionary.Add(Constants.AuthorizationAmount_CurrencyCode, requestParameters.GetCurrencyCode());
+                }
+            }
             string response = SetParametersAndPost(confirmOrderReferenceDetailsDictionary);
             ConfirmOrderReferenceResponse responseObject = new ConfirmOrderReferenceResponse(response);
             return responseObject;
@@ -942,6 +958,7 @@ namespace AmazonPay
         ///   requestParameters.WithStoreName("CUSTOM_NAME");
         ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///   requestParameters.WithSupplementaryData("SUPPLEMENTARY_DATA");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
@@ -961,6 +978,7 @@ namespace AmazonPay
                 {Constants.OrderReferenceAttributes_SellerNote,requestParameters.GetSellerNote()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId,requestParameters.GetSellerOrderId()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_StoreName,requestParameters.GetStoreName()},
+                {Constants.OrderReferenceAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
                 {Constants.InheritShippingAddress,requestParameters.GetInheritShippingAddress()},
                 {Constants.OrderReferenceAttributes_SellerOrderAttributes_CustomInformation,requestParameters.GetCustomInformation()},
                 {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
@@ -1139,6 +1157,7 @@ namespace AmazonPay
         ///   requestParameters.WithStoreName("CUSTOM_NAME");
         ///   requestParameters.WithInheritShippingAddress(true); // Defaults to true
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///   requestParameters.WithSupplementaryData("SUPPLEMENTARY_DATA");
         ///  </code>
         /// </example>
         /// <param name="requestParameters"></param>
@@ -1157,6 +1176,7 @@ namespace AmazonPay
                 {Constants.SellerOrderAttributes_StoreName,requestParameters.GetStoreName()},
                 {Constants.SellerOrderAttributes_SellerOrderId,requestParameters.GetSellerOrderId()},
                 {Constants.SellerOrderAttributes_CustomInformation,requestParameters.GetCustomInformation()},
+                {Constants.SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
                 {Constants.AuthorizationReferenceId,requestParameters.GetAuthorizationReferenceId()},
                 {Constants.SellerAuthorizationNote,requestParameters.GetSellerAuthorizationNote()},
                 {Constants.TransactionTimeout,requestParameters.GetTransactionTimeout().ToString()},
@@ -1510,6 +1530,7 @@ namespace AmazonPay
         ///   requestParameters.WithRequestPaymentAuthorization("REQUEST_PAYMENT_AUTHORIZATION");
         ///   requestParameters.WithPaymentServiceProviderId("PAYMENT_SERVICE_PROVIDER_ID");
         ///   requestParameters.WithPaymentServiceProviderOrderId("PAYMENT_SERVICE_PROVIDER_ORDER_ID");
+        ///   requestParameters.WithSupplementaryData("SUPPLEMENTARY_DATA");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>

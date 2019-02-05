@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.4.3.2";
+        public static readonly string SDKClientVersion = "3.5.0.0";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -81,6 +81,7 @@ namespace AmazonPay
         public static readonly string SellerOrderAttributes_CustomInformation = "SellerOrderAttributes.CustomInformation";
         public static readonly string SellerOrderAttributes_StoreName = "SellerOrderAttributes.StoreName";
         public static readonly string SellerOrderAttributes_SellerOrderId = "SellerOrderAttributes.SellerOrderId";
+        public static readonly string SellerOrderAttributes_SupplementaryData = "SellerOrderAttributes.SupplementaryData";
         public static readonly string SellerNote = "SellerNote";
         public static readonly string PlatformId = "PlatformId";
 
@@ -101,6 +102,9 @@ namespace AmazonPay
         public static readonly string OrderAttributes_SellerOrderAttributes_OrderItemCategories = "OrderAttributes.SellerOrderAttributes.OrderItemCategories.OrderItemCategory";
         public static readonly string OrderAttributes_SellerOrderAttributes_SellerOrderId = "OrderAttributes.SellerOrderAttributes.SellerOrderId";
         public static readonly string OrderAttributes_SellerOrderAttributes_StoreName = "OrderAttributes.SellerOrderAttributes.StoreName";
+
+        public static readonly string SuccessUrl = "SuccessUrl";
+        public static readonly string FailureUrl = "FailureUrl";
 
 
         /// <summary>
@@ -153,6 +157,5 @@ namespace AmazonPay
         /// Format string for ipn timestamps, in ISO8601 format with millseconds, in UTC
         /// </summary>
         public static readonly string Iso8601UTCDateWithMillisecondsFormatString = @"yyyy-MM-ddTHH:mm:ss.fffZ";
-
     }
 }

@@ -44,6 +44,7 @@ namespace AmazonPay.Responses
 
         private bool? captureNow;
         private string softDescriptor;
+        private string supplementaryData;
 
         private string parentKey;
 
@@ -154,6 +155,9 @@ namespace AmazonPay.Responses
                                     break;
                                 case Operator.SoftDescriptor:
                                     softDescriptor = obj.ToString();
+                                    break;
+                                case Operator.SupplementaryData:
+                                    supplementaryData = obj.ToString();
                                     break;
                                 case Operator.member:
                                     if (obj.GetType() == typeof(JArray))
@@ -354,6 +358,15 @@ namespace AmazonPay.Responses
         public string GetSoftDescriptor()
         {
             return softDescriptor;
+        }
+
+        /// <summary>
+        /// Get the SupplementaryData value
+        /// </summary>
+        /// <returns>supplementaryData</returns>
+        public string GetSupplementaryData()
+        {
+            return supplementaryData;
         }
     }
 }
