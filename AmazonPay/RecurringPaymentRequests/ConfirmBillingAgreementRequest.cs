@@ -22,7 +22,20 @@
         /// </summary>
         /// <param name="amazon_billing_agreement_id"></param>
         /// <returns>ConfirmBillingAgreementRequest Object</returns>
+        /// Deprecating because of typo in method name
+        [System.Obsolete("Erroneous method name. Please use WithAmazonBillingAgreementId")]
         public ConfirmBillingAgreementRequest WithAmazonBillingreementId(string amazon_billing_agreement_id)
+        {
+            this.amazon_billing_agreement_id = amazon_billing_agreement_id;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the Amazon Billing Agreement ID
+        /// </summary>
+        /// <param name="amazon_billing_agreement_id"></param>
+        /// <returns>ConfirmBillingAgreementRequest Object</returns>
+        public ConfirmBillingAgreementRequest WithAmazonBillingAgreementId(string amazon_billing_agreement_id)
         {
             this.amazon_billing_agreement_id = amazon_billing_agreement_id;
             return this;

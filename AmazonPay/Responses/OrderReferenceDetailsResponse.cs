@@ -58,6 +58,8 @@ namespace AmazonPay.Responses
         private string sellerOrderId;
         private string customInformation;
         private string supplementaryData;
+        private string paymentAuthenticationState;
+        private string staticToken;
 
         /// <summary>
         /// Billing Agreement ID for CreateOrderReferenceForID API call
@@ -150,7 +152,19 @@ namespace AmazonPay.Responses
                                     reasonDescription = obj.ToString();
                                     break;
                                 case Operator.State:
-                                    orderReferenceState = obj.ToString();
+                                    /* State is the Key in XML that is same for both OrderReferenceStatus state and
+                                     * PaymentAuthenticationStatus state. When flattened the XML attribute is lost but
+                                     * saved in the parentKey Variable. When parentKey equals 'OrderReferenceStatus'
+                                     * then parse it into orderReferenceState else into paymentAuthenticationState
+                                     */
+                                    if (parentKey.Equals(Operator.OrderReferenceStatus.ToString()))
+                                    {
+                                        orderReferenceState = obj.ToString();
+                                    }
+                                    else
+                                    {
+                                        paymentAuthenticationState = obj.ToString();
+                                    }
                                     break;
                                 case Operator.SellerNote:
                                     sellerNote = obj.ToString();
@@ -317,6 +331,9 @@ namespace AmazonPay.Responses
                                     break;
                                 case Operator.SupplementaryData:
                                     supplementaryData = obj.ToString();
+                                    break;
+                                case Operator.StaticToken:
+                                    staticToken = obj.ToString();
                                     break;
                             }
                         }
@@ -702,5 +719,24 @@ namespace AmazonPay.Responses
         {
             return this.supplementaryData;
         }
+
+        /// <summary>
+        /// Get the SupplemetaryData
+        /// </summary>
+        /// <returns>string PaymentAuthenticationState</returns>
+        public string GetPaymentAuthenticationState()
+        {
+            return this.paymentAuthenticationState;
+        }
+
+        /// <summary>
+        /// Get the StaticToken
+        /// </summary>
+        /// <returns>string StaticToken</returns>
+        public string GetStaticToken()
+        {
+            return this.staticToken;
+        }
+
     }
 }

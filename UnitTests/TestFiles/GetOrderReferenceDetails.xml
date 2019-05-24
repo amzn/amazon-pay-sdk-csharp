@@ -1,4 +1,4 @@
-﻿<GetOrderReferenceDetailsResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+<GetOrderReferenceDetailsResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
   <GetOrderReferenceDetailsResult>
     <OrderReferenceDetails>
       <PaymentServiceProviderAttributes>
@@ -42,11 +42,17 @@
         <CurrencyCode>USD</CurrencyCode>
         <Amount>1.29</Amount>
       </OrderTotal>
+      <PaymentAuthenticationStatus>
+        <State>REQUIRED</State>
+      </PaymentAuthenticationStatus>
       <Buyer>
         <Name>John Green</Name>
         <Email>test@gmail.com</Email>
       </Buyer>
       <ReleaseEnvironment>Sandbox</ReleaseEnvironment>
+      <PaymentReference>
+          <StaticToken>z50RVvXyKBkhRX40zy2VazJIfJBRmhGF32FUW9Np6PU=</StaticToken> 
+      </PaymentReference>
       <SellerNote>1st Amazon Pay OneTime Checkout Order</SellerNote>
       <AmazonOrderReferenceId>S01-9111020-6707923</AmazonOrderReferenceId>
       <CreationTimestamp>2017-07-23T21:58:56.816Z</CreationTimestamp>

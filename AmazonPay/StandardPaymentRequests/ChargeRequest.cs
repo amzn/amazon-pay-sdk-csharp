@@ -89,7 +89,7 @@ namespace AmazonPay.StandardPaymentRequests
                         chargeType = "BillingAgreement";
                         getBillingAgreementDetails.WithAmazonBillingAgreementId(amazon_reference_id);
                         setBillingAgreementDetails.WithAmazonBillingAgreementId(amazon_reference_id);
-                        confirmBillingAgreement.WithAmazonBillingreementId(amazon_reference_id);
+                        confirmBillingAgreement.WithAmazonBillingAgreementId(amazon_reference_id);
                         authorizeOnBillingAgreement.WithAmazonBillingAgreementId(amazon_reference_id);
                         break;
                     default:

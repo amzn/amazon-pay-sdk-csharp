@@ -206,7 +206,9 @@ namespace UnitTests
             Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetCountryCode(), "US");
             Assert.AreEqual(oroResponseObject.GetBillingAddressDetails().GetName(), "Christopher C. Conn");
             Assert.AreEqual(oroResponseObject.GetSupplementaryData(), sampleSupplementaryData);
-            
+            Assert.AreEqual(oroResponseObject.GetPaymentAuthenticationState(), "REQUIRED");
+            Assert.AreEqual(oroResponseObject.GetStaticToken(), "z50RVvXyKBkhRX40zy2VazJIfJBRmhGF32FUW9Np6PU=");
+
             //Test Payment Descriptor
             Assert.AreEqual(oroResponseObject.GetAmazonBalanceFirst().ToString(), "False");
             Assert.AreNotEqual(oroResponseObject.GetAmazonBalanceFirst().ToString(), "true");
@@ -1528,7 +1530,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client = new Client(clientConfig);
             client.SetTimeStamp("0000");
             ConfirmBillingAgreementRequest confirmBillingAgreement = new ConfirmBillingAgreementRequest();
-            confirmBillingAgreement.WithAmazonBillingreementId("test")
+            confirmBillingAgreement.WithAmazonBillingAgreementId("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
             client.ConfirmBillingAgreement(confirmBillingAgreement);
