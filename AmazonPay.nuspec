@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>AmazonPay</id>
-    <version>3.5.0.0</version>
-    <title>AmazonPay</title>
-    <authors>AmazonPaySDK</authors>
-    <owners>AmazonPaySDK</owners>
+    <id>$id$</id>
+    <version>3.5.1.1</version>
+    <title>$title$</title>
+    <authors>AmazonPay</authors>
+    <owners>AmazonPay</owners>
     <projectUrl>https://github.com/amzn/amazon-pay-sdk-csharp</projectUrl>
     <iconUrl>https://images-na.ssl-images-amazon.com/images/G/01/Iris3_US/en_US/inca/images/60x38-white-x1.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,11 +14,8 @@
     <copyright>Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.</copyright>
     <tags>AmazonPay</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="11.0.2" />
+      <dependency id="Newtonsoft.Json" version="12.0.2" />
       <dependency id="Common.Logging" version="2.0.0" />
     </dependencies>
   </metadata>
-  <files>
-    <file src="lib/AmazonPay.dll" target="lib" />
-  </files>
 </package>

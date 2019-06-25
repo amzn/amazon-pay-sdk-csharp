@@ -1,3 +1,6 @@
+Version 3.5.1 June 2019
+- Updated Newtonsoft.Json version number AmazonPay.nuspec to match changes that were deployed in 3.5.0
+
 Version 3.5.0 Febraury 2019
 - Add support for 'Amazon Pay Strong Customer Authentication (SCA) Upgrade' fields in ConfirmOrderReference API.
 - Add support for Supplementary data in CreateOrderReferenceForId and AuthorizeOnBillingAgreement APIs.

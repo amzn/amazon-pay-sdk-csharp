@@ -200,7 +200,7 @@ namespace AmazonPay
         {
             return DateTime.UtcNow.ToString("yyyy-MM-dd\\THH:mm:ss.fff\\Z",
                                 CultureInfo.InvariantCulture);
-        }
+	}
 
         /// <summary>
         /// Create MWS service URL and the Endpoint path
