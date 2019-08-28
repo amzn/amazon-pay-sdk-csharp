@@ -6,7 +6,9 @@
     public class ConfirmBillingAgreementRequest : DelegateRequest<ConfirmBillingAgreementRequest>
     {
         private string amazon_billing_agreement_id;
-        
+        private string success_url;
+        private string failure_url;
+
         public ConfirmBillingAgreementRequest()
         {
             SetAction(Constants.ConfirmBillingAgreement);
@@ -48,6 +50,46 @@
         public string GetAmazonBillingAgreementId()
         {
             return this.amazon_billing_agreement_id;
+        }
+
+        /// <summary>
+        /// Sets the Success URL
+        /// </summary>
+        /// <param name="success_url"></param>
+        /// <returns>ConfirmBillingAgreementRequest Object</returns>
+        public ConfirmBillingAgreementRequest WithSuccessUrl(string success_url)
+        {
+            this.success_url = success_url;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Success URL
+        /// </summary>
+        /// <returns>Success URL</returns>
+        public string GetSuccessUrl()
+        {
+            return this.success_url;
+        }
+
+        /// <summary>
+        /// Sets the Failure URL
+        /// </summary>
+        /// <param name="failure_url"></param>
+        /// <returns>ConfirmBillingAgreementRequest Object</returns>
+        public ConfirmBillingAgreementRequest WithFailureUrl(string failure_url)
+        {
+            this.failure_url = failure_url;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Failure URL
+        /// </summary>
+        /// <returns>Failure URL</returns>
+        public string GetFailureUrl()
+        {
+            return this.failure_url;
         }
     }
 }

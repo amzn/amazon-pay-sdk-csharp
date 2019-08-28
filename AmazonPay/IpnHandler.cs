@@ -357,6 +357,7 @@ namespace AmazonPay
 
             string certPath = GetMandatoryField("SigningCertURL");
             x509Cert = GetCertificate(certPath);
+
             if (!VerifyCertIsIssuedByAmazon())
             {
                 throw new InvalidDataException("Error with sns message verification - certificate in Notification is not a valid certificate issued to Amazon");

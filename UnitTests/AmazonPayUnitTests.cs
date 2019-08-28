@@ -13,6 +13,7 @@ using AmazonPay.RecurringPaymentRequests;
 using AmazonPay.StandardPaymentRequests;
 using AmazonPay.CommonRequests;
 using AmazonPay.Responses;
+using AmazonPay.Types;
 using System.Collections.Specialized;
 using Newtonsoft.Json.Linq;
 using System.Xml;
@@ -223,17 +224,16 @@ namespace UnitTests
             PaymentDetailsResponse testGetAllResponseDetails = new PaymentDetailsResponse();
             String rawOroResponse = loadTestFile("GetOrderReferenceDetails.xml");
             OrderReferenceDetailsResponse oroResponseObject = new OrderReferenceDetailsResponse(rawOroResponse);
-            
+
             String rawAuthResponse = loadTestFile("GetAuthorizationDetails.xml");
             AuthorizeResponse authResponseObject = new AuthorizeResponse(rawAuthResponse);
 
             String rawCaptureResponse = loadTestFile("GetCaptureDetails.xml");
             CaptureResponse captureResponseObject = new CaptureResponse(rawCaptureResponse);
 
-
             String rawRefundResponse = loadTestFile("GetRefundDetails.xml");
             RefundResponse refundResponseObject = new RefundResponse(rawRefundResponse);
-         
+
             testGetAllResponseDetails.PutOrderReferenceDetails(oroResponseObject.GetAmazonOrderReferenceId().ToString(), oroResponseObject);
             Assert.AreEqual(testGetAllResponseDetails.GetOrderReferenceDetails(), oroResponseObject);
 
@@ -242,7 +242,7 @@ namespace UnitTests
             {
                 Assert.AreEqual(group.Value.GetXml(), authResponseObject.GetXml());
             }
-            
+
             testGetAllResponseDetails.PutCaptureDetails(captureResponseObject.GetCaptureReferenceId(), captureResponseObject);
             foreach (var group in testGetAllResponseDetails.GetCaptureDetails())
             {
@@ -321,71 +321,36 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
 
             // Extract AuthorizeNotification XML data from json
             var json = JObject.Parse(File.ReadAllText(filePath));
-           
+
             string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
-            
+
             NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
 
             IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath), logger);
             Assert.AreEqual(ipnHandler.GetAuthorizeResponse().GetAuthorizationId(), new AuthorizeResponse(xmlData).GetAuthorizationId());
         }
-
+   
         [Test]
-        public void TestChargebackIPN()
+        public void TestLoggingMessage_IpnHandler_BadSignature()
         {
-            //Setting filePath to access test files 
-            string filePath_chargeback = @"TestFiles\ChargebackNotification.json";
+            // Setting Simple Logger Adapter
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
 
-            // Extract ChargebackNotification XML data from json
-            var json = JObject.Parse(File.ReadAllText(filePath_chargeback));
+            // Create logger
+            Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<IpnHandler>();
+
+            //Setting filePath to access test files 
+            string filePath = @"TestFiles\AuthorizeNotification_BadSignature.json";
+
+            // Extract AuthorizeNotification XML data from json
+            var json = JObject.Parse(File.ReadAllText(filePath));
 
             string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
 
             NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
 
-            IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath_chargeback));
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonChargebackId(), new ChargebackResponse(xmlData).GetAmazonChargebackId());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmount(), new ChargebackResponse(xmlData).GetChargebackAmount());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmountCurrencyCode(), new ChargebackResponse(xmlData).GetChargebackAmountCurrencyCode());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackReason(), new ChargebackResponse(xmlData).GetChargebackReason());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackState(), new ChargebackResponse(xmlData).GetChargebackState());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetCreationTimestamp(), new ChargebackResponse(xmlData).GetCreationTimestamp());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonCaptureId(), new ChargebackResponse(xmlData).GetAmazonCaptureId());
-            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "1111111-1111-11111-1111-11111EXAMPLE");
-            Assert.AreEqual(ipnHandler.GetNotificationType().ToString(), "ChargebackDetailedNotification");
-            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A2AMR0CLHFUKIG");
-            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "A3BXB0YN3XH17H");
-            Assert.AreEqual(ipnHandler.GetVersion().ToString(), "2013-01-01");
-            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Sandbox");
-        }
-
-        [Test]
-        public void TestChargebackIPN_Unauthorized()
-        {
-            //Setting filePath to access test files 
-            string filePath_chargeback = @"TestFiles\ChargebackNotification_Unauthorized.json";
-
-            // Extract ChargebackNotification XML data from json
-            var json = JObject.Parse(File.ReadAllText(filePath_chargeback));
-
-            string xmlData = JObject.Parse(json["Message"].ToString())["NotificationData"].ToString();
-
-            NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
-
-            IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath_chargeback));
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonChargebackId(), new ChargebackResponse(xmlData).GetAmazonChargebackId());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmount(), new ChargebackResponse(xmlData).GetChargebackAmount());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackAmountCurrencyCode(), new ChargebackResponse(xmlData).GetChargebackAmountCurrencyCode());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackReason(), new ChargebackResponse(xmlData).GetChargebackReason());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetChargebackState(), new ChargebackResponse(xmlData).GetChargebackState());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetCreationTimestamp(), new ChargebackResponse(xmlData).GetCreationTimestamp());
-            Assert.AreEqual(ipnHandler.GetChargebackResponse().GetAmazonCaptureId(), new ChargebackResponse(xmlData).GetAmazonCaptureId());
-            Assert.AreEqual(ipnHandler.GetNotificationReferenceId().ToString(), "1111111-1111-11111-1111-11111EXAMPLE");
-            Assert.AreEqual(ipnHandler.GetNotificationType().ToString(), "ChargebackDetailedNotification");
-            Assert.AreEqual(ipnHandler.GetSellerId().ToString(), "A2AMR0CLHFUKIG");
-            Assert.AreEqual(ipnHandler.GetMarketplaceId().ToString(), "A3BXB0YN3XH17H");
-            Assert.AreEqual(ipnHandler.GetVersion().ToString(), "2013-01-01");
-            Assert.AreEqual(ipnHandler.GetReleaseEnvironment().ToString(), "Sandbox");
+            Assert.Throws<InvalidDataException>( () => new IpnHandler(headers, File.ReadAllText(filePath), logger) );
+            
         }
 
         [Test]
@@ -434,7 +399,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSupplementaryData(sampleSupplementaryData)
                 .WithRequestPaymentAuthorization(true)
                 .WithMWSAuthToken("test");
-            
+
             client.SetOrderReferenceDetails(setOrderReferenceDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -704,7 +669,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithCancelationReason("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
-            
+
             client.CancelOrderReference(cancelOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -745,7 +710,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithClosureReason("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
-            
+
             client.CloseOrderReference(closeOrderReference);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -840,7 +805,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
                 .WithSellerAuthorizationNote("test")
                 .WithTransactionTimeout(5)
                 .WithSoftDescriptor("test");
-            
+
             client.Authorize(authorize);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -850,7 +815,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             AuthorizeResponse authorizeResponseObject = new AuthorizeResponse(rawResponse);
             Assert.AreEqual(authorizeResponseObject.GetAuthorizationAmount(), 1.00);
             Assert.AreEqual(authorizeResponseObject.GetAuthorizationAmountCurrencyCode(), "USD");
-            Assert.AreEqual(authorizeResponseObject.GetAuthorizationFee(),0.00 );
+            Assert.AreEqual(authorizeResponseObject.GetAuthorizationFee(), 0.00);
             Assert.AreEqual(authorizeResponseObject.GetAuthorizationFeeCurrencyCode(), "USD");
             Assert.AreEqual(authorizeResponseObject.GetAuthorizationId(), "S01-9821095-1837200-A041953");
             Assert.AreEqual(authorizeResponseObject.GetAuthorizationReferenceId(), "asdcdsd5iiiii");
@@ -980,7 +945,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             getAuthorizationDetails.WithAmazonAuthorizationId("test")
                 .WithMerchantId("test")
                 .WithMWSAuthToken("test");
-            
+
             client.GetAuthorizationDetails(getAuthorizationDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
             CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
@@ -1095,7 +1060,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Assert.AreNotEqual(capResponseObject.GetConvertedAmount(), "1.88"); // I18N/culture test
             Assert.AreEqual(capResponseObject.GetConvertedAmountCurrencyCode(), "EUR");
             Assert.AreEqual(capResponseObject.GetConversionRate(), 1.1297854087m);
-            
+
             Assert.AreEqual(capResponseObject.GetXml(), rawCapResponse);
         }
 
@@ -1443,24 +1408,22 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.GetBillingAgreementDetails(getBillingAgreement);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
-            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
-
             //Testing BillingAgreementDetails Response
             String rawResponse = loadTestFile("BillingAgreementDetailsResponse.xml");
             BillingAgreementDetailsResponse billingAgreementDetailsResponseObject = new BillingAgreementDetailsResponse(rawResponse);
             Assert.AreEqual(billingAgreementDetailsResponseObject.GetStateOrRegion(), "BC");
             Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmazonBillingAgreementId(), "C01-3925266-2250830");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetAddressLine1(), "999 Canada Place 140");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmountLimitPerTimePeriod(), 500.00);
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmountLimitPerTimePeriodCurrencyCode(), "USD");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetBillingAgreementState(), "Draft");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetBuyerName(), "Test Buyer");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCurrentRemainingBalanceAmount(), 500.00);
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCurrentRemainingBalanceCurrencyCode(), "USD");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCity(), "Vancouver");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetCountryCode(), "CA");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetEmail(), "testbuyer2@amazon.com");
-             Assert.AreEqual(billingAgreementDetailsResponseObject.GetRequestId(), "d69e8d60-3682-43d7-bf5e-e2ef64dc685e");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetAddressLine1(), "999 Canada Place 140");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmountLimitPerTimePeriod(), 500.00);
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetAmountLimitPerTimePeriodCurrencyCode(), "USD");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetBillingAgreementState(), "Draft");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetBuyerName(), "Test Buyer");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetCurrentRemainingBalanceAmount(), 500.00);
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetCurrentRemainingBalanceCurrencyCode(), "USD");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetCity(), "Vancouver");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetCountryCode(), "CA");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetEmail(), "testbuyer2@amazon.com");
+            Assert.AreEqual(billingAgreementDetailsResponseObject.GetRequestId(), "d69e8d60-3682-43d7-bf5e-e2ef64dc685e");
 
             Assert.AreEqual(billingAgreementDetailsResponseObject.GetXml(), rawResponse);
         }
@@ -1504,7 +1467,56 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             client.SetBillingAgreementDetails(setBillingAgreementDetails);
             IDictionary<string, string> apiParametersDict = client.GetParameters();
 
-            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+            CollectionAssert.AreEqual(expectedParamsDict, apiParametersDict);
+        }
+
+        [Test]
+        public void TestSetBillingAgreementDetailsWithSCA()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","SetBillingAgreementDetails"},
+                {"SellerId","test"},
+                {"AmazonBillingAgreementId","test"},
+                {"BillingAgreementAttributes.PlatformId","test"},
+                {"BillingAgreementAttributes.SellerNote","test"},
+                {"BillingAgreementAttributes.SellerBillingAgreementAttributes.SellerBillingAgreementId","test"},
+                {"BillingAgreementAttributes.SellerBillingAgreementAttributes.CustomInformation","test"},
+                {"BillingAgreementAttributes.SellerBillingAgreementAttributes.StoreName","test"},
+                {"BillingAgreementAttributes.BillingAgreementType","MerchantInitiatedTransaction"},
+                {"BillingAgreementAttributes.SubscriptionAmount.Amount","10.32"},
+                {"BillingAgreementAttributes.SubscriptionAmount.CurrencyCode","USD"},
+                {"MWSAuthToken","test"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetBillingAgreementDetails
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            SetBillingAgreementDetailsRequest setBillingAgreementDetails = new SetBillingAgreementDetailsRequest();
+            setBillingAgreementDetails.WithAmazonBillingAgreementId("test")
+                .WithCustomInformation("test")
+                .WithMerchantId("test")
+                .WithMWSAuthToken("test")
+                .WithPlatformId("test")
+                .WithSellerBillingAgreementId("test")
+                .WithSellerNote("test")
+                .WithStoreName("test")
+                .WithBillingAgreementType(BillingAgreementTypes.MerchantInitiatedTransaction)
+                .WithSubscriptionAmount((decimal)10.32)
+                .WithSubscriptionCurrencyCode(Regions.currencyCode.USD);
+
+            client.SetBillingAgreementDetails(setBillingAgreementDetails);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(expectedParamsDict, apiParametersDict);
         }
 
         [Test]
@@ -1868,7 +1880,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","GetProviderCreditDetails"},
-                {"SellerId","test"},            
+                {"SellerId","test"},
                 {"MWSAuthToken","test"},
                 {"AmazonProviderCreditId","test"}
             };
@@ -1916,7 +1928,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
             {
                 {"Action","GetProviderCreditReversalDetails"},
-                {"SellerId","test"},            
+                {"SellerId","test"},
                 {"MWSAuthToken","test"},
                 {"AmazonProviderCreditReversalId","test"}
             };
@@ -1996,14 +2008,14 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         [Test]
         public void TestGetUserInfo()
         {
-                Enum emptyRegion = null;
-                Client client = new Client(clientConfig);
-                // Exeption for Null "Region" value
-                Assert.Throws<NullReferenceException>(()=> clientConfig.WithRegion(emptyRegion));
-                // Exeption for Null value
-                Assert.Throws<NullReferenceException>(() => client.GetUserInfo(null));
-                // Check for invalid Access token
-                Assert.IsTrue(Regex.IsMatch(client.GetUserInfo("Atza"),"invalid_token",RegexOptions.IgnoreCase));          
+            Enum emptyRegion = null;
+            Client client = new Client(clientConfig);
+            // Exeption for Null "Region" value
+            Assert.Throws<NullReferenceException>(() => clientConfig.WithRegion(emptyRegion));
+            // Exeption for Null value
+            Assert.Throws<NullReferenceException>(() => client.GetUserInfo(null));
+            // Check for invalid Access token
+            Assert.IsTrue(Regex.IsMatch(client.GetUserInfo("Atza"), "invalid_token", RegexOptions.IgnoreCase));
         }
 
         [Test]
@@ -2013,7 +2025,7 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             {
                 Client client = new Client(clientConfig);
 
-                string url = "https://dsenetsdk.ant.amazon.com/500error/500error.aspx";
+                string url = "https://httpstat.us/500";
 
                 client.SetMwsTestUrl(url);
                 client.SetTimeStamp("0000");

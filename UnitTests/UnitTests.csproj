@@ -31,10 +31,6 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AmazonPay, Version=3.4.2.0, Culture=neutral, PublicKeyToken=21f551eda64a8c99, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\AmazonPay.dll</HintPath>
-    </Reference>
     <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
@@ -66,10 +62,7 @@
     <None Include="TestFiles\AuthorizeNotification.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestFiles\ChargebackNotification_Unauthorized.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\ChargebackNotification.json">
+    <None Include="TestFiles\AuthorizeNotification_BadSignature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -81,7 +74,12 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AmazonPay\AmazonPay.csproj">
+      <Project>{a8d8e745-6c1d-4a33-b2c5-4f7c1e4fd4df}</Project>
+      <Name>AmazonPay</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="TestFiles\GetAuthorizationDetails.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

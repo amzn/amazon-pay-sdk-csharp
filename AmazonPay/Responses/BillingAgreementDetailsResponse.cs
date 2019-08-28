@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AmazonPay.Types;
 
 namespace AmazonPay.Responses
 {
@@ -21,6 +22,10 @@ namespace AmazonPay.Responses
         private string reasonCode;
         private string reasonDescription;
         private DateTime creationTimestamp;
+        private BillingAgreementTypes? billingAgreementType;
+        private decimal? subscriptionAmount;
+        private Regions.currencyCode? subscriptionCurrencyCode;
+
 
         // Billing Agreement Limits
         private decimal amountLimitPerTimePeriod;
@@ -150,6 +155,10 @@ namespace AmazonPay.Responses
                                     {
                                         currentRemainingBalanceAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
                                     }
+                                    else if (parentKey.Equals(Operator.SubscriptionAmount.ToString()))
+                                    {
+                                        subscriptionAmount = decimal.Parse(obj.ToString(), Constants.USNumberFormat);
+                                    }
                                     break;
                                 case Operator.CurrencyCode:
                                     if (parentKey.Equals(Operator.AmountLimitPerTimePeriod.ToString()))
@@ -159,6 +168,10 @@ namespace AmazonPay.Responses
                                     else if (parentKey.Equals(Operator.CurrentRemainingBalance.ToString()))
                                     {
                                         currentRemainingBalanceCurrencyCode = obj.ToString();
+                                    }
+                                    else if (parentKey.Equals(Operator.SubscriptionAmount.ToString()))
+                                    {
+                                        subscriptionCurrencyCode = (Regions.currencyCode)System.Enum.Parse(typeof(Regions.currencyCode), obj.ToString());
                                     }
                                     break;
                                 case Operator.PlatformId:
@@ -226,6 +239,11 @@ namespace AmazonPay.Responses
                                 case Operator.StoreName:
                                     storeName = obj.ToString();
                                     break;
+                                case Operator.BillingAgreementType:
+                                    billingAgreementType = (BillingAgreementTypes)System.Enum.Parse(typeof(BillingAgreementTypes), obj.ToString());
+                                    break;
+
+
                                 /* The below case is when multiple constraints exist in the response. The flattening of the nested Dictionary
                                  * contains JArray of JObjects. Each Jobject contains ConstraintID and it's Description which is parsed and added to the List
                                  */
@@ -402,7 +420,7 @@ namespace AmazonPay.Responses
         /// <summary>
         /// Get the Current Remaining Balance Amount for the Amazon Billing Agreement ID
         /// </summary>
-        /// <returns>string currentRemainingBalanceAmount</returns>
+        /// <returns>decimal currentRemainingBalanceAmount</returns>
         public decimal GetCurrentRemainingBalanceAmount()
         {
             return this.currentRemainingBalanceAmount;
@@ -411,7 +429,7 @@ namespace AmazonPay.Responses
         /// <summary>
         /// Get the Current Remaining Balance Amount Currency Code for the Amazon Billing Agreement ID
         /// </summary>
-        /// <returns>string currentRemainingBalanceAmount</returns>
+        /// <returns>decimal currentRemainingBalanceAmount</returns>
         public string GetCurrentRemainingBalanceCurrencyCode()
         {
             return this.currentRemainingBalanceCurrencyCode;
@@ -586,6 +604,33 @@ namespace AmazonPay.Responses
         public BillingAddressDetails GetBillingAddressDetails()
         {
             return this.billingAddress;
+        }
+
+        /// <summary>
+        /// Get the Billing Address class object. Applies to case where in the billing address is returned in the response
+        /// </summary>
+        /// <returns>decimal billingAddress</returns>
+        public decimal? GetSubscriptionAmount()
+        {
+            return this.subscriptionAmount;
+        }
+
+        /// <summary>
+        /// Get the Billing Address class object. Applies to case where in the billing address is returned in the response
+        /// </summary>
+        /// <returns>string billingAddress</returns>
+        public Regions.currencyCode? GetSubscriptionCurrencyCode()
+        {
+            return this.subscriptionCurrencyCode;
+        }
+
+        /// <summary>
+        /// Get the Billing Address class object. Applies to case where in the billing address is returned in the response
+        /// </summary>
+        /// <returns>string billingAddress</returns>
+        public BillingAgreementTypes? GetBillingAgreementType()
+        {
+            return this.billingAgreementType;
         }
     }
 }

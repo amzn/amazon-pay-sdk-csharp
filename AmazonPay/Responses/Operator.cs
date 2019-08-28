@@ -19,6 +19,7 @@
         CurrentRemainingBalance, SellerNote, PlatformId, PostalCode, Name, Type, Id, Email, Phone, CountryCode, StateOrRegion, 
         AddressLine1, AddressLine2, AddressLine3, City, County, District, DestinationType, ReleaseEnvironment, SellerOrderId, 
         SellerBillingAgreementId, CustomInformation, StoreName, Constraint, ConstraintID, Description, BillingAddress, Buyer,
+        BillingAgreementType, SubscriptionAmount,
 
         //ChargebackResponse
         AmazonChargebackId,  AmazonCaptureReferenceId, ChargebackReason, ChargebackState,

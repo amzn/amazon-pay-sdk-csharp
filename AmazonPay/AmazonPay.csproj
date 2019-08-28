@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountStatus.cs" />
+    <Compile Include="BillingAgreementType.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DelegateRequest.cs" />

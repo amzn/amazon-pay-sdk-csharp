@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.5.1.1";
+        public static readonly string SDKClientVersion = "3.6.0";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -73,6 +73,10 @@ namespace AmazonPay
         public static readonly string BillingAgreementAttributes_SellerBillingAgreementAttributes_SellerBillingAgreementId = "BillingAgreementAttributes.SellerBillingAgreementAttributes.SellerBillingAgreementId";
         public static readonly string BillingAgreementAttributes_SellerBillingAgreementAttributes_StoreName = "BillingAgreementAttributes.SellerBillingAgreementAttributes.StoreName";
         public static readonly string BillingAgreementAttributes_SellerBillingAgreementAttributes_CustomInformation = "BillingAgreementAttributes.SellerBillingAgreementAttributes.CustomInformation";
+        public static readonly string BillingAgreementAttributes_BillingAgreementType = "BillingAgreementAttributes.BillingAgreementType";
+        public static readonly string BillingAgreementAttributes_SubscriptionAmount_Amount = "BillingAgreementAttributes.SubscriptionAmount.Amount";
+        public static readonly string BillingAgreementAttributes_SubscriptionAmount_CurrencyCode = "BillingAgreementAttributes.SubscriptionAmount.CurrencyCode";
+
         public static readonly string Id = "Id";
         public static readonly string IdType = "IdType";
         public static readonly string InheritShippingAddress = "InheritShippingAddress";

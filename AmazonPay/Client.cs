@@ -17,6 +17,7 @@ using AmazonPay.Responses;
 using AmazonPay.ProviderCreditRequests;
 using AmazonPay.RecurringPaymentRequests;
 using AmazonPay.CommonRequests;
+using AmazonPay.Types;
 using Common.Logging;
 
 namespace AmazonPay
@@ -217,7 +218,7 @@ namespace AmazonPay
                 }
             }
 
-            if (!requestParameters[Constants.Action].Equals("SetOrderAttributes"))
+            if (!requestParameters[Constants.Action].Equals("SetOrderAttributes") && !requestParameters[Constants.Action].Equals("SetBillingAgreementDetails"))
             {
                 foreach (KeyValuePair<string, string> param in requestParameters)
                 {
@@ -372,7 +373,7 @@ namespace AmazonPay
         ///  
         ///   // Optional params
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithAddressConsentToken[("ACCESS_TOKEN");
+        ///   requestParameters.WithAccessToken[("ACCESS_TOKEN");
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
@@ -382,12 +383,12 @@ namespace AmazonPay
         {
             Dictionary<string, string> getOrderReferenceDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.AddressConsentToken, requestParameters.GetAddressConsentToken()},
-                {Constants.AccessToken, requestParameters.GetAccessToken()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
+                { Constants.AddressConsentToken, requestParameters.GetAddressConsentToken() },
+                { Constants.AccessToken, requestParameters.GetAccessToken() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(getOrderReferenceDetailsDictionary);
             OrderReferenceDetailsResponse responseObject = new OrderReferenceDetailsResponse(response);
@@ -497,19 +498,19 @@ namespace AmazonPay
         {
             Dictionary<string, string> setOrderReferenceDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().Value.ToString(Constants.USNumberFormat)},
-                {Constants.OrderReferenceAttributes_OrderTotal_CurrencyCode,requestParameters.GetCurrencyCode()},
-                {Constants.OrderReferenceAttributes_PlatformId,requestParameters.GetPlatformId()},
-                {Constants.OrderReferenceAttributes_SellerNote,requestParameters.GetSellerNote()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId,requestParameters.GetSellerOrderId()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_StoreName,requestParameters.GetStoreName()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_CustomInformation,requestParameters.GetCustomInformation()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
-                {Constants.OrderReferenceAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
+                { Constants.OrderReferenceAttributes_OrderTotal_Amount, requestParameters.GetAmount().Value.ToString(Constants.USNumberFormat) }, 
+                { Constants.OrderReferenceAttributes_OrderTotal_CurrencyCode, requestParameters.GetCurrencyCode() },
+                { Constants.OrderReferenceAttributes_PlatformId, requestParameters.GetPlatformId() },
+                { Constants.OrderReferenceAttributes_SellerNote, requestParameters.GetSellerNote() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId, requestParameters.GetSellerOrderId() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_StoreName, requestParameters.GetStoreName() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
+                { Constants.OrderReferenceAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower() }
             };
             string response = SetParametersAndPost(setOrderReferenceDetailsDictionary);
             OrderReferenceDetailsResponse responseObject = new OrderReferenceDetailsResponse(response);
@@ -542,12 +543,12 @@ namespace AmazonPay
         {
             Dictionary<string, string> confirmOrderReferenceDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
-                {Constants.SuccessUrl, requestParameters.GetSuccessUrl()},
-                {Constants.FailureUrl, requestParameters.GetFailureUrl()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
+                { Constants.SuccessUrl, requestParameters.GetSuccessUrl() },
+                { Constants.FailureUrl, requestParameters.GetFailureUrl() },
             };
 
             if (requestParameters.GetAmount() != null)
@@ -586,11 +587,11 @@ namespace AmazonPay
         {
             Dictionary<string, string> cancelOrderReferenceDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.CancelationReason,requestParameters.GetCancelationReason()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
+                { Constants.CancelationReason, requestParameters.GetCancelationReason() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(cancelOrderReferenceDetailsDictionary);
             CancelOrderReferenceResponse responseObject = new CancelOrderReferenceResponse(response);
@@ -620,11 +621,11 @@ namespace AmazonPay
         {
             Dictionary<string, string> closeOrderReferenceDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.ClosureReason,requestParameters.GetClosureReason()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
+                { Constants.ClosureReason, requestParameters.GetClosureReason() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(closeOrderReferenceDetailsDictionary);
             CloseOrderReferenceResponse responseObject = new CloseOrderReferenceResponse(response);
@@ -654,11 +655,11 @@ namespace AmazonPay
         {
             Dictionary<string, string> closeAuthorizationDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonAuthorizationId,requestParameters.GetAmazonAuthorizationId()},
-                {Constants.ClosureReason,requestParameters.GetClosureReason()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonAuthorizationId, requestParameters.GetAmazonAuthorizationId() },
+                { Constants.ClosureReason, requestParameters.GetClosureReason() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(closeAuthorizationDictionary);
             CloseAuthorizationResponse responseObject = new CloseAuthorizationResponse(response);
@@ -695,18 +696,18 @@ namespace AmazonPay
         {
             Dictionary<string, string> authorizeDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonOrderReferenceId,requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.AuthorizationAmount_Amount,requestParameters.GetAmount().ToString(Constants.USNumberFormat)},
-                {Constants.AuthorizationAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
-                {Constants.AuthorizationReferenceId,requestParameters.GetAuthorizationReferenceId()},
-                {Constants.SellerAuthorizationNote,requestParameters.GetSellerAuthorizationNote()},
-                {Constants.TransactionTimeout,requestParameters.GetTransactionTimeout().ToString()},
-                {Constants.SoftDescriptor,requestParameters.GetSoftDescriptor()},
-                {Constants.provider_credit_details,""},
-                {Constants.CaptureNow,requestParameters.GetCaptureNow()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
+                { Constants.AuthorizationAmount_Amount, requestParameters.GetAmount().ToString(Constants.USNumberFormat) }, 
+                { Constants.AuthorizationAmount_CurrencyCode, requestParameters.GetCurrencyCode() },
+                { Constants.AuthorizationReferenceId, requestParameters.GetAuthorizationReferenceId() },
+                { Constants.SellerAuthorizationNote, requestParameters.GetSellerAuthorizationNote() },
+                { Constants.TransactionTimeout, requestParameters.GetTransactionTimeout().ToString() },
+                { Constants.SoftDescriptor, requestParameters.GetSoftDescriptor() },
+                { Constants.provider_credit_details, "" },
+                { Constants.CaptureNow, requestParameters.GetCaptureNow() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
 
             IList<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
@@ -739,10 +740,10 @@ namespace AmazonPay
         {
             Dictionary<string, string> getAuthorizationDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonAuthorizationId,requestParameters.GetAmazonAuthorizationId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonAuthorizationId, requestParameters.GetAmazonAuthorizationId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(getAuthorizationDetailsDictionary);
             AuthorizeResponse responseObject = new AuthorizeResponse(response);
@@ -776,16 +777,16 @@ namespace AmazonPay
         {
             Dictionary<string, string> captureDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonAuthorizationId,requestParameters.GetAmazonAuthorizationId()},
-                {Constants.CaptureAmount_Amount,requestParameters.GetAmount().ToString(Constants.USNumberFormat)},
-                {Constants.CaptureAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
-                {Constants.CaptureReferenceId,requestParameters.GetCaptureReferenceId()},
-                {Constants.SellerCaptureNote,requestParameters.GetSellerCaptureNote()},
-                {Constants.SoftDescriptor,requestParameters.GetSoftDescriptor()},
-                {Constants.provider_credit_details,""},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonAuthorizationId, requestParameters.GetAmazonAuthorizationId() },
+                { Constants.CaptureAmount_Amount, requestParameters.GetAmount().ToString(Constants.USNumberFormat) }, 
+                { Constants.CaptureAmount_CurrencyCode, requestParameters.GetCurrencyCode() },
+                { Constants.CaptureReferenceId, requestParameters.GetCaptureReferenceId() },
+                { Constants.SellerCaptureNote, requestParameters.GetSellerCaptureNote() },
+                { Constants.SoftDescriptor, requestParameters.GetSoftDescriptor() },
+                { Constants.provider_credit_details, "" },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
 
             IList<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
@@ -818,10 +819,10 @@ namespace AmazonPay
         {
             Dictionary<string, string> getCaptureDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonCaptureId,requestParameters.GetAmazonCaptureId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonCaptureId, requestParameters.GetAmazonCaptureId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(getCaptureDetailsDictionary);
             CaptureResponse responseObject = new CaptureResponse(response);
@@ -856,16 +857,16 @@ namespace AmazonPay
         {
             Dictionary<string, string> refundDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonCaptureId,requestParameters.GetAmazonCaptureId()},
-                {Constants.RefundAmount_Amount,requestParameters.GetAmount().ToString(Constants.USNumberFormat)},
-                {Constants.RefundAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
-                {Constants.RefundReferenceId,requestParameters.GetRefundReferenceId()},
-                {Constants.SellerRefundNote,requestParameters.GetSellerRefundNote()},
-                {Constants.SoftDescriptor,requestParameters.GetSoftDescriptor()},
-                {Constants.provider_credit_reversal_details,""},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonCaptureId, requestParameters.GetAmazonCaptureId() },
+                { Constants.RefundAmount_Amount, requestParameters.GetAmount().ToString(Constants.USNumberFormat) }, 
+                { Constants.RefundAmount_CurrencyCode, requestParameters.GetCurrencyCode() },
+                { Constants.RefundReferenceId, requestParameters.GetRefundReferenceId() },
+                { Constants.SellerRefundNote, requestParameters.GetSellerRefundNote() },
+                { Constants.SoftDescriptor, requestParameters.GetSoftDescriptor() },
+                { Constants.provider_credit_reversal_details, "" },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
 
             IList<Dictionary<string, string>> providerCredit = new List<Dictionary<string, string>>();
@@ -898,10 +899,10 @@ namespace AmazonPay
         {
             Dictionary<string, string> getRefundDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonRefundId,requestParameters.GetAmazonRefundId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonRefundId, requestParameters.GetAmazonRefundId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(getRefundDetailsDictionary);
             RefundResponse responseObject = new RefundResponse(response);
@@ -928,9 +929,9 @@ namespace AmazonPay
         {
             Dictionary<string, string> getServiceStatusDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(getServiceStatusDictionary);
             GetServiceStatusResponse responseObject = new GetServiceStatusResponse(response);
@@ -967,21 +968,21 @@ namespace AmazonPay
         {
             Dictionary<string, string> createOrderReferenceDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.Id,requestParameters.GetId()},
-                {Constants.IdType,requestParameters.GetIdType()},
-                {Constants.ConfirmNow,requestParameters.GetConfirmNow()},
-                {Constants.OrderReferenceAttributes_OrderTotal_Amount,requestParameters.GetAmount().ToString(Constants.USNumberFormat)},
-                {Constants.OrderReferenceAttributes_OrderTotal_CurrencyCode,requestParameters.GetCurrencyCode()},
-                {Constants.OrderReferenceAttributes_PlatformId,requestParameters.GetPlatformId()},
-                {Constants.OrderReferenceAttributes_SellerNote,requestParameters.GetSellerNote()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId,requestParameters.GetSellerOrderId()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_StoreName,requestParameters.GetStoreName()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
-                {Constants.InheritShippingAddress,requestParameters.GetInheritShippingAddress()},
-                {Constants.OrderReferenceAttributes_SellerOrderAttributes_CustomInformation,requestParameters.GetCustomInformation()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.Id, requestParameters.GetId() },
+                { Constants.IdType, requestParameters.GetIdType() },
+                { Constants.ConfirmNow, requestParameters.GetConfirmNow() },
+                { Constants.OrderReferenceAttributes_OrderTotal_Amount, requestParameters.GetAmount().ToString(Constants.USNumberFormat) }, 
+                { Constants.OrderReferenceAttributes_OrderTotal_CurrencyCode, requestParameters.GetCurrencyCode() },
+                { Constants.OrderReferenceAttributes_PlatformId, requestParameters.GetPlatformId() },
+                { Constants.OrderReferenceAttributes_SellerNote, requestParameters.GetSellerNote() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_SellerOrderId, requestParameters.GetSellerOrderId() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_StoreName, requestParameters.GetStoreName() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData() },
+                { Constants.InheritShippingAddress, requestParameters.GetInheritShippingAddress() },
+                { Constants.OrderReferenceAttributes_SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(createOrderReferenceDetailsDictionary);
             OrderReferenceDetailsResponse responseObject = new OrderReferenceDetailsResponse(response);
@@ -1010,11 +1011,11 @@ namespace AmazonPay
         {
             Dictionary<string, string> getBillingAgreementDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonBillingAgreementId,requestParameters.GetAmazonBillingAgreementId()},
-                {Constants.AddressConsentToken,requestParameters.GetAddressConsentToken()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonBillingAgreementId, requestParameters.GetAmazonBillingAgreementId() },
+                { Constants.AddressConsentToken, requestParameters.GetAddressConsentToken() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(getBillingAgreementDetailsDictionary);
             BillingAgreementDetailsResponse responseObject = new BillingAgreementDetailsResponse(response);
@@ -1035,12 +1036,14 @@ namespace AmazonPay
         ///   
         ///   // Optional
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
-        ///   requestParameters.WithCurrencyCode(Regions.currencyCode.USD); // Required if config["currency_code"] is null
         ///   requestParameters.WithPlatformId("PLATFORM_ID"); // Solution Provider ID
         ///   requestParameters.WithSellerNote("CUSTOM_NOTE"):
         ///   requestParameters.WithSellerBillingAgreementId("CUSTOM_ID"); 
         ///   requestParameters.WithStoreName("CUSTOM_STORE_NAME");
         ///   requestParameters.WithCustomInformation("CUSTOM_INFO");
+        ///   requestParameters.WithBillingAgreementType( CustomerInitiatedTransaction or MerchantInitiatedTransaction )
+        ///   requestParameters.WithSubscriptionAmount( "AMOUNT");
+        ///   requestParameters.WithCurrencyCode("CURRENCY_CODE");
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
         ///  </code>
         /// </example>
@@ -1050,16 +1053,39 @@ namespace AmazonPay
         {
             Dictionary<string, string> setBillingAgreementDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonBillingAgreementId,requestParameters.GetAmazonBillingAgreementId()},
-                {Constants.BillingAgreementAttributes_PlatformId,requestParameters.GetPlatformId()},
-                {Constants.BillingAgreementAttributes_SellerNote,requestParameters.GetSellerNote()},
-                {Constants.BillingAgreementAttributes_SellerBillingAgreementAttributes_SellerBillingAgreementId,requestParameters.GetSellerBillingAgreementId()},
-                {Constants.BillingAgreementAttributes_SellerBillingAgreementAttributes_StoreName,requestParameters.GetStoreName()},
-                {Constants.BillingAgreementAttributes_SellerBillingAgreementAttributes_CustomInformation,requestParameters.GetCustomInformation()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonBillingAgreementId, requestParameters.GetAmazonBillingAgreementId() },
+                { Constants.BillingAgreementAttributes_PlatformId, requestParameters.GetPlatformId() },
+                { Constants.BillingAgreementAttributes_SellerNote, requestParameters.GetSellerNote() },
+                { Constants.BillingAgreementAttributes_SellerBillingAgreementAttributes_SellerBillingAgreementId, requestParameters.GetSellerBillingAgreementId() },
+                { Constants.BillingAgreementAttributes_SellerBillingAgreementAttributes_StoreName, requestParameters.GetStoreName() },
+                { Constants.BillingAgreementAttributes_SellerBillingAgreementAttributes_CustomInformation, requestParameters.GetCustomInformation() },
+                { Constants.BillingAgreementAttributes_BillingAgreementType,  requestParameters.GetBillingAgreementType() == null ? "" : requestParameters.GetBillingAgreementType().ToString() },
+                { Constants.BillingAgreementAttributes_SubscriptionAmount_Amount, requestParameters.GetSubscriptionAmount() == null ? "" : requestParameters.GetSubscriptionAmount().Value.ToString(Constants.USNumberFormat) },
+                { Constants.BillingAgreementAttributes_SubscriptionAmount_CurrencyCode, requestParameters.GetSubscriptionCurrencyCode() == null ? "" : requestParameters.GetSubscriptionCurrencyCode().ToString() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
+
+            // If currency code is not entered take it from the configuration object
+            if (requestParameters.GetSubscriptionAmount().HasValue && requestParameters.GetSubscriptionCurrencyCode() == null)
+            {
+
+                setBillingAgreementDetailsDictionary["CurrencyCode"] = clientConfig.GetCurrencyCode();
+            }
+            // If Subscription Amount is not entered return null for the Currency Code
+            else if (!requestParameters.GetSubscriptionAmount().HasValue)
+            {
+                if (setBillingAgreementDetailsDictionary.ContainsKey("BillingAgreementAttributes_SubscriptionAmount_Amount"))
+                {
+                    setBillingAgreementDetailsDictionary.Remove(Constants.BillingAgreementAttributes_SubscriptionAmount_Amount);
+                }
+                if (setBillingAgreementDetailsDictionary.ContainsKey("BillingAgreementAttributes_SubscriptionAmount_CurrencyCode"))
+                {
+                    setBillingAgreementDetailsDictionary.Remove(Constants.BillingAgreementAttributes_SubscriptionAmount_CurrencyCode);
+                }
+            }
+
             string response = SetParametersAndPost(setBillingAgreementDetailsDictionary);
             BillingAgreementDetailsResponse responseObject = new BillingAgreementDetailsResponse(response);
             return responseObject;
@@ -1080,6 +1106,8 @@ namespace AmazonPay
         ///   // Optional
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///   requestParameters.WithSuccessUrl("SUCCESS_URL");
+        ///   requestParameters.WithFailureUrl("FAILURE_URL");
         ///  </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
@@ -1087,10 +1115,12 @@ namespace AmazonPay
         {
             Dictionary<string, string> getBillingAgreementDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonBillingAgreementId,requestParameters.GetAmazonBillingAgreementId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonBillingAgreementId, requestParameters.GetAmazonBillingAgreementId() },
+                { Constants.SuccessUrl, requestParameters.GetSuccessUrl() },
+                { Constants.FailureUrl, requestParameters.GetFailureUrl() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(getBillingAgreementDetailsDictionary);
             ConfirmBillingAgreementResponse responseObject = new ConfirmBillingAgreementResponse(response);
@@ -1119,10 +1149,10 @@ namespace AmazonPay
         {
             Dictionary<string, string> validateBillingAgreementDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonBillingAgreementId,requestParameters.GetAmazonBillingAgreementId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonBillingAgreementId, requestParameters.GetAmazonBillingAgreementId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(validateBillingAgreementDictionary);
             ValidateBillingAgreementResponse responseObject = new ValidateBillingAgreementResponse(response);
@@ -1166,25 +1196,26 @@ namespace AmazonPay
         {
             Dictionary<string, string> authorizeDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonBillingAgreementId,requestParameters.GetAmazonBillingAgreementId()},
-                {Constants.AuthorizationAmount_Amount,requestParameters.GetAmount().ToString(Constants.USNumberFormat)},
-                {Constants.AuthorizationAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
-                {Constants.PlatformId,requestParameters.GetPlatformId()},
-                {Constants.SellerNote,requestParameters.GetSellerNote()},
-                {Constants.SellerOrderAttributes_StoreName,requestParameters.GetStoreName()},
-                {Constants.SellerOrderAttributes_SellerOrderId,requestParameters.GetSellerOrderId()},
-                {Constants.SellerOrderAttributes_CustomInformation,requestParameters.GetCustomInformation()},
-                {Constants.SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
-                {Constants.AuthorizationReferenceId,requestParameters.GetAuthorizationReferenceId()},
-                {Constants.SellerAuthorizationNote,requestParameters.GetSellerAuthorizationNote()},
-                {Constants.TransactionTimeout,requestParameters.GetTransactionTimeout().ToString()},
-                {Constants.SoftDescriptor,requestParameters.GetSoftDescriptor()},
-                {Constants.InheritShippingAddress,requestParameters.GetInheritShippingAddress()},
-                {Constants.CaptureNow,requestParameters.GetCaptureNow()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonBillingAgreementId, requestParameters.GetAmazonBillingAgreementId() },
+                { Constants.AuthorizationAmount_Amount, requestParameters.GetAmount().ToString(Constants.USNumberFormat) }, 
+                { Constants.AuthorizationAmount_CurrencyCode, requestParameters.GetCurrencyCode() },
+                { Constants.PlatformId, requestParameters.GetPlatformId() },
+                { Constants.SellerNote, requestParameters.GetSellerNote() },
+                { Constants.SellerOrderAttributes_StoreName, requestParameters.GetStoreName() },
+                { Constants.SellerOrderAttributes_SellerOrderId, requestParameters.GetSellerOrderId() },
+                { Constants.SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation() },
+                { Constants.SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData() },
+                { Constants.AuthorizationReferenceId, requestParameters.GetAuthorizationReferenceId() },
+                { Constants.SellerAuthorizationNote, requestParameters.GetSellerAuthorizationNote() },
+                { Constants.TransactionTimeout, requestParameters.GetTransactionTimeout().ToString() },
+                { Constants.SoftDescriptor, requestParameters.GetSoftDescriptor() },
+                { Constants.InheritShippingAddress, requestParameters.GetInheritShippingAddress() },
+                { Constants.CaptureNow, requestParameters.GetCaptureNow() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
+            
             string response = SetParametersAndPost(authorizeDictionary);
             AuthorizeResponse responseObject = new AuthorizeResponse(response);
             return responseObject;
@@ -1213,11 +1244,11 @@ namespace AmazonPay
         {
             Dictionary<string, string> closeBillingAgreementDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonBillingAgreementId,requestParameters.GetAmazonBillingAgreementId()},
-                {Constants.ClosureReason,requestParameters.GetClosureReason()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonBillingAgreementId, requestParameters.GetAmazonBillingAgreementId() },
+                { Constants.ClosureReason, requestParameters.GetClosureReason() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(closeBillingAgreementDictionary);
             CloseBillingAgreementResponse responseObject = new CloseBillingAgreementResponse(response);
@@ -1245,10 +1276,10 @@ namespace AmazonPay
         {
             Dictionary<string, string> getProviderCreditDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonProviderCreditId,requestParameters.GetAmazonProviderCreditId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonProviderCreditId, requestParameters.GetAmazonProviderCreditId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(getProviderCreditDetailsDictionary);
             GetProviderCreditDetailsResponse responseObject = new GetProviderCreditDetailsResponse(response);
@@ -1276,10 +1307,10 @@ namespace AmazonPay
         {
             Dictionary<string, string> getProviderCreditDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonProviderCreditReversalId,requestParameters.GetAmazonProviderCreditReversalId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonProviderCreditReversalId, requestParameters.GetAmazonProviderCreditReversalId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(getProviderCreditDetailsDictionary);
             GetProviderCreditReversalDetailsResponse responseObject = new GetProviderCreditReversalDetailsResponse(response);
@@ -1312,13 +1343,13 @@ namespace AmazonPay
         {
             Dictionary<string, string> getProviderCreditDetailsDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.AmazonProviderCreditId,requestParameters.GetAmazonProviderCreditId()},
-                {Constants.CreditReversalReferenceId,requestParameters.GetCreditReversalReferenceId()},
-                {Constants.CreditReversalAmount_Amount,requestParameters.GetAmount().ToString(Constants.USNumberFormat)},
-                {Constants.CreditReversalAmount_CurrencyCode,requestParameters.GetCurrencyCode()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.AmazonProviderCreditId, requestParameters.GetAmazonProviderCreditId() },
+                { Constants.CreditReversalReferenceId, requestParameters.GetCreditReversalReferenceId() },
+                { Constants.CreditReversalAmount_Amount, requestParameters.GetAmount().ToString(Constants.USNumberFormat) }, 
+                { Constants.CreditReversalAmount_CurrencyCode, requestParameters.GetCurrencyCode() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
             string response = SetParametersAndPost(getProviderCreditDetailsDictionary);
             GetProviderCreditReversalDetailsResponse responseObject = new GetProviderCreditReversalDetailsResponse(response);
@@ -1538,20 +1569,20 @@ namespace AmazonPay
         {
             Dictionary<string, string> setOrderAttributesDictionary = new Dictionary<string, string>() 
             { 
-                {Constants.Action, requestParameters.GetAction()},
-                {Constants.SellerId, requestParameters.GetMerchantId()},            
-                {Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId()},
-                {Constants.OrderAttributes_OrderTotal_CurrencyCode, requestParameters.GetCurrencyCode()},            
-                {Constants.OrderAttributes_PlatformId, requestParameters.GetPlatformId()},           
-                {Constants.OrderAttributes_SellerNote, requestParameters.GetSellerNote()},            
-                {Constants.OrderAttributes_SellerOrderAttributes_SellerOrderId, requestParameters.GetSellerOrderId()},            
-                {Constants.OrderAttributes_SellerOrderAttributes_StoreName, requestParameters.GetStoreName()},            
-                {Constants.OrderAttributes_SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation()},
-                {Constants.OrderAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData()},
-                {Constants.OrderAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower()},           
-                {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderId, requestParameters.GetPaymentServiceProviderId()},            
-                {Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId, requestParameters.GetPaymentServiceProviderOrderId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()}
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },            
+                { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
+                { Constants.OrderAttributes_OrderTotal_CurrencyCode, requestParameters.GetCurrencyCode() },            
+                { Constants.OrderAttributes_PlatformId, requestParameters.GetPlatformId() },           
+                { Constants.OrderAttributes_SellerNote, requestParameters.GetSellerNote() },            
+                { Constants.OrderAttributes_SellerOrderAttributes_SellerOrderId, requestParameters.GetSellerOrderId() },            
+                { Constants.OrderAttributes_SellerOrderAttributes_StoreName, requestParameters.GetStoreName() },            
+                { Constants.OrderAttributes_SellerOrderAttributes_CustomInformation, requestParameters.GetCustomInformation() },
+                { Constants.OrderAttributes_SellerOrderAttributes_SupplementaryData, requestParameters.GetSupplementaryData() },
+                { Constants.OrderAttributes_RequestPaymentAuthorization, requestParameters.GetRequestPaymentAuthorization().ToString().ToLower() },           
+                { Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderId, requestParameters.GetPaymentServiceProviderId() },            
+                { Constants.OrderAttributes_PaymentServiceProviderAttributes_PaymentServiceProviderOrderId, requestParameters.GetPaymentServiceProviderOrderId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() }
             };
            
             if (requestParameters.GetAmount() != null)
@@ -1592,9 +1623,9 @@ namespace AmazonPay
         {
             Dictionary<string, string> getMerchantAccountStatusDictionary = new Dictionary<string, string>()
             {
-                {Constants.Action,requestParameters.GetAction()},
-                {Constants.SellerId,requestParameters.GetMerchantId()},
-                {Constants.MWSAuthToken,requestParameters.GetMWSAuthToken()},
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
             };
             string response = SetParametersAndPost(getMerchantAccountStatusDictionary);
             GetMerchantAccountStatusResponse responseObject = new GetMerchantAccountStatusResponse(response);

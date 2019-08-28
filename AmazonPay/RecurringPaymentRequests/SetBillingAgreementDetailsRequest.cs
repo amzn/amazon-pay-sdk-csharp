@@ -1,4 +1,6 @@
-﻿namespace AmazonPay.RecurringPaymentRequests
+﻿using AmazonPay.Types;
+
+namespace AmazonPay.RecurringPaymentRequests
 {
     /// <summary>
     /// Request class to set the SetBillingAgreementDetails API call parameters
@@ -12,6 +14,9 @@
         private string seller_billing_agreement_id;
         private string store_name;
         private string custom_information;
+        private BillingAgreementTypes? billing_agreement_type;
+        private decimal? subscription_amount;
+        private Regions.currencyCode? subscription_currency_code;
 
         public SetBillingAgreementDetailsRequest()
         {
@@ -161,6 +166,66 @@
         public string GetCustomInformation()
         {
             return this.custom_information;
+        }
+
+        /// <summary>
+        /// Sets the Billing Agreement Type
+        /// </summary>
+        /// <param name="billing_agreement_type"></param>
+        /// <returns>SetBillingAgreementDetailsRequest Object</returns>
+        public SetBillingAgreementDetailsRequest WithBillingAgreementType(BillingAgreementTypes billing_agreement_type)
+        {
+            this.billing_agreement_type = billing_agreement_type;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Billing Agreement Type
+        /// </summary>
+        /// <returns>Billing Agreement Type</returns>
+        public BillingAgreementTypes? GetBillingAgreementType()
+        {
+            return this.billing_agreement_type;
+        }
+
+        /// <summary>
+        /// Sets the Subscription Amount
+        /// </summary>
+        /// <param name="subscription_amount"></param>
+        /// <returns>SetBillingAgreementDetailsRequest Object</returns>
+        public SetBillingAgreementDetailsRequest WithSubscriptionAmount(decimal subscription_amount)
+        {
+            this.subscription_amount = subscription_amount;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Subscription Amount
+        /// </summary>
+        /// <returns>Subscription Amount</returns>
+        public decimal? GetSubscriptionAmount()
+        {
+            return this.subscription_amount;
+        }
+
+        /// <summary>
+        /// Sets the Subscription Currency Code
+        /// </summary>
+        /// <param name="currency_code"></param>
+        /// <returns>SetBillingAgreementDetailsRequest Object</returns>
+        public SetBillingAgreementDetailsRequest WithSubscriptionCurrencyCode(Regions.currencyCode? currency_code)
+        {
+            this.subscription_currency_code = currency_code;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the Subscription Currency Code
+        /// </summary>
+        /// <returns>Currency Code</returns>
+        public Regions.currencyCode? GetSubscriptionCurrencyCode()
+        {
+            return this.subscription_currency_code;
         }
     }
 }
