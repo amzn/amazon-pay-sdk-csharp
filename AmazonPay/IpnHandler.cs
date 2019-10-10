@@ -16,7 +16,7 @@ using System.Xml;
 using AmazonPay.Responses;
 using System.Text.RegularExpressions;
 using Common.Logging;
-
+using Microsoft.Extensions.Caching.Memory;
 namespace AmazonPay
 {
     /// <summary>
@@ -507,7 +507,8 @@ namespace AmazonPay
             X509Certificate2 cert = null;
             try
             {
-                cert = (X509Certificate2)HttpRuntime.Cache.Get(String.Format(Constants.CacheKey, certPath));
+                cert.Import();
+                cert = (X509Certificate2)Cache.Get(String.Format(Constants.CacheKey, certPath));
             }
             catch (HttpException ex)
             {
