@@ -4,8 +4,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
@@ -15,8 +13,9 @@ using AmazonPay;
 using System.Xml;
 using AmazonPay.Responses;
 using System.Text.RegularExpressions;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
+
 namespace AmazonPay
 {
     /// <summary>
@@ -55,11 +54,11 @@ namespace AmazonPay
         private BillingAgreementDetailsResponse billingAgreementDetailsObject;
         private ChargebackResponse chargebackResponseObject;
 
+        private IMemoryCache memoryCache;
         /// <summary>
         ///  Common Logger Property
         /// </summary>
-        public ILog Logger { private get; set; }
-
+        public ILogger Logger { private get; set; }
         /// <summary>
         /// IpnHandler takes Ipn Headers and JSON data
         /// </summary>
@@ -76,7 +75,7 @@ namespace AmazonPay
         /// <param name="headers"></param>
         /// <param name="jsonMessage"></param>
         /// <param name="logger"></param>
-        public IpnHandler(NameValueCollection headers, string jsonMessage, ILog logger)
+        public IpnHandler(NameValueCollection headers, string jsonMessage, ILogger logger)
         {
             this.Logger = logger;
             IpnHandlerInit(headers, jsonMessage);
@@ -96,11 +95,11 @@ namespace AmazonPay
                     GetIpnResponseObjects();
                 }
             }
-            catch (HttpParseException ex)
+            catch (JsonReaderException ex)
             {
-                throw new HttpParseException("Error Parsing the IPN notification", ex);
+                throw new JsonReaderException("Error Parsing the IPN notification", ex);
             }
-
+            memoryCache = new MemoryCache(new MemoryCacheOptions());
         }
 
         /// <summary>
@@ -507,18 +506,17 @@ namespace AmazonPay
             X509Certificate2 cert = null;
             try
             {
-                cert.Import();
-                cert = (X509Certificate2)Cache.Get(String.Format(Constants.CacheKey, certPath));
+                cert = (X509Certificate2)memoryCache.Get(String.Format(Constants.CacheKey, certPath));
             }
-            catch (HttpException ex)
+            catch (KeyNotFoundException ex)
             {
-                throw new HttpException("Error requesting certificate", ex);
+                throw new KeyNotFoundException("Error requesting certificate", ex);
             }
 
             if (cert == null)
             {
                 cert = GetCertificateFromURI(certPath);
-                HttpRuntime.Cache.Insert(String.Format(Constants.CacheKey, certPath), cert, null, DateTime.UtcNow.AddDays(1.0), System.Web.Caching.Cache.NoSlidingExpiration);
+                memoryCache.Set(String.Format(Constants.CacheKey, certPath), cert, DateTime.UtcNow.AddDays(1.0));
             }
 
             return cert;
@@ -804,9 +802,9 @@ namespace AmazonPay
         /// <param name="type"></param>
         private void LogMessage(string message, SanitizeData.DataType type)
         {
-            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            if (this.Logger != null && this.Logger.IsEnabled(LogLevel.Debug))
             {
-                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+                this.Logger.LogDebug(SanitizeData.SanitizeGivenData(message, type));
             }
         }
     }

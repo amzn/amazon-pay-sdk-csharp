@@ -13,9 +13,11 @@ namespace AmazonPay {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
-    internal sealed partial class region : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class region {
+        //internal sealed partial class region : global::System.Configuration.ApplicationSettingsBase {
         
-        private static region defaultInstance = ((region)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new region())));
+        private static region defaultInstance = ((region)(new region()));
+        //private static region defaultInstance = ((region)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new region())));
         
         public static region Default {
             get {

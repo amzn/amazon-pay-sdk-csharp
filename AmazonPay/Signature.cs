@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using AmazonPay.CommonRequests;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace AmazonPay
 {
@@ -30,7 +30,7 @@ namespace AmazonPay
         /// <summary>
         ///  Common Looger Property
         /// </summary>
-        public ILog Logger { private get; set; }
+        public ILogger Logger { private get; set; }
 
         public Signature(Configuration configuration, string serviceVersion)
         {
@@ -398,9 +398,9 @@ namespace AmazonPay
         /// <param name="type">Type of data</param>
         private void LogMessage(string message, SanitizeData.DataType type)
         {
-            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            if (this.Logger != null && this.Logger.IsEnabled(LogLevel.Debug))
             {
-                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+                this.Logger.LogDebug(SanitizeData.SanitizeGivenData(message, type));
             }
         }
     }

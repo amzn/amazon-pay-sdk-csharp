@@ -18,7 +18,7 @@ using AmazonPay.ProviderCreditRequests;
 using AmazonPay.RecurringPaymentRequests;
 using AmazonPay.CommonRequests;
 using AmazonPay.Types;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace AmazonPay
 {
@@ -41,7 +41,7 @@ namespace AmazonPay
         /// <summary>
         ///  Common Looger Property
         /// </summary>
-        public ILog Logger { private get; set; }
+        public ILogger Logger { private get; set; }
 
         // Final URL to where the API parameters POST done,based off the config["region"] and respective mwsServiceUrls
         private string mwsServiceUrl = null;
@@ -1772,9 +1772,9 @@ namespace AmazonPay
         /// <param name="message"></param>
         private void LogMessage(string message, SanitizeData.DataType type)
         {
-            if (this.Logger != null && this.Logger.IsDebugEnabled)
+            if (this.Logger != null && this.Logger.IsEnabled(LogLevel.Debug))
             {
-                this.Logger.Debug(SanitizeData.SanitizeGivenData(message, type));
+                this.Logger.LogDebug(SanitizeData.SanitizeGivenData(message, type));
             }
         }
     }
