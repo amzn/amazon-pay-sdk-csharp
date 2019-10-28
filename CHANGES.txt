@@ -1,10 +1,6 @@
-Version 3.6.0.1 September 2019
-- Corrected missing version numbers and missing 3.6.0 entry in the changelog
-- Updated version numbers to redeploy to nuget
-
-Version 3.6.0 September 2019
--Added additional attributes (success_url, failure_url) to ConfirmBillingAgreement to support SCA.
--Added additional attributes (subscription_amount, currency_code) to SetBillingAgreement Details to support SCA.
+Version 3.6.0.2
+- Added additional attributes (success_url, failure_url) to ConfirmBillingAgreement and (subscription_amount, currency_code) to SetBillingAgreement Details.
+- See Amazon Pay Strong Customer Authentication (SCA) Upgrade Integration Guide for more information.
 
 Version 3.5.1 June 2019
 - Updated Newtonsoft.Json version number AmazonPay.nuspec to match changes that were deployed in 3.5.0

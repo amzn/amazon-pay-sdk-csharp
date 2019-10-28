@@ -92,6 +92,7 @@
     </Content>
     <Content Include="TestFiles\GetOrderReferenceDetails.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="TestFiles\GetRefundDetails.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
