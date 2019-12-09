@@ -1,3 +1,4 @@
+﻿
 # Amazon Pay SDK (C#)
 Amazon Pay API Integration
 
@@ -393,7 +394,7 @@ OrderReferenceDetailsResponse setOrderReferenceDetailsResponse = client.SetOrder
 ### IPN Handling
 
 1. To receive IPN's successfully you will need an valid SSL on your domain.
-2. You can set up your Notification endpoints in Seller Central by accessing the Integration Settings page in the Settings tab.
+2. You can set up your Notification endpoints by either (a) using the Seller Central Integration Settings page Settings tab, or (b) by using the SetMerchantNotificationConfiguration API call.
 3. IpnHandler.cs class handles verification of the source and the data of the IPN
 
 In your web project you can create a file (for example ipn.aspx with a CodeBehind file ipn.aspx.cs).  Add the below code into that file and set the URL to the file (ipn.aspx) location in Merchant/Integrator URL by accessing Integration Settings page in the Settings tab.
@@ -452,7 +453,22 @@ if (notificationType.Equals(NotificationType.PaymentAuthorize.ToString()))
 // Example - see AuthorizeResponse class for all variables and their Getter functions. 
 string amazonAuthorizationId = authResponse.GetAmazonAuthorizationId();
 ```
+#### Setting notification endpoints using SetMerchantNotificationConfiguration API
+```csharp
+Dictionary<string, List<URLEventTypes>> urlCollection = new Dictionary<string, List<URLEventTypes>>();
 
+urlCollection.Add("https://www.abc.com", new List<URLEventTypes>() { URLEventTypes.ORDER_REFERENCE, URLEventTypes.PAYMENT_AUTHORIZE });
+urlCollection.Add("https://www.xyz.com", new List<URLEventTypes>() { URLEventTypes.PAYMENT_CAPTURE });
+
+SetMerchantNotificationConfigurationRequest setRequest = new SetMerchantNotificationConfigurationRequest();
+setRequest.WithMerchantNotificationUrls(urlCollection);
+
+SetMerchantNotificationConfigurationResponse setResponse = client.SetMerchantNotificationConfiguration(setRequest);
+
+// to troubleshoot, you can call GetMerchantNotificationConfiguration to view current IPN settings
+GetMerchantNotificationConfigurationRequest getRequest = new GetMerchantNotificationConfigurationRequest();
+GetMerchantNotificationConfigurationResponse getResponse = client.GetMerchantNotificationConfiguration(getRequest);
+```
 ### Convenience Methods
 
 ##### Charge Method
@@ -601,7 +617,7 @@ string userId = jsonObject.GetValue("user_id").ToString();
 
 ##### This API allows you to make one API call 'GetPaymentDetails' to retrieve OrderReference, Authorize, Capture and Refund Details Response.
 
-```
+```csharp
     //GetPaymentDetails takes two parameters - AmazonOrderReferenID(required) and MWSAuthToken(optional)
     PaymentDetailsResponse payDetailsResponse = client.GetPaymentDetails("S01-9111020-6707923", null); 
     System.Diagnostics.Debug.WriteLine(payDetailsResponse.GetOrderReferenceDetails().GetXml());
@@ -627,7 +643,7 @@ string userId = jsonObject.GetValue("user_id").ToString();
 2. Add the “payments:instrument_descriptor” scope to your (test) site button.
 3. Pass the obtained “access_token” and Order Reference ID’s to the GetOrderReferenceDetails request.
 
-```
+```csharp
     GetOrderReferenceDetailsRequest getOrderReferenceDetailsRequest = new GetOrderReferenceDetailsRequest();
     getOrderReferenceDetailsRequest.WithAmazonOrderReferenceId("AMAZON_ORDER_REFERENCE_ID");
     getOrderReferenceDetailsRequest.WithaccessToken(ACCESS_TOKEN);
@@ -643,7 +659,7 @@ string userId = jsonObject.GetValue("user_id").ToString();
 
 ##### The GetMerchantAccountStatus operation is used to query the status of a particular merchant account and to retrieve information if the account is active or inactive.
 
-```
+```csharp
 // To check the status of your merchant account
 GetMerchantAccountStatusRequest request = new GetMerchantAccountStatusRequest();
 request.WithMerchantId("YOUR_MERCHANT_ID");
@@ -654,7 +670,7 @@ System.Diagnostics.Debug.WriteLine("Merchant account status is:" + " " + respons
 // Or using MWS delegation to check on the status of another merchant account
 GetMerchantAccountStatusRequest request = new GetMerchantAccountStatusRequest();
 request.WithMerchantId("YOUR_MERCHANT_ID")
-		.WithMWSAuthToken("YOUR_MWS_AUTH_TOKEN");
+	.WithMWSAuthToken("YOUR_MWS_AUTH_TOKEN");
 
 GetMerchantAccountStatusResponse response = client.GetMerchantAccountStatus(request);
 System.Diagnostics.Debug.WriteLine("Child account status is:" + " " + response.GetAccountStatus());

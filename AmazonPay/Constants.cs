@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.6.0.2";
+        public static readonly string SDKClientVersion = "3.6.1";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -110,6 +110,16 @@ namespace AmazonPay
         public static readonly string SuccessUrl = "SuccessUrl";
         public static readonly string FailureUrl = "FailureUrl";
 
+        public enum URLEventTypes
+        {
+            ALL,
+            ORDER_REFERENCE,
+            PAYMENT_AUTHORIZE,
+            PAYMENT_CAPTURE,
+            PAYMENT_REFUND,
+            BILLING_AGREEMENT,
+            CHARGEBACK_DETAILED
+        }
 
         /// <summary>
         /// API call MWS Action name Definitions
@@ -140,7 +150,9 @@ namespace AmazonPay
         public static readonly string ReverseProviderCredit = "ReverseProviderCredit";
         public static readonly string SetOrderAttributes = "SetOrderAttributes";
         public static readonly string GetMerchantAccountStatus = "GetMerchantAccountStatus";
-
+        public static readonly string GetMerchantNotificationConfiguration = "GetMerchantNotificationConfiguration";
+        public static readonly string SetMerchantNotificationConfiguration = "SetMerchantNotificationConfiguration";
+ 
         /// <summary>
         /// OrderReference/BillingAgreement state
         /// </summary>
