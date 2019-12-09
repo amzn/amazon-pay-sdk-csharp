@@ -34,5 +34,7 @@ namespace AmazonPay
         Responses.PaymentDetailsResponse GetPaymentDetails(String amazonOrderReferenceID, String mwsAuthToken);
         Responses.ValidateBillingAgreementResponse ValidateBillingAgreement(RecurringPaymentRequests.ValidateBillingAgreementRequest requestParameters);
         Responses.GetMerchantAccountStatusResponse GetMerchantAccountStatus(StandardPaymentRequests.GetMerchantAccountStatusRequest requestParameters);
+        Responses.SetMerchantNotificationConfigurationResponse SetMerchantNotificationConfiguration(StandardPaymentRequests.SetMerchantNotificationConfigurationRequest requestParameters);
+        Responses.GetMerchantNotificationConfigurationResponse GetMerchantNotificationConfiguration(StandardPaymentRequests.GetMerchantNotificationConfigurationRequest requestParameters);
     }
 }

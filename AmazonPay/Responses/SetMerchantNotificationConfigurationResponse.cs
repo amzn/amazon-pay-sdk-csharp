@@ -4,12 +4,12 @@ using System.Collections;
 namespace AmazonPay.Responses
 {
 
-    public class ConfirmOrderReferenceResponse : AbstractResponse
+    public class SetMerchantNotificationConfigurationResponse : AbstractResponse
     {
         /// <summary>
-        /// ConfirmOrderReferenceResponse 
+        /// SetMerchantNotificationConfigurationResponse 
         /// </summary>
-        public ConfirmOrderReferenceResponse(string xml)
+        public SetMerchantNotificationConfigurationResponse(string xml)
         {
             SetDictionaryAndErrorResponse(xml);
             if (success)

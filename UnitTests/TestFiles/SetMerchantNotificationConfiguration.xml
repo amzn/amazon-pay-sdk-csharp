@@ -1,0 +1,5 @@
+﻿<SetMerchantNotificationConfigurationResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+  <ResponseMetadata>
+    <RequestId>6cc80335-f1bc-4689-bff6-8e7072df537c</RequestId>
+  </ResponseMetadata>
+</SetMerchantNotificationConfigurationResponse>

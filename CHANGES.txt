@@ -1,3 +1,7 @@
+Version 3.6.1 December 2019
+- Add GetMerchantNotificationConfiguration API call
+- Add SetMerchantNotificationConfiguration API call
+
 Version 3.6.0.2
 - Added additional attributes (success_url, failure_url) to ConfirmBillingAgreement and (subscription_amount, currency_code) to SetBillingAgreement Details.
 - See Amazon Pay Strong Customer Authentication (SCA) Upgrade Integration Guide for more information.

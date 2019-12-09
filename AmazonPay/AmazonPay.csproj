@@ -92,13 +92,14 @@
     <Compile Include="Responses\CancelOrderReferenceResponse.cs" />
     <Compile Include="Responses\CaptureResponse.cs" />
     <Compile Include="Responses\ChargebackResponse.cs" />
+    <Compile Include="Responses\ConfirmOrderReferenceResponse.cs" />
     <Compile Include="Responses\CloseAuthorizationResponse.cs" />
     <Compile Include="Responses\CloseBillingAgreementResponse.cs" />
     <Compile Include="Responses\CloseOrderReferenceResponse.cs" />
     <Compile Include="Responses\ConfirmBillingAgreementResponse.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
-    <Compile Include="Responses\ConfirmOrderReferenceResponse.cs" />
     <Compile Include="Responses\GetMerchantAccountStatusResponse.cs" />
+    <Compile Include="Responses\GetMerchantNotificationConfigurationResponse.cs" />
     <Compile Include="Responses\Operator.cs" />
     <Compile Include="Responses\PaymentDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditDetailsResponse.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Responses\IResponse.cs" />
     <Compile Include="Responses\OrderReferenceDetailsResponse.cs" />
     <Compile Include="Responses\RefundResponse.cs" />
+    <Compile Include="Responses\SetMerchantNotificationConfigurationResponse.cs" />
     <Compile Include="Responses\ValidateBillingAgreementResponse.cs" />
     <Compile Include="SanitizeData.cs" />
     <Compile Include="Signature.cs" />
@@ -114,6 +116,8 @@
     <Compile Include="StandardPaymentRequests\CancelOrderReferenceRequest.cs" />
     <Compile Include="StandardPaymentRequests\CaptureRequest.cs" />
     <Compile Include="StandardPaymentRequests\ChargeRequest.cs" />
+    <Compile Include="StandardPaymentRequests\SetMerchantNotificationConfigurationRequest.cs" />
+    <Compile Include="StandardPaymentRequests\GetMerchantNotificationConfigurationRequest.cs" />
     <Compile Include="StandardPaymentRequests\CloseAuthorizationRequest.cs" />
     <Compile Include="StandardPaymentRequests\CloseOrderReferenceRequest.cs" />
     <Compile Include="CommonRequests\Configuration.cs" />
