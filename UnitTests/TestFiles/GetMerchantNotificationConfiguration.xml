@@ -1,0 +1,21 @@
+﻿<GetMerchantNotificationConfigurationResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+  <GetMerchantNotificationConfigurationResult>
+    <NotificationConfigurationList>
+      <member>
+        <NotificationUrl>https://www.xyz.com</NotificationUrl>
+        <EventTypes>
+          <member>PAYMENT_CAPTURE</member>
+        </EventTypes>
+      </member>
+      <member>
+        <NotificationUrl>https://www.abc.com</NotificationUrl>
+        <EventTypes>
+          <member>ORDER_REFERENCE,PAYMENT_AUTHORIZE</member>
+        </EventTypes>
+      </member>
+    </NotificationConfigurationList>
+  </GetMerchantNotificationConfigurationResult>
+  <ResponseMetadata>
+    <RequestId>7ccba952-b840-4b5b-bd3c-5585c574b981</RequestId>
+  </ResponseMetadata>
+</GetMerchantNotificationConfigurationResponse>

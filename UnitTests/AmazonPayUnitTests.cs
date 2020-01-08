@@ -2006,6 +2006,91 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
+        public void TestSetMerchantNotificationConfiguration()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","SetMerchantNotificationConfiguration"},
+                {"SellerId","test"},
+                {"MWSAuthToken","test123"},
+                {"NotificationConfigurationList.NotificationConfiguration.1.NotificationUrl","https://www.abc.com"},
+                {"NotificationConfigurationList.NotificationConfiguration.2.NotificationUrl","https://www.xyz.com"},
+                {"NotificationConfigurationList.NotificationConfiguration.1.EventTypes.EventTypeList.1","ORDER_REFERENCE"},
+                {"NotificationConfigurationList.NotificationConfiguration.1.EventTypes.EventTypeList.2","PAYMENT_AUTHORIZE"},
+                {"NotificationConfigurationList.NotificationConfiguration.2.EventTypes.EventTypeList.1","PAYMENT_CAPTURE"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("2018-09-27T02:18:33.408Z");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetMerchantNotification
+            Dictionary<string, List<Constants.URLEventTypes>> urlCollection = new Dictionary<string, List<Constants.URLEventTypes>>();
+
+            urlCollection.Add("https://www.abc.com", new List<Constants.URLEventTypes>() { Constants.URLEventTypes.ORDER_REFERENCE, Constants.URLEventTypes.PAYMENT_AUTHORIZE });
+            urlCollection.Add("https://www.xyz.com", new List<Constants.URLEventTypes>() { Constants.URLEventTypes.PAYMENT_CAPTURE });
+
+            SetMerchantNotificationConfigurationRequest setRequest = new SetMerchantNotificationConfigurationRequest();
+            setRequest.WithMerchantNotificationUrls(urlCollection)
+                .WithMWSAuthToken("test123");
+
+            client.SetMerchantNotificationConfiguration(setRequest);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing SetMerchantNotificationConfiguration Response
+            String rawResponse = loadTestFile("GetMerchantAccountStatusResponse.xml");
+            GetMerchantAccountStatusResponse getMerchantAccountStatusResponseObject = new GetMerchantAccountStatusResponse(rawResponse);
+            Assert.AreEqual(getMerchantAccountStatusResponseObject.GetRequestId(), "51eaf2d5-0b9c-4630-b0e7-1ef61582076a");
+
+            Assert.AreEqual(getMerchantAccountStatusResponseObject.GetXml(), rawResponse);
+        }
+
+        [Test]
+        public void TestGetMerchantNotificationConfiguration()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","GetMerchantNotificationConfiguration"},
+                {"SellerId","test"},
+                {"MWSAuthToken","test123"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("2018-09-27T02:18:33.408Z");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetMerchantNotification
+            Dictionary<string, List<Constants.URLEventTypes>> urlCollection = new Dictionary<string, List<Constants.URLEventTypes>>();
+
+            GetMerchantNotificationConfigurationRequest getRequest = new GetMerchantNotificationConfigurationRequest();
+            getRequest.WithMWSAuthToken("test123");
+
+            client.GetMerchantNotificationConfiguration(getRequest);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(apiParametersDict));
+            System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(expectedParamsDict));
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing SetMerchantNotificationConfiguration Response
+            String rawResponse = loadTestFile("GetMerchantAccountStatusResponse.xml");
+            GetMerchantAccountStatusResponse getMerchantAccountStatusResponseObject = new GetMerchantAccountStatusResponse(rawResponse);
+            Assert.AreEqual(getMerchantAccountStatusResponseObject.GetRequestId(), "51eaf2d5-0b9c-4630-b0e7-1ef61582076a");
+
+            Assert.AreEqual(getMerchantAccountStatusResponseObject.GetXml(), rawResponse);
+        }
+
+        [Test]
         public void TestGetUserInfo()
         {
             Enum emptyRegion = null;

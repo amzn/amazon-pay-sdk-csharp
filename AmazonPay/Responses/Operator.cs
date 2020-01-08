@@ -45,6 +45,9 @@
         ProviderCreditReversalSummaryList, ProviderCreditReversalId,
 
         //ValidateBillingAgreementResponse
-        ValidationResult, FailureReasonCode
+        ValidationResult, FailureReasonCode,
+
+        //GetMerchantNotificationConfigurationResponse
+        NotificationConfigurationList, NotificationsUrl, EventTypes
     }
 }

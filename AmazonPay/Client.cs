@@ -250,6 +250,79 @@ namespace AmazonPay
         }
 
         /// <summary>
+        /// getMerchantNotificationConfiguration API call - Returns merchant notification Configuration.
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   GetMerchantNotificationConfigurationRequest requestParameters = new GetMerchantNotificationConfigurationResponse();
+        ///  
+        ///   // Required params
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///  
+        ///   // Optional params
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
+        public GetMerchantNotificationConfigurationResponse GetMerchantNotificationConfiguration(GetMerchantNotificationConfigurationRequest requestParameters)
+        {
+            Dictionary<string, string> getMerchantNotificationConfigurationDictionary = new Dictionary<string, string>()
+            {
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
+                { Constants.Action, requestParameters.GetAction() }
+
+            };
+            string response = SetParametersAndPost(getMerchantNotificationConfigurationDictionary);
+            GetMerchantNotificationConfigurationResponse responseObject = new GetMerchantNotificationConfigurationResponse(response);
+            return responseObject;
+        }
+
+        /// <summary>
+        /// setMerchantNotificationConfiguration API call - Returns merchant notification Configuration.
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   SetMerchantNotificationConfigurationRequest requestParameters = new SetMerchantNotificationConfigurationResponse();
+        ///  
+        ///   // Required params
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   SetMerchantNotificationConfigurationRequest setRequest = new SetMerchantNotificationConfigurationRequest();
+        ///   setRequest.WithMerchantNotificationUrls(Dictionary<string, List<URLEventTypes>>); //Where string is the URL and the list contains relevant event types
+        ///  
+        ///   // Optional params
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
+        public SetMerchantNotificationConfigurationResponse SetMerchantNotificationConfiguration(SetMerchantNotificationConfigurationRequest requestParameters)
+        {
+            Dictionary<string, string> setMerchantNotificationConfigurationDictionary = new Dictionary<string, string>()
+            {
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
+                { Constants.Action, requestParameters.GetAction() }
+            };
+            int url_ix = 0;
+            foreach ( KeyValuePair<string,List<Constants.URLEventTypes>> item in requestParameters.GetMerchantNotificationUrls() )
+            {
+                url_ix++;
+                int type_ix = 0;
+                setMerchantNotificationConfigurationDictionary.Add( "NotificationConfigurationList.NotificationConfiguration." + url_ix.ToString() + ".NotificationUrl", item.Key );
+                foreach ( Constants.URLEventTypes type_value in item.Value )
+                {
+                    type_ix++;
+                    setMerchantNotificationConfigurationDictionary.Add( "NotificationConfigurationList.NotificationConfiguration." + url_ix.ToString() + ".EventTypes.EventTypeList." + type_ix, type_value.ToString() );
+                }
+            }
+            string response = SetParametersAndPost(setMerchantNotificationConfigurationDictionary);
+            SetMerchantNotificationConfigurationResponse responseObject = new SetMerchantNotificationConfigurationResponse(response);
+            return responseObject;
+        }
+
+        /// <summary>
         /// SetProviderCreditDetails - sets the provider credit details sent via the Capture or Authorize API calls
         /// </summary>
         /// <param name="parameters"></param>
