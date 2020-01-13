@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>AmazonPay service. This API section enables you to programmatically retrieve shipping and payment information provided by the buyer from their Amazon account. It allows you to authorize, capture, and refund payments, enabling a variety of payments scenarios.</description>
     <releaseNotes>v3.7.0</releaseNotes>
-    <copyright>Copyright 2018-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.</copyright>
+    <copyright>Copyright 2018-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.</copyright>
     <tags>AmazonPay</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="12.0.2" />
