@@ -48,6 +48,9 @@
         ValidationResult, FailureReasonCode,
 
         //GetMerchantNotificationConfigurationResponse
-        NotificationConfigurationList, NotificationsUrl, EventTypes
+        NotificationConfigurationList, NotificationsUrl, EventTypes,
+
+        //ListOrderReferenceResponse
+        OrderReferenceList, OrderReference, NextPageToken
     }
 }

@@ -289,7 +289,7 @@ namespace AmazonPay
         ///   // Required params
         ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
         ///   SetMerchantNotificationConfigurationRequest setRequest = new SetMerchantNotificationConfigurationRequest();
-        ///   setRequest.WithMerchantNotificationUrls(Dictionary<string, List<URLEventTypes>>); //Where string is the URL and the list contains relevant event types
+        ///   setRequest.WithMerchantNotificationUrls(Dictionary<string, List<URLEventTypes>>); // Where string is the URL and the list contains relevant event types
         ///  
         ///   // Optional params
         ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
@@ -468,6 +468,85 @@ namespace AmazonPay
             return responseObject;
         }
 
+        /// <summary>
+        /// ListOrderReference API call - Returns details about the Order Reference object and its current state from the sellers order ID.  Returns list of dictionarys with the returned values of matched order references.
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   ListOrderReferenceRequest requestParameters = new ListOrderReferenceRequest();
+        ///  
+        ///   // Required params
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithQueryId("MERCHANT_ORDER_ID");
+        ///   requestParameters.WithQueryIdType(String "SellerOrderId");
+        ///   // Optional params
+        ///   requestParameters.WithPageSize(); // [Int]
+        ///   requestParameters.WithCreatedStartTime(); // [String] (Date/Time ISO8601)
+        ///   requestParameters.WithCreatedEndTime(); // [String] (Date/Time ISO8601)
+        ///   requestParameters.WithAccessToken[("ACCESS_TOKEN");
+        ///   requestParameters.WithMWSAuthToken("MWS_AUTH_TOKEN");
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
+        public ListOrderReferenceResponse ListOrderReference(ListOrderReferenceRequest requestParameters)
+        {
+
+            Dictionary<string, string> paymentDomains = new Dictionary<string, string>()
+            {
+                { "us", "NA_USD" },
+                { "jp", "FE_JPY"},
+                { "de", "EU_EUR"},
+                { "uk", "EU_GBP"}
+            };
+
+            Dictionary<string, string> listOrderReferenceDictionary = new Dictionary<string, string>()
+            {
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.QueryId, requestParameters.GetQueryId() },
+                { Constants.QueryIdType, requestParameters.GetQueryIdType() },
+                { Constants.PageSize, requestParameters.GetPageSize().ToString() },
+                { Constants.CreatedStartTime, Regex.Replace(requestParameters.GetCreatedStartTime().ToString(), "\\.[0-9]+", "Z") }, // converts 01-01-2020T01:01:01.123456 to 01-01-2020T01:01:01Z
+                { Constants.CreatedEndTime, Regex.Replace(requestParameters.GetCreatedEndTime().ToString(), "\\.[0-9]+", "Z") }, // converts 01-01-2020T01:01:01.123456 to 01-01-2020T01:01:01Z
+                { Constants.PaymentDomain, paymentDomains[this.clientConfig.GetRegion()] },
+                { Constants.AccessToken, requestParameters.GetAccessToken() },
+                { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
+
+            };
+
+            string response = SetParametersAndPost(listOrderReferenceDictionary);
+            ListOrderReferenceResponse responseObject = new ListOrderReferenceResponse(response);
+            return responseObject;
+        }
+        /// <summary>
+        /// ListOrderReferenceByNextToken API call - Returns details about the Order Reference object and its current state from the sellers order ID.
+        /// </summary>
+        /// <example>
+        ///  <code>
+        ///   ListOrderReferenceByNextTokenRequest requestParameters = new ListOrderReferenceByNextTokenRequest();
+        ///  
+        ///   // Required params
+        ///   requestParameters.WithMerchantId("MERCHANT_ID"); // Required if config["merchant_id"] is null
+        ///   requestParameters.WithQueryIdType(String "NextPageToken"); // Retrieved from a ListOrderReferenceResponse
+        ///  </code>
+        /// </example>
+        /// <param name="requestParameters"></param>
+        /// <returns>ResponseParser responseObject</returns>
+        public ListOrderReferenceResponse ListOrderReferenceByNextToken(ListOrderReferenceByNextTokenRequest requestParameters)
+        {
+
+            Dictionary<string, string> listOrderReferenceByNextTokenDictionary = new Dictionary<string, string>()
+            {
+                { Constants.Action, requestParameters.GetAction() },
+                { Constants.SellerId, requestParameters.GetMerchantId() },
+                { Constants.NextPageToken, requestParameters.GetNextPageToken() },
+            };
+
+            string response = SetParametersAndPost(listOrderReferenceByNextTokenDictionary);
+            ListOrderReferenceResponse responseObject = new ListOrderReferenceResponse(response);
+            return responseObject;
+        }
 
         /// <summary>
         /// GetPaymentDetails API call - is a utility function that returns Order Reference, Authorize, Capture and Refund details.

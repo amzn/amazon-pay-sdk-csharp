@@ -1,3 +1,7 @@
+Version 3.7.0 January 2020
+- Added ListOrderReference API Call
+- Add ListOrderReferenceByNextToken API call
+
 Version 3.6.1 December 2019
 - Add GetMerchantNotificationConfiguration API call
 - Add SetMerchantNotificationConfiguration API call

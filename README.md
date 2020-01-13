@@ -469,6 +469,34 @@ SetMerchantNotificationConfigurationResponse setResponse = client.SetMerchantNot
 GetMerchantNotificationConfigurationRequest getRequest = new GetMerchantNotificationConfigurationRequest();
 GetMerchantNotificationConfigurationResponse getResponse = client.GetMerchantNotificationConfiguration(getRequest);
 ```
+
+#### Making a ListOrderReference API call:
+
+```csharp
+
+ListOrderReferenceRequest listRequest = new ListOrderReferenceRequest();
+//REQUIRED PARAMETERS
+listRequest.WithQueryId("YOUR_CUSTOM_ORDER_REFERENCE_ID");
+listRequest.WithQueryIdType("SellerOrderId");
+//OPTIONAL PARAMETERS
+listRequest.WithPageSize(1);
+listRequest.WithCreatedStartTime(new DateTime(2020, 1, 1, 1, 1, 1));
+listRequest.WithCreatedEndTime(new DateTime(2020, 1, 15, 23, 59, 59));
+
+ListOrderReferenceResponse listResponse = client.ListOrderReference(listRequest);
+```
+
+##### Making a ListOrderReferenceByNextToken API call:
+
+```csharp
+string NextPageToken = listResponse.GetNextPageToken();
+
+ListOrderReferenceByNextTokenRequest listByTokenRequest = new ListOrderReferenceByNextTokenRequest();
+listByTokenRequest.WithNextPageToken(NextPageToken);
+
+ListOrderReferenceResponse listByTokenResponse = client.ListOrderReferenceByNextToken(listByTokenRequest);
+```
+
 ### Convenience Methods
 
 ##### Charge Method

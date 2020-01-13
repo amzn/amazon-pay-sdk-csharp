@@ -100,6 +100,7 @@
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="Responses\GetMerchantAccountStatusResponse.cs" />
     <Compile Include="Responses\GetMerchantNotificationConfigurationResponse.cs" />
+    <Compile Include="Responses\ListOrderReferenceResponse.cs" />
     <Compile Include="Responses\Operator.cs" />
     <Compile Include="Responses\PaymentDetailsResponse.cs" />
     <Compile Include="Responses\GetProviderCreditDetailsResponse.cs" />
@@ -116,6 +117,8 @@
     <Compile Include="StandardPaymentRequests\CancelOrderReferenceRequest.cs" />
     <Compile Include="StandardPaymentRequests\CaptureRequest.cs" />
     <Compile Include="StandardPaymentRequests\ChargeRequest.cs" />
+    <Compile Include="StandardPaymentRequests\ListOrderReferenceByNextTokenRequest.cs" />
+    <Compile Include="StandardPaymentRequests\ListOrderReferenceRequest.cs" />
     <Compile Include="StandardPaymentRequests\SetMerchantNotificationConfigurationRequest.cs" />
     <Compile Include="StandardPaymentRequests\GetMerchantNotificationConfigurationRequest.cs" />
     <Compile Include="StandardPaymentRequests\CloseAuthorizationRequest.cs" />

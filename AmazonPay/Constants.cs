@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.6.1";
+        public static readonly string SDKClientVersion = "3.7.0";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -109,6 +109,13 @@ namespace AmazonPay
 
         public static readonly string SuccessUrl = "SuccessUrl";
         public static readonly string FailureUrl = "FailureUrl";
+        public static readonly string QueryId = "QueryId";
+        public static readonly string QueryIdType = "QueryIdType";
+        public static readonly string PageSize = "PageSize";
+        public static readonly string CreatedStartTime = "CreatedTimeRange.StartTime";
+        public static readonly string CreatedEndTime = "CreatedTimeRange.EndTime";
+        public static readonly string PaymentDomain = "PaymentDomain";
+        public static readonly string NextPageToken = "NextPageToken";
 
         public enum URLEventTypes
         {
@@ -152,7 +159,9 @@ namespace AmazonPay
         public static readonly string GetMerchantAccountStatus = "GetMerchantAccountStatus";
         public static readonly string GetMerchantNotificationConfiguration = "GetMerchantNotificationConfiguration";
         public static readonly string SetMerchantNotificationConfiguration = "SetMerchantNotificationConfiguration";
- 
+        public static readonly string ListOrderReference = "ListOrderReference";
+        public static readonly string ListOrderReferenceByNextToken = "ListOrderReferenceByNextToken";
+
         /// <summary>
         /// OrderReference/BillingAgreement state
         /// </summary>

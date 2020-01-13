@@ -2091,6 +2091,97 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
+        public void TestListOrderReference()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","ListOrderReference"},
+                {"SellerId","test"},
+                {"MWSAuthToken","test123"},
+                {"QueryId","YOUR_CUSTOM_ORDER_REFERENCE_ID" },
+                {"QueryIdType","SellerOrderId"},
+                {"PageSize","1" },
+                {"CreatedTimeRange.StartTime", Regex.Replace(new DateTime(2020, 1, 1, 1, 1, 1).ToString("o"), "\\.[0-9]+", "Z") },
+                {"CreatedTimeRange.EndTime", Regex.Replace(new DateTime(2020, 1, 15, 23, 59, 59).ToString("o"), "\\.[0-9]+", "Z")},
+                {"PaymentDomain", "NA_USD"}
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp(DateTime.UtcNow.ToString("o"));
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetMerchantNotification
+            ListOrderReferenceRequest listRequest = new ListOrderReferenceRequest();
+            listRequest.WithMerchantId("test");
+            listRequest.WithMWSAuthToken("test123");
+            listRequest.WithQueryId("YOUR_CUSTOM_ORDER_REFERENCE_ID");
+            listRequest.WithQueryIdType("SellerOrderId");
+            listRequest.WithPageSize(1);
+            listRequest.WithCreatedStartTime(new DateTime(2020, 1, 1, 1, 1, 1));
+            listRequest.WithCreatedEndTime(new DateTime(2020, 1, 15, 23, 59, 59));
+            listRequest.WithPaymentDomain("NA_USD");
+
+            client.ListOrderReference(listRequest);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing GetOrderReferenceDetails Response
+            String rawResponse = loadTestFile("ListOrderReference.xml");
+            ListOrderReferenceResponse listOrderReferenceResponseObject = new ListOrderReferenceResponse(rawResponse);
+            Assert.AreEqual(listOrderReferenceResponseObject.GetNextPageToken(), "eyJuZXh0UGFnZVRva2VuIjoiQUFBQUFBQUFBQUZoeS84eVBPTy9LK05Za0hTV2s0Ukx0SEZWNUxZaC85bG0zRTJqem95dmd4eHhJM1d2blEyUG5FZGtlYlBnWjE1SjJ3bmFud2ZoUTUxU21MSm5BSzJqMTFkTWphVEJxR0lURVR4a0QrWHNLaFJMWEU3KzU4NDliYUs2Tjh2OVdRVlpDTWh2WDNsZXNzbjVMeFFUUWFnU3RWbVFLR3lRUHgvWGJLaWJ4ZjlOM3RjTHlHLytheUY0ZEwzUlpyc1ZKNHM3RXRYUStpVUVtZUJGU29VRnFwQ2FPcFMxenplY1hmdVVGSUY3NHoxQWpjaWRKbkU3UHRXTlYvMHNxa0VxSzJyOCtjVUcvdEIvdjRYa0U4Y0orRE0xdGx4T3JZSFlzTEwrUGNjcFRTTGFwbEVKQUlWYmkrNFRNMzNrOURRaWpzZytydWZjZ0paNWNTZ2puQzUwcitiNXB5YXRBbEV2aGUybXFFdVVtZ0cvM3pITWtKU1E1R1hVZUI2b2FWZkZKeVJjRjdxN0NxaGtqdHVhUFZQbHZJalFKM2UvLzduNGZKbHpYell6SDJIeHp2b3RzUm9JOXlqRTZhaFFKK1BTR2w1VVNGTmZuQldEcHlBSHBITDhpQ1BMa2MwVFpyZHNHMGFLM0srQ3hMKyt1OHFCYjBTTGtPSVAzTmFyVU1CbHZmM2kxVHRtdXpCS2YwaVBpT0s1TUtPbFJGUXgyMlplQmVjTFR1YnA2UFJpSDQ2YUkxcnBGaWNIZ1hLdGJlRkt4R0Q3OXVYbVBtTUJDdW5ueE83V3RZRTloZW9kam9mdnhCTldVM3lIcE9aZnA4bTVZV2tRMmJvTldTbWlzVDZGTnJjdUdrazQxN3YzZ1UzMEMxQWkvMWNERy9nRDUrWEdrbkE0TFhicHpDeEsvVlNMQ1lXb3paSkVMRkdxWXppVTNNV2RXcWhQdkNLbDVwWE5YYTZNZDhXUzJUT0NuZm4yek5DSWxJWm9LYy9FdjlHNHNhV0RLQ0FMVVF0Tm9kZWtKZHlWY0tvWFpDK0ZSRCsrOVZTa3ltNkwiLCJtYXJrZXRwbGFjZUlkIjoiQTNCWEIwWU4zWEgxN0gifQ==");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences().Count, 2);
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["AmazonOrderReferenceId"], "S01-3139477-8890805");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["ReleaseEnvironment"], "Sandbox");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["CreationTimestamp"], "1/3/2020 3:58:19 PM");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["StoreName"], "IntroProd");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["SellerOrderId"], "YOUR_CUSTOM_ORDER_REFERENCE_ID");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["State"], "Canceled");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["LastUpdateTimestamp"], "1/3/2020 3:58:35 PM");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["CurrencyCode"], "USD");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["Amount"], "100.00");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["ReasonDescription"], "AMAZON ON BEHALF OF MERCHANT");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["ReasonCode"], "SellerCanceled");
+
+        }
+
+        [Test]
+        public void TestListOrderReferenceByNextToken()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","ListOrderReferenceByNextToken"},
+                {"SellerId","test"},
+                {"NextPageToken","ABCDEFGH" }
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp(DateTime.UtcNow.ToString("o"));
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API SetMerchantNotification
+            ListOrderReferenceByNextTokenRequest listRequest = new ListOrderReferenceByNextTokenRequest();
+            listRequest.WithMerchantId("test");
+            listRequest.WithNextPageToken("ABCDEFGH");
+
+            client.ListOrderReferenceByNextToken(listRequest);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+
+            System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(apiParametersDict));
+            System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(expectedParamsDict));
+
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+        }
+
+        [Test]
         public void TestGetUserInfo()
         {
             Enum emptyRegion = null;

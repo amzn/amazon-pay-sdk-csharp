@@ -71,7 +71,7 @@ namespace AmazonPay.StandardPaymentRequests
         /// <returns>GetOrderReferenceDetailsRequest Object</returns>
         public GetOrderReferenceDetailsRequest WithAccessToken(string access_token)
         {
-            this.access_token = System.Web.HttpUtility.UrlDecode(access_token);
+            this.access_token = System.Web.HttpUtility.UrlDecode(access_token); // Decode AccessToken from Atza%7CIwEBIJfreMiImhHw6s_C... to Atza|IwEDIJfreMiImhHw6s_C...
             return this;
         }
 
