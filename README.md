@@ -160,9 +160,9 @@ using AmazonPay.Responses;
 
 // Configuration class object
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
-	.WithMerchantId("YOUR_MERCHANT_ID")
-	.WithSecretKey("YOUR_SECRET_KEY")
+config.WithAccessKey("YOUR_ACCESS_KEY")
+	  .WithMerchantId("YOUR_MERCHANT_ID")
+	  .WithSecretKey("YOUR_SECRET_KEY")
 	
 	/* Supported regions are mentioned in the Regions class and accessed by the enum supportedRegions. 
 	 * Example for 'us' is shown below
@@ -224,11 +224,11 @@ using AmazonPay.CommonRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
-	.WithMerchantId("YOUR_MERCHANT_ID")
-	.WithSecretKey("YOUR_SECRET_KEY")
-	.WithRegion(Regions.supportedRegions.us)
-	.WithSandbox(true);
+config.WithAccessKey("YOUR_ACCESS_KEY")
+      .WithMerchantId("YOUR_MERCHANT_ID")
+      .WithSecretKey("YOUR_SECRET_KEY")
+      .WithRegion(Regions.supportedRegions.us)
+      .WithSandbox(true);
 
 Client client = new Client(config);
 ```
@@ -318,11 +318,11 @@ using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
-	.WithMerchantId("YOUR_MERCHANT_ID")
-	.WithSecretKey("YOUR_SECRET_KEY")
-	.WithRegion(Regions.supportedRegions.us)
-	.WithSandbox(true);
+config.WithAccessKey("YOUR_ACCESS_KEY")
+      .WithMerchantId("YOUR_MERCHANT_ID")
+      .WithSecretKey("YOUR_SECRET_KEY")
+      .WithRegion(Regions.supportedRegions.us)
+      .WithSandbox(true);
 
 Client client = new Client(config);
 
@@ -354,12 +354,12 @@ using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
-	.WithMerchantId("YOUR_MERCHANT_ID")
-	.WithSecretKey("YOUR_SECRET_KEY")
-	.WithRegion(Regions.supportedRegions.us)
-	.WithSandbox(true)
-	.WithCurrencyCode(Regions.currencyCode.USD);
+config.WithAccessKey("YOUR_ACCESS_KEY")
+	  .WithMerchantId("YOUR_MERCHANT_ID")
+	  .WithSecretKey("YOUR_SECRET_KEY")
+	  .WithRegion(Regions.supportedRegions.us)
+	  .WithSandbox(true)
+	  .WithCurrencyCode(Regions.currencyCode.USD);
 
 Client client = new Client(config);
 ```
@@ -375,11 +375,11 @@ using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
-	.WithMerchantId("YOUR_MERCHANT_ID")
-	.WithSecretKey("YOUR_SECRET_KEY")
-	.WithRegion(Regions.supportedRegions.us)
-	.WithSandbox(true);
+config.WithAccessKey("YOUR_ACCESS_KEY")
+	  .WithMerchantId("YOUR_MERCHANT_ID")
+	  .WithSecretKey("YOUR_SECRET_KEY")
+	  .WithRegion(Regions.supportedRegions.us)
+	  .WithSandbox(true);
 
 Client client = new Client(config);
 
@@ -599,8 +599,8 @@ using AmazonPay.Responses;
 
 // Configuration class object
 Configuration config = new Configuration();
-clientConfig.WithAccessToken("ACCESS_TOKEN")
-	.WithClientId("YOUR_LWA_CLIENT_ID");
+config.WithAccessToken("ACCESS_TOKEN")
+	  .WithClientId("YOUR_LWA_CLIENT_ID");
 
 Client client = new Client(config);
 
@@ -636,7 +636,7 @@ string userId = jsonObject.GetValue("user_id").ToString();
 	```
 3.	Set Logger property for instance of Client.
 	```csharp
-	Client client = new Client(clientConfig);
+	Client client = new Client(config);
 	// Set Logger for Client
     client.Logger = logger;
 	```
