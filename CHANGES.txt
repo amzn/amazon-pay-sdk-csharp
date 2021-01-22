@@ -1,6 +1,5 @@
-Version 3.7.0.1 January 2020
-- Incrementing version number to allow rebuild of Nuget package
-- Removing binary packages and lib folders from github repository
+Version 3.8.0 December 2020
+- Added support for .Net Standard 2.0
 
 Version 3.7.0 January 2020
 - Added ListOrderReference API Call

@@ -4,6 +4,9 @@ using System.Xml;
 using System.Configuration;
 using System.Web;
 using Newtonsoft.Json.Linq;
+#if NETSTANDARD
+using Microsoft.Extensions.Configuration;
+#endif
 
 namespace AmazonPay
 {
@@ -23,6 +26,47 @@ namespace AmazonPay
             JsonString
         };
 
+        public static string[] LoadSanitizeList()
+        {
+#if NETSTANDARD
+            // check for legacy appsettings
+            if (ConfigurationManager.AppSettings.HasKeys() &&
+                !string.IsNullOrEmpty(ConfigurationManager.AppSettings["sanitizeList"]))
+                return ConfigurationManager.AppSettings["sanitizeList"].Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            try
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+
+                var appSettings = configuration["appSettings:sanitizeList"];
+                if (string.IsNullOrEmpty(appSettings)) throw new ArgumentException();
+
+                return appSettings.Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries); ;
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("You have set Logger but we are missing sanitezeList property in appsettings.json. \n " +
+                                            "Please add:'  \n" +
+                                            "\"appSettings\": { \n" +
+                                            "\"sanitizeList\": \"Example1;Example2;Example3\"/> \n" +
+                                            "}");
+            }
+            
+#else
+            if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["sanitizeList"]))
+                throw new ArgumentException("You have set Logger but we are missing sanitezeList property in configuration file. \n " +
+                                    "Please add:'  \n" +
+                                    "<appSettings> \n" +
+                                    "<add key=\"sanitizeList\" value=\"Example1;Example2;Example3\"/> \n" +
+                                    "</appSettings>");
+
+            // Load list of sanitized tags in to array
+            return ConfigurationManager.AppSettings["sanitizeList"].Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+#endif
+        }
+
         /// <summary>
         ///  Function for sanitizing data
         /// </summary>
@@ -35,15 +79,8 @@ namespace AmazonPay
             const string REMOVED_TEXT = "*REMOVED*";
             List<string> sanitizeList = new List<string>();
 
-            if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["sanitizeList"]))
-                throw new ArgumentException("You have set Logger but we are missing sanitezeList property in configuration file. \n " +
-                                    "Please add:'  \n" +
-                                    "<appSettings> \n" +
-                                    "<add key=\"sanitizeList\" value=\"Example1;Example2;Example3\"/> \n" +
-                                    "</appSettings>");
+            var listArray = LoadSanitizeList();
 
-            // Load list of sanitized tags in to array
-            string[] listArray = ConfigurationManager.AppSettings["sanitizeList"].Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             // Load SanitizeDataList
             foreach (var item in listArray)
             {

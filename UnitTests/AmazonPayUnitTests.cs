@@ -20,7 +20,11 @@ using System.Xml;
 using System.Text;
 using System.Globalization;
 using System.Threading;
-
+using System.Configuration;
+using Configuration = AmazonPay.CommonRequests.Configuration;
+#if NETSTANDARD
+using Microsoft.Extensions.Configuration;
+#endif
 
 namespace UnitTests
 {
@@ -49,47 +53,12 @@ namespace UnitTests
                 .WithAutoRetryOnThrottle(true);
         }
 
-        //loadTestFile loads XML file for testing
-        private String loadTestFile(String fileName)
+        [Test]
+        public void TestLoadAppSettingsSanitizeList()
         {
-            StringBuilder output = new StringBuilder();
-            string xmlString = File.ReadAllText(@"TestFiles\" + fileName);
-
-            // Create an XmlReader
-            using (XmlReader reader = XmlReader.Create(new StringReader(xmlString)))
-            {
-                XmlWriterSettings ws = new XmlWriterSettings();
-                ws.Indent = true;
-                using (XmlWriter writer = XmlWriter.Create(output, ws))
-                {
-
-                    // Parse the file and display each of the nodes.
-                    while (reader.Read())
-                    {
-                        switch (reader.NodeType)
-                        {
-                            case XmlNodeType.Element:
-                                writer.WriteStartElement(reader.Name);
-                                break;
-                            case XmlNodeType.Text:
-                                writer.WriteString(reader.Value);
-                                break;
-                            case XmlNodeType.XmlDeclaration:
-                            case XmlNodeType.ProcessingInstruction:
-                                writer.WriteProcessingInstruction(reader.Name, reader.Value);
-                                break;
-                            case XmlNodeType.Comment:
-                                writer.WriteComment(reader.Value);
-                                break;
-                            case XmlNodeType.EndElement:
-                                writer.WriteFullEndElement();
-                                break;
-                        }
-                    }
-
-                }
-            }
-            return output.ToString();
+            var sanitizeList = SanitizeData.LoadSanitizeList();
+            Assert.NotNull(sanitizeList);
+            Assert.Contains("RequestID", sanitizeList);
         }
 
         [Test]
@@ -134,7 +103,8 @@ namespace UnitTests
             }
             try
             {
-                string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"config.json");
+                var executingPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string jsonfilepath = Path.Combine(executingPath ?? string.Empty, @"config.json");
                 Client client = new Client(jsonfilepath);
             }
             catch (FileNotFoundException expected)
@@ -143,7 +113,8 @@ namespace UnitTests
             }
             try
             {
-                string jsonfilepath = Path.Combine(Environment.CurrentDirectory, @"config.json");
+                var executingPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string jsonfilepath = Path.Combine(executingPath ?? string.Empty, @"config.json");
                 Client client = new Client(jsonfilepath);
             }
             catch (JsonReaderException expected)
@@ -260,7 +231,13 @@ namespace UnitTests
         public void TestLoggingMessageClient()
         {
             // Setting Simple Logger Adapter
+#if NETSTANDARD && debug 
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.DebugLoggerFactoryAdapter();
+#elif NETSTANDARD
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.CapturingLoggerFactoryAdapter();
+#else
             Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+#endif
 
             // Create logger
             Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<Client>();
@@ -311,13 +288,19 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         public void TestLoggingMessage_IpnHandler()
         {
             // Setting Simple Logger Adapter
+#if NETSTANDARD && debug 
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.DebugLoggerFactoryAdapter();
+#elif NETSTANDARD
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.CapturingLoggerFactoryAdapter();
+#else
             Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+#endif
 
             // Create logger
             Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<IpnHandler>();
 
             //Setting filePath to access test files 
-            string filePath = @"TestFiles\AuthorizeNotification.json";
+            string filePath = getTestFileFullPath("AuthorizeNotification.json");
 
             // Extract AuthorizeNotification XML data from json
             var json = JObject.Parse(File.ReadAllText(filePath));
@@ -329,18 +312,24 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             IpnHandler ipnHandler = new IpnHandler(headers, File.ReadAllText(filePath), logger);
             Assert.AreEqual(ipnHandler.GetAuthorizeResponse().GetAuthorizationId(), new AuthorizeResponse(xmlData).GetAuthorizationId());
         }
-   
+
         [Test]
         public void TestLoggingMessage_IpnHandler_BadSignature()
         {
             // Setting Simple Logger Adapter
+#if NETSTANDARD && debug 
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.DebugLoggerFactoryAdapter();
+#elif NETSTANDARD
+            Common.Logging.LogManager.Adapter = new Common.Logging.Simple.CapturingLoggerFactoryAdapter();
+#else
             Common.Logging.LogManager.Adapter = new Common.Logging.Simple.TraceLoggerFactoryAdapter();
+#endif
 
             // Create logger
             Common.Logging.ILog logger = Common.Logging.LogManager.GetLogger<IpnHandler>();
 
             //Setting filePath to access test files 
-            string filePath = @"TestFiles\AuthorizeNotification_BadSignature.json";
+            string filePath = getTestFileFullPath("AuthorizeNotification_BadSignature.json");
 
             // Extract AuthorizeNotification XML data from json
             var json = JObject.Parse(File.ReadAllText(filePath));
@@ -349,8 +338,8 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
 
             NameValueCollection headers = new NameValueCollection { { "x-amz-sns-message-type", "Notification" } };
 
-            Assert.Throws<InvalidDataException>( () => new IpnHandler(headers, File.ReadAllText(filePath), logger) );
-            
+            Assert.Throws<InvalidDataException>(() => new IpnHandler(headers, File.ReadAllText(filePath), logger));
+
         }
 
         [Test]
@@ -2231,7 +2220,8 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             + "<SellerNote>This is testing API call</SellerNote>"
             + "</GetOrderReferenceDetailsResponse>";
 
-            string json = File.ReadAllText("json.txt");
+            var executingPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string json = File.ReadAllText(Path.Combine(executingPath ?? string.Empty, "json.txt"));
 
             string jsonResponse = ResponseParser.ToJson(response["ResponseBody"].ToString());
             Assert.AreEqual(json, jsonResponse);
@@ -2313,6 +2303,62 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         private string getSampleSupplementaryData()
         {
             return "{\"Travel\": {\"version\" : \"1.0\", \"PassengerName\": \"Megan Fisher\", \"AirlineCode\": \"AS\", \"FlightDate\": \"2018-01-01\",\"DepartureAirport\": \"SEA\"},\"Accommodation\": {\"version\" : \"2.0\",\"GuestName\": \"John Walker\",\"LengthOfStay\": 2,\"NumberOfGuests\": 1}}";
+        }
+
+
+        private string getTestFileFullPath(string fileName)
+        {
+            var executingPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string archiveFolder = Path.Combine(executingPath ?? string.Empty, "TestFiles");
+            return Path.Combine(archiveFolder, fileName);
+        }
+
+        //loadTestFile loads XML file for testing
+        private String loadTestFile(String fileName)
+        {
+            StringBuilder output = new StringBuilder();
+            string xmlString = File.ReadAllText(getTestFileFullPath(fileName));
+            //#if  NETFULL
+            //            string xmlString = File.ReadAllText(getTestFileFullPath(fileName));
+            //#else
+            //            string xmlString = File.ReadAllText(@"\TestFiles\" + fileName);
+            //#endif
+
+            // Create an XmlReader
+            using (XmlReader reader = XmlReader.Create(new StringReader(xmlString)))
+            {
+                XmlWriterSettings ws = new XmlWriterSettings();
+                ws.Indent = true;
+                using (XmlWriter writer = XmlWriter.Create(output, ws))
+                {
+
+                    // Parse the file and display each of the nodes.
+                    while (reader.Read())
+                    {
+                        switch (reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                writer.WriteStartElement(reader.Name);
+                                break;
+                            case XmlNodeType.Text:
+                                writer.WriteString(reader.Value);
+                                break;
+                            case XmlNodeType.XmlDeclaration:
+                            case XmlNodeType.ProcessingInstruction:
+                                writer.WriteProcessingInstruction(reader.Name, reader.Value);
+                                break;
+                            case XmlNodeType.Comment:
+                                writer.WriteComment(reader.Value);
+                                break;
+                            case XmlNodeType.EndElement:
+                                writer.WriteFullEndElement();
+                                break;
+                        }
+                    }
+
+                }
+            }
+            return output.ToString();
         }
     }
 }

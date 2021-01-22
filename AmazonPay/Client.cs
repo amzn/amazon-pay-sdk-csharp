@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Reflection;
-using System.Web;
 using System.Net;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-using System.Globalization;
-using System.Xml.Serialization;
 using System.Collections.Generic;
-using System.Collections;
-using System.Xml;
 using Newtonsoft.Json;
 using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
 using AmazonPay.ProviderCreditRequests;
 using AmazonPay.RecurringPaymentRequests;
 using AmazonPay.CommonRequests;
-using AmazonPay.Types;
 using Common.Logging;
 
 namespace AmazonPay

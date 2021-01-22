@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using AmazonPay;
 using System.Xml;
 using AmazonPay.Responses;
 using System.Text.RegularExpressions;
 using Common.Logging;
+#if NETSTANDARD
+using System.Runtime.Caching;
+#else
+using System.Web;
+#endif
 
 namespace AmazonPay
 {
@@ -95,11 +96,18 @@ namespace AmazonPay
                     ParseRawMessage(headers, jsonMessage);
                     GetIpnResponseObjects();
                 }
+            } 
+#if NETSTANDARD
+            catch (InvalidDataException ex)
+            {
+                throw new InvalidDataException("Error Parsing the IPN notification", ex);
             }
+#else
             catch (HttpParseException ex)
             {
                 throw new HttpParseException("Error Parsing the IPN notification", ex);
             }
+#endif
 
         }
 
@@ -505,6 +513,22 @@ namespace AmazonPay
         private X509Certificate2 GetCertificate(string certPath)
         {
             X509Certificate2 cert = null;
+#if NETSTANDARD
+            try
+            {
+                cert = (X509Certificate2)MemoryCache.Default.Get(string.Format(Constants.CacheKey, certPath));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error requesting certificate", ex);
+            }
+
+            if (cert == null)
+            {
+                cert = GetCertificateFromURI(certPath);
+                MemoryCache.Default.Set(string.Format(Constants.CacheKey, certPath), cert, new CacheItemPolicy() { AbsoluteExpiration = DateTime.UtcNow.AddDays(1.0) });
+            }
+#else
             try
             {
                 cert = (X509Certificate2)HttpRuntime.Cache.Get(String.Format(Constants.CacheKey, certPath));
@@ -519,7 +543,7 @@ namespace AmazonPay
                 cert = GetCertificateFromURI(certPath);
                 HttpRuntime.Cache.Insert(String.Format(Constants.CacheKey, certPath), cert, null, DateTime.UtcNow.AddDays(1.0), System.Web.Caching.Cache.NoSlidingExpiration);
             }
-
+#endif
             return cert;
         }
 
@@ -721,7 +745,7 @@ namespace AmazonPay
         /// <returns>notificationType</returns>
         public string GetNotificationType()
         {
-            return this.notificationType.Replace(" ","");
+            return this.notificationType.Replace(" ", "");
         }
 
         /// <summary>

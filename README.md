@@ -5,7 +5,7 @@ Amazon Pay API Integration
 ## Requirements
 
 * Amazon Pay account - [Register here](https://pay.amazon.com/signup)
-* .NET 2.0 or higher
+* .NET 2.0 (or higher) or .NET Standard 2.0
 * Newtonsoft.json (JSON.NET)
 
 ## Documentation
@@ -160,7 +160,7 @@ using AmazonPay.Responses;
 
 // Configuration class object
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+config.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithMerchantId("YOUR_MERCHANT_ID")
 	.WithSecretKey("YOUR_SECRET_KEY")
 	
@@ -224,7 +224,7 @@ using AmazonPay.CommonRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+config.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithMerchantId("YOUR_MERCHANT_ID")
 	.WithSecretKey("YOUR_SECRET_KEY")
 	.WithRegion(Regions.supportedRegions.us)
@@ -276,7 +276,7 @@ bool isGetOrderReferenceDetailsSuccess = getOrderReferenceDetailsResponse.GetSuc
 		string json = getOrderReferenceDetailsResponse.GetJson();
 		
 		// Dictionary
-		Dictionary<string, object> dictionary = getOrderReferenceDetailsResponse.GetDict();
+		Dictionary<string, object> dictionary = getOrderReferenceDetailsResponse.GetDictionary();
 		
 		// Getting individual variable values that is parsed in the Response class
 		string amazonOrderReferenceId = getOrderReferenceDetailsResponse.GetAmazonOrderReferenceId();
@@ -318,7 +318,7 @@ using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+config.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithMerchantId("YOUR_MERCHANT_ID")
 	.WithSecretKey("YOUR_SECRET_KEY")
 	.WithRegion(Regions.supportedRegions.us)
@@ -354,7 +354,7 @@ using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+config.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithMerchantId("YOUR_MERCHANT_ID")
 	.WithSecretKey("YOUR_SECRET_KEY")
 	.WithRegion(Regions.supportedRegions.us)
@@ -375,7 +375,7 @@ using AmazonPay.StandardPaymentRequests;
 using AmazonPay.Responses;
 
 Configuration config = new Configuration();
-clientConfig.WithAccessKey("YOUR_ACCESS_KEY")
+config.WithAccessKey("YOUR_ACCESS_KEY")
 	.WithMerchantId("YOUR_MERCHANT_ID")
 	.WithSecretKey("YOUR_SECRET_KEY")
 	.WithRegion(Regions.supportedRegions.us)
@@ -599,7 +599,7 @@ using AmazonPay.Responses;
 
 // Configuration class object
 Configuration config = new Configuration();
-clientConfig.WithAccessToken("ACCESS_TOKEN")
+config.WithAccessToken("ACCESS_TOKEN")
 	.WithClientId("YOUR_LWA_CLIENT_ID");
 
 Client client = new Client(config);
@@ -636,7 +636,7 @@ string userId = jsonObject.GetValue("user_id").ToString();
 	```
 3.	Set Logger property for instance of Client.
 	```csharp
-	Client client = new Client(clientConfig);
+	Client client = new Client(config);
 	// Set Logger for Client
     client.Logger = logger;
 	```
