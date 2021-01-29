@@ -1,3 +1,6 @@
+Version 3.8.1 January 2021
+- Adding support for strong name support (key for signing)
+
 Version 3.8.0 December 2020
 - Added support for .Net Standard 2.0
 

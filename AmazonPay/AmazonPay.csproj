@@ -4,7 +4,9 @@
     <TargetFrameworks>netstandard2.0;net20</TargetFrameworks>
     <Copyright>Copyright ©  2017-2020</Copyright>
     <Company>Amazon Pay</Company>
-    <Version>3.8.0</Version>
+    <Version>3.8.1</Version>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>KeyFile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
