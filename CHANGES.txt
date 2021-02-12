@@ -1,3 +1,6 @@
+Version 3.9.0 - February 2021
+- Added additional attribute (expectImmediateAuthorization) to ConfirmOrderReference. This value can be set to true or false (Boolean). See Amazon Pay Strong Customer Authentication (SCA) Upgrade Integration Guide for more information.
+
 Version 3.8.1 January 2021
 - Adding support for strong name support (key for signing)
 

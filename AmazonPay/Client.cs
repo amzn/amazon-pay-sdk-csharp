@@ -680,6 +680,7 @@ namespace AmazonPay
         ///  requestParameters.WithFailureUrl("FAILURE_URL");
         ///  requestParameters.WithAmount("AUTHORIZATION_AMOUNT");
         ///  requestParameters.withCurrencyCode("AUTHORIZATION_CURRENCY_CODE");
+        ///  requestParameters.WithExpectImmediateAuthorization("EXPECT_IMMEDIATE_AUTHORIZATION");
         /// </code>
         /// </example>
         /// <returns>ResponseParser responseObject</returns>
@@ -692,7 +693,7 @@ namespace AmazonPay
                 { Constants.AmazonOrderReferenceId, requestParameters.GetAmazonOrderReferenceId() },
                 { Constants.MWSAuthToken, requestParameters.GetMWSAuthToken() },
                 { Constants.SuccessUrl, requestParameters.GetSuccessUrl() },
-                { Constants.FailureUrl, requestParameters.GetFailureUrl() },
+                { Constants.FailureUrl, requestParameters.GetFailureUrl() }
             };
 
             if (requestParameters.GetAmount() != null)
@@ -702,6 +703,10 @@ namespace AmazonPay
                 {
                     confirmOrderReferenceDetailsDictionary.Add(Constants.AuthorizationAmount_CurrencyCode, requestParameters.GetCurrencyCode());
                 }
+            }
+            if (requestParameters.GetExpectImmediateAuthorization() != null)
+            {
+                confirmOrderReferenceDetailsDictionary.Add(Constants.ExpectImmediateAuthorization, requestParameters.GetExpectImmediateAuthorization().ToString().ToLower());
             }
             string response = SetParametersAndPost(confirmOrderReferenceDetailsDictionary);
             ConfirmOrderReferenceResponse responseObject = new ConfirmOrderReferenceResponse(response);

@@ -631,6 +631,104 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
         }
 
         [Test]
+        public void TestConfirmOrderReferenceWithExpectImmediateAuthorizationAsTrue()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","ConfirmOrderReference"},
+                {"SellerId","testSellerId"},
+                {"AmazonOrderReferenceId","P01-4396315-158792"},
+                {"MWSAuthToken","testAuthToken"},
+                {"AuthorizationAmount.Amount","100.00"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"SuccessUrl", "https://testSuccessUrl.com"},
+                {"FailureUrl", "https://testFailureUrl.com"},
+                {"ExpectImmediateAuthorization", "true" }
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API ConfirmOrderReference
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            ConfirmOrderReferenceRequest confirmOrderReference = new ConfirmOrderReferenceRequest();
+            confirmOrderReference.WithAmazonOrderReferenceId("P01-4396315-158792")
+                .WithMerchantId("testSellerId")
+                .WithMWSAuthToken("testAuthToken")
+                .WithAmount(100.00m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithSuccessUrl("https://testSuccessUrl.com")
+                .WithFailureUrl("https://testFailureUrl.com")
+                .WithExpectImmediateAuthorization(true);
+
+            client.ConfirmOrderReference(confirmOrderReference);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing ConfirmOrderReference Response
+            String rawResponse = loadTestFile("ConfirmOrderReference.xml");
+            ConfirmOrderReferenceResponse confirmOrderResponseObject = new ConfirmOrderReferenceResponse(rawResponse);
+            Assert.AreEqual(confirmOrderResponseObject.GetRequestId(), "f1f52572-a347-4f7a-a630-be066f3ba827");
+
+            Assert.AreEqual(confirmOrderResponseObject.GetXml(), rawResponse);
+        }
+
+        [Test]
+        public void TestConfirmOrderReferenceWithExpectImmediateAuthorizationAsFalse()
+        {
+            Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
+            {
+                {"Action","ConfirmOrderReference"},
+                {"SellerId","testSellerId"},
+                {"AmazonOrderReferenceId","P01-4396315-158792"},
+                {"MWSAuthToken","testAuthToken"},
+                {"AuthorizationAmount.Amount","100.00"},
+                {"AuthorizationAmount.CurrencyCode","USD"},
+                {"SuccessUrl", "https://testSuccessUrl.com"},
+                {"FailureUrl", "https://testFailureUrl.com"},
+                {"ExpectImmediateAuthorization", "false" }
+            };
+
+            // Test direct call to CalculateSignatureAndParametersToString
+            Client client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+
+            MethodInfo method = GetMethod("CalculateSignatureAndParametersToString");
+            method.Invoke(client, new object[] { expectedParameters }).ToString();
+            IDictionary<string, string> expectedParamsDict = client.GetParameters();
+
+            // Test call to the API ConfirmOrderReference
+            client = new Client(clientConfig);
+            client.SetTimeStamp("0000");
+            ConfirmOrderReferenceRequest confirmOrderReference = new ConfirmOrderReferenceRequest();
+            confirmOrderReference.WithAmazonOrderReferenceId("P01-4396315-158792")
+                .WithMerchantId("testSellerId")
+                .WithMWSAuthToken("testAuthToken")
+                .WithAmount(100.00m)
+                .WithCurrencyCode(Regions.currencyCode.USD)
+                .WithSuccessUrl("https://testSuccessUrl.com")
+                .WithFailureUrl("https://testFailureUrl.com")
+                .WithExpectImmediateAuthorization(false);
+
+            client.ConfirmOrderReference(confirmOrderReference);
+            IDictionary<string, string> apiParametersDict = client.GetParameters();
+            CollectionAssert.AreEqual(apiParametersDict, expectedParamsDict);
+
+            //Testing ConfirmOrderReference Response
+            String rawResponse = loadTestFile("ConfirmOrderReference.xml");
+            ConfirmOrderReferenceResponse confirmOrderResponseObject = new ConfirmOrderReferenceResponse(rawResponse);
+            Assert.AreEqual(confirmOrderResponseObject.GetRequestId(), "f1f52572-a347-4f7a-a630-be066f3ba827");
+
+            Assert.AreEqual(confirmOrderResponseObject.GetXml(), rawResponse);
+        }
+
+        [Test]
         public void TestCancelOrderReference()
         {
             Dictionary<string, string> expectedParameters = new Dictionary<string, string>()
@@ -2126,11 +2224,11 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences().Count, 2);
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["AmazonOrderReferenceId"], "S01-3139477-8890805");
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["ReleaseEnvironment"], "Sandbox");
-            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["CreationTimestamp"], "1/3/2020 3:58:19 PM");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["CreationTimestamp"], "01/03/2020 15:58:19");
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["StoreName"], "IntroProd");
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["SellerOrderId"], "YOUR_CUSTOM_ORDER_REFERENCE_ID");
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["State"], "Canceled");
-            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["LastUpdateTimestamp"], "1/3/2020 3:58:35 PM");
+            Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["LastUpdateTimestamp"], "01/03/2020 15:58:35");
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["CurrencyCode"], "USD");
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["Amount"], "100.00");
             Assert.AreEqual(listOrderReferenceResponseObject.GetOrderReferences()[1]["ReasonDescription"], "AMAZON ON BEHALF OF MERCHANT");
@@ -2240,10 +2338,10 @@ AWSAccessKeyId=test&Action=GetOrderReferenceDetails&AddressConsentToken=test&Ama
             + "<SellerNote>This is testing API call</SellerNote>"
             + "</GetOrderReferenceDetailsResponse>";
 
-            Dictionary<string, object> dictResponse = new Dictionary<string, object>()
+            Dictionary<string, string> dictResponse = new Dictionary<string, string>()
               {
                   {"AmazonOrderReferenceId","S01-5806490-2147504"},
-                  {"ExpirationTimestamp","9/27/2015 2:18:33 AM"},
+                  {"ExpirationTimestamp","09/27/2015 02:18:33"},
                   {"SellerNote","This is testing API call"}
               };
 

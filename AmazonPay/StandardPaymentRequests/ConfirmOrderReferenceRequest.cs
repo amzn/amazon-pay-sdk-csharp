@@ -12,6 +12,7 @@ namespace AmazonPay.StandardPaymentRequests
         private string failure_url;
         private decimal? amount;
         private string currency_code;
+        private bool? expectImmediateAuthorization;
 
         public ConfirmOrderReferenceRequest()
         {
@@ -121,6 +122,27 @@ namespace AmazonPay.StandardPaymentRequests
         public string GetFailureUrl()
         {
             return this.failure_url;
+        }
+
+        /// <summary>
+        /// Sets the Boolean value for expect immediate authorization flag
+        /// The accepted values are true, false and null.
+        /// </summary>
+        /// <param name="expect_immediate_authorization"></param>
+        /// <returns>ConfirmOrderReferenceRequest Object</returns>
+        public ConfirmOrderReferenceRequest WithExpectImmediateAuthorization(bool? expect_immediate_authorization)
+        {
+            this.expectImmediateAuthorization = expect_immediate_authorization;
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the expect immediate authorization flag
+        /// </summary>
+        /// <returns>expect immediate authorization flag</returns>
+        public bool? GetExpectImmediateAuthorization()
+        {
+            return this.expectImmediateAuthorization;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.8.1";
+        public static readonly string SDKClientVersion = "3.9.0";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
@@ -116,6 +116,7 @@ namespace AmazonPay
         public static readonly string CreatedEndTime = "CreatedTimeRange.EndTime";
         public static readonly string PaymentDomain = "PaymentDomain";
         public static readonly string NextPageToken = "NextPageToken";
+        public static readonly string ExpectImmediateAuthorization = "ExpectImmediateAuthorization";
 
         public enum URLEventTypes
         {
