@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.0;net20</TargetFrameworks>
     <Copyright>Copyright Amazon.com Inc. or its affiliates.</Copyright>
     <Company>Amazon Pay</Company>
-    <Version>3.9.0</Version>
+    <Version>3.9.1</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>KeyFile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

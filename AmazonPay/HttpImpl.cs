@@ -72,7 +72,7 @@ namespace AmazonPay
             }
             if (header)
             {
-                request.Headers.Add("Authorization: bearer " + accessToken);
+                request.Headers.Add("x-amz-access-token:" + accessToken);
             }
             request.Method = method;
             request.ContentType = "application/x-www-form-urlencoded; charset=utf-8";

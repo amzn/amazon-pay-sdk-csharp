@@ -398,9 +398,11 @@ namespace AmazonPay
             }
 
             accessToken = System.Web.HttpUtility.UrlDecode(accessToken);
-            string url = profileEndpoint + "/auth/o2/tokeninfo?access_token=" + System.Web.HttpUtility.UrlEncode(accessToken);
+            string url = profileEndpoint + "/auth/o2/tokeninfo";
 
             HttpImpl httpRequest = new HttpImpl(clientConfig);
+            httpRequest.setAccessToken(accessToken);
+            httpRequest.setHttpHeader();
             response = httpRequest.Get(url);
 
             Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
