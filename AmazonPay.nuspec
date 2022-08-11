@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>3.9.1</version>
+    <version>3.9.2</version>
     <title>$title$</title>
     <authors>AmazonPay</authors>
     <owners>AmazonPay</owners>
@@ -10,11 +10,11 @@
     <iconUrl>https://images-na.ssl-images-amazon.com/images/G/01/Iris3_US/en_US/inca/images/60x38-white-x1.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>AmazonPay service. This API section enables you to programmatically retrieve shipping and payment information provided by the buyer from their Amazon account. It allows you to authorize, capture, and refund payments, enabling a variety of payments scenarios.</description>
-    <releaseNotes>v3.9.1</releaseNotes>
+    <releaseNotes>v3.9.2</releaseNotes>
     <copyright>Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.</copyright>
     <tags>AmazonPay</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="12.0.2" />
+      <dependency id="Newtonsoft.Json" version="13.0.1" />
       <dependency id="Common.Logging" version="2.0.0" />
     </dependencies>
   </metadata>

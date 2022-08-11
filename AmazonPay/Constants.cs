@@ -7,7 +7,7 @@ namespace AmazonPay
 {
     public static class Constants
     {
-        public static readonly string SDKClientVersion = "3.9.1";
+        public static readonly string SDKClientVersion = "3.9.2";
         public static readonly string SDKName = "amazon-pay-sdk-csharp";
         public static readonly string PaymentsServiceVersion = "2013-01-01";
         public static readonly int MaxErrorRetry = 3;
