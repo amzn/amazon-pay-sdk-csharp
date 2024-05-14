@@ -1,4 +1,5 @@
-﻿
+﻿> **Important:** This SDK has been deprecated. Amazon Pay will continue to support this version but it will not be updated with new features. New integrations should use [Amazon Pay API SDK (.NET)](https://github.com/amzn/amazon-pay-api-sdk-dotnet/) & refer this [documentation](https://developer.amazon.com/docs/amazon-pay/intro.html) for more details.
+
 # Amazon Pay SDK (C#)
 Amazon Pay API Integration
 
